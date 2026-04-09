@@ -47,9 +47,16 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
 
       <ul className="hidden md:flex items-center gap-9">
         {navItems.map((item) => (
-          <li key={item.href}>
+           <li key={item.href}>
             <a
               href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                const id = item.href.replace('#', '');
+                setTimeout(() => {
+                  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+              }}
               className={`text-[13px] tracking-[1.5px] uppercase font-normal relative transition-colors duration-200 ${linkClass} after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
             >
               {item.label}
