@@ -785,6 +785,8 @@ function StatsEditor() {
 function PortfolioEditor() {
   const [projects, setProjects] = useState<PortfolioProject[]>([]);
   const fileRefs = useRef<Record<number, HTMLInputElement | null>>({});
+  const pdfEnRefs = useRef<Record<number, HTMLInputElement | null>>({});
+  const pdfBnRefs = useRef<Record<number, HTMLInputElement | null>>({});
 
   useEffect(() => {
     supabase.from('portfolio_projects').select('*').order('sort_order').then(({ data }) => {
@@ -811,6 +813,20 @@ function PortfolioEditor() {
     updateProject(idx, 'image_url', data.publicUrl);
   };
 
+  const handlePdfUpload = async (idx: number, file: File, lang: 'en' | 'bn') => {
+    const session = await ensureAuthenticatedSession();
+    if (!session) return;
+
+    const path = `portfolio-pdfs/${Date.now()}_${idx}_${lang}.pdf`;
+    const { error } = await supabase.storage.from('polished-assets').upload(path, file, { contentType: 'application/pdf' });
+    if (error) {
+      alert('PDF upload error: ' + error.message);
+      return;
+    }
+    const { data } = supabase.storage.from('polished-assets').getPublicUrl(path);
+    updateProject(idx, lang === 'en' ? 'pdf_url_en' : 'pdf_url_bn', data.publicUrl);
+  };
+
   const save = async () => {
     await saveCollection('portfolio_projects', projects, 'portfolio', 'Projects saved!');
   };
@@ -821,7 +837,7 @@ function PortfolioEditor() {
 
     const { data, error } = await supabase
       .from('portfolio_projects')
-      .insert({ sort_order: projects.length + 1, title_en: 'New Project', title_bn: '', category_en: 'Design', category_bn: '', image_url: '', case_study_en: '', case_study_bn: '' })
+      .insert({ sort_order: projects.length + 1, title_en: 'New Project', title_bn: '', category_en: 'Design', category_bn: '', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' })
       .select()
       .single();
     if (error) {
@@ -898,12 +914,65 @@ function PortfolioEditor() {
               )}
             </div>
           </AdminField>
+
+          {/* Hook text — shown by default on frontend */}
+          <AdminField label="Hook Text (EN) — visible before expanding">
+            <AdminInput value={proj.hook_en ?? ''} onChange={(v) => updateProject(i, 'hook_en', v)} placeholder="Short teaser text shown by default..." />
+          </AdminField>
+          <AdminField label="Hook Text (বাংলা)">
+            <AdminInput value={proj.hook_bn ?? ''} onChange={(v) => updateProject(i, 'hook_bn', v)} placeholder="ডিফল্টভাবে দেখানো সংক্ষিপ্ত টিজার..." />
+          </AdminField>
+
           <AdminField label="Case Study (English)">
             <AdminTextarea value={proj.case_study_en ?? ''} onChange={(v) => updateProject(i, 'case_study_en', v)} rows={5} placeholder="Write the English case study for this project..." />
           </AdminField>
           <AdminField label="Case Study (Bengali)">
             <AdminTextarea value={proj.case_study_bn ?? ''} onChange={(v) => updateProject(i, 'case_study_bn', v)} rows={5} placeholder="এই প্রজেক্টের বাংলা কেস স্টাডি লিখুন..." />
           </AdminField>
+
+          {/* Dual PDF Uploads */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AdminField label="📄 Case Study PDF (English)">
+              <div
+                className="border-2 border-dashed border-primary-foreground/15 rounded p-4 text-center cursor-pointer transition-all hover:border-accent hover:bg-accent/5"
+                onClick={() => pdfEnRefs.current[i]?.click()}
+              >
+                <input
+                  ref={(el) => { pdfEnRefs.current[i] = el; }}
+                  type="file"
+                  accept=".pdf"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handlePdfUpload(i, file, 'en');
+                  }}
+                />
+                <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">
+                  {proj.pdf_url_en ? '✅ PDF uploaded — click to replace' : 'Click to upload English PDF'}
+                </span>
+              </div>
+            </AdminField>
+            <AdminField label="📄 Case Study PDF (বাংলা)">
+              <div
+                className="border-2 border-dashed border-primary-foreground/15 rounded p-4 text-center cursor-pointer transition-all hover:border-accent hover:bg-accent/5"
+                onClick={() => pdfBnRefs.current[i]?.click()}
+              >
+                <input
+                  ref={(el) => { pdfBnRefs.current[i] = el; }}
+                  type="file"
+                  accept=".pdf"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handlePdfUpload(i, file, 'bn');
+                  }}
+                />
+                <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">
+                  {proj.pdf_url_bn ? '✅ PDF uploaded — click to replace' : 'Click to upload Bengali PDF'}
+                </span>
+              </div>
+            </AdminField>
+          </div>
         </div>
       ))}
       <div className="flex gap-3 mt-4">
@@ -915,7 +984,6 @@ function PortfolioEditor() {
     </AdminSection>
   );
 }
-
 function PortfolioMetaEditor() {
   const [data, setData] = useState<PortfolioMetaContent>({
     labelEn: 'Selected Work',
