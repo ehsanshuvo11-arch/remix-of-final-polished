@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
@@ -15,9 +15,9 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
   const titleRef = useScrollReveal(0.1);
 
   const defaultProjects: PortfolioProject[] = [
-    { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '' },
-    { id: '2', sort_order: 2, title_en: 'Project 02', title_bn: 'প্রজেক্ট ০২', category_en: 'Brand Identity', category_bn: 'ব্র্যান্ড আইডেন্টিটি', image_url: '', case_study_en: '', case_study_bn: '' },
-    { id: '3', sort_order: 3, title_en: 'Project 03', title_bn: 'প্রজেক্ট ০৩', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '' },
+    { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
+    { id: '2', sort_order: 2, title_en: 'Project 02', title_bn: 'প্রজেক্ট ০২', category_en: 'Brand Identity', category_bn: 'ব্র্যান্ড আইডেন্টিটি', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
+    { id: '3', sort_order: 3, title_en: 'Project 03', title_bn: 'প্রজেক্ট ০৩', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
   ];
 
   const displayProjects = projects.length > 0 ? projects : defaultProjects;
@@ -33,54 +33,27 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-14">
         {displayProjects.map((project, i) => (
-          <ProjectCard key={project.id} project={project} isFirst={i === 0} index={i} />
+          <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
     </section>
   );
 }
 
-function ProjectCard({ project, isFirst, index }: { project: PortfolioProject; isFirst: boolean; index: number }) {
-  const { t } = useLanguage();
+function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
+  const { t, lang } = useLanguage();
   const ref = useScrollReveal(0.1 * index);
-  const cardRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
+
   const caseStudy = t(project.case_study_en ?? '', project.case_study_bn ?? '');
-
-  // Tilt effect matching Services cards
-  const handleTilt = (e: React.MouseEvent) => {
-    if (expanded) return;
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const midX = rect.width / 2;
-    const midY = rect.height / 2;
-    const rotateY = ((x - midX) / midX) * 6;
-    const rotateX = ((midY - y) / midY) * 6;
-    el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-  };
-
-  const handleTiltLeave = () => {
-    if (cardRef.current) cardRef.current.style.transform = '';
-  };
-
-  const collapsedAspect = isFirst ? 16 / 7 : 4 / 3;
-  const expandedAspect = 1;
+  const hook = t(project.hook_en ?? '', project.hook_bn ?? '');
+  const pdfUrl = lang === 'bn' ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
+  const hasCaseStudy = !!(caseStudy || hook);
 
   return (
-    <div ref={ref} className={`${isFirst ? 'md:col-span-2' : ''}`}>
-      <motion.div
-        ref={cardRef}
-        onMouseMove={handleTilt}
-        onMouseLeave={handleTiltLeave}
-        className="work-card relative overflow-hidden cursor-pointer group"
-        style={{ transition: 'transform 0.15s ease-out', maxHeight: expanded ? '85vh' : undefined }}
-        animate={{ aspectRatio: expanded ? expandedAspect : collapsedAspect }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        onClick={() => setExpanded(!expanded)}
-      >
+    <div ref={ref}>
+      {/* Image card — uniform 4:3 aspect ratio for ALL cards */}
+      <div className="relative overflow-hidden group" style={{ aspectRatio: '4/3' }}>
         {project.image_url ? (
           <img
             src={project.image_url}
@@ -101,51 +74,77 @@ function ProjectCard({ project, isFirst, index }: { project: PortfolioProject; i
           </div>
         )}
 
-        {/* Hover overlay — same as before */}
+        {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8">
           <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
             <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
             <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
           </div>
         </div>
+      </div>
 
-        {/* Post-expansion: Services-style accent line + gradient overlay */}
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="absolute inset-0 pointer-events-none"
-            >
-              {/* Gradient overlay like Services hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.09] to-transparent" />
-              {/* Bottom accent line like Services */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
-                className="absolute bottom-0 left-9 right-9 h-px bg-gradient-to-r from-accent to-transparent origin-left"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Hint text */}
-      <p className="mt-2.5 text-[10px] tracking-[2px] uppercase text-accent font-medium">
-        {expanded
-          ? t('Click to collapse', 'সংকুচিত করতে ক্লিক করুন')
-          : t('Click image for full view', 'সম্পূর্ণ ডিজাইন দেখতে ক্লিক করুন')
-        }
-      </p>
-
-      {/* Case Study */}
-      {caseStudy && (
+      {/* Case Study Section */}
+      {hasCaseStudy && (
         <div className="mt-4 px-1">
-          <p className="text-[11px] tracking-[2px] uppercase text-accent mb-2 font-medium">Case Study</p>
-          <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
+          {/* Hook text — always visible */}
+          {hook && (
+            <p className="text-sm leading-relaxed text-muted-foreground italic">{hook}</p>
+          )}
+
+          {/* Expand button */}
+          {caseStudy && !expanded && (
+            <motion.button
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              onClick={() => setExpanded(true)}
+              className="mt-3 inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+            >
+              <span className="relative z-10">{t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}</span>
+            </motion.button>
+          )}
+
+          {/* Expanded content */}
+          <AnimatePresence>
+            {expanded && caseStudy && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="overflow-hidden"
+              >
+                <div className="mt-4 pt-4 border-t border-border">
+                  <p className="text-[11px] tracking-[2px] uppercase text-accent mb-3 font-medium">
+                    {t('Case Study', 'কেস স্টাডি')}
+                  </p>
+                  <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
+
+                  {/* PDF download — language-aware */}
+                  {pdfUrl && (
+                    <a
+                      href={pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:bg-accent/20"
+                    >
+                      📄 {t('Download PDF', 'পিডিএফ ডাউনলোড')}
+                    </a>
+                  )}
+
+                  {/* Show less button */}
+                  <div className="mt-5">
+                    <button
+                      onClick={() => setExpanded(false)}
+                      className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-colors duration-200 hover:text-accent/70"
+                    >
+                      {t('Show less', 'সংক্ষেপে দেখুন')}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
     </div>
