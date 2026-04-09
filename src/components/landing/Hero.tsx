@@ -127,6 +127,12 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <div className="flex gap-4 justify-center flex-wrap" style={{ animation: 'fadeUp 0.7s ease 1.1s forwards', opacity: 0 }}>
           <a
             href="#work"
+            onClick={(e) => {
+              e.preventDefault();
+              setTimeout(() => {
+                document.getElementById('work')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 150);
+            }}
             onMouseMove={handleMagnetic}
             onMouseLeave={handleMagneticLeave}
             className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm bg-accent text-primary-foreground relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
@@ -136,6 +142,12 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
           <a
             href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              setTimeout(() => {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 150);
+            }}
             onMouseMove={handleMagnetic}
             onMouseLeave={handleMagneticLeave}
             className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-300 hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
