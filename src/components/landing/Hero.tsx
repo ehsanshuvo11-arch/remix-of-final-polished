@@ -138,7 +138,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             href="#contact"
             onMouseMove={handleMagnetic}
             onMouseLeave={handleMagneticLeave}
-            className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm border border-primary-foreground/25 text-primary-foreground/75 transition-all duration-300 hover:border-primary-foreground/60 hover:text-primary-foreground hover:-translate-y-1"
+            className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-300 hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
           >
             <span className="relative z-10">{t(hero.startProjectEn ?? 'Start a Project', hero.startProjectBn ?? 'প্রজেক্ট শুরু')}</span>
           </a>
