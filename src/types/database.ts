@@ -24,6 +24,10 @@ export interface PortfolioProject {
   image_url: string;
   case_study_en: string;
   case_study_bn: string;
+  hook_en?: string;
+  hook_bn?: string;
+  pdf_url_en?: string;
+  pdf_url_bn?: string;
 }
 
 export interface ProcessStep {
