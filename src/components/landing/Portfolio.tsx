@@ -80,10 +80,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   }, []);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      layout
-      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* Image container with tilt in collapsed state */}
       <div
