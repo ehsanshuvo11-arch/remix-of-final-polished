@@ -107,7 +107,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
         >
           {project.image_url ? (
-            <div className={`relative ${imageExpanded ? 'flex items-center justify-center' : ''}`}>
+            <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
+              <div className={`relative ${imageExpanded ? 'w-fit mx-auto' : 'w-full'}`}>
               <img
                 src={project.image_url}
                 alt={project.title_en}
@@ -125,6 +126,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
                   <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
                 </div>
+              </div>
               </div>
             </div>
           ) : (
