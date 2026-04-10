@@ -91,7 +91,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div
-          className="relative cursor-pointer group"
+          className={`relative cursor-pointer ${imageExpanded ? '' : 'group'}`}
           onClick={() => {
             toggleImageExpand();
             if (!imageExpanded && cardRef.current) {
@@ -108,7 +108,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         >
           {project.image_url ? (
             <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
-              <div className={`relative transition-transform duration-500 ease-out ${imageExpanded ? 'inline-block group-hover:scale-[1.03]' : 'w-full'}`}>
+              <div className={`relative transition-transform duration-500 ease-out ${imageExpanded ? 'inline-block group hover:scale-[1.03]' : 'w-full'}`}>
               <img
                 src={project.image_url}
                 alt={project.title_en}
