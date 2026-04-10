@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
@@ -50,10 +50,18 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const pdfUrl = lang === 'bn' ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
   const hasCaseStudy = !!(caseStudy || hook);
 
+  const toggleExpand = useCallback(() => {
+    if (hasCaseStudy && caseStudy) setExpanded((prev) => !prev);
+  }, [hasCaseStudy, caseStudy]);
+
   return (
     <div ref={ref}>
-      {/* Image card — uniform 4:3 aspect ratio for ALL cards */}
-      <div className="relative overflow-hidden group" style={{ aspectRatio: '4/3' }}>
+      {/* Image card — uniform 4:3 aspect ratio */}
+      <div
+        className="relative overflow-hidden group cursor-pointer"
+        style={{ aspectRatio: '4/3' }}
+        onClick={toggleExpand}
+      >
         {project.image_url ? (
           <img
             src={project.image_url}
@@ -91,17 +99,27 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <p className="text-sm leading-relaxed text-muted-foreground italic">{hook}</p>
           )}
 
-          {/* Expand button */}
+          {/* Action buttons row */}
           {caseStudy && !expanded && (
-            <motion.button
+            <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              onClick={() => setExpanded(true)}
-              className="mt-3 inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+              className="mt-3 flex flex-wrap items-center gap-2"
             >
-              <span className="relative z-10">{t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}</span>
-            </motion.button>
+              <button
+                onClick={() => setExpanded(true)}
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+              >
+                <span className="relative z-10">{t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}</span>
+              </button>
+              <button
+                onClick={toggleExpand}
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-accent text-accent-foreground text-[10px] tracking-[1.5px] uppercase font-medium rounded-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(251,146,60,0.3)] active:scale-[0.97]"
+              >
+                <span>{t('Click to the image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}</span>
+              </button>
+            </motion.div>
           )}
 
           {/* Expanded content */}
@@ -111,7 +129,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                 className="overflow-hidden"
               >
                 <div className="mt-4 pt-4 border-t border-border">
@@ -126,7 +144,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                       href={pdfUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:bg-accent/20"
+                      className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:bg-accent/20 active:scale-[0.97]"
                     >
                       📄 {t('Download PDF', 'পিডিএফ ডাউনলোড')}
                     </a>
@@ -136,7 +154,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   <div className="mt-5">
                     <button
                       onClick={() => setExpanded(false)}
-                      className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-colors duration-200 hover:text-accent/70"
+                      className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-colors duration-200 hover:text-accent/70 active:scale-[0.97]"
                     >
                       {t('Show less', 'সংক্ষেপে দেখুন')}
                     </button>
