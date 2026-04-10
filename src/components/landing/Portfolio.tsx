@@ -115,7 +115,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               loading="lazy"
             />
           ) : (
-            <div className="w-full aspect-[820/312] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
+            <div className="w-full h-[240px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
               <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
                 <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
                 <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
