@@ -206,6 +206,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }
