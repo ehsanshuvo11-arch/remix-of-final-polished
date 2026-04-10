@@ -31,7 +31,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         {t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'সাম্প্রতিক')} <em className="italic">{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্ট।')}</em>
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-14">
+      <div className="flex flex-col gap-10 mt-14">
         {displayProjects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
@@ -66,25 +66,26 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       ref={ref}
       layout
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={imageExpanded ? 'md:col-span-2' : ''}
     >
-      {/* Image card */}
+      {/* Image — default cropped, expands to full on Action A */}
       <motion.div
         className="relative overflow-hidden group cursor-pointer"
-        style={{ aspectRatio: imageExpanded ? '16/9' : '4/3' }}
         onClick={toggleImageExpand}
         layout
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {project.image_url ? (
-          <img
+          <motion.img
             src={project.image_url}
             alt={project.title_en}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-[0.85]"
+            className={`w-full transition-all duration-700 group-hover:brightness-[0.92] ${
+              imageExpanded ? 'object-contain' : 'object-cover aspect-[4/3]'
+            }`}
+            layout
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
+          <div className="w-full aspect-[4/3] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
               <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
               <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
@@ -96,55 +97,53 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           </div>
         )}
 
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8">
-          <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
-            <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
-            <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
+        {/* Hover overlay — only in default state */}
+        {!imageExpanded && (
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8">
+            <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
+              <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
+              <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
+            </div>
           </div>
-        </div>
+        )}
       </motion.div>
 
-      {/* Below-image section — ALWAYS rendered on ALL cards */}
-      <div className="mt-4 px-1">
-        {/* Hook text — always visible */}
-        {hook && (
-          <p className="text-sm leading-relaxed text-muted-foreground italic">{hook}</p>
-        )}
-
-        {/* Action buttons row — ALWAYS visible on ALL cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-3 flex flex-wrap items-center gap-2"
+      {/* Toggle text below image */}
+      <div className="mt-2 px-1">
+        <button
+          onClick={toggleImageExpand}
+          className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-colors duration-200 hover:text-accent/70 active:scale-[0.97]"
         >
-          {/* ACTION B trigger — opens case study text */}
-          <button
-            onClick={toggleCaseStudy}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
-          >
-            <span className="relative z-10">
-              {caseStudyOpen
-                ? t('Hide case study', 'কেস স্টাডি লুকান')
-                : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
-            </span>
-          </button>
+          {imageExpanded
+            ? t('Click to collapse', 'সংকুচিত করতে ক্লিক করুন')
+            : t('Click image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}
+        </button>
 
-          {/* ACTION A trigger — expands image */}
-          <button
-            onClick={toggleImageExpand}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-accent text-accent-foreground text-[10px] tracking-[1.5px] uppercase font-medium rounded-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(251,146,60,0.3)] active:scale-[0.97]"
-          >
-            <span>
-              {imageExpanded
-                ? t('Collapse image', 'ছবি সংকুচিত করুন')
-                : t('Click to the image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}
-            </span>
-          </button>
-        </motion.div>
+        {/* Case study controls — visible when expanded */}
+        <AnimatePresence>
+          {imageExpanded && (
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.3, delay: 0.15 }}
+              className="mt-3"
+            >
+              <button
+                onClick={toggleCaseStudy}
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+              >
+                <span className="relative z-10">
+                  {caseStudyOpen
+                    ? t('Hide case study', 'কেস স্টাডি লুকান')
+                    : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
+                </span>
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* ACTION B — Case study expanded content */}
+        {/* Case study content */}
         <AnimatePresence>
           {caseStudyOpen && (
             <motion.div
@@ -161,8 +160,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 {caseStudy && (
                   <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
                 )}
-
-                {/* PDF download — language-aware */}
                 {pdfUrl && (
                   <a
                     href={pdfUrl}
@@ -173,8 +170,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                     📄 {t('Download PDF', 'পিডিএফ ডাউনলোড')}
                   </a>
                 )}
-
-                {/* Show less button */}
                 <div className="mt-5">
                   <button
                     onClick={() => setCaseStudyOpen(false)}
