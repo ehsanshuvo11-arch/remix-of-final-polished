@@ -79,7 +79,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setLang('en')}
-                className="px-12 py-4 text-sm tracking-[3px] uppercase bg-accent text-accent-foreground rounded-sm font-normal transition-all duration-300 hover:bg-[hsl(28,96%,55%)] hover:-translate-y-1 hover:shadow-[0_10px_28px_rgba(251,146,60,0.4)]"
+                className="px-12 py-4 text-sm tracking-[3px] uppercase bg-accent text-accent-foreground rounded-sm font-normal transition-all duration-300 hover:bg-[hsl(28,96%,55%)] hover:-translate-y-1 hover:shadow-[0_10px_28px_rgba(251,146,60,0.4)] active:scale-[0.96]"
               >
                 English
               </motion.button>
@@ -89,7 +89,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setLang('bn')}
-                className="px-12 py-4 text-sm tracking-[3px] uppercase bg-transparent border border-primary-foreground/25 text-primary-foreground/80 rounded-sm font-normal transition-all duration-300 hover:border-accent hover:text-accent hover:-translate-y-1"
+                className="px-12 py-4 text-sm tracking-[3px] uppercase bg-transparent border border-primary-foreground/25 text-primary-foreground/80 rounded-sm font-normal transition-all duration-300 hover:border-accent hover:text-accent hover:-translate-y-1 active:scale-[0.96]"
                 style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
               >
                 বাংলা
