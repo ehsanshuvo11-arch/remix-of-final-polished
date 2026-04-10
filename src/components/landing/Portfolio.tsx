@@ -127,6 +127,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
                 </div>
               </div>
+              </div>
             </div>
           ) : (
             <div className="relative w-full h-[200px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
