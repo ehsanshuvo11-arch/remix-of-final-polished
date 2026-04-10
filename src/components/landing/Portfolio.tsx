@@ -92,10 +92,17 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       >
         <div
           className="relative cursor-pointer group"
-          onClick={toggleImageExpand}
+          onClick={() => {
+            toggleImageExpand();
+            if (!imageExpanded && cardRef.current) {
+              setTimeout(() => {
+                cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 100);
+            }
+          }}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? '85vh' : '200px',
+            maxHeight: imageExpanded ? 'calc(100vh - 70px)' : '200px',
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
@@ -105,9 +112,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               alt={project.title_en}
               className={`w-full transition-all duration-500 ease-out ${
                 imageExpanded
-                  ? 'object-contain h-full group-hover:scale-[1.03]'
+                  ? 'object-contain group-hover:scale-[1.03]'
                   : 'object-cover h-[200px] group-hover:brightness-[0.92]'
               }`}
+              style={imageExpanded ? { maxHeight: 'calc(100vh - 70px)' } : undefined}
               loading="lazy"
             />
           ) : (
