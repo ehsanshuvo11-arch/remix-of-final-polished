@@ -91,15 +91,11 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div
-          className={`relative cursor-pointer ${
-            !imageExpanded
-              ? 'group after:content-[\'\'] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-400 hover:after:opacity-100'
-              : ''
-          }`}
+          className="relative cursor-pointer group"
           onClick={toggleImageExpand}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? '85vh' : '240px',
+            maxHeight: imageExpanded ? '85vh' : '200px',
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
@@ -107,15 +103,15 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <img
               src={project.image_url}
               alt={project.title_en}
-              className={`w-full ${
+              className={`w-full transition-all duration-500 ease-out ${
                 imageExpanded
-                  ? 'object-contain h-full'
-                  : 'object-cover h-[240px] group-hover:brightness-[0.92] transition-[filter] duration-300'
+                  ? 'object-contain h-full group-hover:scale-[1.03]'
+                  : 'object-cover h-[200px] group-hover:brightness-[0.92]'
               }`}
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-[240px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
+            <div className="w-full h-[200px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
               <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
                 <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
                 <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
@@ -127,20 +123,16 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             </div>
           )}
 
-          {/* Hover overlay — collapsed state only */}
-          {!imageExpanded && (
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8 z-10">
-              <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
-                <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
-                <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
-              </div>
+          {/* Hover overlay with title/category */}
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8 z-10">
+            <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
+              <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
+              <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
             </div>
-          )}
+          </div>
 
-          {/* Bottom accent line on hover — collapsed only */}
-          {!imageExpanded && (
-            <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 z-10" />
-          )}
+          {/* Bottom accent line on hover */}
+          <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 z-10" />
         </div>
       </div>
 
