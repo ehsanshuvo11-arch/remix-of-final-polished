@@ -102,7 +102,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? 'calc(100vh - 70px)' : '200px',
+            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : '200px',
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
@@ -115,7 +115,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   ? 'object-contain group-hover:scale-[1.03]'
                   : 'object-cover h-[200px] group-hover:brightness-[0.92]'
               }`}
-              style={imageExpanded ? { maxHeight: 'calc(100vh - 70px)' } : undefined}
+              style={imageExpanded ? { maxHeight: 'calc(100vh - 120px)' } : undefined}
               loading="lazy"
             />
           ) : (
@@ -131,8 +131,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             </div>
           )}
 
-          {/* Hover overlay with title/category */}
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8 z-10">
+          {/* Hover overlay with title/category — inside image bounds */}
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8 z-10">
             <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
               <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
               <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
