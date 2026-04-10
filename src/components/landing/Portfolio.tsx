@@ -107,7 +107,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
         >
           {project.image_url ? (
-            <div className={`relative ${imageExpanded ? 'flex items-center justify-center' : ''}`}>
+            <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
+              <div className={`relative ${imageExpanded ? 'w-fit mx-auto' : 'w-full'}`}>
               <img
                 src={project.image_url}
                 alt={project.title_en}
