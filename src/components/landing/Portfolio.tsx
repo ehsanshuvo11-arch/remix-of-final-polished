@@ -143,7 +143,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           {!imageExpanded && (
             <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 z-10" />
           )}
-        </motion.div>
+        </div>
       </div>
 
       {/* Controls — ALWAYS visible */}
