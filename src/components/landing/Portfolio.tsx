@@ -108,13 +108,13 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         >
           {project.image_url ? (
             <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
-              <div className={`relative ${imageExpanded ? 'inline-block' : 'w-full'}`}>
+              <div className={`relative transition-transform duration-500 ease-out ${imageExpanded ? 'inline-block group-hover:scale-[1.03]' : 'w-full'}`}>
               <img
                 src={project.image_url}
                 alt={project.title_en}
                 className={`block transition-all duration-500 ease-out ${
                   imageExpanded
-                    ? 'max-w-full max-h-[calc(100vh-120px)] group-hover:scale-[1.03]'
+                    ? 'max-w-full max-h-[calc(100vh-120px)]'
                     : 'w-full object-cover h-[200px] group-hover:brightness-[0.92]'
                 }`}
                 loading="lazy"
