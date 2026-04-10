@@ -92,27 +92,28 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         onMouseLeave={handleTiltLeave}
         style={{ transition: 'transform 0.15s ease-out' }}
       >
-        <motion.div
+        <div
           className={`relative overflow-hidden cursor-pointer ${
             !imageExpanded
               ? 'group after:content-[\'\'] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-400 hover:after:opacity-100'
               : ''
           }`}
           onClick={toggleImageExpand}
-          layout
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           {project.image_url ? (
             <motion.img
               src={project.image_url}
               alt={project.title_en}
-              className={`w-full transition-all duration-700 ${
+              className={`w-full ${
                 imageExpanded
                   ? 'object-contain max-h-[85vh]'
                   : 'object-cover aspect-[820/312] group-hover:brightness-[0.92]'
               }`}
-              layout
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              initial={false}
+              animate={{
+                height: imageExpanded ? 'auto' : undefined,
+              }}
+              transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
               loading="lazy"
             />
           ) : (
