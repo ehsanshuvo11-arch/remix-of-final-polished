@@ -43,24 +43,38 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
   const { t, lang } = useLanguage();
   const ref = useScrollReveal(0.1 * index);
-  const [expanded, setExpanded] = useState(false);
+
+  // ACTION A: Expand image to full-width dominate layout
+  const [imageExpanded, setImageExpanded] = useState(false);
+  // ACTION B: Reveal case study text
+  const [caseStudyOpen, setCaseStudyOpen] = useState(false);
 
   const caseStudy = t(project.case_study_en ?? '', project.case_study_bn ?? '');
   const hook = t(project.hook_en ?? '', project.hook_bn ?? '');
   const pdfUrl = lang === 'bn' ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
-  const hasCaseStudy = !!(caseStudy || hook);
 
-  const toggleExpand = useCallback(() => {
-    if (hasCaseStudy && caseStudy) setExpanded((prev) => !prev);
-  }, [hasCaseStudy, caseStudy]);
+  const toggleImageExpand = useCallback(() => {
+    setImageExpanded((prev) => !prev);
+  }, []);
+
+  const toggleCaseStudy = useCallback(() => {
+    setCaseStudyOpen((prev) => !prev);
+  }, []);
 
   return (
-    <div ref={ref}>
-      {/* Image card — uniform 4:3 aspect ratio */}
-      <div
+    <motion.div
+      ref={ref}
+      layout
+      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={imageExpanded ? 'md:col-span-2' : ''}
+    >
+      {/* Image card */}
+      <motion.div
         className="relative overflow-hidden group cursor-pointer"
-        style={{ aspectRatio: '4/3' }}
-        onClick={toggleExpand}
+        style={{ aspectRatio: imageExpanded ? '16/9' : '4/3' }}
+        onClick={toggleImageExpand}
+        layout
+        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {project.image_url ? (
           <img
@@ -89,82 +103,91 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Case Study Section */}
-      {hasCaseStudy && (
-        <div className="mt-4 px-1">
-          {/* Hook text — always visible */}
-          {hook && (
-            <p className="text-sm leading-relaxed text-muted-foreground italic">{hook}</p>
-          )}
+      {/* Below-image section — ALWAYS rendered on ALL cards */}
+      <div className="mt-4 px-1">
+        {/* Hook text — always visible */}
+        {hook && (
+          <p className="text-sm leading-relaxed text-muted-foreground italic">{hook}</p>
+        )}
 
-          {/* Action buttons row */}
-          {caseStudy && !expanded && (
+        {/* Action buttons row — ALWAYS visible on ALL cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mt-3 flex flex-wrap items-center gap-2"
+        >
+          {/* ACTION B trigger — opens case study text */}
+          <button
+            onClick={toggleCaseStudy}
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+          >
+            <span className="relative z-10">
+              {caseStudyOpen
+                ? t('Hide case study', 'কেস স্টাডি লুকান')
+                : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
+            </span>
+          </button>
+
+          {/* ACTION A trigger — expands image */}
+          <button
+            onClick={toggleImageExpand}
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-accent text-accent-foreground text-[10px] tracking-[1.5px] uppercase font-medium rounded-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(251,146,60,0.3)] active:scale-[0.97]"
+          >
+            <span>
+              {imageExpanded
+                ? t('Collapse image', 'ছবি সংকুচিত করুন')
+                : t('Click to the image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}
+            </span>
+          </button>
+        </motion.div>
+
+        {/* ACTION B — Case study expanded content */}
+        <AnimatePresence>
+          {caseStudyOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-3 flex flex-wrap items-center gap-2"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="overflow-hidden"
             >
-              <button
-                onClick={() => setExpanded(true)}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
-              >
-                <span className="relative z-10">{t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}</span>
-              </button>
-              <button
-                onClick={toggleExpand}
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-accent text-accent-foreground text-[10px] tracking-[1.5px] uppercase font-medium rounded-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(251,146,60,0.3)] active:scale-[0.97]"
-              >
-                <span>{t('Click to the image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}</span>
-              </button>
+              <div className="mt-4 pt-4 border-t border-border">
+                <p className="text-[11px] tracking-[2px] uppercase text-accent mb-3 font-medium">
+                  {t('Case Study', 'কেস স্টাডি')}
+                </p>
+                {caseStudy && (
+                  <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
+                )}
+
+                {/* PDF download — language-aware */}
+                {pdfUrl && (
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:bg-accent/20 active:scale-[0.97]"
+                  >
+                    📄 {t('Download PDF', 'পিডিএফ ডাউনলোড')}
+                  </a>
+                )}
+
+                {/* Show less button */}
+                <div className="mt-5">
+                  <button
+                    onClick={() => setCaseStudyOpen(false)}
+                    className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-colors duration-200 hover:text-accent/70 active:scale-[0.97]"
+                  >
+                    {t('Show less', 'সংক্ষেপে দেখুন')}
+                  </button>
+                </div>
+              </div>
             </motion.div>
           )}
-
-          {/* Expanded content */}
-          <AnimatePresence>
-            {expanded && caseStudy && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="overflow-hidden"
-              >
-                <div className="mt-4 pt-4 border-t border-border">
-                  <p className="text-[11px] tracking-[2px] uppercase text-accent mb-3 font-medium">
-                    {t('Case Study', 'কেস স্টাডি')}
-                  </p>
-                  <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
-
-                  {/* PDF download — language-aware */}
-                  {pdfUrl && (
-                    <a
-                      href={pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:bg-accent/20 active:scale-[0.97]"
-                    >
-                      📄 {t('Download PDF', 'পিডিএফ ডাউনলোড')}
-                    </a>
-                  )}
-
-                  {/* Show less button */}
-                  <div className="mt-5">
-                    <button
-                      onClick={() => setExpanded(false)}
-                      className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-colors duration-200 hover:text-accent/70 active:scale-[0.97]"
-                    >
-                      {t('Show less', 'সংক্ষেপে দেখুন')}
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
-    </div>
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 }
