@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
@@ -43,10 +43,9 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
   const { t, lang } = useLanguage();
   const ref = useScrollReveal(0.1 * index);
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  // ACTION A: Expand image to full-width dominate layout
   const [imageExpanded, setImageExpanded] = useState(false);
-  // ACTION B: Reveal case study text
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
 
   const caseStudy = t(project.case_study_en ?? '', project.case_study_bn ?? '');
