@@ -989,6 +989,31 @@ function PortfolioEditor() {
               </div>
             </AdminField>
           </div>
+
+          {/* Mockup Image Upload */}
+          <AdminField label="🖼️ Project Mockup (shown in expanded case study)">
+            <div
+              className="border-2 border-dashed border-primary-foreground/15 rounded p-6 text-center cursor-pointer transition-all hover:border-accent hover:bg-accent/5"
+              onClick={() => mockupRefs.current[i]?.click()}
+            >
+              <input
+                ref={(el) => { mockupRefs.current[i] = el; }}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleMockupUpload(i, file);
+                }}
+              />
+              <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">
+                {proj.mockup_url ? '✅ Mockup uploaded — click to replace' : 'Click to upload mockup image'}
+              </span>
+              {proj.mockup_url && (
+                <img src={proj.mockup_url} alt="" className="max-w-[120px] max-h-[120px] mx-auto mt-3 rounded" />
+              )}
+            </div>
+          </AdminField>
         </div>
       ))}
       <div className="flex gap-3 mt-4">
