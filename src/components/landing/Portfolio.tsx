@@ -226,6 +226,42 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Premium Lightbox Modal */}
+      {project.mockup_url && createPortal(
+        <AnimatePresence>
+          {lightboxOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer"
+              style={{ backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
+              onClick={() => setLightboxOpen(false)}
+            >
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }}
+                className="absolute top-6 right-6 text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-200 z-10"
+                aria-label="Close"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <motion.img
+                initial={{ scale: 0.92, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.92, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                src={project.mockup_url}
+                alt={`${t(project.title_en, project.title_bn)} mockup`}
+                className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] cursor-default"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
