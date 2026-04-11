@@ -1,7 +1,7 @@
-import { useState, useCallback, useRef, Fragment } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
@@ -50,6 +50,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const [imageExpanded, setImageExpanded] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
+  const hasMockups = mockupUrls.length > 0;
 
   const caseStudy = t(project.case_study_en ?? '', project.case_study_bn ?? '');
   const hook = t(project.hook_en ?? '', project.hook_bn ?? '');
@@ -63,7 +67,12 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     setCaseStudyOpen((prev) => !prev);
   }, []);
 
-  // Tilt effect for collapsed state (same as Services/What We Do section)
+  const openLightbox = useCallback(() => {
+    setLightboxIndex(0);
+    setLightboxOpen(true);
+  }, []);
+
+  // Tilt effect for collapsed state
   const handleTilt = useCallback((e: React.MouseEvent) => {
     if (imageExpanded) return;
     const el = cardRef.current;
@@ -177,6 +186,15 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
           </span>
         </button>
+
+        {hasMockups && (
+          <button
+            onClick={openLightbox}
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.96]"
+          >
+            <span>{t('View project mockups', 'প্রজেক্ট মকআপ দেখুন')}</span>
+          </button>
+        )}
       </div>
 
       {/* Case study content */}
@@ -195,14 +213,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               </p>
               {caseStudy && (
                 <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
-              )}
-              {project.mockup_url && (
-                <button
-                  onClick={() => setLightboxOpen(true)}
-                  className="mt-4 inline-flex items-center gap-2 px-5 py-2 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:border-accent hover:bg-accent/10 active:scale-[0.96]"
-                >
-                  {t('View Product Realization', 'প্রোডাক্ট রিয়ালাইজেশন দেখুন')}
-                </button>
               )}
               {pdfUrl && (
                 <a
@@ -227,41 +237,147 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         )}
       </AnimatePresence>
 
-      {/* Premium Lightbox Modal */}
-      {project.mockup_url && createPortal(
+      {/* Premium Swipeable Lightbox Gallery */}
+      {hasMockups && createPortal(
         <AnimatePresence>
           {lightboxOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer"
-              style={{ backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
-              onClick={() => setLightboxOpen(false)}
-            >
-              <button
-                onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }}
-                className="absolute top-6 right-6 text-primary-foreground/70 hover:text-primary-foreground transition-colors duration-200 z-10"
-                aria-label="Close"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <motion.img
-                initial={{ scale: 0.92, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.92, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                src={project.mockup_url}
-                alt={`${t(project.title_en, project.title_bn)} mockup`}
-                className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] cursor-default"
-                onClick={(e) => e.stopPropagation()}
-              />
-            </motion.div>
+            <MockupLightbox
+              urls={mockupUrls}
+              initialIndex={lightboxIndex}
+              title={t(project.title_en, project.title_bn)}
+              onClose={() => setLightboxOpen(false)}
+            />
           )}
         </AnimatePresence>,
         document.body
       )}
     </div>
+  );
+}
+
+/* ── Premium Swipeable Lightbox ── */
+
+function MockupLightbox({ urls, initialIndex, title, onClose }: {
+  urls: string[];
+  initialIndex: number;
+  title: string;
+  onClose: () => void;
+}) {
+  const [current, setCurrent] = useState(initialIndex);
+  const touchStartX = useRef(0);
+  const touchDeltaX = useRef(0);
+  const total = urls.length;
+
+  const goNext = useCallback(() => setCurrent((c) => Math.min(c + 1, total - 1)), [total]);
+  const goPrev = useCallback(() => setCurrent((c) => Math.max(c - 1, 0)), []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose, goNext, goPrev]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchDeltaX.current = 0;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchDeltaX.current > 50) goPrev();
+    else if (touchDeltaX.current < -50) goNext();
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none"
+      style={{ backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
+      onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Close button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        className="absolute top-6 right-6 text-primary-foreground/60 hover:text-primary-foreground transition-colors duration-200 z-10"
+        aria-label="Close"
+      >
+        <X className="w-6 h-6" />
+      </button>
+
+      {/* Image counter */}
+      {total > 1 && (
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-primary-foreground/50 text-[11px] tracking-[3px] uppercase font-medium z-10">
+          {current + 1} / {total}
+        </div>
+      )}
+
+      {/* Prev arrow */}
+      {total > 1 && current > 0 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); goPrev(); }}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-primary-foreground/10 text-primary-foreground/60 hover:bg-primary-foreground/20 hover:text-primary-foreground transition-all duration-200 z-10"
+          aria-label="Previous"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      )}
+
+      {/* Next arrow */}
+      {total > 1 && current < total - 1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); goNext(); }}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-primary-foreground/10 text-primary-foreground/60 hover:bg-primary-foreground/20 hover:text-primary-foreground transition-all duration-200 z-10"
+          aria-label="Next"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      )}
+
+      {/* Main image with animation */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current}
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.92, opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          src={urls[current]}
+          alt={`${title} mockup ${current + 1}`}
+          className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] cursor-default"
+          onClick={(e) => e.stopPropagation()}
+          draggable={false}
+        />
+      </AnimatePresence>
+
+      {/* Dot indicators */}
+      {total > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {urls.map((_, i) => (
+            <button
+              key={i}
+              onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                i === current ? 'bg-accent w-6' : 'bg-primary-foreground/30 hover:bg-primary-foreground/50'
+              }`}
+              aria-label={`Go to mockup ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </motion.div>
   );
 }

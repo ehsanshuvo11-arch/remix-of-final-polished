@@ -795,7 +795,7 @@ function PortfolioEditor() {
     });
   }, []);
 
-  const updateProject = (idx: number, field: keyof PortfolioProject, value: string) => {
+  const updateProject = (idx: number, field: keyof PortfolioProject, value: string | string[]) => {
     setProjects((prev) => prev.map((p, i) => (i === idx ? { ...p, [field]: value } : p)));
   };
 
@@ -840,7 +840,13 @@ function PortfolioEditor() {
       return;
     }
     const { data } = supabase.storage.from('polished-assets').getPublicUrl(path);
-    updateProject(idx, 'mockup_url', data.publicUrl);
+    const currentUrls = projects[idx].mockup_urls ?? [];
+    updateProject(idx, 'mockup_urls', [...currentUrls, data.publicUrl]);
+  };
+
+  const removeMockup = (projIdx: number, mockupIdx: number) => {
+    const currentUrls = projects[projIdx].mockup_urls ?? [];
+    updateProject(projIdx, 'mockup_urls', currentUrls.filter((_, i) => i !== mockupIdx));
   };
 
   const save = async () => {
@@ -853,7 +859,7 @@ function PortfolioEditor() {
 
     const { data, error } = await supabase
       .from('portfolio_projects')
-      .insert({ sort_order: projects.length + 1, title_en: 'New Project', title_bn: '', category_en: 'Design', category_bn: '', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '', mockup_url: '' })
+      .insert({ sort_order: projects.length + 1, title_en: 'New Project', title_bn: '', category_en: 'Design', category_bn: '', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '', mockup_url: '', mockup_urls: [] })
       .select()
       .single();
     if (error) {
@@ -990,8 +996,8 @@ function PortfolioEditor() {
             </AdminField>
           </div>
 
-          {/* Mockup Image Upload */}
-          <AdminField label="🖼️ Project Mockup (shown in expanded case study)">
+          {/* Multi-Mockup Upload */}
+          <AdminField label="🖼️ Project Mockups (gallery — click to add more)">
             <div
               className="border-2 border-dashed border-primary-foreground/15 rounded p-6 text-center cursor-pointer transition-all hover:border-accent hover:bg-accent/5"
               onClick={() => mockupRefs.current[i]?.click()}
@@ -1007,12 +1013,24 @@ function PortfolioEditor() {
                 }}
               />
               <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">
-                {proj.mockup_url ? '✅ Mockup uploaded — click to replace' : 'Click to upload mockup image'}
+                {(proj.mockup_urls?.length ?? 0) > 0 ? `✅ ${proj.mockup_urls!.length} mockup(s) — click to add more` : 'Click to upload mockup images'}
               </span>
-              {proj.mockup_url && (
-                <img src={proj.mockup_url} alt="" className="max-w-[120px] max-h-[120px] mx-auto mt-3 rounded" />
-              )}
             </div>
+            {(proj.mockup_urls?.length ?? 0) > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {proj.mockup_urls!.map((url, mi) => (
+                  <div key={mi} className="relative group">
+                    <img src={url} alt="" className="w-[80px] h-[80px] object-cover rounded" />
+                    <button
+                      onClick={() => removeMockup(i, mi)}
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-destructive text-destructive-foreground rounded-full text-[10px] leading-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </AdminField>
         </div>
       ))}
