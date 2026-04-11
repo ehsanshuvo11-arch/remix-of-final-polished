@@ -787,6 +787,7 @@ function PortfolioEditor() {
   const fileRefs = useRef<Record<number, HTMLInputElement | null>>({});
   const pdfEnRefs = useRef<Record<number, HTMLInputElement | null>>({});
   const pdfBnRefs = useRef<Record<number, HTMLInputElement | null>>({});
+  const mockupRefs = useRef<Record<number, HTMLInputElement | null>>({});
 
   useEffect(() => {
     supabase.from('portfolio_projects').select('*').order('sort_order').then(({ data }) => {
@@ -827,6 +828,21 @@ function PortfolioEditor() {
     updateProject(idx, lang === 'en' ? 'pdf_url_en' : 'pdf_url_bn', data.publicUrl);
   };
 
+  const handleMockupUpload = async (idx: number, file: File) => {
+    const session = await ensureAuthenticatedSession();
+    if (!session) return;
+
+    const ext = file.name.split('.').pop();
+    const path = `portfolio-mockups/${Date.now()}_${idx}.${ext}`;
+    const { error } = await supabase.storage.from('polished-assets').upload(path, file);
+    if (error) {
+      alert('Mockup upload error: ' + error.message);
+      return;
+    }
+    const { data } = supabase.storage.from('polished-assets').getPublicUrl(path);
+    updateProject(idx, 'mockup_url', data.publicUrl);
+  };
+
   const save = async () => {
     await saveCollection('portfolio_projects', projects, 'portfolio', 'Projects saved!');
   };
@@ -837,7 +853,7 @@ function PortfolioEditor() {
 
     const { data, error } = await supabase
       .from('portfolio_projects')
-      .insert({ sort_order: projects.length + 1, title_en: 'New Project', title_bn: '', category_en: 'Design', category_bn: '', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' })
+      .insert({ sort_order: projects.length + 1, title_en: 'New Project', title_bn: '', category_en: 'Design', category_bn: '', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '', mockup_url: '' })
       .select()
       .single();
     if (error) {
