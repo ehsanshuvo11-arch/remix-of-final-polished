@@ -1,22 +1,54 @@
 
 
-## Problem
+## Premium Mockup Integration
 
-In the expanded (full view) mode, the gradient hover overlay spans the full container width, but the image uses `object-contain` so it doesn't fill the entire width. This causes the gradient and title/category text to appear outside the actual image area — visible in the screenshot as overlay bleeding onto the background.
+### Overview
+Add a `mockup_url` column to the `portfolio_projects` table, a mockup image upload field in the Admin Panel, and render the mockup inside the expanded case study area on the frontend.
 
-## Solution
+### 1. Database Migration
 
-When expanded, calculate and constrain the overlay to match the actual rendered image dimensions rather than the full container. The cleanest approach:
+Run this SQL to add the column:
 
-1. **Wrap the image in a container that shrinks to the image's natural size** — In expanded mode, instead of using `object-contain` on a full-width image, use a flex container with `justify-center` and let the image size itself naturally with `max-height` and `max-width` constraints. The overlay is positioned absolute within this wrapper, so it stays within the image bounds.
+```sql
+ALTER TABLE portfolio_projects ADD COLUMN mockup_url text DEFAULT '';
+```
 
-2. **Specifically**: In expanded mode, set the image wrapper to `inline-block` or `w-fit` so it hugs the image, and position the gradient overlay inside that tight wrapper.
+### 2. Type Update — `src/types/database.ts`
 
-### Changes
+Add `mockup_url?: string` to the `PortfolioProject` interface.
 
-**File: `src/components/landing/Portfolio.tsx`**
+### 3. Admin Panel — `src/pages/Admin.tsx`
 
-- In the expanded state, change the image's parent `div` to use `w-fit mx-auto` instead of full width, so the overlay container matches the image width exactly.
-- Keep the gradient overlay (`h-1/3`, bottom-anchored) inside this tight-fitting wrapper.
-- No changes to animation, tilt, or button logic.
+- Add a `mockupRefs` ref object (same pattern as `fileRefs`, `pdfEnRefs`).
+- Add a `handleMockupUpload` function that uploads to `portfolio-mockups/` path in `polished-assets` bucket and sets `mockup_url` on the project.
+- Add a new upload field after the existing "Project Image" field, labeled "Project Mockup", with the same dashed-border upload UI pattern.
+- Update the `addProject` insert to include `mockup_url: ''`.
+
+### 4. Frontend — `src/components/landing/Portfolio.tsx`
+
+- Inside the case study `AnimatePresence` block (lines 180-217), after the case study text and before the PDF link, render the mockup image if `project.mockup_url` exists.
+- Design: full-width, rounded-lg corners, subtle shadow, with a small "MOCKUP" label above it. Graceful fallback — nothing renders if no mockup URL.
+
+```text
+┌─────────────────────────────────┐
+│  CASE STUDY label               │
+│  Case study text...             │
+│                                 │
+│  ┌─────────────────────────┐    │
+│  │   MOCKUP (full-width)   │    │
+│  │   rounded-lg, shadow    │    │
+│  └─────────────────────────┘    │
+│                                 │
+│  📄 Download PDF                │
+│  Show less                      │
+└─────────────────────────────────┘
+```
+
+### 5. No Changes To
+- Collapsed card state (200px height, tilt, grid)
+- Framer Motion animations
+- Any other section or component
+
+### 6. GitHub Sync
+Changes auto-push to the connected `polished-showcase-admin-a48ca581` repo.
 
