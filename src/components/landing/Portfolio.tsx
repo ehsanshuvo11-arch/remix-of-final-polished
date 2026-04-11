@@ -49,6 +49,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
 
   const [imageExpanded, setImageExpanded] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const caseStudy = t(project.case_study_en ?? '', project.case_study_bn ?? '');
   const hook = t(project.hook_en ?? '', project.hook_bn ?? '');
