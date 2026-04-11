@@ -46,6 +46,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const { t, lang } = useLanguage();
   const ref = useScrollReveal(0.1 * index);
   const cardRef = useRef<HTMLDivElement>(null);
+  const isFirst = index === 0;
 
   const [imageExpanded, setImageExpanded] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
@@ -94,6 +95,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   return (
     <div
       ref={ref}
+      data-project-card={isFirst ? '' : undefined}
     >
       {/* Image container with tilt in collapsed state */}
       <div
