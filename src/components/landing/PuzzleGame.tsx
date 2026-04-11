@@ -327,12 +327,35 @@ export default function PuzzleGame({ isOpen, onClose, imageUrl, pieceImages, dis
             <p className="text-xs tracking-[2px] uppercase text-primary-foreground/40">
               {t(puzzleContent.attemptsLabelEn ?? 'Attempts:', puzzleContent.attemptsLabelBn ?? 'চেষ্টা:')} {moves}
             </p>
-            <button
-              onClick={shuffle}
-              className="px-7 py-2.5 bg-transparent border border-primary-foreground/20 text-primary-foreground/60 text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:border-accent hover:text-accent"
-            >
-              {t(puzzleContent.shuffleLabelEn ?? 'Shuffle', puzzleContent.shuffleLabelBn ?? 'এলোমেলো করুন')}
-            </button>
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              <button
+                onClick={shuffle}
+                className="px-7 py-2.5 bg-transparent border border-primary-foreground/20 text-primary-foreground/60 text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:border-accent hover:text-accent"
+              >
+                {t(puzzleContent.shuffleLabelEn ?? 'Shuffle', puzzleContent.shuffleLabelBn ?? 'এলোমেলো করুন')}
+              </button>
+              <button
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => {
+                    const section = document.getElementById('work');
+                    if (section) {
+                      section.scrollIntoView({ behavior: 'smooth' });
+                      setTimeout(() => {
+                        const firstCard = section.querySelector('[data-project-card]');
+                        if (firstCard) {
+                          firstCard.classList.add('hint-glow-pulse');
+                          setTimeout(() => firstCard.classList.remove('hint-glow-pulse'), 2000);
+                        }
+                      }, 800);
+                    }
+                  }, 100);
+                }}
+                className="px-7 py-2.5 bg-accent text-[#f9fafb] text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:opacity-90 hover:scale-105 font-medium"
+              >
+                {t('Click Here For Hint', 'হিন্ট দেখুন')}
+              </button>
+            </div>
           </div>
         </div>
       ) : (

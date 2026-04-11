@@ -46,6 +46,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const { t, lang } = useLanguage();
   const ref = useScrollReveal(0.1 * index);
   const cardRef = useRef<HTMLDivElement>(null);
+  const isFirst = index === 0;
 
   const [imageExpanded, setImageExpanded] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
