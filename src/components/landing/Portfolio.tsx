@@ -95,6 +95,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   return (
     <div
       ref={ref}
+      data-project-card={isFirst ? '' : undefined}
     >
       {/* Image container with tilt in collapsed state */}
       <div
