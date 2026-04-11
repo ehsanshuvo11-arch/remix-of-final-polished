@@ -28,6 +28,7 @@ export interface PortfolioProject {
   hook_bn?: string;
   pdf_url_en?: string;
   pdf_url_bn?: string;
+  mockup_url?: string;
 }
 
 export interface ProcessStep {

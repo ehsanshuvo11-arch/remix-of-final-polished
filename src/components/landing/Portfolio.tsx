@@ -193,6 +193,17 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               {caseStudy && (
                 <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
               )}
+              {project.mockup_url && (
+                <div className="mt-6">
+                  <p className="text-[10px] tracking-[3px] uppercase text-accent/70 mb-3 font-medium">Mockup</p>
+                  <img
+                    src={project.mockup_url}
+                    alt={`${t(project.title_en, project.title_bn)} mockup`}
+                    className="w-full rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)]"
+                    loading="lazy"
+                  />
+                </div>
+              )}
               {pdfUrl && (
                 <a
                   href={pdfUrl}
