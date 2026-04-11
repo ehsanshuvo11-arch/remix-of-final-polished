@@ -204,6 +204,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   />
                 </div>
               )}
+              {pdfUrl && (
                 <a
                   href={pdfUrl}
                   target="_blank"
