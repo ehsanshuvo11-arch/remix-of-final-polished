@@ -29,6 +29,7 @@ export interface PortfolioProject {
   pdf_url_en?: string;
   pdf_url_bn?: string;
   mockup_url?: string;
+  mockup_urls?: string[];
 }
 
 export interface ProcessStep {
