@@ -197,15 +197,12 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
               )}
               {project.mockup_url && (
-                <div className="mt-6">
-                  <p className="text-[10px] tracking-[3px] uppercase text-accent/70 mb-3 font-medium">Mockup</p>
-                  <img
-                    src={project.mockup_url}
-                    alt={`${t(project.title_en, project.title_bn)} mockup`}
-                    className="w-full rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)]"
-                    loading="lazy"
-                  />
-                </div>
+                <button
+                  onClick={() => setLightboxOpen(true)}
+                  className="mt-4 inline-flex items-center gap-2 px-5 py-2 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-300 hover:border-accent hover:bg-accent/10 active:scale-[0.96]"
+                >
+                  {t('View Product Realization', 'প্রোডাক্ট রিয়ালাইজেশন দেখুন')}
+                </button>
               )}
               {pdfUrl && (
                 <a
