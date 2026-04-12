@@ -139,7 +139,7 @@ export default function Contact({ contact }: ContactProps) {
           />
           <button
             onClick={handleSubmit}
-            className="w-full py-4 text-xs tracking-[2px] uppercase font-normal rounded-sm bg-accent text-accent-foreground text-center relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)]"
+            className="w-full py-4 text-xs tracking-[2px] uppercase font-normal rounded-sm bg-accent text-accent-foreground text-center relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.97]"
           >
             {t(c.submitLabelEn ?? 'Send Inquiry', c.submitLabelBn ?? 'বার্তা পাঠান')}
           </button>

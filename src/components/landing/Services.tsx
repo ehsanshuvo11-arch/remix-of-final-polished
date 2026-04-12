@@ -71,8 +71,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         ref={cardRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="service-card bg-primary p-10 md:p-12 relative overflow-hidden transition-all duration-400 group hover:bg-[#152f78] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-400 hover:after:opacity-100"
-        style={{ transition: 'transform 0.15s ease-out, background-color 0.4s' }}
+        className="service-card bg-primary p-10 md:p-12 relative overflow-hidden transition-all duration-700 ease-out group hover:bg-[#152f78] hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-700 hover:after:opacity-100"
+        style={{ transition: 'transform 0.7s cubic-bezier(0.25,0.1,0.25,1), background-color 0.7s ease-out, box-shadow 0.7s ease-out' }}
       >
         <div className="font-heading text-5xl font-light text-primary-foreground/[0.06] leading-none mb-7 transition-all duration-400 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">
           {String(index + 1).padStart(2, '0')}

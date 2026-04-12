@@ -116,7 +116,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             onClick={onPuzzleOpen}
             onMouseMove={handleMagnetic as any}
             onMouseLeave={handleMagneticLeave as any}
-            className="play-btn group inline-flex items-center gap-3 px-10 py-4.5 bg-transparent border-[1.5px] border-accent/50 text-accent text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm relative overflow-hidden transition-all duration-300 hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.96] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+            className="play-btn group inline-flex items-center gap-3 px-10 py-4.5 bg-transparent border-[1.5px] border-accent/50 text-accent text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100"
           >
             <span className="w-2 h-2 bg-accent rounded-full relative z-10 group-hover:bg-primary-foreground" style={{ animation: 'pulseDot 1.5s infinite' }} />
             <span className="relative z-10">{t(hero.playCtaEn ?? 'Play & Unlock a Bonus', hero.playCtaBn ?? 'খেলুন ও বোনাস পান')}</span>
@@ -135,7 +135,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             }}
             onMouseMove={handleMagnetic}
             onMouseLeave={handleMagneticLeave}
-            className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm bg-accent text-primary-foreground relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.96] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+            className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm bg-accent text-primary-foreground relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100"
           >
             <span className="relative z-10">{t(hero.viewWorkEn ?? 'View Our Work', hero.viewWorkBn ?? 'আমাদের কাজ দেখুন')}</span>
           </a>
@@ -150,7 +150,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             }}
             onMouseMove={handleMagnetic}
             onMouseLeave={handleMagneticLeave}
-            className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-300 hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.96] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-400 hover:before:scale-x-100"
+            className="inline-block px-11 py-4 text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-500 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100"
           >
             <span className="relative z-10">{t(hero.startProjectEn ?? 'Start a Project', hero.startProjectBn ?? 'প্রজেক্ট শুরু')}</span>
           </a>

@@ -330,7 +330,7 @@ export default function PuzzleGame({ isOpen, onClose, imageUrl, pieceImages, dis
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <button
                 onClick={shuffle}
-                className="px-7 py-2.5 bg-transparent border border-primary-foreground/20 text-primary-foreground/60 text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:border-accent hover:text-accent"
+                className="px-7 py-2.5 bg-transparent border border-primary-foreground/20 text-primary-foreground/60 text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-500 ease-out hover:border-accent hover:text-accent active:scale-[0.97]"
               >
                 {t(puzzleContent.shuffleLabelEn ?? 'Shuffle', puzzleContent.shuffleLabelBn ?? 'এলোমেলো করুন')}
               </button>
@@ -351,7 +351,7 @@ export default function PuzzleGame({ isOpen, onClose, imageUrl, pieceImages, dis
                     }
                   }, 100);
                 }}
-                className="px-7 py-2.5 bg-accent text-[#f9fafb] text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:opacity-90 hover:scale-105 font-medium"
+                className="px-7 py-2.5 bg-accent text-[#f9fafb] text-[11px] tracking-[2px] uppercase rounded-sm transition-all duration-500 ease-out hover:opacity-90 hover:scale-[1.03] hover:shadow-[0_8px_24px_rgba(251,146,60,0.3)] active:scale-[0.97] font-medium"
               >
                 {t('Click Here For Hint', 'হিন্ট দেখুন')}
               </button>
