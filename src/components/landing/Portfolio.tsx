@@ -44,7 +44,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 
 function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
   const { t, lang } = useLanguage();
-  const ref = useScrollReveal(0.1 * index);
+  const ref = useScrollReveal(0.12 * index);
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
@@ -206,7 +206,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
@@ -303,7 +303,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none"
       style={{ backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
       onClick={onClose}
@@ -356,7 +356,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           initial={{ scale: 0.92, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.92, opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           src={urls[current]}
           alt={`${title} mockup ${current + 1}`}
           className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] cursor-default"
