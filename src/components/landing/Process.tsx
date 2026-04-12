@@ -51,7 +51,7 @@ function StepCard({ step, index }: { step: ProcessStep; index: number }) {
   return (
     <div
       ref={ref}
-      className="relative pt-5 transition-transform duration-300 hover:-translate-y-1.5 before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-border before:transition-colors before:duration-400 hover:before:bg-accent"
+      className="relative pt-5 transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,0,0,0.05)] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-border before:transition-colors before:duration-500 hover:before:bg-accent"
     >
       <div className="font-heading text-[40px] font-light text-primary/20 mb-4">
         {String(index + 1).padStart(2, '0')}

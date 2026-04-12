@@ -66,7 +66,7 @@ export default function About({ content, stats }: AboutProps) {
           {displayStats.map((stat) => (
             <div
               key={stat.id}
-              className="stat-box bg-background p-7 md:p-9 text-center transition-all duration-300 relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-400 hover:before:scale-x-100"
+              className="stat-box bg-background p-7 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-500 hover:before:scale-x-100"
             >
               <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
                 {stat.num}<span className="text-accent">{stat.suffix}</span>
