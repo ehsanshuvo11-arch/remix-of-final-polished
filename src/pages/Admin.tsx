@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
+import {
+  buildCollectionPayload,
+  isSchemaColumnMismatch,
+  normalizeProcessStepRow,
+  normalizeServiceRow,
+  normalizeStatRow,
+} from '@/lib/content-schema';
 import type {
   AboutContent,
   ColorsContent,
