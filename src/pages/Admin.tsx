@@ -101,16 +101,30 @@ export default function Admin() {
   const [loginError, setLoginError] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // Check existing session
+  // Check existing session with timeout fallback
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_, session) => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 4000);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       setAuthed(!!session);
       setLoading(false);
+      clearTimeout(timeout);
     });
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setAuthed(!!session);
       setLoading(false);
+      clearTimeout(timeout);
+    }).catch(() => {
+      setLoading(false);
     });
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleLogin = async () => {
