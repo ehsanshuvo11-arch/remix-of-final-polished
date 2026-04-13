@@ -693,18 +693,21 @@ function ServicesEditor() {
     const session = await ensureAuthenticatedSession();
     if (!session) return;
 
-    const { data, error } = await supabase
-      .from('services')
-      .insert({ sort_order: services.length + 1, name_en: 'New Service', name_bn: '', desc_en: '', desc_bn: '' })
-      .select()
-      .single();
+    let payload: Record<string, unknown> = { sort_order: services.length + 1, name_en: 'New Service', name_bn: '', desc_en: '', desc_bn: '' };
+    let { data, error } = await supabase.from('services').insert(payload).select().single();
+
+    if (error && isSchemaColumnMismatch(error)) {
+      payload = { sort_order: services.length + 1, name: 'New Service', description: '' };
+      ({ data, error } = await supabase.from('services').insert(payload).select().single());
+    }
+
     if (error) {
       alert('Error adding service: ' + error.message);
       return;
     }
 
     if (data) {
-      setServices((prev) => [...prev, data]);
+      setServices((prev) => [...prev, normalizeServiceRow(data as Record<string, unknown>)]);
       await refreshCollectionQueries('services');
     }
   };
@@ -773,9 +776,14 @@ function StatsEditor() {
   const addStat = async () => {
     const session = await ensureAuthenticatedSession();
     if (!session) return;
-    const { data, error } = await supabase.from('stats').insert({ sort_order: stats.length + 1, num: '0', suffix: '+', label_en: 'New Stat', label_bn: '' }).select().single();
+    let payload: Record<string, unknown> = { sort_order: stats.length + 1, num: '0', suffix: '+', label_en: 'New Stat', label_bn: '' };
+    let { data, error } = await supabase.from('stats').insert(payload).select().single();
+    if (error && isSchemaColumnMismatch(error)) {
+      payload = { sort_order: stats.length + 1, num: '0', suffix: '+', label: 'New Stat' };
+      ({ data, error } = await supabase.from('stats').insert(payload).select().single());
+    }
     if (error) { alert('Error adding stat: ' + error.message); return; }
-    if (data) { setStats((prev) => [...prev, data]); await refreshCollectionQueries('stats'); }
+    if (data) { setStats((prev) => [...prev, normalizeStatRow(data as Record<string, unknown>)]); await refreshCollectionQueries('stats'); }
   };
 
   const removeStat = async (idx: number) => {
@@ -1153,9 +1161,14 @@ function ProcessEditor() {
   const addStep = async () => {
     const session = await ensureAuthenticatedSession();
     if (!session) return;
-    const { data, error } = await supabase.from('process_steps').insert({ sort_order: steps.length + 1, title_en: 'New Step', title_bn: '', desc_en: '', desc_bn: '' }).select().single();
+    let payload: Record<string, unknown> = { sort_order: steps.length + 1, title_en: 'New Step', title_bn: '', desc_en: '', desc_bn: '' };
+    let { data, error } = await supabase.from('process_steps').insert(payload).select().single();
+    if (error && isSchemaColumnMismatch(error)) {
+      payload = { sort_order: steps.length + 1, title: 'New Step', description: '' };
+      ({ data, error } = await supabase.from('process_steps').insert(payload).select().single());
+    }
     if (error) { alert('Error adding step: ' + error.message); return; }
-    if (data) { setSteps((prev) => [...prev, data]); await refreshCollectionQueries('process-steps'); }
+    if (data) { setSteps((prev) => [...prev, normalizeProcessStepRow(data as Record<string, unknown>)]); await refreshCollectionQueries('process-steps'); }
   };
 
   const removeStep = async (idx: number) => {
