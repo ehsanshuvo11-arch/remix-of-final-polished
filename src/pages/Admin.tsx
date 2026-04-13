@@ -364,11 +364,34 @@ async function saveCollection<T extends { id: string }>(
   const session = await ensureAuthenticatedSession();
   if (!session) return false;
 
+  // Try localized columns first; on schema mismatch fall back to legacy base columns
+  let mode: 'localized' | 'legacy' = 'localized';
+
   for (const row of rows) {
-    const { error } = await supabase.from(table).update(row).eq('id', row.id);
+    const payload = buildCollectionPayload(table, row as unknown as Record<string, unknown>, mode);
+    const { error } = await supabase.from(table).update(payload).eq('id', row.id);
+
+    if (error && isSchemaColumnMismatch(error) && mode === 'localized') {
+      // Retry entire batch with legacy columns
+      mode = 'legacy';
+      break;
+    }
+
     if (error) {
       alert('Error saving: ' + error.message);
       return false;
+    }
+  }
+
+  // If we broke out to retry in legacy mode, re-run from the start
+  if (mode === 'legacy') {
+    for (const row of rows) {
+      const payload = buildCollectionPayload(table, row as unknown as Record<string, unknown>, 'legacy');
+      const { error } = await supabase.from(table).update(payload).eq('id', row.id);
+      if (error) {
+        alert('Error saving: ' + error.message);
+        return false;
+      }
     }
   }
 
