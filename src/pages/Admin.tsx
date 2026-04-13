@@ -677,7 +677,7 @@ function ServicesEditor() {
 
   useEffect(() => {
     supabase.from('services').select('*').order('sort_order').then(({ data }) => {
-      if (data) setServices(data);
+      if (data) setServices(data.map((r) => normalizeServiceRow(r as Record<string, unknown>)));
     });
   }, []);
 
@@ -761,7 +761,7 @@ function StatsEditor() {
 
   useEffect(() => {
     supabase.from('stats').select('*').order('sort_order').then(({ data }) => {
-      if (data) setStats(data);
+      if (data) setStats(data.map((r) => normalizeStatRow(r as Record<string, unknown>)));
     });
   }, []);
 
@@ -1146,7 +1146,7 @@ function ProcessEditor() {
 
   useEffect(() => {
     supabase.from('process_steps').select('*').order('sort_order').then(({ data }) => {
-      if (data) setSteps(data);
+      if (data) setSteps(data.map((r) => normalizeProcessStepRow(r as Record<string, unknown>)));
     });
   }, []);
 
