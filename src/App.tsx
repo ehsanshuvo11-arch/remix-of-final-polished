@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 
 const Admin = lazy(() => import("./pages/Admin"));
@@ -30,6 +31,7 @@ const App = () => (
         </BrowserRouter>
       </LanguageProvider>
     </TooltipProvider>
+    <Analytics />
   </QueryClientProvider>
 );
 
