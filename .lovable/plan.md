@@ -1,54 +1,78 @@
 
 
-## Premium Mockup Integration
+## SQL Fix: Add Missing Columns + Disable RLS
 
-### Overview
-Add a `mockup_url` column to the `portfolio_projects` table, a mockup image upload field in the Admin Panel, and render the mockup inside the expanded case study area on the frontend.
+Here is the exact SQL script you need to run in the Supabase SQL Editor. It does **only two things**: adds any missing columns and disables RLS. No triggers, no roles, no ownership changes.
 
-### 1. Database Migration
-
-Run this SQL to add the column:
+### The SQL Script
 
 ```sql
-ALTER TABLE portfolio_projects ADD COLUMN mockup_url text DEFAULT '';
+-- =============================================
+-- 1. ADD MISSING COLUMNS
+-- =============================================
+
+-- site_settings
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS key text;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS value jsonb DEFAULT '{}'::jsonb;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS updated_at timestamptz DEFAULT now();
+
+-- services
+ALTER TABLE public.services ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
+ALTER TABLE public.services ADD COLUMN IF NOT EXISTS name_en text DEFAULT '';
+ALTER TABLE public.services ADD COLUMN IF NOT EXISTS name_bn text DEFAULT '';
+ALTER TABLE public.services ADD COLUMN IF NOT EXISTS desc_en text DEFAULT '';
+ALTER TABLE public.services ADD COLUMN IF NOT EXISTS desc_bn text DEFAULT '';
+
+-- stats
+ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
+ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS num text DEFAULT '0';
+ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS suffix text DEFAULT '';
+ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS label_en text DEFAULT '';
+ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS label_bn text DEFAULT '';
+
+-- portfolio_projects
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS title_en text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS title_bn text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS category_en text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS category_bn text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS image_url text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS case_study_en text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS case_study_bn text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS hook_en text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS hook_bn text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS pdf_url_en text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS pdf_url_bn text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS mockup_url text DEFAULT '';
+ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS mockup_urls text[] DEFAULT ARRAY[]::text[];
+
+-- process_steps
+ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
+ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS title_en text DEFAULT '';
+ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS title_bn text DEFAULT '';
+ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS desc_en text DEFAULT '';
+ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS desc_bn text DEFAULT '';
+
+-- =============================================
+-- 2. DISABLE RLS ON ALL TABLES
+-- =============================================
+
+ALTER TABLE public.site_settings DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.services DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.stats DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.portfolio_projects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.process_steps DISABLE ROW LEVEL SECURITY;
+
+-- Refresh PostgREST schema cache
+NOTIFY pgrst, 'reload schema';
 ```
 
-### 2. Type Update — `src/types/database.ts`
+### How to use
 
-Add `mockup_url?: string` to the `PortfolioProject` interface.
+1. Go to your **Supabase Dashboard → SQL Editor**
+2. Paste the entire script above
+3. Click **Run**
+4. Go to your admin panel and test saving — it should work immediately
 
-### 3. Admin Panel — `src/pages/Admin.tsx`
-
-- Add a `mockupRefs` ref object (same pattern as `fileRefs`, `pdfEnRefs`).
-- Add a `handleMockupUpload` function that uploads to `portfolio-mockups/` path in `polished-assets` bucket and sets `mockup_url` on the project.
-- Add a new upload field after the existing "Project Image" field, labeled "Project Mockup", with the same dashed-border upload UI pattern.
-- Update the `addProject` insert to include `mockup_url: ''`.
-
-### 4. Frontend — `src/components/landing/Portfolio.tsx`
-
-- Inside the case study `AnimatePresence` block (lines 180-217), after the case study text and before the PDF link, render the mockup image if `project.mockup_url` exists.
-- Design: full-width, rounded-lg corners, subtle shadow, with a small "MOCKUP" label above it. Graceful fallback — nothing renders if no mockup URL.
-
-```text
-┌─────────────────────────────────┐
-│  CASE STUDY label               │
-│  Case study text...             │
-│                                 │
-│  ┌─────────────────────────┐    │
-│  │   MOCKUP (full-width)   │    │
-│  │   rounded-lg, shadow    │    │
-│  └─────────────────────────┘    │
-│                                 │
-│  📄 Download PDF                │
-│  Show less                      │
-└─────────────────────────────────┘
-```
-
-### 5. No Changes To
-- Collapsed card state (200px height, tilt, grid)
-- Framer Motion animations
-- Any other section or component
-
-### 6. GitHub Sync
-Changes auto-push to the connected `polished-showcase-admin-a48ca581` repo.
+No code changes needed in this project. This is purely a database-side fix.
 
