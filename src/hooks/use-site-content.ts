@@ -1,5 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
+import {
+  normalizePortfolioProjectRow,
+  normalizeProcessStepRow,
+  normalizeServiceRow,
+  normalizeStatRow,
+} from '@/lib/content-schema';
 import type { Service, PortfolioProject, ProcessStep, Stat } from '@/types/database';
 
 export function useSiteSetting<T = Record<string, any>>(key: string) {
@@ -27,7 +33,7 @@ export function useServices() {
         .select('*')
         .order('sort_order');
       if (error) throw error;
-      return data as Service[];
+      return (data ?? []).map((row) => normalizeServiceRow(row as Record<string, unknown>)) as Service[];
     },
     staleTime: 30000,
   });
@@ -42,7 +48,7 @@ export function usePortfolio() {
         .select('*')
         .order('sort_order');
       if (error) throw error;
-      return data as PortfolioProject[];
+      return (data ?? []).map((row) => normalizePortfolioProjectRow(row as Record<string, unknown>)) as PortfolioProject[];
     },
     staleTime: 30000,
   });
@@ -57,7 +63,7 @@ export function useProcessSteps() {
         .select('*')
         .order('sort_order');
       if (error) throw error;
-      return data as ProcessStep[];
+      return (data ?? []).map((row) => normalizeProcessStepRow(row as Record<string, unknown>)) as ProcessStep[];
     },
     staleTime: 30000,
   });
@@ -72,7 +78,7 @@ export function useStats() {
         .select('*')
         .order('sort_order');
       if (error) throw error;
-      return data as Stat[];
+      return (data ?? []).map((row) => normalizeStatRow(row as Record<string, unknown>)) as Stat[];
     },
     staleTime: 30000,
   });
