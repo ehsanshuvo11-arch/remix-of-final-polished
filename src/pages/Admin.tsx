@@ -364,11 +364,34 @@ async function saveCollection<T extends { id: string }>(
   const session = await ensureAuthenticatedSession();
   if (!session) return false;
 
+  // Try localized columns first; on schema mismatch fall back to legacy base columns
+  let mode: 'localized' | 'legacy' = 'localized';
+
   for (const row of rows) {
-    const { error } = await supabase.from(table).update(row).eq('id', row.id);
+    const payload = buildCollectionPayload(table, row as unknown as Record<string, unknown>, mode);
+    const { error } = await supabase.from(table).update(payload).eq('id', row.id);
+
+    if (error && isSchemaColumnMismatch(error) && mode === 'localized') {
+      // Retry entire batch with legacy columns
+      mode = 'legacy';
+      break;
+    }
+
     if (error) {
       alert('Error saving: ' + error.message);
       return false;
+    }
+  }
+
+  // If we broke out to retry in legacy mode, re-run from the start
+  if (mode === 'legacy') {
+    for (const row of rows) {
+      const payload = buildCollectionPayload(table, row as unknown as Record<string, unknown>, 'legacy');
+      const { error } = await supabase.from(table).update(payload).eq('id', row.id);
+      if (error) {
+        alert('Error saving: ' + error.message);
+        return false;
+      }
     }
   }
 
@@ -654,7 +677,7 @@ function ServicesEditor() {
 
   useEffect(() => {
     supabase.from('services').select('*').order('sort_order').then(({ data }) => {
-      if (data) setServices(data);
+      if (data) setServices(data.map((r) => normalizeServiceRow(r as Record<string, unknown>)));
     });
   }, []);
 
@@ -670,18 +693,21 @@ function ServicesEditor() {
     const session = await ensureAuthenticatedSession();
     if (!session) return;
 
-    const { data, error } = await supabase
-      .from('services')
-      .insert({ sort_order: services.length + 1, name_en: 'New Service', name_bn: '', desc_en: '', desc_bn: '' })
-      .select()
-      .single();
+    let payload: Record<string, unknown> = { sort_order: services.length + 1, name_en: 'New Service', name_bn: '', desc_en: '', desc_bn: '' };
+    let { data, error } = await supabase.from('services').insert(payload).select().single();
+
+    if (error && isSchemaColumnMismatch(error)) {
+      payload = { sort_order: services.length + 1, name: 'New Service', description: '' };
+      ({ data, error } = await supabase.from('services').insert(payload).select().single());
+    }
+
     if (error) {
       alert('Error adding service: ' + error.message);
       return;
     }
 
     if (data) {
-      setServices((prev) => [...prev, data]);
+      setServices((prev) => [...prev, normalizeServiceRow(data as Record<string, unknown>)]);
       await refreshCollectionQueries('services');
     }
   };
@@ -735,7 +761,7 @@ function StatsEditor() {
 
   useEffect(() => {
     supabase.from('stats').select('*').order('sort_order').then(({ data }) => {
-      if (data) setStats(data);
+      if (data) setStats(data.map((r) => normalizeStatRow(r as Record<string, unknown>)));
     });
   }, []);
 
@@ -750,9 +776,14 @@ function StatsEditor() {
   const addStat = async () => {
     const session = await ensureAuthenticatedSession();
     if (!session) return;
-    const { data, error } = await supabase.from('stats').insert({ sort_order: stats.length + 1, num: '0', suffix: '+', label_en: 'New Stat', label_bn: '' }).select().single();
+    let payload: Record<string, unknown> = { sort_order: stats.length + 1, num: '0', suffix: '+', label_en: 'New Stat', label_bn: '' };
+    let { data, error } = await supabase.from('stats').insert(payload).select().single();
+    if (error && isSchemaColumnMismatch(error)) {
+      payload = { sort_order: stats.length + 1, num: '0', suffix: '+', label: 'New Stat' };
+      ({ data, error } = await supabase.from('stats').insert(payload).select().single());
+    }
     if (error) { alert('Error adding stat: ' + error.message); return; }
-    if (data) { setStats((prev) => [...prev, data]); await refreshCollectionQueries('stats'); }
+    if (data) { setStats((prev) => [...prev, normalizeStatRow(data as Record<string, unknown>)]); await refreshCollectionQueries('stats'); }
   };
 
   const removeStat = async (idx: number) => {
@@ -1115,7 +1146,7 @@ function ProcessEditor() {
 
   useEffect(() => {
     supabase.from('process_steps').select('*').order('sort_order').then(({ data }) => {
-      if (data) setSteps(data);
+      if (data) setSteps(data.map((r) => normalizeProcessStepRow(r as Record<string, unknown>)));
     });
   }, []);
 
@@ -1130,9 +1161,14 @@ function ProcessEditor() {
   const addStep = async () => {
     const session = await ensureAuthenticatedSession();
     if (!session) return;
-    const { data, error } = await supabase.from('process_steps').insert({ sort_order: steps.length + 1, title_en: 'New Step', title_bn: '', desc_en: '', desc_bn: '' }).select().single();
+    let payload: Record<string, unknown> = { sort_order: steps.length + 1, title_en: 'New Step', title_bn: '', desc_en: '', desc_bn: '' };
+    let { data, error } = await supabase.from('process_steps').insert(payload).select().single();
+    if (error && isSchemaColumnMismatch(error)) {
+      payload = { sort_order: steps.length + 1, title: 'New Step', description: '' };
+      ({ data, error } = await supabase.from('process_steps').insert(payload).select().single());
+    }
     if (error) { alert('Error adding step: ' + error.message); return; }
-    if (data) { setSteps((prev) => [...prev, data]); await refreshCollectionQueries('process-steps'); }
+    if (data) { setSteps((prev) => [...prev, normalizeProcessStepRow(data as Record<string, unknown>)]); await refreshCollectionQueries('process-steps'); }
   };
 
   const removeStep = async (idx: number) => {
