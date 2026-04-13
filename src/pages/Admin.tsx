@@ -319,11 +319,9 @@ async function upsertSetting(key: string, value: Record<string, any>) {
   const session = await ensureAuthenticatedSession();
   if (!session) return false;
 
-  const updatedAt = new Date().toISOString();
-
   const { error: mutationError } = await supabase
     .from('site_settings')
-    .upsert({ key, value, updated_at: updatedAt }, { onConflict: 'key' });
+    .upsert({ key, value }, { onConflict: 'key' });
 
   if (mutationError) {
     alert('Error saving: ' + mutationError.message);
