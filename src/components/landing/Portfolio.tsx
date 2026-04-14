@@ -215,7 +215,9 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 {t('Case Study', 'কেস স্টাডি')}
               </p>
               {caseStudy && (
-                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{caseStudy}</p>
+                <div className="prose prose-sm max-w-none text-muted-foreground prose-headings:text-primary prose-headings:font-heading prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal prose-li:text-muted-foreground">
+                  <ReactMarkdown>{caseStudy}</ReactMarkdown>
+                </div>
               )}
               {pdfUrl && (
                 <a
