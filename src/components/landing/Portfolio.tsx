@@ -217,8 +217,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               {caseStudy && (
                 <div
                   className="prose prose-lg prose-invert max-w-none
-                    font-heading tracking-wide
-                    text-foreground/85 leading-loose
+                    font-heading tracking-wide antialiased
+                    text-foreground font-medium leading-loose
 
                     [&_strong]:font-bold [&_strong]:text-foreground
                     [&_em]:italic [&_em]:text-foreground/90
