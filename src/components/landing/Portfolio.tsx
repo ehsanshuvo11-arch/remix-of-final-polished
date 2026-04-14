@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import ReactMarkdown from 'react-markdown';
+import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
@@ -229,7 +229,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
                   prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground prose-blockquote:italic
                 ">
-                  <ReactMarkdown>{caseStudy}</ReactMarkdown>
+                  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
                 </div>
               )}
               {pdfUrl && (

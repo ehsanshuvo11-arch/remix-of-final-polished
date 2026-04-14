@@ -26,6 +26,7 @@ import type {
   ServicesMetaContent,
   Stat,
 } from '@/types/database';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 const LOGO_STORAGE_PATH = 'logo/current';
 const PUZZLE_STORAGE_PATH = 'puzzle/current';
@@ -995,11 +996,11 @@ function PortfolioEditor() {
             <AdminInput value={proj.hook_bn ?? ''} onChange={(v) => updateProject(i, 'hook_bn', v)} placeholder="ডিফল্টভাবে দেখানো সংক্ষিপ্ত টিজার..." />
           </AdminField>
 
-          <AdminField label="Case Study (English) — Markdown supported">
-            <AdminTextarea value={proj.case_study_en ?? ''} onChange={(v) => updateProject(i, 'case_study_en', v)} rows={8} placeholder={"Supports Markdown:\n**bold**, *italic*, - bullet points,\n## Heading 2, ### Heading 3\n\nWrite your case study here..."} />
+          <AdminField label="Case Study (English) — Paste from Google Docs">
+            <RichTextEditor value={proj.case_study_en ?? ''} onChange={(v) => updateProject(i, 'case_study_en', v)} placeholder="Paste your case study from Google Docs..." />
           </AdminField>
-          <AdminField label="Case Study (Bengali) — Markdown supported">
-            <AdminTextarea value={proj.case_study_bn ?? ''} onChange={(v) => updateProject(i, 'case_study_bn', v)} rows={8} placeholder={"মার্কডাউন সাপোর্টেড:\n**বোল্ড**, *ইটালিক*, - বুলেট পয়েন্ট,\n## শিরোনাম ২, ### শিরোনাম ৩\n\nকেস স্টাডি লিখুন..."} />
+          <AdminField label="Case Study (বাংলা) — Google Docs থেকে পেস্ট করুন">
+            <RichTextEditor value={proj.case_study_bn ?? ''} onChange={(v) => updateProject(i, 'case_study_bn', v)} placeholder="Google Docs থেকে কেস স্টাডি পেস্ট করুন..." />
           </AdminField>
 
           {/* Dual PDF Uploads */}
