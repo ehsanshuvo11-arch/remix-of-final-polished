@@ -217,13 +217,13 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               {caseStudy && (
                 <div
                   className="prose prose-lg prose-invert max-w-none
-                    font-heading tracking-wide antialiased
+                    font-sans tracking-normal antialiased
                     text-foreground font-medium leading-loose
 
                     [&_strong]:font-bold [&_strong]:text-foreground
                     [&_em]:italic [&_em]:text-foreground/90
 
-                    prose-headings:font-heading prose-headings:font-normal prose-headings:tracking-wide prose-headings:text-primary
+                    prose-headings:font-sans prose-headings:font-semibold prose-headings:tracking-normal prose-headings:text-primary
                     prose-h1:text-3xl prose-h1:mt-12 prose-h1:mb-6
                     prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-5 prose-h2:border-b prose-h2:border-accent/20 prose-h2:pb-3
                     prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-foreground/90
@@ -241,7 +241,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                     prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
                     prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
                   "
-                  style={{ fontFamily: lang === 'bn' ? '"Noto Serif Bengali", serif' : '"Cormorant Garamond", serif' }}
+                  style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
                 >
                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
                 </div>
