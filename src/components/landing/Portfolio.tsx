@@ -168,6 +168,15 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         </div>
       </div>
 
+      {/* Hook text — displayed between image and buttons */}
+      {hook && (
+        <div
+          className="mt-4 px-1 font-sans text-base font-medium text-foreground/90 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
+          style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
+        />
+      )}
+
       {/* Controls — ALWAYS visible */}
       <div className="mt-3 px-1 flex flex-wrap items-center gap-4">
         <button
