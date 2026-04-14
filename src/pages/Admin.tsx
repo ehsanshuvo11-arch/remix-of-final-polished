@@ -990,10 +990,10 @@ function PortfolioEditor() {
 
           {/* Hook text — shown by default on frontend */}
           <AdminField label="Hook Text (EN) — visible before expanding">
-            <AdminInput value={proj.hook_en ?? ''} onChange={(v) => updateProject(i, 'hook_en', v)} placeholder="Short teaser text shown by default..." />
+            <RichTextEditor value={proj.hook_en ?? ''} onChange={(v) => updateProject(i, 'hook_en', v)} placeholder="Short teaser text shown by default..." />
           </AdminField>
           <AdminField label="Hook Text (বাংলা)">
-            <AdminInput value={proj.hook_bn ?? ''} onChange={(v) => updateProject(i, 'hook_bn', v)} placeholder="ডিফল্টভাবে দেখানো সংক্ষিপ্ত টিজার..." />
+            <RichTextEditor value={proj.hook_bn ?? ''} onChange={(v) => updateProject(i, 'hook_bn', v)} placeholder="ডিফল্টভাবে দেখানো সংক্ষিপ্ত টিজার..." />
           </AdminField>
 
           <AdminField label="Case Study (English) — Paste from Google Docs">
