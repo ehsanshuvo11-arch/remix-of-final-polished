@@ -47,7 +47,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     if (!editor) return;
     const currentHTML = editor.getHTML();
     if (value !== currentHTML && value !== undefined) {
-      editor.commands.setContent(value || '', false);
+      editor.commands.setContent(value || '');
     }
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 

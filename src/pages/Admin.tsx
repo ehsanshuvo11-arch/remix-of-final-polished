@@ -26,6 +26,7 @@ import type {
   ServicesMetaContent,
   Stat,
 } from '@/types/database';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 const LOGO_STORAGE_PATH = 'logo/current';
 const PUZZLE_STORAGE_PATH = 'puzzle/current';
