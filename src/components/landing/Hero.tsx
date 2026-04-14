@@ -25,7 +25,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   const hero = content ?? {
     titleEn: 'Make Your Collection',
-    title2En: '*Unmissable.*',
+    title2En: '*Unmissable!*',
     titleBn: 'আপনার কালেকশনকে করুন',
     title2Bn: '*অবিস্মরণীয়।*',
     eyebrowEn: 'Graphics Design Agency · Bangladesh',
