@@ -215,20 +215,34 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 {t('Case Study', 'কেস স্টাডি')}
               </p>
               {caseStudy && (
-                <div className="prose prose-base prose-invert max-w-none
-                  text-foreground/80 leading-[1.85] tracking-wide
-                  [&_strong]:font-bold [&_strong]:text-foreground
-                  [&_em]:italic
-                  prose-headings:text-primary prose-headings:font-heading prose-headings:font-normal prose-headings:tracking-wide
-                  prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:border-border prose-h2:pb-2
-                  prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
-                  prose-p:mb-5 prose-p:leading-[1.85]
-                  prose-ul:my-4 prose-ul:pl-6 prose-ul:list-disc prose-ul:space-y-2
-                  prose-ol:my-4 prose-ol:pl-6 prose-ol:list-decimal prose-ol:space-y-2
-                  prose-li:text-foreground/80 prose-li:leading-[1.75] prose-li:pl-1
-                  prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
-                  prose-blockquote:border-l-accent prose-blockquote:text-muted-foreground prose-blockquote:italic
-                ">
+                <div
+                  className="prose prose-lg prose-invert max-w-none
+                    font-heading tracking-wide
+                    text-foreground/85 leading-loose
+
+                    [&_strong]:font-bold [&_strong]:text-foreground
+                    [&_em]:italic [&_em]:text-foreground/90
+
+                    prose-headings:font-heading prose-headings:font-normal prose-headings:tracking-wide prose-headings:text-primary
+                    prose-h1:text-3xl prose-h1:mt-12 prose-h1:mb-6
+                    prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-5 prose-h2:border-b prose-h2:border-accent/20 prose-h2:pb-3
+                    prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-foreground/90
+
+                    [&>p]:mb-6 [&>p]:leading-loose [&_p]:leading-loose
+                    [&>p:first-child]:mt-0 [&>p:last-child]:mb-0
+
+                    [&>ul]:my-6 [&>ul]:pl-8 [&>ul]:list-disc [&>ul]:space-y-3
+                    [&_ul]:my-4 [&_ul]:pl-8 [&_ul]:list-disc [&_ul]:space-y-3
+                    [&>ol]:my-6 [&>ol]:pl-8 [&>ol]:list-decimal [&>ol]:space-y-3
+                    [&_ol]:my-4 [&_ol]:pl-8 [&_ol]:list-decimal [&_ol]:space-y-3
+                    [&_li]:text-foreground/80 [&_li]:leading-relaxed [&_li]:pl-2
+                    [&_li_p]:mb-2
+
+                    prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
+                    prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
+                  "
+                  style={{ fontFamily: lang === 'bn' ? '"Noto Serif Bengali", serif' : '"Cormorant Garamond", serif' }}
+                >
                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
                 </div>
               )}
