@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import ReactMarkdown from 'react-markdown';
+import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/use-scroll-reveal';
