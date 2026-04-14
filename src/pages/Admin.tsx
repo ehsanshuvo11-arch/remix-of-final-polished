@@ -995,11 +995,11 @@ function PortfolioEditor() {
             <AdminInput value={proj.hook_bn ?? ''} onChange={(v) => updateProject(i, 'hook_bn', v)} placeholder="ডিফল্টভাবে দেখানো সংক্ষিপ্ত টিজার..." />
           </AdminField>
 
-          <AdminField label="Case Study (English)">
-            <AdminTextarea value={proj.case_study_en ?? ''} onChange={(v) => updateProject(i, 'case_study_en', v)} rows={5} placeholder="Write the English case study for this project..." />
+          <AdminField label="Case Study (English) — Markdown supported">
+            <AdminTextarea value={proj.case_study_en ?? ''} onChange={(v) => updateProject(i, 'case_study_en', v)} rows={8} placeholder={"Supports Markdown:\n**bold**, *italic*, - bullet points,\n## Heading 2, ### Heading 3\n\nWrite your case study here..."} />
           </AdminField>
-          <AdminField label="Case Study (Bengali)">
-            <AdminTextarea value={proj.case_study_bn ?? ''} onChange={(v) => updateProject(i, 'case_study_bn', v)} rows={5} placeholder="এই প্রজেক্টের বাংলা কেস স্টাডি লিখুন..." />
+          <AdminField label="Case Study (Bengali) — Markdown supported">
+            <AdminTextarea value={proj.case_study_bn ?? ''} onChange={(v) => updateProject(i, 'case_study_bn', v)} rows={8} placeholder={"মার্কডাউন সাপোর্টেড:\n**বোল্ড**, *ইটালিক*, - বুলেট পয়েন্ট,\n## শিরোনাম ২, ### শিরোনাম ৩\n\nকেস স্টাডি লিখুন..."} />
           </AdminField>
 
           {/* Dual PDF Uploads */}
