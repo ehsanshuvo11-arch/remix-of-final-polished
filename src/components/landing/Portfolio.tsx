@@ -215,13 +215,14 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 {t('Case Study', 'কেস স্টাডি')}
               </p>
               {caseStudy && (
-                <div className="prose prose-base max-w-none
+                <div className="prose prose-base prose-invert max-w-none
                   text-foreground/80 leading-[1.85] tracking-wide
+                  [&_strong]:font-bold [&_strong]:text-foreground
+                  [&_em]:italic
                   prose-headings:text-primary prose-headings:font-heading prose-headings:font-normal prose-headings:tracking-wide
                   prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:border-border prose-h2:pb-2
                   prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
-                  prose-p:mb-4 prose-p:leading-[1.85]
-                  prose-strong:text-foreground prose-strong:font-semibold
+                  prose-p:mb-5 prose-p:leading-[1.85]
                   prose-ul:my-4 prose-ul:pl-6 prose-ul:list-disc prose-ul:space-y-2
                   prose-ol:my-4 prose-ol:pl-6 prose-ol:list-decimal prose-ol:space-y-2
                   prose-li:text-foreground/80 prose-li:leading-[1.75] prose-li:pl-1
