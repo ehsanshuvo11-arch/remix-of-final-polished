@@ -1,5 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import MotionReveal from '@/components/landing/MotionReveal';
 import type { AboutContent, Stat } from '@/types/database';
 
 interface AboutProps {
@@ -10,11 +10,6 @@ interface AboutProps {
 export default function About({ content, stats }: AboutProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
-  const labelRef = useScrollReveal();
-  const titleRef = useScrollReveal(0.1);
-  const p1Ref = useScrollReveal(0.2);
-  const p2Ref = useScrollReveal(0.3);
-  const quoteRef = useScrollReveal(0.4);
 
   const about = content ?? {
     labelEn: 'About Polished',
@@ -44,37 +39,48 @@ export default function About({ content, stats }: AboutProps) {
     <section id="about" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div>
-          <p ref={labelRef} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {t(about.labelEn ?? 'About Polished', about.labelBn ?? 'পলিশড সম্পর্কে')}
-          </p>
-          <h2 ref={titleRef} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            {t(about.titleLine1En ?? 'Design that earns', about.titleLine1Bn ?? 'ডিজাইন যা অর্জন করে')}<br />
-            <em className="italic">{t(about.titleLine2En ?? 'trust at first glance.', about.titleLine2Bn ?? 'প্রথম দর্শনেই বিশ্বাস।')}</em>
-          </h2>
-          <p ref={p1Ref} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-            {t(about.p1En, about.p1Bn)}
-          </p>
-          <p ref={p2Ref} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-            {t(about.p2En, about.p2Bn)}
-          </p>
-          <p ref={quoteRef} className="text-[15px] leading-[1.85] text-primary italic">
-            {t(about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.', about.quoteBn ?? '— একটি ফাঁক চিহ্নিত করা: পেশাদার বাংলা ভিজ্যুয়াল ডিজাইন সঠিকভাবে।')}
-          </p>
+          <MotionReveal>
+            <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+              {t(about.labelEn ?? 'About Polished', about.labelBn ?? 'পলিশড সম্পর্কে')}
+            </p>
+          </MotionReveal>
+          <MotionReveal delay={0.1}>
+            <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+              {t(about.titleLine1En ?? 'Design that earns', about.titleLine1Bn ?? 'ডিজাইন যা অর্জন করে')}<br />
+              <em className="italic">{t(about.titleLine2En ?? 'trust at first glance.', about.titleLine2Bn ?? 'প্রথম দর্শনেই বিশ্বাস।')}</em>
+            </h2>
+          </MotionReveal>
+          <MotionReveal delay={0.2}>
+            <p className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
+              {t(about.p1En, about.p1Bn)}
+            </p>
+          </MotionReveal>
+          <MotionReveal delay={0.3}>
+            <p className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
+              {t(about.p2En, about.p2Bn)}
+            </p>
+          </MotionReveal>
+          <MotionReveal delay={0.4}>
+            <p className="text-[15px] leading-[1.85] text-primary italic">
+              {t(about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.', about.quoteBn ?? '— একটি ফাঁক চিহ্নিত করা: পেশাদার বাংলা ভিজ্যুয়াল ডিজাইন সঠিকভাবে।')}
+            </p>
+          </MotionReveal>
         </div>
 
         <div className="grid grid-cols-2 gap-px bg-border border border-border">
-          {displayStats.map((stat) => (
-            <div
-              key={stat.id}
-              className="stat-box bg-background p-7 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-500 hover:before:scale-x-100"
-            >
-              <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
-                {stat.num}<span className="text-accent">{stat.suffix}</span>
+          {displayStats.map((stat, i) => (
+            <MotionReveal key={stat.id} delay={0.1 * (i + 1)}>
+              <div
+                className="stat-box bg-background p-7 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-500 hover:before:scale-x-100"
+              >
+                <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
+                  {stat.num}<span className="text-accent">{stat.suffix}</span>
+                </div>
+                <div className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
+                  {t(stat.label_en, stat.label_bn)}
+                </div>
               </div>
-              <div className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
-                {t(stat.label_en, stat.label_bn)}
-              </div>
-            </div>
+            </MotionReveal>
           ))}
         </div>
       </div>

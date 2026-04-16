@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import MotionReveal from '@/components/landing/MotionReveal';
 import type { Service, ServicesMetaContent } from '@/types/database';
 
 interface ServicesProps {
@@ -11,8 +11,6 @@ interface ServicesProps {
 export default function Services({ services, content }: ServicesProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
-  const labelRef = useScrollReveal();
-  const titleRef = useScrollReveal(0.1);
 
   const defaultServices: Service[] = [
     { id: '1', sort_order: 1, name_en: 'Social Media Design', name_bn: 'সোশ্যাল মিডিয়া ডিজাইন', desc_en: 'Feed posts, stories, reels covers, and carousels — all crafted with visual consistency and scroll-stopping clarity. Built for Instagram skincare brands that want to look premium, not templated.', desc_bn: 'ফিড পোস্ট, স্টোরি, রিলস কভার এবং ক্যারোসেল — সবকিছু তৈরি হয় ভিজ্যুয়াল সামঞ্জস্য রেখে।' },
@@ -24,13 +22,17 @@ export default function Services({ services, content }: ServicesProps) {
   return (
     <div id="services" className="bg-primary">
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
-        <p ref={labelRef} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-          {t(content?.labelEn ?? 'What We Do', content?.labelBn ?? 'আমরা যা করি')}
-        </p>
-        <h2 ref={titleRef} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          {t(content?.titleLine1En ?? 'Services built for', content?.titleLine1Bn ?? 'ই-কমার্স ভিত্তিক স্কিনকেয়ার')}<br />
-          <em className="italic">{t(content?.titleLine2En ?? 'ecommerce-based skincare brands.', content?.titleLine2Bn ?? 'ব্র্যান্ডের জন্য তৈরি সেবা।')}</em>
-        </h2>
+        <MotionReveal>
+          <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+            {t(content?.labelEn ?? 'What We Do', content?.labelBn ?? 'আমরা যা করি')}
+          </p>
+        </MotionReveal>
+        <MotionReveal delay={0.1}>
+          <h2 className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+            {t(content?.titleLine1En ?? 'Services built for', content?.titleLine1Bn ?? 'ই-কমার্স ভিত্তিক স্কিনকেয়ার')}<br />
+            <em className="italic">{t(content?.titleLine2En ?? 'ecommerce-based skincare brands.', content?.titleLine2Bn ?? 'ব্র্যান্ডের জন্য তৈরি সেবা।')}</em>
+          </h2>
+        </MotionReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-14">
           {displayServices.map((service, i) => (
@@ -45,7 +47,6 @@ export default function Services({ services, content }: ServicesProps) {
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
-  const ref = useScrollReveal(0.1 * (index + 1));
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleTilt = (e: React.MouseEvent) => {
@@ -66,7 +67,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   };
 
   return (
-    <div ref={ref}>
+    <MotionReveal delay={0.1 * (index + 1)}>
       <div
         ref={cardRef}
         onMouseMove={handleTilt}
@@ -85,6 +86,6 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         </p>
         <div className="absolute bottom-0 left-9 right-9 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
       </div>
-    </div>
+    </MotionReveal>
   );
 }
