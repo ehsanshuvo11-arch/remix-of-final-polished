@@ -14,8 +14,6 @@ interface PortfolioProps {
 
 export default function Portfolio({ projects, content }: PortfolioProps) {
   const { t } = useLanguage();
-  const labelRef = useScrollReveal();
-  const titleRef = useScrollReveal(0.1);
 
   const defaultProjects: PortfolioProject[] = [
     { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
