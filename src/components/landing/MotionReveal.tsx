@@ -46,7 +46,7 @@ export default function MotionReveal({
       transition={{
         duration,
         delay,
-        ease: [0.16, 1, 0.3, 1], // Apple-style ease
+        ease: [0.22, 1, 0.36, 1], // Luxury slow ease-out
       }}
       className={className}
     >
