@@ -1,6 +1,6 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useLayoutEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +13,25 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
+const RouteCursorScope = () => {
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    const isAdminRoute = location.pathname.startsWith("/admin");
+
+    document.body.classList.toggle("admin-panel", isAdminRoute);
+    document.body.classList.toggle("public-site", !isAdminRoute);
+    document.body.style.cursor = isAdminRoute ? "auto" : "";
+
+    return () => {
+      document.body.classList.remove("admin-panel", "public-site");
+      document.body.style.cursor = "";
+    };
+  }, [location.pathname]);
+
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -20,6 +39,7 @@ const App = () => (
       <Sonner />
       <LanguageProvider>
         <BrowserRouter>
+          <RouteCursorScope />
           <Suspense fallback={<div className="min-h-screen bg-background" />}>
             <Routes>
               <Route path="/" element={<Index />} />
