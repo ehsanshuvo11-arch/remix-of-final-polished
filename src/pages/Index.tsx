@@ -40,6 +40,7 @@ export default function Index() {
   const { data: stats = [] } = useStats();
 
   return (
+    <SmoothScroll>
     <div className="font-body">
       <PageLoader />
       <CustomCursor />
@@ -67,5 +68,6 @@ export default function Index() {
         content={puzzleData ?? null}
       />
     </div>
+    </SmoothScroll>
   );
 }
