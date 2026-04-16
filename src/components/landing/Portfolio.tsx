@@ -55,6 +55,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
+  // Detect touch device to disable 3D tilt on mobile
+  const isTouch = useMemo(() =>
+    typeof window !== 'undefined' && (window.matchMedia('(hover: none) and (pointer: coarse)').matches), []);
+
   const [imageExpanded, setImageExpanded] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -80,9 +84,9 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     setLightboxOpen(true);
   }, []);
 
-  // Tilt effect for collapsed state
+  // Tilt effect for collapsed state — desktop only
   const handleTilt = useCallback((e: React.MouseEvent) => {
-    if (imageExpanded) return;
+    if (isTouch || imageExpanded) return;
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -93,7 +97,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     const rotateY = ((x - midX) / midX) * 6;
     const rotateX = ((midY - y) / midY) * 6;
     el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-  }, [imageExpanded]);
+  }, [imageExpanded, isTouch]);
 
   const handleTiltLeave = useCallback(() => {
     if (cardRef.current) cardRef.current.style.transform = '';
