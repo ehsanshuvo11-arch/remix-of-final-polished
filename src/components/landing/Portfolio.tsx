@@ -294,6 +294,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         document.body
       )}
     </div>
+    </MotionReveal>
   );
 }
 
