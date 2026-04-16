@@ -6,13 +6,13 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
 
-  // Dot: soft glide, not instant — feels like silk dragging
-  const dotX = useSpring(cursorX, { stiffness: 300, damping: 30, mass: 0.3 });
-  const dotY = useSpring(cursorY, { stiffness: 300, damping: 30, mass: 0.3 });
+  // Dot: near-instant 1:1 tracking — precision first
+  const dotX = useSpring(cursorX, { stiffness: 800, damping: 50, mass: 0.1 });
+  const dotY = useSpring(cursorY, { stiffness: 800, damping: 50, mass: 0.1 });
 
-  // Ring: luxurious trailing lag per user spec (stiffness 100, damping 25, mass 0.5)
-  const ringX = useSpring(cursorX, { stiffness: 100, damping: 25, mass: 0.5 });
-  const ringY = useSpring(cursorY, { stiffness: 100, damping: 25, mass: 0.5 });
+  // Ring: subtle luxury trail — tight enough for usability
+  const ringX = useSpring(cursorX, { stiffness: 350, damping: 35, mass: 0.15 });
+  const ringY = useSpring(cursorY, { stiffness: 350, damping: 35, mass: 0.15 });
 
   useEffect(() => {
     if ('ontouchstart' in window) return;
