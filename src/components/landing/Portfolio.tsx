@@ -95,8 +95,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   }, []);
 
   return (
+    <MotionReveal delay={0.12 * index}>
     <div
-      ref={ref}
       data-project-card={isFirst ? '' : undefined}
     >
       {/* Image container with tilt in collapsed state */}
