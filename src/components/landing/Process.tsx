@@ -1,5 +1,6 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import WordReveal from '@/components/landing/WordReveal';
 import type { ProcessMetaContent, ProcessStep } from '@/types/database';
 
 interface ProcessProps {
@@ -20,6 +21,9 @@ export default function Process({ steps, content }: ProcessProps) {
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
 
+  const line1 = t(content?.titleLine1En ?? 'A process built on', content?.titleLine1Bn ?? 'নির্ভুলতার উপর');
+  const line2 = t(content?.titleLine2En ?? 'precision.', content?.titleLine2Bn ?? 'গড়া প্রক্রিয়া।');
+
   return (
     <div className="bg-secondary">
       <section id="process" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -28,12 +32,13 @@ export default function Process({ steps, content }: ProcessProps) {
             {t(content?.labelEn ?? 'How It Works', content?.labelBn ?? 'কীভাবে কাজ হয়')}
           </p>
         </MotionReveal>
-        <MotionReveal delay={0.1}>
-          <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            {t(content?.titleLine1En ?? 'A process built on', content?.titleLine1Bn ?? 'নির্ভুলতার উপর')}<br />
-            <em className="italic">{t(content?.titleLine2En ?? 'precision.', content?.titleLine2Bn ?? 'গড়া প্রক্রিয়া।')}</em>
-          </h2>
-        </MotionReveal>
+        <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <WordReveal delay={0.1}>{line1}</WordReveal>
+          <br />
+          <em className="italic">
+            <WordReveal delay={0.25}>{line2}</WordReveal>
+          </em>
+        </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-14">
           {displaySteps.map((step, i) => (
@@ -50,9 +55,9 @@ function StepCard({ step, index }: { step: ProcessStep; index: number }) {
   const isBn = lang === 'bn';
 
   return (
-    <MotionReveal delay={0.1 * (index + 1)}>
+    <MotionReveal delay={0.12 * (index + 1)}>
       <div
-        className="relative pt-5 transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,0,0,0.05)] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-border before:transition-colors before:duration-500 hover:before:bg-accent"
+        className="relative pt-5 transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,0,0,0.05)] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-border before:transition-colors before:duration-700 hover:before:bg-accent"
       >
         <div className="font-heading text-[40px] font-light text-primary/20 mb-4">
           {String(index + 1).padStart(2, '0')}
