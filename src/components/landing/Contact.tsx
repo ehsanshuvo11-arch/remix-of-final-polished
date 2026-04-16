@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import WordReveal from '@/components/landing/WordReveal';
+import MagneticButton from '@/components/landing/MagneticButton';
 import type { ContactContent } from '@/types/database';
 
 interface ContactProps {
@@ -78,6 +80,9 @@ export default function Contact({ contact }: ContactProps) {
     window.location.href = `mailto:${c.email}?subject=${subject}&body=${body}`;
   };
 
+  const line1 = t(c.titleLine1En ?? "Let's build something", c.titleLine1Bn ?? 'আসুন এমন কিছু তৈরি করি');
+  const line2 = t(c.titleLine2En ?? 'worth noticing.', c.titleLine2Bn ?? 'যা নজর কাড়ে।');
+
   return (
     <div id="contact" className="bg-primary">
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
@@ -87,12 +92,13 @@ export default function Contact({ contact }: ContactProps) {
               {t(c.sectionLabelEn ?? 'Get In Touch', c.sectionLabelBn ?? 'যোগাযোগ করুন')}
             </p>
           </MotionReveal>
-          <MotionReveal delay={0.1}>
-            <h2 className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-              {t(c.titleLine1En ?? "Let's build something", c.titleLine1Bn ?? 'আসুন এমন কিছু তৈরি করি')}<br />
-              <em className="italic">{t(c.titleLine2En ?? 'worth noticing.', c.titleLine2Bn ?? 'যা নজর কাড়ে।')}</em>
-            </h2>
-          </MotionReveal>
+          <h2 className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+            <WordReveal delay={0.1}>{line1}</WordReveal>
+            <br />
+            <em className="italic">
+              <WordReveal delay={0.25}>{line2}</WordReveal>
+            </em>
+          </h2>
           <MotionReveal delay={0.15}>
             <p className="text-[15px] leading-[1.85] text-primary-foreground/50 mb-10">
               {t(c.descEn ?? "Have a skincare brand that deserves better visuals? Let's talk.", c.descBn ?? 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও ভালো ভিজ্যুয়াল পাওয়ার যোগ্য?')}
@@ -106,9 +112,10 @@ export default function Contact({ contact }: ContactProps) {
                   href={link.href}
                   target={link.href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3.5 text-primary-foreground/70 text-sm transition-all duration-300 hover:text-accent hover:translate-x-2 group"
+                  className="flex items-center gap-3.5 text-primary-foreground/70 text-sm transition-all duration-500 hover:text-accent hover:translate-x-2 group"
+                  style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 >
-                  <span className="w-9 h-9 border border-primary-foreground/15 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:border-accent group-hover:bg-accent/10 group-hover:rotate-[10deg]">
+                  <span className="w-9 h-9 border border-primary-foreground/15 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:border-accent group-hover:bg-accent/10 group-hover:rotate-[10deg]">
                     {link.icon}
                   </span>
                   {link.label}
@@ -125,28 +132,31 @@ export default function Contact({ contact }: ContactProps) {
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
               placeholder={t(c.brandPlaceholderEn ?? 'Your Brand Name', c.brandPlaceholderBn ?? 'আপনার ব্র্যান্ডের নাম')}
-              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-300 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
+              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
             />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t(c.emailPlaceholderEn ?? 'Email Address', c.emailPlaceholderBn ?? 'ইমেইল')}
-              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-300 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
+              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
             />
             <textarea
               rows={5}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t(c.messagePlaceholderEn ?? 'Tell us about your brand...', c.messagePlaceholderBn ?? 'আপনার ব্র্যান্ড সম্পর্কে বলুন...')}
-              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm resize-none transition-all duration-300 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
+              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm resize-none transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
             />
-            <button
+            <MagneticButton
               onClick={handleSubmit}
-              className="w-full py-4 text-xs tracking-[2px] uppercase font-normal rounded-sm bg-accent text-accent-foreground text-center relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.97]"
+              className="w-full py-4 text-xs tracking-[2px] uppercase font-normal rounded-sm bg-accent text-accent-foreground text-center relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.97]"
             >
               {t(c.submitLabelEn ?? 'Send Inquiry', c.submitLabelBn ?? 'বার্তা পাঠান')}
-            </button>
+            </MagneticButton>
           </div>
         </MotionReveal>
       </div>

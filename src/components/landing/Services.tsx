@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import WordReveal from '@/components/landing/WordReveal';
 import type { Service, ServicesMetaContent } from '@/types/database';
 
 interface ServicesProps {
@@ -19,6 +20,9 @@ export default function Services({ services, content }: ServicesProps) {
 
   const displayServices = services.length > 0 ? services : defaultServices;
 
+  const line1 = t(content?.titleLine1En ?? 'Services built for', content?.titleLine1Bn ?? 'ই-কমার্স ভিত্তিক স্কিনকেয়ার');
+  const line2 = t(content?.titleLine2En ?? 'ecommerce-based skincare brands.', content?.titleLine2Bn ?? 'ব্র্যান্ডের জন্য তৈরি সেবা।');
+
   return (
     <div id="services" className="bg-primary">
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -27,12 +31,13 @@ export default function Services({ services, content }: ServicesProps) {
             {t(content?.labelEn ?? 'What We Do', content?.labelBn ?? 'আমরা যা করি')}
           </p>
         </MotionReveal>
-        <MotionReveal delay={0.1}>
-          <h2 className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            {t(content?.titleLine1En ?? 'Services built for', content?.titleLine1Bn ?? 'ই-কমার্স ভিত্তিক স্কিনকেয়ার')}<br />
-            <em className="italic">{t(content?.titleLine2En ?? 'ecommerce-based skincare brands.', content?.titleLine2Bn ?? 'ব্র্যান্ডের জন্য তৈরি সেবা।')}</em>
-          </h2>
-        </MotionReveal>
+        <h2 className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <WordReveal delay={0.1}>{line1}</WordReveal>
+          <br />
+          <em className="italic">
+            <WordReveal delay={0.25}>{line2}</WordReveal>
+          </em>
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-14">
           {displayServices.map((service, i) => (
@@ -67,15 +72,15 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   };
 
   return (
-    <MotionReveal delay={0.1 * (index + 1)}>
+    <MotionReveal delay={0.12 * (index + 1)}>
       <div
         ref={cardRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
         className="service-card bg-primary p-10 md:p-12 relative overflow-hidden transition-all duration-700 ease-out group hover:bg-[#152f78] hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-700 hover:after:opacity-100"
-        style={{ transition: 'transform 0.7s cubic-bezier(0.25,0.1,0.25,1), background-color 0.7s ease-out, box-shadow 0.7s ease-out' }}
+        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), background-color 0.7s ease-out, box-shadow 0.7s ease-out' }}
       >
-        <div className="font-heading text-5xl font-light text-primary-foreground/[0.06] leading-none mb-7 transition-all duration-400 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">
+        <div className="font-heading text-5xl font-light text-primary-foreground/[0.06] leading-none mb-7 transition-all duration-700 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">
           {String(index + 1).padStart(2, '0')}
         </div>
         <div className="font-heading text-xl font-normal text-primary-foreground mb-3.5 leading-tight">
@@ -84,7 +89,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         <p className="text-[13px] leading-[1.75] text-primary-foreground/50 relative z-10">
           {t(service.desc_en, service.desc_bn)}
         </p>
-        <div className="absolute bottom-0 left-9 right-9 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100" />
+        <div className="absolute bottom-0 left-9 right-9 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100" />
       </div>
     </MotionReveal>
   );

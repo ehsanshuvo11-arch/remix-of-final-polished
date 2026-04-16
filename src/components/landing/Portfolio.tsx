@@ -5,6 +5,8 @@ import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import WordReveal from '@/components/landing/WordReveal';
+import MagneticButton from '@/components/landing/MagneticButton';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 
 interface PortfolioProps {
@@ -32,7 +34,10 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
       </MotionReveal>
       <MotionReveal delay={0.1}>
         <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          {t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'সাম্প্রতিক')} <em className="italic">{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্ট।')}</em>
+          <WordReveal delay={0.1}>{t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'সাম্প্রতিক')}</WordReveal>{' '}
+          <em className="italic">
+            <WordReveal delay={0.25}>{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্ট।')}</WordReveal>
+          </em>
         </h2>
       </MotionReveal>
 
@@ -124,15 +129,18 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         >
           {project.image_url ? (
             <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
-              <div className={`relative transition-transform duration-500 ease-out ${imageExpanded ? 'inline-block group hover:scale-[1.03]' : 'w-full'}`}>
+              <div className={`relative transition-transform duration-[800ms] ease-out ${imageExpanded ? 'inline-block group hover:scale-[1.05]' : 'w-full'}`}
+                style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+              >
               <img
                 src={project.image_url}
                 alt={project.title_en}
-                className={`block transition-all duration-500 ease-out ${
+                className={`block transition-all duration-[800ms] ${
                   imageExpanded
                     ? 'max-w-full max-h-[calc(100vh-120px)]'
-                    : 'w-full object-cover h-[200px] group-hover:brightness-[0.92]'
+                    : 'w-full object-cover h-[200px] group-hover:brightness-[0.92] group-hover:scale-[1.05]'
                 }`}
+                style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 loading="lazy"
               />
               {/* Hover overlay — constrained to image area */}
@@ -217,7 +225,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
