@@ -112,7 +112,7 @@ export default function Contact({ contact }: ContactProps) {
                   href={link.href}
                   target={link.href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3.5 text-primary-foreground/70 text-sm transition-all duration-500 hover:text-accent hover:translate-x-2 group"
+                  className="flex items-center gap-3.5 text-primary-foreground/70 text-sm transition-all duration-500 hover:text-accent hover:translate-x-2 group min-h-[44px] py-1"
                   style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 >
                   <span className="w-9 h-9 border border-primary-foreground/15 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:border-accent group-hover:bg-accent/10 group-hover:rotate-[10deg]">
