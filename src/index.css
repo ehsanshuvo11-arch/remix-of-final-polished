@@ -194,23 +194,33 @@ html:not([data-lang="bn"]) .lang-bn { display: none !important; }
   transform: translateX(0);
 }
 
-/* Custom cursor — hide default cursor globally on non-touch devices */
+/* Custom cursor — hide default cursor on frontend only (non-touch devices) */
 @media (hover: hover) and (pointer: fine) {
-  *,
-  *::before,
-  *::after,
-  body,
-  a,
-  button,
-  img,
-  input,
-  textarea,
-  select,
-  label,
-  [role="button"],
-  [tabindex] {
+  body:not(.admin-panel) *,
+  body:not(.admin-panel) *::before,
+  body:not(.admin-panel) *::after,
+  body:not(.admin-panel) {
     cursor: none !important;
   }
+}
+
+/* Restore native cursor for admin panel */
+body.admin-panel,
+body.admin-panel *,
+body.admin-panel *::before,
+body.admin-panel *::after {
+  cursor: auto !important;
+}
+body.admin-panel a,
+body.admin-panel button,
+body.admin-panel [role="button"],
+body.admin-panel label,
+body.admin-panel select {
+  cursor: pointer !important;
+}
+body.admin-panel input,
+body.admin-panel textarea {
+  cursor: text !important;
 }
 
 /* Scrollbar */

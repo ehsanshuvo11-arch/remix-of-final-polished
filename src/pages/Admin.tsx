@@ -103,6 +103,12 @@ function isSameJson(a: unknown, b: unknown) {
 export default function Admin() {
   const queryClient = useQueryClient();
   useEffect(() => { setAdminQueryClient(queryClient); }, [queryClient]);
+
+  // Restore native cursor for admin panel
+  useEffect(() => {
+    document.body.classList.add('admin-panel');
+    return () => { document.body.classList.remove('admin-panel'); };
+  }, []);
   const [authed, setAuthed] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
