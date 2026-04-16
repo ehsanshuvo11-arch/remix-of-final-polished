@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 interface MagneticButtonProps {
@@ -11,6 +11,10 @@ interface MagneticButtonProps {
   rel?: string;
   strength?: number;
   textStrength?: number;
+}
+
+function useIsTouch() {
+  return useMemo(() => typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0), []);
 }
 
 export default function MagneticButton({
@@ -26,6 +30,7 @@ export default function MagneticButton({
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  const isTouch = useIsTouch();
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -39,6 +44,7 @@ export default function MagneticButton({
   const sty = useSpring(textY, { stiffness: 200, damping: 25, mass: 0.2 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (isTouch) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -61,7 +67,7 @@ export default function MagneticButton({
   const Tag = as === 'a' ? motion.a : motion.button;
 
   return (
-    <div ref={ref} className="inline-block">
+    <div ref={ref} className="inline-block min-h-[44px] min-w-[44px]">
       <Tag
         href={as === 'a' ? href : undefined}
         target={as === 'a' ? target : undefined}
@@ -70,12 +76,12 @@ export default function MagneticButton({
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={handleMouseLeave}
-        whileTap={{ scale: 0.97, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }}
-        style={{ x: sx, y: sy }}
-        className={className}
+        whileTap={{ scale: 0.96, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }}
+        style={isTouch ? undefined : { x: sx, y: sy }}
+        className={`${className} min-h-[44px]`}
       >
         <motion.span
-          style={{ x: stx, y: sty, display: 'inline-block' }}
+          style={isTouch ? { display: 'inline-block' } : { x: stx, y: sty, display: 'inline-block' }}
           className="relative z-10"
         >
           {children}

@@ -5,8 +5,15 @@ import Lenis from 'lenis';
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
 
+function isTouchDevice() {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // On touch devices, let native momentum scrolling handle everything
+    if (isTouchDevice()) return;
+
     const lenis = new Lenis({
       duration: 1.8,
       easing: (t: number) => {
