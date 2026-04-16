@@ -70,6 +70,7 @@ export default function MagneticButton({
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={handleMouseLeave}
+        whileTap={{ scale: 0.97, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }}
         style={{ x: sx, y: sy }}
         className={className}
       >

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getLenis } from '@/components/landing/SmoothScroll';
 import type { NavContent } from '@/types/database';
 
 interface NavbarProps {
@@ -38,6 +39,12 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
     >
       <a
         href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          const lenis = getLenis();
+          if (lenis) lenis.scrollTo(0, { duration: 1.8 });
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         className={`font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 ${
           scrolled ? 'text-primary' : 'text-primary-foreground'
         }`}
@@ -53,9 +60,12 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
               onClick={(e) => {
                 e.preventDefault();
                 const id = item.href.replace('#', '');
-                setTimeout(() => {
-                  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                const el = document.getElementById(id);
+                if (el) {
+                  const lenis = getLenis();
+                  if (lenis) lenis.scrollTo(el, { duration: 1.8, offset: 0 });
+                  else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
               }}
               className={`text-[13px] tracking-[1.5px] uppercase font-normal relative transition-colors duration-200 ${linkClass} after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
             >
