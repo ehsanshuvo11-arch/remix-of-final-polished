@@ -1,54 +1,43 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const followerRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+
+  // Dot follows instantly
+  const dotX = useSpring(cursorX, { damping: 40, stiffness: 800, mass: 0.2 });
+  const dotY = useSpring(cursorY, { damping: 40, stiffness: 800, mass: 0.2 });
+
+  // Ring follows with elegant lag
+  const ringX = useSpring(cursorX, { damping: 25, stiffness: 180, mass: 0.5 });
+  const ringY = useSpring(cursorY, { damping: 25, stiffness: 180, mass: 0.5 });
 
   useEffect(() => {
     if ('ontouchstart' in window) return;
 
     document.body.style.cursor = 'none';
 
-    let mx = 0, my = 0, fx = 0, fy = 0;
-    let animId: number;
-
     const onMouseMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-      if (cursorRef.current) {
-        cursorRef.current.style.left = mx + 'px';
-        cursorRef.current.style.top = my + 'px';
-      }
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
 
-    const loop = () => {
-      fx += (mx - fx) * 0.12;
-      fy += (my - fy) * 0.12;
-      if (followerRef.current) {
-        followerRef.current.style.left = fx + 'px';
-        followerRef.current.style.top = fy + 'px';
-      }
-      animId = requestAnimationFrame(loop);
-    };
+    const selector = 'a,button,.service-card,.work-card,.stat-box,.play-btn,[role="button"]';
 
-    const onEnter = () => {
-      if (cursorRef.current) { cursorRef.current.style.width = '20px'; cursorRef.current.style.height = '20px'; }
-      if (followerRef.current) { followerRef.current.style.width = '60px'; followerRef.current.style.height = '60px'; followerRef.current.style.opacity = '0.3'; }
-    };
-    const onLeave = () => {
-      if (cursorRef.current) { cursorRef.current.style.width = '10px'; cursorRef.current.style.height = '10px'; }
-      if (followerRef.current) { followerRef.current.style.width = '40px'; followerRef.current.style.height = '40px'; followerRef.current.style.opacity = '0.5'; }
+    const onEnter = () => setHovered(true);
+    const onLeave = () => setHovered(false);
+
+    const attachListeners = () => {
+      document.querySelectorAll(selector).forEach(el => {
+        el.addEventListener('mouseenter', onEnter);
+        el.addEventListener('mouseleave', onLeave);
+      });
     };
 
     document.addEventListener('mousemove', onMouseMove);
-    animId = requestAnimationFrame(loop);
-
-    const selector = 'a,button,.service-card,.work-card,.stat-box,.play-btn';
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(el => {
-      el.addEventListener('mouseenter', onEnter);
-      el.addEventListener('mouseleave', onLeave);
-    });
+    attachListeners();
 
     const observer = new MutationObserver(() => {
       document.querySelectorAll(selector).forEach(el => {
@@ -63,37 +52,51 @@ export default function CustomCursor() {
     return () => {
       document.body.style.cursor = '';
       document.removeEventListener('mousemove', onMouseMove);
-      cancelAnimationFrame(animId);
-      elements.forEach(el => {
+      document.querySelectorAll(selector).forEach(el => {
         el.removeEventListener('mouseenter', onEnter);
         el.removeEventListener('mouseleave', onLeave);
       });
       observer.disconnect();
     };
-  }, []);
+  }, [cursorX, cursorY]);
 
   if (typeof window !== 'undefined' && 'ontouchstart' in window) return null;
 
   return (
     <>
-      {/* Orange dot */}
-      <div
-        ref={cursorRef}
-        className="fixed w-2.5 h-2.5 rounded-full pointer-events-none z-[99999] -translate-x-1/2 -translate-y-1/2"
+      {/* Dot */}
+      <motion.div
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[99999]"
         style={{
+          x: dotX,
+          y: dotY,
+          translateX: '-50%',
+          translateY: '-50%',
           backgroundColor: 'hsl(28 96% 61%)',
-          transition: 'width 0.2s, height 0.2s',
         }}
+        animate={{
+          width: hovered ? 20 : 10,
+          height: hovered ? 20 : 10,
+          opacity: hovered ? 0.9 : 1,
+        }}
+        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
       />
-      {/* Orange circle follower */}
-      <div
-        ref={followerRef}
-        className="fixed w-10 h-10 rounded-full pointer-events-none z-[99998] -translate-x-1/2 -translate-y-1/2"
+      {/* Ring */}
+      <motion.div
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[99998]"
         style={{
+          x: ringX,
+          y: ringY,
+          translateX: '-50%',
+          translateY: '-50%',
           border: '1.5px solid hsl(28 96% 61%)',
-          opacity: 0.5,
-          transition: 'width 0.25s, height 0.25s, opacity 0.25s',
         }}
+        animate={{
+          width: hovered ? 60 : 40,
+          height: hovered ? 60 : 40,
+          opacity: hovered ? 0.25 : 0.45,
+        }}
+        transition={{ type: 'spring', damping: 18, stiffness: 200 }}
       />
     </>
   );
