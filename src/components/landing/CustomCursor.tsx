@@ -6,13 +6,13 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
 
-  // Dot follows instantly
-  const dotX = useSpring(cursorX, { damping: 40, stiffness: 800, mass: 0.2 });
-  const dotY = useSpring(cursorY, { damping: 40, stiffness: 800, mass: 0.2 });
+  // Dot: soft glide, not instant — feels like silk dragging
+  const dotX = useSpring(cursorX, { stiffness: 300, damping: 30, mass: 0.3 });
+  const dotY = useSpring(cursorY, { stiffness: 300, damping: 30, mass: 0.3 });
 
-  // Ring follows with elegant lag
-  const ringX = useSpring(cursorX, { damping: 25, stiffness: 180, mass: 0.5 });
-  const ringY = useSpring(cursorY, { damping: 25, stiffness: 180, mass: 0.5 });
+  // Ring: luxurious trailing lag per user spec (stiffness 100, damping 25, mass 0.5)
+  const ringX = useSpring(cursorX, { stiffness: 100, damping: 25, mass: 0.5 });
+  const ringY = useSpring(cursorY, { stiffness: 100, damping: 25, mass: 0.5 });
 
   useEffect(() => {
     if ('ontouchstart' in window) return;
@@ -24,29 +24,24 @@ export default function CustomCursor() {
       cursorY.set(e.clientY);
     };
 
-    const selector = 'a,button,.service-card,.work-card,.stat-box,.play-btn,[role="button"]';
+    const selector = 'a,button,.service-card,.work-card,.stat-box,.play-btn,[role="button"],input,textarea';
 
     const onEnter = () => setHovered(true);
     const onLeave = () => setHovered(false);
 
-    const attachListeners = () => {
-      document.querySelectorAll(selector).forEach(el => {
-        el.addEventListener('mouseenter', onEnter);
-        el.addEventListener('mouseleave', onLeave);
-      });
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    attachListeners();
-
-    const observer = new MutationObserver(() => {
+    const attach = () => {
       document.querySelectorAll(selector).forEach(el => {
         el.removeEventListener('mouseenter', onEnter);
         el.removeEventListener('mouseleave', onLeave);
         el.addEventListener('mouseenter', onEnter);
         el.addEventListener('mouseleave', onLeave);
       });
-    });
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    attach();
+
+    const observer = new MutationObserver(attach);
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
@@ -75,11 +70,11 @@ export default function CustomCursor() {
           backgroundColor: 'hsl(28 96% 61%)',
         }}
         animate={{
-          width: hovered ? 20 : 10,
-          height: hovered ? 20 : 10,
-          opacity: hovered ? 0.9 : 1,
+          width: hovered ? 18 : 10,
+          height: hovered ? 18 : 10,
+          opacity: hovered ? 0.85 : 1,
         }}
-        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20, mass: 0.3 }}
       />
       {/* Ring */}
       <motion.div
@@ -92,11 +87,11 @@ export default function CustomCursor() {
           border: '1.5px solid hsl(28 96% 61%)',
         }}
         animate={{
-          width: hovered ? 60 : 40,
-          height: hovered ? 60 : 40,
-          opacity: hovered ? 0.25 : 0.45,
+          width: hovered ? 56 : 40,
+          height: hovered ? 56 : 40,
+          opacity: hovered ? 0.2 : 0.4,
         }}
-        transition={{ type: 'spring', damping: 18, stiffness: 200 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 0.4 }}
       />
     </>
   );
