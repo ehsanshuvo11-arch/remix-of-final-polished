@@ -47,7 +47,6 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 
 function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
   const { t, lang } = useLanguage();
-  const ref = useScrollReveal(0.12 * index);
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
