@@ -195,20 +195,22 @@ html:not([data-lang="bn"]) .lang-bn { display: none !important; }
 }
 
 /* Custom cursor — hide default cursor globally on non-touch devices */
-*,
-*::before,
-*::after,
-body,
-a,
-button,
-img,
-input,
-textarea,
-select,
-label,
-[role="button"],
-[tabindex] {
-  cursor: none !important;
+@media (hover: hover) and (pointer: fine) {
+  *,
+  *::before,
+  *::after,
+  body,
+  a,
+  button,
+  img,
+  input,
+  textarea,
+  select,
+  label,
+  [role="button"],
+  [tabindex] {
+    cursor: none !important;
+  }
 }
 
 /* Scrollbar */

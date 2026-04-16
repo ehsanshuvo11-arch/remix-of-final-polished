@@ -45,7 +45,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
           if (lenis) lenis.scrollTo(0, { duration: 1.8 });
           else window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        className={`font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 ${
+        className={`font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center ${
           scrolled ? 'text-primary' : 'text-primary-foreground'
         }`}
       >
