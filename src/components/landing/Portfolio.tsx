@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import MotionReveal from '@/components/landing/MotionReveal';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 
 interface PortfolioProps {
@@ -27,12 +27,16 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 
   return (
     <section id="work" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
-      <p ref={labelRef} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-        {t(content?.labelEn ?? 'Selected Work', content?.labelBn ?? 'বাছাই করা কাজ')}
-      </p>
-      <h2 ref={titleRef} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-        {t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'সাম্প্রতিক')} <em className="italic">{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্ট।')}</em>
-      </h2>
+      <MotionReveal>
+        <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+          {t(content?.labelEn ?? 'Selected Work', content?.labelBn ?? 'বাছাই করা কাজ')}
+        </p>
+      </MotionReveal>
+      <MotionReveal delay={0.1}>
+        <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          {t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'সাম্প্রতিক')} <em className="italic">{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্ট।')}</em>
+        </h2>
+      </MotionReveal>
 
       <div className="flex flex-col gap-10 mt-14">
         {displayProjects.map((project, i) => (
