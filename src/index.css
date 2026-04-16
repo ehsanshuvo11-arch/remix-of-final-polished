@@ -196,10 +196,10 @@ html:not([data-lang="bn"]) .lang-bn { display: none !important; }
 
 /* Custom cursor — hide default cursor on frontend only (non-touch devices) */
 @media (hover: hover) and (pointer: fine) {
-  body:not(.admin-panel) *,
-  body:not(.admin-panel) *::before,
-  body:not(.admin-panel) *::after,
-  body:not(.admin-panel) {
+  body.public-site *,
+  body.public-site *::before,
+  body.public-site *::after,
+  body.public-site {
     cursor: none !important;
   }
 }
