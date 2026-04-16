@@ -11,6 +11,7 @@ import Footer from '@/components/landing/Footer';
 import PuzzleGame from '@/components/landing/PuzzleGame';
 import PageLoader from '@/components/landing/PageLoader';
 import CustomCursor from '@/components/landing/CustomCursor';
+import SmoothScroll from '@/components/landing/SmoothScroll';
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
 import type { HeroContent, AboutContent, ContactContent, FooterContent, DiscountContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, PuzzleContent } from '@/types/database';

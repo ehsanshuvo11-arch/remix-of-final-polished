@@ -92,7 +92,7 @@
     @apply border-border;
   }
   html {
-    scroll-behavior: smooth;
+    /* smooth scrolling handled by Lenis */
   }
   body {
     @apply bg-background text-foreground;
