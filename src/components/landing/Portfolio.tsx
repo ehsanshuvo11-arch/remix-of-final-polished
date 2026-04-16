@@ -111,8 +111,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       {/* Image container with tilt in collapsed state */}
       <div
         ref={cardRef}
-        onMouseMove={handleTilt}
-        onMouseLeave={handleTiltLeave}
+        onMouseMove={isTouch ? undefined : handleTilt}
+        onMouseLeave={isTouch ? undefined : handleTiltLeave}
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div
