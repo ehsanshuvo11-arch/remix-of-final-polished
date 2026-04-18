@@ -47,7 +47,28 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
   }, []);
 
   return (
-    <section className="min-h-screen bg-primary flex items-center justify-center relative overflow-hidden px-6 py-24 sm:px-8 md:px-14 md:py-20">
+    <section
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 py-24 sm:px-8 md:px-14 md:py-20"
+      style={{
+        backgroundColor: 'hsl(var(--primary))',
+        backgroundImage: [
+          'radial-gradient(ellipse 90% 60% at 12% 8%, hsl(28 96% 61% / 0.10), transparent 60%)',
+          'radial-gradient(ellipse 70% 50% at 88% 6%, hsl(38 90% 65% / 0.07), transparent 65%)',
+          'radial-gradient(ellipse 120% 80% at 50% 110%, hsl(224 70% 12% / 0.55), transparent 70%)',
+          'radial-gradient(circle at 50% 50%, hsl(224 65% 36%) 0%, hsl(224 70% 22%) 55%, hsl(224 75% 14%) 100%)',
+        ].join(', '),
+      }}
+    >
+      {/* Fine grain noise texture for tactile depth */}
+      <div
+        className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-[0.18]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          backgroundSize: '220px 220px',
+        }}
+      />
+
       {/* Animated grid */}
       <div
         className="absolute inset-0"
@@ -81,7 +102,10 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           {t(hero.eyebrowEn, hero.eyebrowBn)}
         </p>
 
-        <h1 className="font-heading font-light text-primary-foreground tracking-[-1px] mb-6 text-[clamp(38px,8vw,96px)] leading-[1.05]">
+        <h1
+          className="font-heading font-light text-primary-foreground tracking-tighter mb-6 text-[clamp(38px,8vw,96px)] leading-[1.05]"
+          style={{ textShadow: '0 1px 2px rgba(0,0,0,0.30), 0 2px 18px rgba(0,0,0,0.18)' }}
+        >
          <span className="inline-block pt-4">
             <span className="inline-block" style={{ animation: 'wordReveal 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards', transform: 'translateY(110%)', clipPath: 'inset(-20% -10% 0 -10%)' }}>
               {parseItalic(t(hero.titleEn, hero.titleBn))}
@@ -123,7 +147,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className="inline-flex items-center justify-center px-8 sm:px-11 py-4 text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm bg-accent text-primary-foreground relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100"
+            className="inline-flex items-center justify-center px-8 sm:px-11 py-4 text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100"
           >
             {t(hero.viewWorkEn ?? 'View Our Work', hero.viewWorkBn ?? 'আমাদের কাজ দেখুন')}
           </MagneticButton>
