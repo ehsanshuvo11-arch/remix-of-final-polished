@@ -140,9 +140,23 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 backgroundSize: '80px 80px',
               }}
             />
+            {/* Ambient studio spotlight — top-right */}
             <div
-              className="absolute -top-24 -right-24 w-[400px] h-[400px] rounded-full pointer-events-none"
-              style={{ background: 'rgba(251,146,60,0.10)', filter: 'blur(80px)' }}
+              className="absolute -top-32 -right-32 w-[460px] h-[460px] rounded-full pointer-events-none"
+              style={{ background: 'rgba(251,146,60,0.12)', filter: 'blur(110px)' }}
+            />
+            {/* Ambient studio spotlight — bottom-left, larger & softer */}
+            <div
+              className="absolute -bottom-40 -left-40 w-[560px] h-[560px] rounded-full pointer-events-none"
+              style={{ background: 'rgba(251,146,60,0.09)', filter: 'blur(130px)' }}
+            />
+            {/* Soft radial wash for atmospheric depth */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(ellipse 80% 60% at 85% 15%, rgba(251,146,60,0.08), transparent 60%), radial-gradient(ellipse 70% 55% at 15% 90%, rgba(251,146,60,0.06), transparent 65%)',
+              }}
             />
 
             <div className="relative h-full flex flex-col justify-center items-end px-8 py-24 pointer-events-none">
