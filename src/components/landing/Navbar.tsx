@@ -129,6 +129,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
             className="md:hidden fixed inset-0 z-[105] bg-primary"
+            onClick={() => setOpen(false)}
           >
             {/* Subtle accent grid */}
             <div
