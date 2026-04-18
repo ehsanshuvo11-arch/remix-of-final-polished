@@ -128,26 +128,19 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
-            className="md:hidden fixed inset-0 z-[105] bg-[#0a1128]/85 backdrop-blur-2xl"
+            className="md:hidden fixed inset-0 z-[105]"
+            style={{ backgroundColor: '#1e3a8a' }}
             onClick={() => setOpen(false)}
           >
-            <div className="absolute inset-0 bg-[#0a1128]/85 pointer-events-none" />
-            <div className="absolute -top-20 -right-20 w-[350px] h-[350px] bg-[#fb923c] rounded-full mix-blend-screen filter blur-[120px] opacity-25 pointer-events-none"></div>
+            {/* Soft orange studio glow — top-right */}
             <div
-              className="absolute -top-40 -right-32 w-[620px] h-[620px] rounded-full pointer-events-none"
-              style={{ background: 'rgba(251,146,60,0.11)', filter: 'blur(100px)' }}
+              className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none"
+              style={{ backgroundColor: '#fb923c', filter: 'blur(100px)', opacity: 0.15 }}
             />
+            {/* Subtle secondary glow — bottom-left */}
             <div
-              className="absolute -bottom-48 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none"
-              style={{ background: 'rgba(251,146,60,0.08)', filter: 'blur(100px)' }}
-            />
-            <div
-              className="absolute inset-0 pointer-events-none opacity-[0.18] mix-blend-overlay"
-              style={{
-                backgroundImage:
-                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-                backgroundSize: '220px 220px',
-              }}
+              className="absolute -bottom-40 -left-40 w-[420px] h-[420px] rounded-full pointer-events-none"
+              style={{ backgroundColor: '#fb923c', filter: 'blur(100px)', opacity: 0.10 }}
             />
 
             <div className="relative h-full flex flex-col justify-center items-end px-8 py-24 pointer-events-none">
@@ -176,8 +169,8 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                         // Wait for overlay close before scrolling
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
-                      className="font-heading text-[44px] leading-tight font-light text-primary-foreground hover:text-accent transition-colors duration-500 block min-h-[56px] text-right"
-                      style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+                      className="font-heading text-[44px] leading-tight font-light hover:text-accent transition-colors duration-500 block min-h-[56px] text-right"
+                      style={{ color: '#f9fafb', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                     >
                       {item.label}
                     </a>
@@ -190,10 +183,11 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-16 pt-8 border-t border-primary-foreground/10 self-end w-full text-right pointer-events-none"
+                className="mt-16 pt-8 self-end w-full text-right pointer-events-none"
+                style={{ borderTop: '1px solid rgba(249,250,251,0.15)' }}
               >
-                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40">
-                  POLISHED<span className="text-accent">.</span> Studio
+                <p className="text-[10px] tracking-[3px] uppercase" style={{ color: 'rgba(249,250,251,0.45)' }}>
+                  POLISHED<span style={{ color: '#fb923c' }}>.</span> Studio
                 </p>
               </motion.div>
             </div>
