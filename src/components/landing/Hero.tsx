@@ -102,7 +102,10 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           {t(hero.eyebrowEn, hero.eyebrowBn)}
         </p>
 
-        <h1 className="font-heading font-light text-primary-foreground tracking-[-1px] mb-6 text-[clamp(38px,8vw,96px)] leading-[1.05]">
+        <h1
+          className="font-heading font-light text-primary-foreground tracking-tighter mb-6 text-[clamp(38px,8vw,96px)] leading-[1.05]"
+          style={{ textShadow: '0 1px 2px rgba(0,0,0,0.30), 0 2px 18px rgba(0,0,0,0.18)' }}
+        >
          <span className="inline-block pt-4">
             <span className="inline-block" style={{ animation: 'wordReveal 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards', transform: 'translateY(110%)', clipPath: 'inset(-20% -10% 0 -10%)' }}>
               {parseItalic(t(hero.titleEn, hero.titleBn))}
