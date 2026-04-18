@@ -55,10 +55,10 @@ export default function CustomCursor() {
     };
   }, [cursorX, cursorY]);
 
-  if (typeof window !== 'undefined' && 'ontouchstart' in window) return null;
+  if (typeof window !== 'undefined' && ('ontouchstart' in window || window.innerWidth < 768)) return null;
 
   return (
-    <>
+    <div className="hidden md:block">
       {/* Dot */}
       <motion.div
         className="fixed top-0 left-0 rounded-full pointer-events-none z-[99999]"
@@ -93,6 +93,6 @@ export default function CustomCursor() {
         }}
         transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 0.4 }}
       />
-    </>
+    </div>
   );
 }

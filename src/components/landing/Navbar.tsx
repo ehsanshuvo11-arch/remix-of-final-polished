@@ -128,20 +128,19 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
-            className="md:hidden fixed inset-0 z-[105] bg-primary/95 backdrop-blur-lg"
+            className="md:hidden fixed inset-0 z-[105] bg-[#0a1128]/85 backdrop-blur-2xl"
             onClick={() => setOpen(false)}
           >
-            {/* Massive ambient studio spotlight — abstract top-right placement */}
+            <div className="absolute inset-0 bg-[#0a1128]/85 pointer-events-none" />
+            <div className="absolute -top-20 -right-20 w-[350px] h-[350px] bg-[#fb923c] rounded-full mix-blend-screen filter blur-[120px] opacity-25 pointer-events-none"></div>
             <div
               className="absolute -top-40 -right-32 w-[620px] h-[620px] rounded-full pointer-events-none"
               style={{ background: 'rgba(251,146,60,0.11)', filter: 'blur(100px)' }}
             />
-            {/* Secondary softer bloom — bottom-left for atmospheric balance */}
             <div
               className="absolute -bottom-48 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none"
               style={{ background: 'rgba(251,146,60,0.08)', filter: 'blur(100px)' }}
             />
-            {/* Ultra-fine grain noise texture for tactile depth */}
             <div
               className="absolute inset-0 pointer-events-none opacity-[0.18] mix-blend-overlay"
               style={{
