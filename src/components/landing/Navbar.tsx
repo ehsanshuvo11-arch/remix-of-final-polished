@@ -186,9 +186,8 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 className="mt-16 pt-8 self-end w-full text-right pointer-events-none"
                 style={{ borderTop: '1px solid rgba(249,250,251,0.15)' }}
               >
-              >
-                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40">
-                  POLISHED<span className="text-accent">.</span> Studio
+                <p className="text-[10px] tracking-[3px] uppercase" style={{ color: 'rgba(249,250,251,0.45)' }}>
+                  POLISHED<span style={{ color: '#fb923c' }}>.</span> Studio
                 </p>
               </motion.div>
             </div>
