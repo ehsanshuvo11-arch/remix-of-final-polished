@@ -145,19 +145,23 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
               style={{ background: 'rgba(251,146,60,0.10)', filter: 'blur(80px)' }}
             />
 
-            <div className="relative h-full flex flex-col justify-center px-8 py-24">
-              <ul className="flex flex-col gap-7">
+            <div className="relative h-full flex flex-col justify-center items-end px-8 py-24 pointer-events-none">
+              <ul
+                className="flex flex-col items-end gap-7 pointer-events-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {navItems.map((item, i) => (
                   <motion.li
                     key={item.href}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
                     transition={{
                       duration: 0.7,
                       delay: 0.15 + i * 0.08,
                       ease: LUXE,
                     }}
+                    className="text-right"
                   >
                     <a
                       href={item.href}
@@ -167,7 +171,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                         // Wait for overlay close before scrolling
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
-                      className="font-heading text-[44px] leading-tight font-light text-primary-foreground hover:text-accent transition-colors duration-500 block min-h-[56px]"
+                      className="font-heading text-[44px] leading-tight font-light text-primary-foreground hover:text-accent transition-colors duration-500 block min-h-[56px] text-right"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                     >
                       {item.label}
