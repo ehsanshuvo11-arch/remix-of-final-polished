@@ -132,15 +132,18 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             style={{ backgroundColor: '#1e3a8a' }}
             onClick={() => setOpen(false)}
           >
-            {/* Soft orange studio glow — top-right */}
+            {/* Subtle depth gradient — diagonal orange wash */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(ellipse 90% 70% at 100% 0%, rgba(251,146,60,0.18) 0%, rgba(251,146,60,0.08) 35%, rgba(251,146,60,0) 65%), radial-gradient(ellipse 80% 60% at 0% 100%, rgba(251,146,60,0.12) 0%, rgba(251,146,60,0.05) 40%, rgba(251,146,60,0) 70%)',
+              }}
+            />
+            {/* Soft orange studio glow — top-right accent */}
             <div
               className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none"
-              style={{ backgroundColor: '#fb923c', filter: 'blur(100px)', opacity: 0.15 }}
-            />
-            {/* Subtle secondary glow — bottom-left */}
-            <div
-              className="absolute -bottom-40 -left-40 w-[420px] h-[420px] rounded-full pointer-events-none"
-              style={{ backgroundColor: '#fb923c', filter: 'blur(100px)', opacity: 0.10 }}
+              style={{ backgroundColor: '#fb923c', filter: 'blur(100px)', opacity: 0.12 }}
             />
 
             <div className="relative h-full flex flex-col justify-center items-end px-8 py-24 pointer-events-none">
