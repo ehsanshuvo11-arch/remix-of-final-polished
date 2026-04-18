@@ -116,7 +116,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div
-          className={`relative cursor-pointer ${imageExpanded ? '' : 'group'}`}
+          className={`relative cursor-pointer ${imageExpanded ? '' : 'md:group'}`}
           onClick={() => {
             toggleImageExpand();
             if (!imageExpanded && cardRef.current) {
@@ -127,13 +127,13 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? 'none' : '200px'),
+            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? '240px' : '200px'),
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
           {project.image_url ? (
             <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
-              <div className={`relative transition-transform duration-[800ms] ease-out ${imageExpanded ? 'inline-block group hover:scale-[1.05]' : 'w-full'}`}
+              <div className={`relative transition-transform duration-[800ms] ease-out ${imageExpanded ? 'inline-block md:group md:hover:scale-[1.05]' : 'w-full'}`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
               >
               <img
@@ -143,15 +143,15 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   imageExpanded
                     ? 'max-w-full max-h-[calc(100vh-120px)]'
                     : isTouch
-                      ? 'w-full h-auto'
-                      : 'w-full object-cover h-[200px] group-hover:brightness-[0.92] group-hover:scale-[1.05]'
+                      ? 'w-full h-60 object-cover'
+                      : 'w-full object-cover h-[200px] md:group-hover:brightness-[0.92] md:group-hover:scale-[1.05]'
                 }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 loading="lazy"
               />
-              {/* Hover overlay — constrained to image area */}
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8 z-10">
-                <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
+              {/* Hover overlay — desktop hover-capable devices only */}
+              <div className="hidden md:flex absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 md:group-hover:opacity-100 items-end p-8 z-10">
+                <div className="text-primary-foreground translate-y-4 transition-transform duration-400 md:group-hover:translate-y-0">
                   <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
                   <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
                 </div>
@@ -159,7 +159,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               </div>
             </div>
           ) : (
-            <div className="relative w-full h-[200px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 group-hover:bg-muted">
+            <div className="relative w-full h-[200px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 md:group-hover:bg-muted">
               <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
                 <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
                 <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
@@ -168,9 +168,9 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
                 {t(project.title_en, project.title_bn)}
               </span>
-              {/* Hover overlay for placeholder */}
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 flex items-end p-8 z-10">
-                <div className="text-primary-foreground translate-y-4 transition-transform duration-400 group-hover:translate-y-0">
+              {/* Hover overlay for placeholder — desktop hover only */}
+              <div className="hidden md:flex absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-primary/80 to-transparent opacity-0 transition-opacity duration-400 md:group-hover:opacity-100 items-end p-8 z-10">
+                <div className="text-primary-foreground translate-y-4 transition-transform duration-400 md:group-hover:translate-y-0">
                   <h3 className="font-heading text-2xl font-normal mb-1.5">{t(project.title_en, project.title_bn)}</h3>
                   <span className="text-[11px] tracking-[2px] uppercase text-accent">{t(project.category_en, project.category_bn)}</span>
                 </div>
@@ -178,8 +178,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             </div>
           )}
 
-          {/* Bottom accent line on hover */}
-          <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 z-10" />
+          {/* Bottom accent line — desktop hover only */}
+          <div className="hidden md:block absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-500 md:group-hover:scale-x-100 z-10" />
         </div>
       </div>
 

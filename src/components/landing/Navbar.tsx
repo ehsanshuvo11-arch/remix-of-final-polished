@@ -128,34 +128,26 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
-            className="md:hidden fixed inset-0 z-[105] bg-primary"
+            className="md:hidden fixed inset-0 z-[105] bg-primary/95 backdrop-blur-lg"
             onClick={() => setOpen(false)}
           >
-            {/* Subtle accent grid */}
+            {/* Massive ambient studio spotlight — abstract top-right placement */}
             <div
-              className="absolute inset-0 opacity-50 pointer-events-none"
+              className="absolute -top-40 -right-32 w-[620px] h-[620px] rounded-full pointer-events-none"
+              style={{ background: 'rgba(251,146,60,0.11)', filter: 'blur(100px)' }}
+            />
+            {/* Secondary softer bloom — bottom-left for atmospheric balance */}
+            <div
+              className="absolute -bottom-48 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none"
+              style={{ background: 'rgba(251,146,60,0.08)', filter: 'blur(100px)' }}
+            />
+            {/* Ultra-fine grain noise texture for tactile depth */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-[0.18] mix-blend-overlay"
               style={{
                 backgroundImage:
-                  'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
-                backgroundSize: '80px 80px',
-              }}
-            />
-            {/* Ambient studio spotlight — top-right */}
-            <div
-              className="absolute -top-32 -right-32 w-[460px] h-[460px] rounded-full pointer-events-none"
-              style={{ background: 'rgba(251,146,60,0.12)', filter: 'blur(110px)' }}
-            />
-            {/* Ambient studio spotlight — bottom-left, larger & softer */}
-            <div
-              className="absolute -bottom-40 -left-40 w-[560px] h-[560px] rounded-full pointer-events-none"
-              style={{ background: 'rgba(251,146,60,0.09)', filter: 'blur(130px)' }}
-            />
-            {/* Soft radial wash for atmospheric depth */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  'radial-gradient(ellipse 80% 60% at 85% 15%, rgba(251,146,60,0.08), transparent 60%), radial-gradient(ellipse 70% 55% at 15% 90%, rgba(251,146,60,0.06), transparent 65%)',
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+                backgroundSize: '220px 220px',
               }}
             />
 
