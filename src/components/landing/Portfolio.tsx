@@ -127,7 +127,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : '200px',
+            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? 'none' : '200px'),
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
@@ -142,7 +142,9 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                 className={`block transition-all duration-[800ms] ${
                   imageExpanded
                     ? 'max-w-full max-h-[calc(100vh-120px)]'
-                    : 'w-full object-cover h-[200px] group-hover:brightness-[0.92] group-hover:scale-[1.05]'
+                    : isTouch
+                      ? 'w-full h-auto'
+                      : 'w-full object-cover h-[200px] group-hover:brightness-[0.92] group-hover:scale-[1.05]'
                 }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 loading="lazy"
