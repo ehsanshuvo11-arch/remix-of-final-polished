@@ -185,7 +185,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-16 pt-8 border-t border-primary-foreground/10"
+                className="mt-16 pt-8 border-t border-primary-foreground/10 self-end w-full text-right pointer-events-none"
               >
                 <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40">
                   POLISHED<span className="text-accent">.</span> Studio
