@@ -41,7 +41,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         </h2>
       </MotionReveal>
 
-      <div className="flex flex-col gap-10 mt-14">
+      <div className="flex flex-col gap-16 md:gap-24 mt-14">
         {displayProjects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
@@ -127,7 +127,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? '240px' : '200px'),
+            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? '250px' : '400px'),
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
@@ -143,8 +143,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   imageExpanded
                     ? 'max-w-full max-h-[calc(100vh-120px)]'
                     : isTouch
-                      ? 'w-full h-60 object-cover'
-                      : 'w-full object-cover h-[200px] md:group-hover:brightness-[0.92] md:group-hover:scale-[1.05]'
+                      ? 'w-full h-[250px] object-cover object-center'
+                      : 'w-full h-[400px] object-cover object-center md:group-hover:brightness-[0.92] md:group-hover:scale-[1.05]'
                 }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 loading="lazy"
@@ -159,7 +159,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               </div>
             </div>
           ) : (
-            <div className="relative w-full h-[200px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 md:group-hover:bg-muted">
+            <div className="relative w-full h-[250px] md:h-[400px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 md:group-hover:bg-muted">
               <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
                 <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
                 <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
