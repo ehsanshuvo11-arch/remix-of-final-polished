@@ -169,8 +169,8 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                         // Wait for overlay close before scrolling
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
-                      className="font-heading text-[44px] leading-tight font-light text-primary-foreground hover:text-accent transition-colors duration-500 block min-h-[56px] text-right"
-                      style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+                      className="font-heading text-[44px] leading-tight font-light hover:text-accent transition-colors duration-500 block min-h-[56px] text-right"
+                      style={{ color: '#f9fafb', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                     >
                       {item.label}
                     </a>
@@ -183,7 +183,9 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-16 pt-8 border-t border-primary-foreground/10 self-end w-full text-right pointer-events-none"
+                className="mt-16 pt-8 self-end w-full text-right pointer-events-none"
+                style={{ borderTop: '1px solid rgba(249,250,251,0.15)' }}
+              >
               >
                 <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40">
                   POLISHED<span className="text-accent">.</span> Studio
