@@ -48,27 +48,8 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 py-24 sm:px-8 md:px-14 md:py-20"
-      style={{
-        backgroundColor: 'hsl(var(--primary))',
-        backgroundImage: [
-          'radial-gradient(ellipse 90% 60% at 12% 8%, hsl(28 96% 61% / 0.10), transparent 60%)',
-          'radial-gradient(ellipse 70% 50% at 88% 6%, hsl(38 90% 65% / 0.07), transparent 65%)',
-          'radial-gradient(ellipse 120% 80% at 50% 110%, hsl(224 70% 12% / 0.55), transparent 70%)',
-          'radial-gradient(circle at 50% 50%, hsl(224 65% 36%) 0%, hsl(224 70% 22%) 55%, hsl(224 75% 14%) 100%)',
-        ].join(', '),
-      }}
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 py-24 sm:px-8 md:px-14 md:py-20 bg-primary"
     >
-      {/* Fine grain noise texture for tactile depth */}
-      <div
-        className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-[0.18]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-          backgroundSize: '220px 220px',
-        }}
-      />
-
       {/* Animated grid */}
       <div
         className="absolute inset-0"
