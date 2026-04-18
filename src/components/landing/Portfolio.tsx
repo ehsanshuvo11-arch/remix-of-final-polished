@@ -127,7 +127,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
           style={{
             overflow: 'hidden',
-            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? '180px' : '320px'),
+            maxHeight: imageExpanded ? 'calc(100vh - 120px)' : (isTouch ? '150px' : '280px'),
             transition: 'max-height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
@@ -143,8 +143,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   imageExpanded
                     ? 'max-w-full max-h-[calc(100vh-120px)]'
                     : isTouch
-                      ? 'w-full h-[180px] object-cover object-center'
-                      : 'w-full h-[320px] object-cover object-center md:group-hover:brightness-[0.92] md:group-hover:scale-[1.05]'
+                      ? 'w-full h-[150px] object-cover object-center'
+                      : 'w-full h-[280px] object-cover object-center md:group-hover:brightness-[0.92] md:group-hover:scale-[1.05]'
                 }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 loading="lazy"
@@ -159,7 +159,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               </div>
             </div>
           ) : (
-            <div className="relative w-full h-[180px] md:h-[320px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 md:group-hover:bg-muted">
+            <div className="relative w-full h-[150px] md:h-[280px] flex flex-col items-center justify-center bg-secondary gap-2 transition-colors duration-300 md:group-hover:bg-muted">
               <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
                 <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
                 <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
