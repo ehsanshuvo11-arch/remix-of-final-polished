@@ -87,7 +87,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'flex items-center justify-center w-full min-h-[80vh] py-8' : 'h-[140px] md:h-[260px]'}`}
+        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'flex items-center justify-center w-full min-h-[80vh]' : 'h-[140px] md:h-[260px]'}`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -108,21 +108,30 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       >
         {project.image_url ? (
           imageExpanded ? (
-            <img
-              src={project.image_url}
-              alt={t(project.title_en, project.title_bn)}
-              className="relative z-10 aspect-square w-auto h-auto max-w-[min(90vw,80vh)] max-h-[80vh] object-contain"
-              style={{
-                display: 'block',
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                filter: 'none',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                borderRadius: 0,
-              }}
-              loading="lazy"
-            />
+            <>
+              {/* Edge fade vignette */}
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.15)_100%)] z-0" />
+              {/* Brand orange backlight glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] max-w-[600px] aspect-square bg-[#EA580C]/20 blur-[100px] rounded-full z-0 pointer-events-none" />
+              {/* Centerpiece image */}
+              <div className="relative z-10 w-full max-w-[80vh] aspect-square flex items-center justify-center">
+                <img
+                  src={project.image_url}
+                  alt={t(project.title_en, project.title_bn)}
+                  className="w-full h-full object-contain"
+                  style={{
+                    display: 'block',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    filter: 'none',
+                    backdropFilter: 'none',
+                    WebkitBackdropFilter: 'none',
+                    borderRadius: 0,
+                  }}
+                  loading="lazy"
+                />
+              </div>
+            </>
           ) : (
             <img
               src={project.image_url}
