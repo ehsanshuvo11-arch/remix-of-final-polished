@@ -1,41 +1,61 @@
 
-Goal: surgically constrain the lightbox image to a perfect 1:1 square, centered, with zero extra styling. Do not touch the overlay, close button, arrows, counter, or dot indicators.
 
-Scope
-- File: `src/components/landing/Portfolio.tsx`
-- Target: only the `<motion.img>` inside `MockupLightbox` (the main image element).
-- Untouched: the outer `motion.div` overlay (`bg-black/90`), close button, prev/next arrows, counter, and dot indicators.
+## Goal
+Add Instagram/Facebook Story–style invisible tap zones to `MockupLightbox` so clicks/taps on the left or right 30% of the lightbox paginate prev/next, while the middle 40% stays neutral (closes lightbox via existing overlay click).
 
-Changes
-1. Replace the current `<motion.img>` styling so it strictly enforces:
-   - `aspect-square` (locks 1:1 ratio)
-   - `object-contain` (no distortion, no crop)
-   - `w-full max-w-[85vh] max-h-[85vh]` (square fits inside viewport height)
-   - centered via existing flex parent (no new wrapper)
-2. Remove from the image: `maxWidth: '90vw'`, `maxHeight: '85vh'`, `width: 'auto'`, `height: 'auto'`, `borderRadius`, `boxShadow`, `filter`, `backdropFilter` overrides — replace with a minimal inline style that only kills shadow/filter to prevent inherited effects.
-3. Do NOT introduce any wrapper div around the image. Keep it as a direct child of the overlay flex container so centering remains perfect.
+## File
+- `src/components/landing/Portfolio.tsx` — only inside the `MockupLightbox` component (lines ~321–411).
 
-Resulting image element (conceptual)
-```tsx
-<motion.img
-  key={current}
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  exit={{ opacity: 0 }}
-  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-  src={urls[current]}
-  alt={`${title} mockup ${current + 1}`}
-  className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-default"
-  style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none' }}
-  onClick={(e) => e.stopPropagation()}
-  draggable={false}
-/>
-```
+## Changes
 
-Verification
-- Open lightbox: image renders as a perfect square, centered, fits within viewport height, no scroll.
-- Transparent mockups: show through to dark overlay, no colored box, no border/shadow.
-- Overlay, close button, arrows, counter, dots: unchanged.
+1. **Add two invisible tap zones** as direct children of the overlay `motion.div`, placed BEFORE the close button / arrows in the JSX so they sit underneath them in stacking when needed (z-index handles ordering anyway).
 
-Files to change
-- `src/components/landing/Portfolio.tsx` (only the `<motion.img>` block in `MockupLightbox`)
+2. **Left zone** (prev):
+   ```tsx
+   <button
+     type="button"
+     aria-label="Previous mockup"
+     onClick={(e) => { e.stopPropagation(); goPrev(); }}
+     disabled={current === 0}
+     className="absolute left-0 top-0 h-full w-[30%] z-40 bg-transparent border-0 outline-none cursor-w-resize disabled:cursor-default disabled:pointer-events-none"
+     style={{ WebkitTapHighlightColor: 'transparent' }}
+   />
+   ```
+
+3. **Right zone** (next):
+   ```tsx
+   <button
+     type="button"
+     aria-label="Next mockup"
+     onClick={(e) => { e.stopPropagation(); goNext(); }}
+     disabled={current === total - 1}
+     className="absolute right-0 top-0 h-full w-[30%] z-40 bg-transparent border-0 outline-none cursor-e-resize disabled:cursor-default disabled:pointer-events-none"
+     style={{ WebkitTapHighlightColor: 'transparent' }}
+   />
+   ```
+
+4. **Z-index hierarchy preserved**:
+   - Tap zones: `z-40`
+   - Close (X), arrows, counter, dots: already `z-10`… bump these to `z-50` so they remain clickable above the zones. (Close `z-50`, arrows `z-50`, counter `z-50`, dots `z-50`.)
+   - Image stays at default — middle 40% is uncovered, so clicking the image still bubbles to overlay `onClick={onClose}` (existing behavior).
+
+5. **Mobile tap-highlight**: handled via inline `WebkitTapHighlightColor: 'transparent'`. No visible gray flash on tap.
+
+6. **Single-image safety**: zones still render but are disabled when `total === 1` (both edges already prevent navigation; also disable when at first/last).
+
+7. **No conflict with existing drag-to-swap**: the image sits in the center 40%, untouched by zones. Arrows remain as visible affordances on top.
+
+## Untouched
+- Drag-to-swap logic on image
+- Touch swipe on overlay (still works in middle 40%)
+- Keyboard navigation
+- Glow / expanded inline view / collapsed cards
+- All styling outside `MockupLightbox`
+
+## Verification
+- Click left 30% → previous image; right 30% → next image.
+- Middle 40% click → closes lightbox (existing behavior preserved).
+- Desktop cursor: `w-resize` left, `e-resize` right.
+- Mobile tap: no gray highlight box.
+- Close (X), arrows, dots, counter remain clickable.
+
