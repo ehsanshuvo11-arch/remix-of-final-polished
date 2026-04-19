@@ -98,7 +98,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         }}
         style={{
           transition: 'height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
-          backgroundColor: '#1e3a8a',
+          backgroundColor: 'transparent',
           boxShadow: 'none',
           filter: 'none',
           backdropFilter: 'none',
@@ -117,7 +117,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'center',
-              backgroundColor: '#1e3a8a',
+              backgroundColor: 'transparent',
               display: 'block',
               boxShadow: 'none',
               filter: 'none',
@@ -379,7 +379,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             width: 'auto',
             height: 'auto',
             objectFit: 'contain',
-            backgroundColor: '#1e3a8a',
+            backgroundColor: 'transparent',
             borderRadius: 0,
             boxShadow: 'none',
             filter: 'none',
