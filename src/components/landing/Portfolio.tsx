@@ -87,7 +87,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[140px] md:h-[260px]'}`}
+        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'flex items-center justify-center w-full min-h-[80vh] py-8' : 'h-[140px] md:h-[260px]'}`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -97,7 +97,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }
         }}
         style={{
-          transition: 'height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
+          transition: 'min-height 0.9s cubic-bezier(0.22, 1, 0.36, 1), height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
           backgroundColor: 'transparent',
           boxShadow: 'none',
           filter: 'none',
@@ -106,27 +106,73 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           borderRadius: 0,
         }}
       >
+        {/* Cinematic atmosphere — only when expanded */}
+        {imageExpanded && (
+          <>
+            {/* Soft edge vignette */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-0"
+              style={{
+                background:
+                  'radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.45) 100%)',
+              }}
+            />
+            {/* Brand orange backlight glow emanating from beneath the image */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 -translate-x-1/2 z-0"
+              style={{
+                bottom: '8%',
+                width: 'min(90vw, 80vh)',
+                height: 'min(90vw, 80vh)',
+                background:
+                  'radial-gradient(circle at 50% 60%, rgba(251,146,60,0.10) 0%, rgba(251,146,60,0.06) 35%, rgba(251,146,60,0) 70%)',
+                filter: 'blur(40px)',
+              }}
+            />
+          </>
+        )}
+
         {project.image_url ? (
-          <img
-            src={project.image_url}
-            alt={t(project.title_en, project.title_bn)}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: imageExpanded ? 'contain' : 'cover',
-              objectPosition: 'center',
-              backgroundColor: imageExpanded ? 'hsl(var(--secondary) / 0.4)' : 'transparent',
-              display: 'block',
-              boxShadow: 'none',
-              filter: 'none',
-              backdropFilter: 'none',
-              WebkitBackdropFilter: 'none',
-              borderRadius: 0,
-            }}
-            loading="lazy"
-          />
+          imageExpanded ? (
+            <img
+              src={project.image_url}
+              alt={t(project.title_en, project.title_bn)}
+              className="relative z-10 aspect-square w-auto h-auto max-w-[min(90vw,80vh)] max-h-[80vh] object-contain"
+              style={{
+                display: 'block',
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                filter: 'none',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                borderRadius: 0,
+              }}
+              loading="lazy"
+            />
+          ) : (
+            <img
+              src={project.image_url}
+              alt={t(project.title_en, project.title_bn)}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                backgroundColor: 'transparent',
+                display: 'block',
+                boxShadow: 'none',
+                filter: 'none',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                borderRadius: 0,
+              }}
+              loading="lazy"
+            />
+          )
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
