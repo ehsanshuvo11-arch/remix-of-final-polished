@@ -317,8 +317,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none"
-      style={{ backgroundColor: '#0b1733', backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none bg-black/90"
+      style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
       onClick={onClose}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
