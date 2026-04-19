@@ -82,7 +82,7 @@ export default function MagneticButton({
       >
         <motion.span
           style={isTouch ? { display: 'inline-block' } : { x: stx, y: sty, display: 'inline-block' }}
-          className="relative z-10"
+          className="relative z-10 text-white"
         >
           {children}
         </motion.span>
