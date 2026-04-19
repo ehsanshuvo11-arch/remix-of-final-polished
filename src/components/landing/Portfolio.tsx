@@ -138,10 +138,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               onClick={toggleImageExpand}
-              className="fixed inset-0 z-[50] bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)] backdrop-blur-sm flex items-center justify-center cursor-zoom-out"
+              className="fixed inset-0 z-[50] bg-[radial-gradient(circle_at_center,transparent_25%,rgba(30,58,138,0.8)_100%)] backdrop-blur-sm flex items-center justify-center cursor-zoom-out p-0 m-0"
             >
               {/* Pulsating brand-orange accent glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/10 blur-[150px] rounded-full -z-10 animate-pulse pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#fb923c]/20 blur-[180px] rounded-full -z-10 animate-pulse pointer-events-none" />
 
               {/* Floating 1:1 image — no border, no shadow, no container */}
               <motion.img
