@@ -132,7 +132,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           }}
         >
           {project.image_url ? (
-            <div className={`${imageExpanded ? 'flex items-center justify-center' : 'relative'}`}>
+            <div className={`${imageExpanded ? 'flex items-center justify-center bg-primary' : 'relative w-full bg-primary'}`}>
               <div className={`relative transition-transform duration-[800ms] ease-out ${imageExpanded ? 'inline-block md:group md:hover:scale-[1.05]' : 'w-full'}`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
               >
@@ -146,7 +146,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                       ? 'w-full h-[150px] object-cover object-center'
                       : 'w-full h-[280px] object-cover object-center md:group-hover:brightness-[0.92] md:group-hover:scale-[1.05]'
                 }`}
-                style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+                style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)', backgroundColor: 'hsl(var(--primary))' }}
                 loading="lazy"
               />
               {/* Hover overlay — desktop hover-capable devices only */}
