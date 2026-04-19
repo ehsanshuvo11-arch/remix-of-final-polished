@@ -1,78 +1,74 @@
 
+Goal: remove the residual “liquid glass” look from the actual public portfolio image flow, not just one image wrapper.
 
-## SQL Fix: Add Missing Columns + Disable RLS
+What I found
+- The active homepage path is: `src/App.tsx` → `src/pages/Index.tsx` → `src/components/landing/Portfolio.tsx`.
+- The public “Recent Projects” gallery and its image rendering both live inside `Portfolio.tsx`.
+- There is no separate public `ProjectCard`, `MobileProject`, `GalleryItem`, or duplicate portfolio renderer elsewhere. The only other image rendering match is in `src/pages/Admin.tsx`, which is just the admin upload preview.
+- `src/index.css` does not contain any global `.glass`, `.glow`, or `.liquid` class affecting the portfolio gallery.
+- The remaining glass-like styling is still inside `Portfolio.tsx`, especially in `MockupLightbox`:
+  - backdrop blur on the fullscreen overlay
+  - rounded image corners
+  - large image shadow
+  - animated modal presentation that preserves the “floating mockup” feel
 
-Here is the exact SQL script you need to run in the Supabase SQL Editor. It does **only two things**: adds any missing columns and disables RLS. No triggers, no roles, no ownership changes.
+Implementation plan
+1. Clean the real active renderer in `src/components/landing/Portfolio.tsx`
+- Keep the gallery card image on a hardcoded solid navy base: `#1e3a8a`.
+- Replace any token-based or utility-based ambiguity for the image wrapper with explicit inline styles.
+- Force the main card image to:
+  - `width: 100%`
+  - `height: 100%`
+  - `objectFit: 'cover'`
+  - `objectPosition: 'center'`
+  - `backgroundColor: '#1e3a8a'`
+  - `boxShadow: 'none'`
+  - `filter: 'none'`
+  - `backdropFilter: 'none'`
 
-### The SQL Script
+2. Remove the actual remaining glass effect from the mockup viewer too
+- Strip the glassmorphism from `MockupLightbox` in the same file.
+- Remove:
+  - `backdropFilter: 'blur(24px)'`
+  - `WebkitBackdropFilter`
+  - image shadow
+  - rounded corners if they contribute to the floating-card look
+- Replace with a plain solid/dim navy-black overlay and a flush image presentation so transparent mockups do not appear suspended over a glossy backdrop.
 
-```sql
--- =============================================
--- 1. ADD MISSING COLUMNS
--- =============================================
+3. Apply the nuclear option to every portfolio image surface
+- Use direct inline styles on both:
+  - the main project `<img>`
+  - the lightbox/mockup `<img>`
+- This avoids Tailwind precedence issues and guarantees the image covers the full bounds.
 
--- site_settings
-ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS key text;
-ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS value jsonb DEFAULT '{}'::jsonb;
-ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS updated_at timestamptz DEFAULT now();
+4. Hard-delete any leftover atmospheric wrappers in `Portfolio.tsx`
+- Remove any wrapper `div` styles/classes that create:
+  - reflection
+  - glow
+  - blur
+  - floating panel depth
+  - glass backdrop behavior
+- Keep only structural containers needed for cropping and layout.
 
--- services
-ALTER TABLE public.services ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
-ALTER TABLE public.services ADD COLUMN IF NOT EXISTS name_en text DEFAULT '';
-ALTER TABLE public.services ADD COLUMN IF NOT EXISTS name_bn text DEFAULT '';
-ALTER TABLE public.services ADD COLUMN IF NOT EXISTS desc_en text DEFAULT '';
-ALTER TABLE public.services ADD COLUMN IF NOT EXISTS desc_bn text DEFAULT '';
+5. Verify both public states after implementation
+- Test the collapsed “Recent Projects” gallery card.
+- Test the expanded image state.
+- Test “View project mockups” lightbox on transparent PNG/mockup assets.
+- Confirm there is:
+  - no empty transparent canvas look
+  - no floating-object effect
+  - no glass blur behind the image
+  - no residual shadow/reflection from parent wrappers
 
--- stats
-ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
-ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS num text DEFAULT '0';
-ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS suffix text DEFAULT '';
-ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS label_en text DEFAULT '';
-ALTER TABLE public.stats ADD COLUMN IF NOT EXISTS label_bn text DEFAULT '';
+Technical notes
+- Exact active file to fix: `src/components/landing/Portfolio.tsx`
+- Global CSS is not the root cause here.
+- The likely missed source is the `MockupLightbox` block in the same component, not a duplicate component elsewhere.
+- I would also hardcode `#1e3a8a` directly instead of relying on `bg-primary` / `hsl(var(--primary))` for these specific portfolio image surfaces, to match your brute-force requirement exactly.
 
--- portfolio_projects
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS title_en text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS title_bn text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS category_en text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS category_bn text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS image_url text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS case_study_en text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS case_study_bn text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS hook_en text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS hook_bn text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS pdf_url_en text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS pdf_url_bn text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS mockup_url text DEFAULT '';
-ALTER TABLE public.portfolio_projects ADD COLUMN IF NOT EXISTS mockup_urls text[] DEFAULT ARRAY[]::text[];
+Files to change once approved
+- `src/components/landing/Portfolio.tsx`
 
--- process_steps
-ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS sort_order integer DEFAULT 0;
-ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS title_en text DEFAULT '';
-ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS title_bn text DEFAULT '';
-ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS desc_en text DEFAULT '';
-ALTER TABLE public.process_steps ADD COLUMN IF NOT EXISTS desc_bn text DEFAULT '';
-
--- =============================================
--- 2. DISABLE RLS ON ALL TABLES
--- =============================================
-
-ALTER TABLE public.site_settings DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.services DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.stats DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.portfolio_projects DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.process_steps DISABLE ROW LEVEL SECURITY;
-
--- Refresh PostgREST schema cache
-NOTIFY pgrst, 'reload schema';
-```
-
-### How to use
-
-1. Go to your **Supabase Dashboard → SQL Editor**
-2. Paste the entire script above
-3. Click **Run**
-4. Go to your admin panel and test saving — it should work immediately
-
-No code changes needed in this project. This is purely a database-side fix.
-
+Expected result
+- All portfolio images, including transparent mockups, render as fully integrated full-bleed visuals.
+- No liquid glass, blur, floating shadow, or glossy backdrop remains in the public portfolio experience.
