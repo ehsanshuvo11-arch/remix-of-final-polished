@@ -349,10 +349,10 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current > 0 && (
         <button
           onClick={(e) => { e.stopPropagation(); goPrev(); }}
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-primary-foreground/10 text-primary-foreground/60 hover:bg-primary-foreground/20 hover:text-primary-foreground transition-all duration-200 z-10"
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-10 hover:scale-110 active:scale-95"
           aria-label="Previous"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
         </button>
       )}
 
@@ -360,14 +360,14 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current < total - 1 && (
         <button
           onClick={(e) => { e.stopPropagation(); goNext(); }}
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-primary-foreground/10 text-primary-foreground/60 hover:bg-primary-foreground/20 hover:text-primary-foreground transition-all duration-200 z-10"
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-10 hover:scale-110 active:scale-95"
           aria-label="Next"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
         </button>
       )}
 
-      {/* Main image with animation */}
+      {/* Main image with animation + drag-to-swap */}
       <AnimatePresence mode="wait">
         <motion.img
           key={current}
@@ -377,10 +377,17 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           src={urls[current]}
           alt={`${title} mockup ${current + 1}`}
-          className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-default"
+          className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing"
           style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none' }}
           onClick={(e) => e.stopPropagation()}
           draggable={false}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -80 && current < total - 1) goNext();
+            else if (info.offset.x > 80 && current > 0) goPrev();
+          }}
         />
       </AnimatePresence>
 
