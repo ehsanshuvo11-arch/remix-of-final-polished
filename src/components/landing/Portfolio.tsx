@@ -372,21 +372,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           src={urls[current]}
           alt={`${title} mockup ${current + 1}`}
-          className="cursor-default"
-          style={{
-            maxWidth: '90vw',
-            maxHeight: '85vh',
-            width: 'auto',
-            height: 'auto',
-            objectFit: 'contain',
-            backgroundColor: 'transparent',
-            borderRadius: 0,
-            boxShadow: 'none',
-            filter: 'none',
-            backdropFilter: 'none',
-            WebkitBackdropFilter: 'none',
-            display: 'block',
-          }}
+          className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-default"
+          style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none' }}
           onClick={(e) => e.stopPropagation()}
           draggable={false}
         />
