@@ -87,7 +87,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'flex items-center justify-center w-full min-h-[80vh]' : 'h-[140px] md:h-[260px]'}`}
+        className={`relative cursor-pointer overflow-hidden bg-transparent ${imageExpanded ? 'flex items-center justify-center w-full min-h-[80vh]' : 'h-[140px] md:h-[260px]'}`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
