@@ -87,7 +87,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className={`relative cursor-pointer overflow-hidden bg-primary ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[140px] md:h-[260px]'}`}
+        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[140px] md:h-[260px]'}`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -98,44 +98,35 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         }}
         style={{
           transition: 'height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
-          backgroundColor: 'hsl(var(--primary))',
+          backgroundColor: '#1e3a8a',
           boxShadow: 'none',
           filter: 'none',
           backdropFilter: 'none',
           WebkitBackdropFilter: 'none',
+          borderRadius: 0,
         }}
       >
         {project.image_url ? (
-          <div
-            className="absolute inset-0 bg-primary"
+          <img
+            src={project.image_url}
+            alt={t(project.title_en, project.title_bn)}
             style={{
-              backgroundColor: 'hsl(var(--primary))',
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              backgroundColor: '#1e3a8a',
+              display: 'block',
               boxShadow: 'none',
               filter: 'none',
               backdropFilter: 'none',
               WebkitBackdropFilter: 'none',
+              borderRadius: 0,
             }}
-          >
-            <img
-              src={project.image_url}
-              alt={t(project.title_en, project.title_bn)}
-              className="block w-full h-full object-cover object-center bg-primary"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                backgroundColor: 'hsl(var(--primary))',
-                display: 'block',
-                boxShadow: 'none',
-                filter: 'none',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                borderRadius: 0,
-              }}
-              loading="lazy"
-            />
-          </div>
+            loading="lazy"
+          />
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
