@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
@@ -55,10 +55,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
-  // Detect touch device to disable 3D tilt on mobile
-  const isTouch = useMemo(() =>
-    typeof window !== 'undefined' && (window.matchMedia('(hover: none) and (pointer: coarse)').matches), []);
-
   const [imageExpanded, setImageExpanded] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -84,72 +80,74 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     setLightboxOpen(true);
   }, []);
 
-  // Tilt effect for collapsed state — desktop only
-  const handleTilt = useCallback((e: React.MouseEvent) => {
-    if (isTouch || imageExpanded) return;
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const midX = rect.width / 2;
-    const midY = rect.height / 2;
-    const rotateY = ((x - midX) / midX) * 6;
-    const rotateX = ((midY - y) / midY) * 6;
-    el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-  }, [imageExpanded, isTouch]);
-
-  const handleTiltLeave = useCallback(() => {
-    if (cardRef.current) cardRef.current.style.transform = '';
-  }, []);
-
   return (
     <MotionReveal delay={0.12 * index}>
     <div
       data-project-card={isFirst ? '' : undefined}
     >
-      {/* Image container with tilt in collapsed state */}
       <div
         ref={cardRef}
-        onMouseMove={isTouch ? undefined : handleTilt}
-        onMouseLeave={isTouch ? undefined : handleTiltLeave}
-        style={{ transition: 'transform 0.15s ease-out' }}
+        className={`relative cursor-pointer overflow-hidden bg-primary ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[140px] md:h-[260px]'}`}
+        onClick={() => {
+          toggleImageExpand();
+          if (!imageExpanded && cardRef.current) {
+            setTimeout(() => {
+              cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+          }
+        }}
+        style={{
+          transition: 'height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
+          backgroundColor: 'hsl(var(--primary))',
+          boxShadow: 'none',
+          filter: 'none',
+          backdropFilter: 'none',
+          WebkitBackdropFilter: 'none',
+        }}
       >
-        <div
-          className={`relative cursor-pointer overflow-hidden bg-primary ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[150px] md:h-[280px]'}`}
-          onClick={() => {
-            toggleImageExpand();
-            if (!imageExpanded && cardRef.current) {
-              setTimeout(() => {
-                cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }, 100);
-            }
-          }}
-          style={{ transition: 'height 0.9s cubic-bezier(0.22, 1, 0.36, 1)' }}
-        >
-          {project.image_url ? (
-            <div className="w-full h-full bg-primary">
-              <img
-                src={project.image_url}
-                alt={project.title_en}
-                className="block w-full h-full object-cover object-center bg-[#1e3a8a]"
-                style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
-                loading="lazy"
-              />
-            </div>
-          ) : (
-            <div className="relative w-full h-full flex flex-col items-center justify-center bg-secondary gap-2">
-              <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-                <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-                <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-                <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
-              </svg>
-              <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
-                {t(project.title_en, project.title_bn)}
-              </span>
-            </div>
-          )}
-        </div>
+        {project.image_url ? (
+          <div
+            className="absolute inset-0 bg-primary"
+            style={{
+              backgroundColor: 'hsl(var(--primary))',
+              boxShadow: 'none',
+              filter: 'none',
+              backdropFilter: 'none',
+              WebkitBackdropFilter: 'none',
+            }}
+          >
+            <img
+              src={project.image_url}
+              alt={t(project.title_en, project.title_bn)}
+              className="block w-full h-full object-cover object-center bg-primary"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                backgroundColor: 'hsl(var(--primary))',
+                display: 'block',
+                boxShadow: 'none',
+                filter: 'none',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                borderRadius: 0,
+              }}
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+              <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
+              <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
+              <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
+            </svg>
+            <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
+              {t(project.title_en, project.title_bn)}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Hook text — displayed between image and buttons */}
