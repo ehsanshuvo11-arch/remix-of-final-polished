@@ -379,7 +379,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             width: 'auto',
             height: 'auto',
             objectFit: 'contain',
-            backgroundColor: '#1e3a8a',
+            backgroundColor: 'transparent',
             borderRadius: 0,
             boxShadow: 'none',
             filter: 'none',
