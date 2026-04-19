@@ -106,34 +106,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           borderRadius: 0,
         }}
       >
-        {/* Cinematic atmosphere — only when expanded */}
-        {imageExpanded && (
-          <>
-            {/* Soft edge vignette */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 z-0"
-              style={{
-                background:
-                  'radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.45) 100%)',
-              }}
-            />
-            {/* Brand orange backlight glow emanating from beneath the image */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 -translate-x-1/2 z-0"
-              style={{
-                bottom: '8%',
-                width: 'min(90vw, 80vh)',
-                height: 'min(90vw, 80vh)',
-                background:
-                  'radial-gradient(circle at 50% 60%, rgba(251,146,60,0.10) 0%, rgba(251,146,60,0.06) 35%, rgba(251,146,60,0) 70%)',
-                filter: 'blur(40px)',
-              }}
-            />
-          </>
-        )}
-
         {project.image_url ? (
           imageExpanded ? (
             <img
