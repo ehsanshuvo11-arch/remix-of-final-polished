@@ -102,8 +102,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         {project.image_url ? (
           imageExpanded ? (
             <div className="relative flex items-center justify-center w-full py-12">
-              {/* Pulsating brand-orange accent glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] max-w-[700px] max-h-[700px] bg-[#fb923c]/20 blur-[150px] rounded-full z-0 animate-pulse pointer-events-none" />
+              {/* Soft atmospheric brand-orange backlight fog */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-orange-600/20 blur-[130px] rounded-full -z-10 pointer-events-none" />
               <motion.img
                 src={project.image_url}
                 alt={t(project.title_en, project.title_bn)}
