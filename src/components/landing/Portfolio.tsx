@@ -127,6 +127,41 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         )}
       </div>
 
+      {/* Cinematic "Look At Me" expanded view — fixed full-screen portal */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {imageExpanded && project.image_url && (
+            <motion.div
+              key="cinematic-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              onClick={toggleImageExpand}
+              className="fixed inset-0 z-[50] bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)] backdrop-blur-sm flex items-center justify-center cursor-zoom-out"
+            >
+              {/* Pulsating brand-orange accent glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/10 blur-[150px] rounded-full -z-10 animate-pulse pointer-events-none" />
+
+              {/* Floating 1:1 image — no border, no shadow, no container */}
+              <motion.img
+                src={project.image_url}
+                alt={t(project.title_en, project.title_bn)}
+                initial={{ scale: 0.92, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.96, opacity: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-10 aspect-square w-auto h-auto max-w-[85vw] max-h-[85vh] object-contain"
+                style={{ background: 'transparent', boxShadow: 'none', border: 'none', filter: 'none' }}
+                onClick={(e) => e.stopPropagation()}
+                draggable={false}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+
       {/* Hook text — displayed between image and buttons */}
       {hook && (
         <div
