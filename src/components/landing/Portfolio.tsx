@@ -87,7 +87,9 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className="relative cursor-pointer overflow-hidden bg-transparent h-[140px] md:h-[260px]"
+        className={`relative cursor-pointer overflow-hidden bg-transparent transition-all duration-700 ${
+          imageExpanded ? 'h-auto' : 'h-[140px] md:h-[260px]'
+        }`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -98,21 +100,38 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         }}
       >
         {project.image_url ? (
-          <img
-            src={project.image_url}
-            alt={t(project.title_en, project.title_bn)}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              backgroundColor: 'transparent',
-              display: 'block',
-            }}
-            loading="lazy"
-          />
+          imageExpanded ? (
+            <div className="relative flex items-center justify-center w-full py-12">
+              {/* Pulsating brand-orange accent glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] max-w-[700px] max-h-[700px] bg-[#fb923c]/20 blur-[150px] rounded-full z-0 animate-pulse pointer-events-none" />
+              <motion.img
+                src={project.image_url}
+                alt={t(project.title_en, project.title_bn)}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-10 aspect-square w-full max-w-[80vh] object-contain"
+                style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
+                draggable={false}
+              />
+            </div>
+          ) : (
+            <img
+              src={project.image_url}
+              alt={t(project.title_en, project.title_bn)}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                backgroundColor: 'transparent',
+                display: 'block',
+              }}
+              loading="lazy"
+            />
+          )
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
@@ -126,41 +145,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           </div>
         )}
       </div>
-
-      {/* Cinematic "Look At Me" expanded view — fixed full-screen portal */}
-      {typeof document !== 'undefined' && createPortal(
-        <AnimatePresence>
-          {imageExpanded && project.image_url && (
-            <motion.div
-              key="cinematic-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              onClick={toggleImageExpand}
-              className="fixed inset-0 z-[50] bg-[radial-gradient(circle_at_center,transparent_25%,rgba(30,58,138,0.8)_100%)] backdrop-blur-sm flex items-center justify-center cursor-zoom-out p-0 m-0"
-            >
-              {/* Pulsating brand-orange accent glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#fb923c]/20 blur-[180px] rounded-full -z-10 animate-pulse pointer-events-none" />
-
-              {/* Floating 1:1 image — no border, no shadow, no container */}
-              <motion.img
-                src={project.image_url}
-                alt={t(project.title_en, project.title_bn)}
-                initial={{ scale: 0.92, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.96, opacity: 0 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-10 aspect-square w-auto h-auto max-w-[85vw] max-h-[85vh] object-contain"
-                style={{ background: 'transparent', boxShadow: 'none', border: 'none', filter: 'none' }}
-                onClick={(e) => e.stopPropagation()}
-                draggable={false}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
 
       {/* Hook text — displayed between image and buttons */}
       {hook && (
