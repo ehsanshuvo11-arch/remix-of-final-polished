@@ -331,6 +331,11 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Endless cinematic orange backlight glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] pointer-events-none -z-[5] flex items-center justify-center overflow-visible">
+        <div className="w-[60vw] max-w-[800px] aspect-square bg-[#EA580C]/10 blur-[150px] rounded-full" />
+      </div>
+
       {/* Invisible Story-style tap zones */}
       <button
         type="button"
