@@ -318,7 +318,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none"
-      style={{ backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
+      style={{ backgroundColor: '#0b1733', backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
       onClick={onClose}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -366,13 +366,27 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       <AnimatePresence mode="wait">
         <motion.img
           key={current}
-          initial={{ scale: 0.92, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.92, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           src={urls[current]}
           alt={`${title} mockup ${current + 1}`}
-          className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] cursor-default"
+          className="cursor-default"
+          style={{
+            maxWidth: '90vw',
+            maxHeight: '85vh',
+            width: 'auto',
+            height: 'auto',
+            objectFit: 'contain',
+            backgroundColor: '#1e3a8a',
+            borderRadius: 0,
+            boxShadow: 'none',
+            filter: 'none',
+            backdropFilter: 'none',
+            WebkitBackdropFilter: 'none',
+            display: 'block',
+          }}
           onClick={(e) => e.stopPropagation()}
           draggable={false}
         />
