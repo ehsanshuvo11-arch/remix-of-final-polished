@@ -87,7 +87,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className={`relative cursor-pointer overflow-hidden bg-transparent ${imageExpanded ? 'flex items-center justify-center w-full min-h-[80vh]' : 'h-[140px] md:h-[260px]'}`}
+        className={`relative cursor-pointer overflow-hidden bg-transparent ${imageExpanded ? 'flex items-center justify-center w-screen max-w-none min-h-[90vh] left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#0a0a0a]' : 'h-[140px] md:h-[260px]'}`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -98,7 +98,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         }}
         style={{
           transition: 'min-height 0.9s cubic-bezier(0.22, 1, 0.36, 1), height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
-          backgroundColor: 'transparent',
+          backgroundColor: imageExpanded ? '#0a0a0a' : 'transparent',
           boxShadow: 'none',
           filter: 'none',
           backdropFilter: 'none',
@@ -109,12 +109,12 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         {project.image_url ? (
           imageExpanded ? (
             <>
-              {/* Edge fade vignette */}
-              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.15)_100%)] z-0" />
+              {/* Full-width edge fade vignette */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.9)_100%)] pointer-events-none z-0" />
               {/* Brand orange backlight glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] max-w-[600px] aspect-square bg-[#EA580C]/20 blur-[100px] rounded-full z-0 pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-[600px] aspect-square bg-[#EA580C]/20 blur-[120px] rounded-full z-0 pointer-events-none" />
               {/* Centerpiece image */}
-              <div className="relative z-10 w-full max-w-[80vh] aspect-square flex items-center justify-center">
+              <div className="relative z-10 aspect-square max-h-[80vh] flex items-center justify-center">
                 <img
                   src={project.image_url}
                   alt={t(project.title_en, project.title_bn)}
