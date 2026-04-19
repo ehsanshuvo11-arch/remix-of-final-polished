@@ -331,10 +331,28 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* Invisible Story-style tap zones */}
+      <button
+        type="button"
+        aria-label="Previous mockup"
+        onClick={(e) => { e.stopPropagation(); goPrev(); }}
+        disabled={total <= 1 || current === 0}
+        className="absolute left-0 top-0 h-full w-[30%] z-40 bg-transparent border-0 outline-none cursor-w-resize disabled:cursor-default disabled:pointer-events-none"
+        style={{ WebkitTapHighlightColor: 'transparent' }}
+      />
+      <button
+        type="button"
+        aria-label="Next mockup"
+        onClick={(e) => { e.stopPropagation(); goNext(); }}
+        disabled={total <= 1 || current === total - 1}
+        className="absolute right-0 top-0 h-full w-[30%] z-40 bg-transparent border-0 outline-none cursor-e-resize disabled:cursor-default disabled:pointer-events-none"
+        style={{ WebkitTapHighlightColor: 'transparent' }}
+      />
+
       {/* Close button */}
       <button
         onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute top-6 right-6 text-primary-foreground/60 hover:text-primary-foreground transition-colors duration-200 z-10"
+        className="absolute top-6 right-6 text-primary-foreground/60 hover:text-primary-foreground transition-colors duration-200 z-50"
         aria-label="Close"
       >
         <X className="w-6 h-6" />
@@ -342,7 +360,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
 
       {/* Image counter */}
       {total > 1 && (
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-primary-foreground/50 text-[11px] tracking-[3px] uppercase font-medium z-10">
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-primary-foreground/50 text-[11px] tracking-[3px] uppercase font-medium z-50">
           {current + 1} / {total}
         </div>
       )}
@@ -351,7 +369,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current > 0 && (
         <button
           onClick={(e) => { e.stopPropagation(); goPrev(); }}
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-10 hover:scale-110 active:scale-95"
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
           aria-label="Previous"
         >
           <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
@@ -362,7 +380,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current < total - 1 && (
         <button
           onClick={(e) => { e.stopPropagation(); goNext(); }}
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-10 hover:scale-110 active:scale-95"
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
           aria-label="Next"
         >
           <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
