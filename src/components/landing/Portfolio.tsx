@@ -81,9 +81,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   }, []);
 
   return (
-    <MotionReveal delay={0.12 * index}>
+    <MotionReveal delay={0.12 * index} className={imageExpanded ? 'overflow-visible' : undefined}>
     <div
       data-project-card={isFirst ? '' : undefined}
+      className={imageExpanded ? 'relative overflow-visible' : 'relative'}
     >
       <div
         ref={cardRef}
@@ -101,9 +102,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       >
         {project.image_url ? (
           imageExpanded ? (
-            <div className="relative flex items-center justify-center w-full py-12">
-              {/* Soft atmospheric brand-orange backlight fog */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-orange-600/20 blur-[130px] rounded-full -z-10 pointer-events-none" />
+            <div className="relative flex items-center justify-center w-full py-12 overflow-visible">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
+                <div className="w-[60vw] max-w-[800px] aspect-square bg-[#EA580C]/10 blur-[150px] rounded-full" />
+              </div>
               <motion.img
                 src={project.image_url}
                 alt={t(project.title_en, project.title_bn)}
