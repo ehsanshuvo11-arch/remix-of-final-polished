@@ -87,7 +87,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
     >
       <div
         ref={cardRef}
-        className={`relative cursor-pointer overflow-hidden bg-primary ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[140px] md:h-[260px]'}`}
+        className={`relative cursor-pointer overflow-hidden ${imageExpanded ? 'h-[calc(100vh-120px)]' : 'h-[140px] md:h-[260px]'}`}
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -98,44 +98,35 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         }}
         style={{
           transition: 'height 0.9s cubic-bezier(0.22, 1, 0.36, 1)',
-          backgroundColor: 'hsl(var(--primary))',
+          backgroundColor: '#1e3a8a',
           boxShadow: 'none',
           filter: 'none',
           backdropFilter: 'none',
           WebkitBackdropFilter: 'none',
+          borderRadius: 0,
         }}
       >
         {project.image_url ? (
-          <div
-            className="absolute inset-0 bg-primary"
+          <img
+            src={project.image_url}
+            alt={t(project.title_en, project.title_bn)}
             style={{
-              backgroundColor: 'hsl(var(--primary))',
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              backgroundColor: '#1e3a8a',
+              display: 'block',
               boxShadow: 'none',
               filter: 'none',
               backdropFilter: 'none',
               WebkitBackdropFilter: 'none',
+              borderRadius: 0,
             }}
-          >
-            <img
-              src={project.image_url}
-              alt={t(project.title_en, project.title_bn)}
-              className="block w-full h-full object-cover object-center bg-primary"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                backgroundColor: 'hsl(var(--primary))',
-                display: 'block',
-                boxShadow: 'none',
-                filter: 'none',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                borderRadius: 0,
-              }}
-              loading="lazy"
-            />
-          </div>
+            loading="lazy"
+          />
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
@@ -327,7 +318,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none"
-      style={{ backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
+      style={{ backgroundColor: '#0b1733', backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
       onClick={onClose}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -375,13 +366,27 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       <AnimatePresence mode="wait">
         <motion.img
           key={current}
-          initial={{ scale: 0.92, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.92, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           src={urls[current]}
           alt={`${title} mockup ${current + 1}`}
-          className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] cursor-default"
+          className="cursor-default"
+          style={{
+            maxWidth: '90vw',
+            maxHeight: '85vh',
+            width: 'auto',
+            height: 'auto',
+            objectFit: 'contain',
+            backgroundColor: '#1e3a8a',
+            borderRadius: 0,
+            boxShadow: 'none',
+            filter: 'none',
+            backdropFilter: 'none',
+            WebkitBackdropFilter: 'none',
+            display: 'block',
+          }}
           onClick={(e) => e.stopPropagation()}
           draggable={false}
         />
