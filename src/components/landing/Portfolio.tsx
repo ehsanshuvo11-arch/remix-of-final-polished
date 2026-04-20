@@ -331,16 +331,29 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Multi-layered breathing brand orange backlight glow with depth */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
-        {/* Outer atmospheric haze — deep amber, widest spread */}
-        <div className="absolute w-[80vw] max-w-[1100px] aspect-square bg-[#c2410c]/15 blur-[180px] rounded-full animate-glow-breathe" style={{ animationDuration: '7s' }} />
-        {/* Mid layer — brand orange diffusion */}
-        <div className="absolute w-[55vw] max-w-[750px] aspect-square bg-[#fb923c]/25 blur-[140px] rounded-full animate-glow-breathe" style={{ animationDuration: '5s' }} />
-        {/* Inner hot core — bright amber highlight */}
-        <div className="absolute w-[28vw] max-w-[400px] aspect-square bg-[#fdba74]/35 blur-[90px] rounded-full animate-glow-breathe" style={{ animationDuration: '4s', animationDelay: '0.5s' }} />
-        {/* Subtle warm-white center for radiant focal point */}
-        <div className="absolute w-[12vw] max-w-[180px] aspect-square bg-[#fed7aa]/20 blur-[60px] rounded-full animate-glow-breathe" style={{ animationDuration: '6s', animationDelay: '1s' }} />
+      {/* Multi-layered breathing brand orange backlight glow with deep cinematic depth */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-[200vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
+        {/* Layer 1 — Far atmospheric wash, deepest red-amber, widest fall-off */}
+        <div className="absolute w-[120vw] max-w-[1600px] aspect-square rounded-full blur-[220px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(124,45,18,0.5) 0%, rgba(124,45,18,0) 70%)', animationDuration: '9s' }} />
+        {/* Layer 2 — Outer haze, burnt sienna */}
+        <div className="absolute w-[90vw] max-w-[1200px] aspect-square rounded-full blur-[190px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(194,65,12,0.45) 0%, rgba(194,65,12,0) 70%)', animationDuration: '8s', animationDelay: '0.4s' }} />
+        {/* Layer 3 — Mid orange body, brand color */}
+        <div className="absolute w-[65vw] max-w-[900px] aspect-square rounded-full blur-[150px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(234,88,12,0.55) 0%, rgba(234,88,12,0) 70%)', animationDuration: '6s' }} />
+        {/* Layer 4 — Brand orange diffusion */}
+        <div className="absolute w-[45vw] max-w-[650px] aspect-square rounded-full blur-[110px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.6) 0%, rgba(251,146,60,0) 70%)', animationDuration: '5s', animationDelay: '0.6s' }} />
+        {/* Layer 5 — Inner hot core, bright amber */}
+        <div className="absolute w-[28vw] max-w-[400px] aspect-square rounded-full blur-[80px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(253,186,116,0.55) 0%, rgba(253,186,116,0) 70%)', animationDuration: '4s', animationDelay: '1s' }} />
+        {/* Layer 6 — Radiant focal hot-spot, near white-gold */}
+        <div className="absolute w-[14vw] max-w-[200px] aspect-square rounded-full blur-[55px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(254,215,170,0.7) 0%, rgba(254,215,170,0) 70%)', animationDuration: '5s', animationDelay: '1.4s' }} />
+        {/* Layer 7 — Pinpoint searing center */}
+        <div className="absolute w-[6vw] max-w-[90px] aspect-square rounded-full blur-[30px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(255,237,213,0.85) 0%, rgba(255,237,213,0) 70%)', animationDuration: '6s', animationDelay: '1.8s' }} />
       </div>
 
       {/* Invisible Story-style tap zones */}
