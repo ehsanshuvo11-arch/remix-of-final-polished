@@ -331,9 +331,16 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Breathing brand orange backlight glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
-        <div className="w-[50vw] max-w-[700px] aspect-square bg-[#fb923c]/20 blur-[140px] rounded-full animate-glow-breathe shadow-[0_0_100px_rgba(251,146,60,0.1)]" />
+      {/* Multi-layered breathing brand orange backlight glow with depth */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
+        {/* Outer atmospheric haze — deep amber, widest spread */}
+        <div className="absolute w-[80vw] max-w-[1100px] aspect-square bg-[#c2410c]/15 blur-[180px] rounded-full animate-glow-breathe" style={{ animationDuration: '7s' }} />
+        {/* Mid layer — brand orange diffusion */}
+        <div className="absolute w-[55vw] max-w-[750px] aspect-square bg-[#fb923c]/25 blur-[140px] rounded-full animate-glow-breathe" style={{ animationDuration: '5s' }} />
+        {/* Inner hot core — bright amber highlight */}
+        <div className="absolute w-[28vw] max-w-[400px] aspect-square bg-[#fdba74]/35 blur-[90px] rounded-full animate-glow-breathe" style={{ animationDuration: '4s', animationDelay: '0.5s' }} />
+        {/* Subtle warm-white center for radiant focal point */}
+        <div className="absolute w-[12vw] max-w-[180px] aspect-square bg-[#fed7aa]/20 blur-[60px] rounded-full animate-glow-breathe" style={{ animationDuration: '6s', animationDelay: '1s' }} />
       </div>
 
       {/* Invisible Story-style tap zones */}
