@@ -103,8 +103,28 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         {project.image_url ? (
           imageExpanded ? (
             <div className="relative flex items-center justify-center w-full py-12 overflow-visible">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
-                <div className="w-[60vw] max-w-[800px] aspect-square bg-[#EA580C]/10 blur-[150px] rounded-full" />
+              {/* Volumetric breathing orange backlight — multi-axis cinematic depth */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250vw] h-[250vh] pointer-events-none -z-10 overflow-visible">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vw] aspect-square rounded-full"
+                  style={{ background: 'radial-gradient(circle, rgba(15,23,42,0) 30%, rgba(15,23,42,0.55) 70%, rgba(15,23,42,0.85) 100%)' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] max-w-[2000px] aspect-square rounded-full blur-[260px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(124,45,18,0.7) 0%, rgba(124,45,18,0) 70%)', animationDuration: '11s' }} />
+                <div className="absolute top-[42%] left-[46%] -translate-x-1/2 -translate-y-1/2 w-[110vw] max-w-[1500px] aspect-square rounded-full blur-[220px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(154,52,18,0.65) 0%, rgba(154,52,18,0) 70%)', animationDuration: '9s', animationDelay: '0.3s' }} />
+                <div className="absolute top-[55%] left-[54%] -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-[1300px] aspect-square rounded-full blur-[200px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(194,65,12,0.7) 0%, rgba(194,65,12,0) 70%)', animationDuration: '8s', animationDelay: '0.7s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] max-w-[950px] aspect-square rounded-full blur-[160px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(234,88,12,0.8) 0%, rgba(234,88,12,0) 70%)', animationDuration: '6s' }} />
+                <div className="absolute top-[48%] left-[51%] -translate-x-1/2 -translate-y-1/2 w-[50vw] max-w-[700px] aspect-square rounded-full blur-[120px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.85) 0%, rgba(251,146,60,0) 70%)', animationDuration: '5s', animationDelay: '0.5s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[32vw] max-w-[450px] aspect-square rounded-full blur-[90px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(253,186,116,0.8) 0%, rgba(253,186,116,0) 70%)', animationDuration: '4.5s', animationDelay: '0.9s' }} />
+                <div className="absolute top-[49%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[18vw] max-w-[260px] aspect-square rounded-full blur-[60px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(254,215,170,0.9) 0%, rgba(254,215,170,0) 70%)', animationDuration: '5s', animationDelay: '1.3s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[8vw] max-w-[120px] aspect-square rounded-full blur-[35px] animate-glow-breathe"
+                  style={{ background: 'radial-gradient(circle, rgba(255,237,213,1) 0%, rgba(255,237,213,0) 70%)', animationDuration: '6s', animationDelay: '1.7s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-[850px] aspect-square rounded-full blur-[140px] animate-glow-breathe opacity-50"
+                  style={{ background: 'conic-gradient(from 45deg, rgba(251,146,60,0.4), rgba(234,88,12,0.6), rgba(253,186,116,0.5), rgba(194,65,12,0.55), rgba(251,146,60,0.4))', animationDuration: '12s', animationDelay: '2s' }} />
               </div>
               <motion.img
                 src={project.image_url}
