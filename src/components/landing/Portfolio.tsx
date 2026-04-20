@@ -117,21 +117,26 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               />
             </div>
           ) : (
-            <img
-              src={project.image_url}
-              alt={t(project.title_en, project.title_bn)}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                backgroundColor: 'transparent',
-                display: 'block',
-              }}
-              loading="lazy"
-            />
+            <div className="relative z-10 w-full h-full overflow-visible">
+              {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+              <img
+                src={project.image_url}
+                alt={t(project.title_en, project.title_bn)}
+                className="relative z-10"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  backgroundColor: 'transparent',
+                  display: 'block',
+                }}
+                loading="lazy"
+              />
+            </div>
           )
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
