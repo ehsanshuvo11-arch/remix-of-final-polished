@@ -84,10 +84,15 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "glow-breathe": {
+          "0%, 100%": { transform: "scale(0.95)", opacity: "0.1" },
+          "50%": { transform: "scale(1.05)", opacity: "0.3" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "glow-breathe": "glow-breathe 5s ease-in-out infinite",
       },
     },
   },
