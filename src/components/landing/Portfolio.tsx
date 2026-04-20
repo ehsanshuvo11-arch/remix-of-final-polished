@@ -331,29 +331,47 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Multi-layered breathing brand orange backlight glow with deep cinematic depth */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200vw] h-[200vh] pointer-events-none -z-10 flex items-center justify-center overflow-visible">
-        {/* Layer 1 — Far atmospheric wash, deepest red-amber, widest fall-off */}
-        <div className="absolute w-[120vw] max-w-[1600px] aspect-square rounded-full blur-[220px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(124,45,18,0.5) 0%, rgba(124,45,18,0) 70%)', animationDuration: '9s' }} />
-        {/* Layer 2 — Outer haze, burnt sienna */}
-        <div className="absolute w-[90vw] max-w-[1200px] aspect-square rounded-full blur-[190px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(194,65,12,0.45) 0%, rgba(194,65,12,0) 70%)', animationDuration: '8s', animationDelay: '0.4s' }} />
-        {/* Layer 3 — Mid orange body, brand color */}
-        <div className="absolute w-[65vw] max-w-[900px] aspect-square rounded-full blur-[150px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(234,88,12,0.55) 0%, rgba(234,88,12,0) 70%)', animationDuration: '6s' }} />
-        {/* Layer 4 — Brand orange diffusion */}
-        <div className="absolute w-[45vw] max-w-[650px] aspect-square rounded-full blur-[110px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.6) 0%, rgba(251,146,60,0) 70%)', animationDuration: '5s', animationDelay: '0.6s' }} />
-        {/* Layer 5 — Inner hot core, bright amber */}
-        <div className="absolute w-[28vw] max-w-[400px] aspect-square rounded-full blur-[80px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(253,186,116,0.55) 0%, rgba(253,186,116,0) 70%)', animationDuration: '4s', animationDelay: '1s' }} />
-        {/* Layer 6 — Radiant focal hot-spot, near white-gold */}
-        <div className="absolute w-[14vw] max-w-[200px] aspect-square rounded-full blur-[55px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(254,215,170,0.7) 0%, rgba(254,215,170,0) 70%)', animationDuration: '5s', animationDelay: '1.4s' }} />
-        {/* Layer 7 — Pinpoint searing center */}
-        <div className="absolute w-[6vw] max-w-[90px] aspect-square rounded-full blur-[30px] animate-glow-breathe"
-          style={{ background: 'radial-gradient(circle, rgba(255,237,213,0.85) 0%, rgba(255,237,213,0) 70%)', animationDuration: '6s', animationDelay: '1.8s' }} />
+      {/* Volumetric breathing orange backlight — multi-axis cinematic depth */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250vw] h-[250vh] pointer-events-none -z-10 overflow-visible">
+        {/* Outer vignette — deep navy shadow ring to make orange pop */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vw] aspect-square rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(15,23,42,0) 30%, rgba(15,23,42,0.55) 70%, rgba(15,23,42,0.85) 100%)' }} />
+
+        {/* Layer 1 — Far atmospheric crimson wash */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] max-w-[2000px] aspect-square rounded-full blur-[260px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(124,45,18,0.7) 0%, rgba(124,45,18,0) 70%)', animationDuration: '11s' }} />
+
+        {/* Layer 2 — Wide deep amber, offset top-left for parallax */}
+        <div className="absolute top-[42%] left-[46%] -translate-x-1/2 -translate-y-1/2 w-[110vw] max-w-[1500px] aspect-square rounded-full blur-[220px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(154,52,18,0.65) 0%, rgba(154,52,18,0) 70%)', animationDuration: '9s', animationDelay: '0.3s' }} />
+
+        {/* Layer 3 — Burnt sienna, offset bottom-right */}
+        <div className="absolute top-[55%] left-[54%] -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-[1300px] aspect-square rounded-full blur-[200px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(194,65,12,0.7) 0%, rgba(194,65,12,0) 70%)', animationDuration: '8s', animationDelay: '0.7s' }} />
+
+        {/* Layer 4 — Mid orange body */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] max-w-[950px] aspect-square rounded-full blur-[160px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(234,88,12,0.8) 0%, rgba(234,88,12,0) 70%)', animationDuration: '6s' }} />
+
+        {/* Layer 5 — Brand orange — offset for dimensional shift */}
+        <div className="absolute top-[48%] left-[51%] -translate-x-1/2 -translate-y-1/2 w-[50vw] max-w-[700px] aspect-square rounded-full blur-[120px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.85) 0%, rgba(251,146,60,0) 70%)', animationDuration: '5s', animationDelay: '0.5s' }} />
+
+        {/* Layer 6 — Hot amber inner glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[32vw] max-w-[450px] aspect-square rounded-full blur-[90px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(253,186,116,0.8) 0%, rgba(253,186,116,0) 70%)', animationDuration: '4.5s', animationDelay: '0.9s' }} />
+
+        {/* Layer 7 — Radiant focal hot-spot */}
+        <div className="absolute top-[49%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[18vw] max-w-[260px] aspect-square rounded-full blur-[60px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(254,215,170,0.9) 0%, rgba(254,215,170,0) 70%)', animationDuration: '5s', animationDelay: '1.3s' }} />
+
+        {/* Layer 8 — Searing white-gold pinpoint */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[8vw] max-w-[120px] aspect-square rounded-full blur-[35px] animate-glow-breathe"
+          style={{ background: 'radial-gradient(circle, rgba(255,237,213,1) 0%, rgba(255,237,213,0) 70%)', animationDuration: '6s', animationDelay: '1.7s' }} />
+
+        {/* Layer 9 — Conic shimmer for organic light variation */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-[850px] aspect-square rounded-full blur-[140px] animate-glow-breathe opacity-50"
+          style={{ background: 'conic-gradient(from 45deg, rgba(251,146,60,0.4), rgba(234,88,12,0.6), rgba(253,186,116,0.5), rgba(194,65,12,0.55), rgba(251,146,60,0.4))', animationDuration: '12s', animationDelay: '2s' }} />
       </div>
 
       {/* Invisible Story-style tap zones */}
