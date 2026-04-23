@@ -152,6 +152,21 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         />
       )}
 
+      {/* Dynamic description shown below the expanded image (independent of "View full case study") */}
+      <AnimatePresence>
+        {imageExpanded && caseStudy && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-4 px-1 text-muted-foreground leading-relaxed text-base font-sans antialiased [&_strong]:font-semibold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-3"
+            style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Controls — ALWAYS visible */}
       <div className="mt-3 px-1 flex flex-wrap items-center gap-4">
         <button
