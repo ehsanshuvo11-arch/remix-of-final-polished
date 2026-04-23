@@ -102,19 +102,23 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       >
         {project.image_url ? (
           imageExpanded ? (
-            <div className="relative flex items-center justify-center w-full py-12 overflow-visible">
+            <div className="group relative flex items-center justify-center w-full py-12 overflow-visible">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <motion.img
-                src={project.image_url}
-                alt={t(project.title_en, project.title_bn)}
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-10 aspect-square w-full max-w-[80vh] object-contain"
-                style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
-                draggable={false}
-              />
+              <div className="relative aspect-square w-full max-w-[80vh] overflow-hidden">
+                <motion.img
+                  src={project.image_url}
+                  alt={t(project.title_en, project.title_bn)}
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative z-10 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
+                  draggable={false}
+                />
+                {/* Blue brand-tint overlay on hover — matches reference */}
+                <div className="absolute inset-0 z-20 bg-primary/30 mix-blend-multiply opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 pointer-events-none" />
+              </div>
             </div>
           ) : (
             <TiltImage
