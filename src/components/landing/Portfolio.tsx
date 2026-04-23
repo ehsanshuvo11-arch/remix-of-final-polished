@@ -117,29 +117,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               />
             </div>
           ) : (
-            <div className="group relative z-10 w-full h-full overflow-visible">
-              {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <img
-                src={project.image_url}
-                alt={t(project.title_en, project.title_bn)}
-                className="relative z-10 cursor-pointer group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                  backgroundColor: 'transparent',
-                  display: 'block',
-                  transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s ease-out',
-                }}
-                loading="lazy"
-              />
-              {/* Accent gradient sweep overlay — matches Services card */}
-              <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
-            </div>
+            <TiltImage
+              src={project.image_url}
+              alt={t(project.title_en, project.title_bn)}
+            />
           )
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
@@ -281,6 +262,56 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       )}
     </div>
     </MotionReveal>
+  );
+}
+
+/* ── Tilt Image (matches Services "What We Do" card animation) ── */
+
+function TiltImage({ src, alt }: { src: string; alt: string }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const handleTilt = (e: React.MouseEvent) => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const midX = rect.width / 2;
+    const midY = rect.height / 2;
+    const rotateY = ((x - midX) / midX) * 6;
+    const rotateX = ((midY - y) / midY) * 6;
+    el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02) translateY(-4px)`;
+  };
+
+  const handleTiltLeave = () => {
+    if (wrapperRef.current) wrapperRef.current.style.transform = '';
+  };
+
+  return (
+    <div className="group relative z-10 w-full h-full overflow-visible">
+      {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+
+      <div
+        ref={wrapperRef}
+        onMouseMove={handleTilt}
+        onMouseLeave={handleTiltLeave}
+        className="relative w-full h-full overflow-hidden transition-shadow duration-700 ease-out hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
+        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s ease-out' }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          className="relative z-10 w-full h-full object-cover object-center block cursor-pointer"
+          loading="lazy"
+          draggable={false}
+        />
+        {/* Accent gradient sweep overlay — matches Services card */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
+        {/* Bottom accent line — matches Services card */}
+        <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100 z-30" />
+      </div>
+    </div>
   );
 }
 
