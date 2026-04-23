@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
