@@ -340,36 +340,8 @@ function TiltImage({ src, alt, title, category }: { src: string; alt: string; ti
           loading="lazy"
           draggable={false}
         />
-        {/* Brand-blue gradient fill on hover — matches reference */}
-        <div
-          className="absolute inset-0 z-20 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-80 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 45%, hsl(217 91% 60% / 0.7) 100%)' }}
-        />
         {/* Accent gradient sweep overlay — matches Services card */}
         <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
-        {/* Bottom-up dark readability gradient — black at bottom, fades up to transparent */}
-        <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-        {/* Title + Category label — bottom-left, clean sans-serif */}
-        {(title || category) && (
-          <div className="absolute bottom-5 left-5 z-30 pointer-events-none flex items-baseline gap-2">
-            {title && (
-              <span
-                className="text-white text-xl font-medium drop-shadow-md"
-                style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
-              >
-                {title}
-              </span>
-            )}
-            {category && (
-              <span
-                className="text-white/80 text-sm uppercase tracking-wider"
-                style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
-              >
-                {category}
-              </span>
-            )}
-          </div>
-        )}
         {/* Bottom accent line — matches Services card */}
         <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100 z-30" />
       </div>
