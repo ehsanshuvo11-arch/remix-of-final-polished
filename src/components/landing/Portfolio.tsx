@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -340,6 +340,27 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   const touchDeltaX = useRef(0);
   const total = urls.length;
 
+  // 3D tilt motion values (smooth spring follow)
+  const mvX = useMotionValue(0); // -0.5 .. 0.5
+  const mvY = useMotionValue(0);
+  const springConfig = { stiffness: 120, damping: 18, mass: 0.6 };
+  const sx = useSpring(mvX, springConfig);
+  const sy = useSpring(mvY, springConfig);
+  const rotateY = useTransform(sx, [-0.5, 0.5], [-8, 8]); // horizontal mouse → Y-axis tilt
+  const rotateX = useTransform(sy, [-0.5, 0.5], [6, -6]); // vertical mouse → X-axis tilt (inverted)
+
+  const handleImgMouseMove = (e: React.MouseEvent<HTMLImageElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    mvX.set(px);
+    mvY.set(py);
+  };
+  const handleImgMouseLeave = () => {
+    mvX.set(0);
+    mvY.set(0);
+  };
+
   const goNext = useCallback(() => setCurrent((c) => Math.min(c + 1, total - 1)), [total]);
   const goPrev = useCallback(() => setCurrent((c) => Math.max(c - 1, 0)), []);
 
@@ -437,29 +458,43 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image with animation + drag-to-swap */}
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          src={urls[current]}
-          alt={`${title} mockup ${current + 1}`}
-          className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing"
-          style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none' }}
-          onClick={(e) => e.stopPropagation()}
-          draggable={false}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={(_, info) => {
-            if (info.offset.x < -80 && current < total - 1) goNext();
-            else if (info.offset.x > 80 && current > 0) goPrev();
-          }}
-        />
-      </AnimatePresence>
+      {/* Main image with animation + drag-to-swap + 3D tilt */}
+      <div
+        className="relative flex items-center justify-center"
+        style={{ perspective: 1200 }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            src={urls[current]}
+            alt={`${title} mockup ${current + 1}`}
+            className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing will-change-transform"
+            style={{
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              filter: 'none',
+              rotateX,
+              rotateY,
+              transformStyle: 'preserve-3d',
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseMove={handleImgMouseMove}
+            onMouseLeave={handleImgMouseLeave}
+            draggable={false}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -80 && current < total - 1) goNext();
+              else if (info.offset.x > 80 && current > 0) goPrev();
+            }}
+          />
+        </AnimatePresence>
+      </div>
 
       {/* Dot indicators */}
       {total > 1 && (
