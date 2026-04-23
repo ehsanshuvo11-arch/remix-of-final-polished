@@ -308,6 +308,8 @@ function TiltImage({ src, alt, title, category }: { src: string; alt: string; ti
 
   return (
     <div className="group relative z-10 w-full h-full overflow-visible">
+      {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
 
       <div
         ref={wrapperRef}
