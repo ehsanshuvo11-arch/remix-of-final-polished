@@ -325,10 +325,6 @@ function TiltImage({ src, alt, title, category }: { src: string; alt: string; ti
           loading="lazy"
           draggable={false}
         />
-        {/* Accent gradient sweep overlay — matches Services card */}
-        <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
-        {/* Bottom accent line — matches Services card */}
-        <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100 z-30" />
       </div>
     </div>
   );
