@@ -117,7 +117,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   draggable={false}
                 />
                 {/* Strong deep-blue brand overlay on hover — matches reference */}
-                <div className="absolute inset-0 z-20 bg-primary opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-60 pointer-events-none" />          
+                {/* Brand-blue gradient fill on hover — matches reference */}
+                <div className="absolute inset-0 z-20 bg-gradient-to-br from-primary via-primary/80 to-primary/60 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-70 pointer-events-none" />          
               </div>
             </div>
           ) : (
@@ -306,10 +307,12 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         <img
           src={src}
           alt={alt}
-          className="relative z-10 w-full h-full object-cover object-center block cursor-pointer"
+          className="relative z-10 w-full h-full object-cover object-center block cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           loading="lazy"
           draggable={false}
         />
+        {/* Brand-blue gradient fill on hover — matches reference */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-br from-primary via-primary/80 to-primary/60 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-70 pointer-events-none" />
         {/* Accent gradient sweep overlay — matches Services card */}
         <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
         {/* Bottom accent line — matches Services card */}
