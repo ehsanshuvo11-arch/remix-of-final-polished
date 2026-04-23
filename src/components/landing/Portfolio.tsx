@@ -338,22 +338,26 @@ function TiltImage({ src, alt, title, category }: { src: string; alt: string; ti
         {/* Accent gradient sweep overlay — matches Services card */}
         <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
         {/* Bottom-up dark readability gradient — black at bottom, fades up to transparent */}
-        <div className="absolute inset-x-0 bottom-0 h-2/3 z-20 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
         {/* Title + Category label — bottom-left, clean sans-serif */}
         {(title || category) && (
-          <div className="absolute bottom-0 left-0 right-0 z-30 p-5 md:p-6 pointer-events-none">
-            <p
-              className="text-white text-lg md:text-xl font-medium leading-tight tracking-tight antialiased drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
-              style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
-            >
-              {title}
-              {title && category && <span className="mx-2 opacity-60">·</span>}
-              {category && (
-                <span className="font-normal uppercase tracking-[0.18em] text-sm md:text-base text-white/85">
-                  {category}
-                </span>
-              )}
-            </p>
+          <div className="absolute bottom-5 left-5 z-30 pointer-events-none flex items-baseline gap-2">
+            {title && (
+              <span
+                className="text-white text-xl font-medium drop-shadow-md"
+                style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
+              >
+                {title}
+              </span>
+            )}
+            {category && (
+              <span
+                className="text-white/80 text-sm uppercase tracking-wider"
+                style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
+              >
+                {category}
+              </span>
+            )}
           </div>
         )}
         {/* Bottom accent line — matches Services card */}
