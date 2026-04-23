@@ -1,39 +1,53 @@
 
+Goal: remove the blue hover tint from Recent Projects without touching the image files, 3D tilt/scale, orange aura, or footer text.
 
-## Add subtle film grain overlay (Old-Money texture)
+What is actually causing it
+- The blue “gradient” is not coming from a remaining overlay inside `Portfolio.tsx`.
+- It is coming from the global `FilmGrain` layer in `src/components/FilmGrain.tsx`:
+  - `position: fixed`
+  - `zIndex: 50`
+  - `mixBlendMode: "overlay"`
+- The current portfolio fix only raises inner image wrappers. Those wrappers are still inside transformed/animated ancestors (`MotionReveal` / card containers), so they remain trapped under the global blend layer. On hover/expand, that blend becomes much more visible over the project image.
 
-A global, fixed SVG noise overlay that sits above the page but never intercepts pointer events. Pure additive change — no existing component is touched.
+Implementation plan
+1. Raise the correct stacking level for the entire project card
+- In `src/components/landing/Portfolio.tsx`, move the “above film grain” stacking context from the inner image wrappers to the outer portfolio card wrapper / `MotionReveal` wrapper.
+- Apply `relative z-[60] isolate` at the card level so both:
+  - collapsed image view
+  - expanded inline full-view image
+  are rendered above the global film-grain layer.
 
-### What changes
+2. Keep the orange aura behind the image only
+- Preserve the existing orange aura with `-z-10`.
+- Keep it inside the new isolated card stacking context so it stays behind the image, but the whole card remains above the film grain.
 
-**1. New file: `src/components/FilmGrain.tsx`**
-A single presentational component returning a `<div>` with:
-- `position: fixed; inset: 0; z-index: 50; pointer-events: none;`
-- `mix-blend-mode: overlay` for a paper-like blend over any background
-- Inline `background-image` set to a base64-encoded inline SVG using `<feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>` (fractal noise)
-- `opacity: 0.04`
-- Hidden on the admin route via a `body.admin-panel ~ * &` style — simpler: render `null` when `document.body.classList.contains('admin-panel')` so it never interferes with the admin UI
+3. Clean up now-unnecessary inner z-index workarounds
+- Simplify the duplicated `z-[60] isolate` classes on inner image wrappers if they are no longer needed after the card-level fix.
+- Do not touch:
+  - `<img>` / `<motion.img>` sources
+  - tilt math
+  - hover scale
+  - lightbox/tap zones
+  - footer text/buttons
 
-**2. Mount once in `src/App.tsx`**
-Add `<FilmGrain />` inside the existing providers tree, alongside `Toaster`/`Sonner` — a single global instance, rendered for every route. No layout reflow, no wrapper changes.
+4. Verify both portfolio states
+- Confirm the fix applies to:
+  - collapsed recent-project card on hover
+  - expanded inline “full view” image after clicking the card
+- Ensure the mockup lightbox remains unchanged since it already renders via portal at high z-index.
 
-### Strict preservation guarantees
+Files to update
+- `src/components/landing/Portfolio.tsx`
+- Possibly minor adjustment in `src/components/FilmGrain.tsx` only if the card-level stacking fix alone is insufficient
 
-- `src/components/landing/CustomCursor.tsx` — not opened, not edited. The grain sits at `z-50`; the cursor lives at `z-99998`/`z-99999`, so the cursor still paints above the grain.
-- `src/components/landing/Portfolio.tsx` — not opened, not edited. Tap zones, orange aura, tilt/zoom hover, gradient overlay, lazy loading, and the Lightbox stay byte-identical.
-- `pointer-events: none` guarantees no click, hover, drag, or scroll event is ever intercepted.
-- Admin panel detection skips render so `cursor: auto` and form interactions remain pristine.
-- No changes to `index.css`, Tailwind config, or any existing component.
+Fallback if any tint still remains
+- Keep the global film grain for the rest of the site, but explicitly exclude the portfolio media area by:
+  - adding a portfolio-specific wrapper/class/data-attribute
+  - rendering that area in a higher isolated stacking context above the blend layer
+- This would still be a surgical fix, not a site-wide visual change.
 
-### Technical details
-
-- SVG grain is inlined (no network request, no asset pipeline change).
-- `mix-blend-mode: overlay` + `opacity: 0.04` produces the vintage-paper feel without visibly tinting brand colors (navy `#1e3a8a`, orange `#fb923c`, off-white `#f9fafb`).
-- z-index map after change: page content (default) → grain (50) → toasts (Sonner default ~100) → custom cursor (99998/99999). Toasts and cursor remain on top.
-- Zero new dependencies. ~30 lines total.
-
-### Files touched
-
-- `src/components/FilmGrain.tsx` (new)
-- `src/App.tsx` (one import + one `<FilmGrain />` line)
-
+Expected result
+- The Recent Projects images display in their original colors.
+- No blue hover wash in collapsed view.
+- No blue wash in expanded inline full view.
+- 3D tilt, scale animation, orange aura, footer text, and lightbox behavior all remain intact.
