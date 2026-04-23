@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -102,10 +102,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       >
         {project.image_url ? (
           imageExpanded ? (
-            <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
+            <div className="group relative flex items-center justify-center w-full py-12 overflow-visible">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
+              <div className="relative aspect-square w-full max-w-[80vh] overflow-hidden">
                 <motion.img
                   src={project.image_url}
                   alt={t(project.title_en, project.title_bn)}
@@ -116,6 +116,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
                   draggable={false}
                 />
+                {/* Blue brand-tint overlay on hover — matches reference */}
+                <div className="absolute inset-0 z-20 bg-primary/30 mix-blend-multiply opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 pointer-events-none" />
               </div>
             </div>
           ) : (
@@ -125,7 +127,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             />
           )
         ) : (
-          <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
+          <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
               <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
               <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
@@ -146,21 +148,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
         />
       )}
-
-      {/* Dynamic description shown below the expanded image (independent of "View full case study") */}
-      <AnimatePresence>
-        {imageExpanded && caseStudy && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 4 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-4 px-1 text-muted-foreground leading-relaxed text-base font-sans antialiased [&_strong]:font-semibold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-3"
-            style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Controls — ALWAYS visible */}
       <div className="mt-3 px-1 flex flex-wrap items-center gap-4">
@@ -305,7 +292,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
   };
 
   return (
-    <div className="group relative z-[60] w-full h-full overflow-visible isolate">
+    <div className="group relative z-10 w-full h-full overflow-visible">
       {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
 
@@ -313,16 +300,20 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate"
-        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
+        className="relative w-full h-full overflow-hidden transition-shadow duration-700 ease-out hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
+        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s ease-out' }}
       >
         <img
           src={src}
           alt={alt}
-          className="relative z-10 w-full h-full object-cover object-center block cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="relative z-10 w-full h-full object-cover object-center block cursor-pointer"
           loading="lazy"
           draggable={false}
         />
+        {/* Accent gradient sweep overlay — matches Services card */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
+        {/* Bottom accent line — matches Services card */}
+        <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100 z-30" />
       </div>
     </div>
   );
@@ -340,27 +331,6 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
   const total = urls.length;
-
-  // 3D tilt motion values (smooth spring follow)
-  const mvX = useMotionValue(0); // -0.5 .. 0.5
-  const mvY = useMotionValue(0);
-  const springConfig = { stiffness: 120, damping: 18, mass: 0.6 };
-  const sx = useSpring(mvX, springConfig);
-  const sy = useSpring(mvY, springConfig);
-  const rotateY = useTransform(sx, [-0.5, 0.5], [-8, 8]); // horizontal mouse → Y-axis tilt
-  const rotateX = useTransform(sy, [-0.5, 0.5], [6, -6]); // vertical mouse → X-axis tilt (inverted)
-
-  const handleImgMouseMove = (e: React.MouseEvent<HTMLImageElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    mvX.set(px);
-    mvY.set(py);
-  };
-  const handleImgMouseLeave = () => {
-    mvX.set(0);
-    mvY.set(0);
-  };
 
   const goNext = useCallback(() => setCurrent((c) => Math.min(c + 1, total - 1)), [total]);
   const goPrev = useCallback(() => setCurrent((c) => Math.max(c - 1, 0)), []);
@@ -459,43 +429,29 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image with animation + drag-to-swap + 3D tilt */}
-      <div
-        className="relative flex items-center justify-center"
-        style={{ perspective: 1200 }}
-      >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            src={urls[current]}
-            alt={`${title} mockup ${current + 1}`}
-            className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing will-change-transform"
-            style={{
-              backgroundColor: 'transparent',
-              boxShadow: 'none',
-              filter: 'none',
-              rotateX,
-              rotateY,
-              transformStyle: 'preserve-3d',
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseMove={handleImgMouseMove}
-            onMouseLeave={handleImgMouseLeave}
-            draggable={false}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={(_, info) => {
-              if (info.offset.x < -80 && current < total - 1) goNext();
-              else if (info.offset.x > 80 && current > 0) goPrev();
-            }}
-          />
-        </AnimatePresence>
-      </div>
+      {/* Main image with animation + drag-to-swap */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          src={urls[current]}
+          alt={`${title} mockup ${current + 1}`}
+          className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing"
+          style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none' }}
+          onClick={(e) => e.stopPropagation()}
+          draggable={false}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -80 && current < total - 1) goNext();
+            else if (info.offset.x > 80 && current > 0) goPrev();
+          }}
+        />
+      </AnimatePresence>
 
       {/* Dot indicators */}
       {total > 1 && (
