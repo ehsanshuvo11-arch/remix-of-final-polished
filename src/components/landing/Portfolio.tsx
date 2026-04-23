@@ -116,21 +116,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
                   draggable={false}
                 />
-                {/* Title + Category — bottom-left overlay */}
-                <div className="absolute bottom-6 left-6 z-30 pointer-events-none flex flex-col gap-1">
-                  <span
-                    className="text-white text-2xl font-medium leading-tight drop-shadow-md"
-                    style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
-                  >
-                    {t(project.title_en, project.title_bn)}
-                  </span>
-                  <span
-                    className="text-accent text-xs uppercase tracking-[0.2em] font-medium"
-                    style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
-                  >
-                    {t(project.category_en, project.category_bn)}
-                  </span>
-                </div>
               </div>
             </div>
           ) : (
