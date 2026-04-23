@@ -122,12 +122,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <TiltImage
               src={project.image_url}
               alt={t(project.title_en, project.title_bn)}
-              title={t(project.title_en, project.title_bn)}
-              category={t(project.category_en, project.category_bn)}
             />
           )
         ) : (
-          <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-secondary">
+          <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
               <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
               <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
@@ -286,7 +284,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
 
 /* ── Tilt Image (matches Services "What We Do" card animation) ── */
 
-function TiltImage({ src, alt, title, category }: { src: string; alt: string; title?: string; category?: string }) {
+function TiltImage({ src, alt }: { src: string; alt: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleTilt = (e: React.MouseEvent) => {
