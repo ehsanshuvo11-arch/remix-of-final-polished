@@ -123,7 +123,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <img
                 src={project.image_url}
                 alt={t(project.title_en, project.title_bn)}
-                className="relative z-10 cursor-pointer"
+                className="relative z-10 cursor-pointer group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -139,8 +139,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               />
               {/* Accent gradient sweep overlay — matches Services card */}
               <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
-              {/* Hover lift effect on image via group */}
-              <style>{`.group:hover > img { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.15); }`}</style>
             </div>
           )
         ) : (
