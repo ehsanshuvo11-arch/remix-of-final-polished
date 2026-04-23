@@ -127,6 +127,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <TiltImage
               src={project.image_url}
               alt={t(project.title_en, project.title_bn)}
+              title={t(project.title_en, project.title_bn)}
+              category={t(project.category_en, project.category_bn)}
             />
           )
         ) : (
@@ -289,7 +291,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
 
 /* ── Tilt Image (matches Services "What We Do" card animation) ── */
 
-function TiltImage({ src, alt }: { src: string; alt: string }) {
+function TiltImage({ src, alt, title, category }: { src: string; alt: string; title?: string; category?: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleTilt = (e: React.MouseEvent) => {
@@ -335,6 +337,25 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         />
         {/* Accent gradient sweep overlay — matches Services card */}
         <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
+        {/* Bottom-up dark readability gradient — black at bottom, fades up to transparent */}
+        <div className="absolute inset-x-0 bottom-0 h-2/3 z-20 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
+        {/* Title + Category label — bottom-left, clean sans-serif */}
+        {(title || category) && (
+          <div className="absolute bottom-0 left-0 right-0 z-30 p-5 md:p-6 pointer-events-none">
+            <p
+              className="text-white text-lg md:text-xl font-medium leading-tight tracking-tight antialiased drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+              style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
+            >
+              {title}
+              {title && category && <span className="mx-2 opacity-60">·</span>}
+              {category && (
+                <span className="font-normal uppercase tracking-[0.18em] text-sm md:text-base text-white/85">
+                  {category}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
         {/* Bottom accent line — matches Services card */}
         <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100 z-30" />
       </div>
