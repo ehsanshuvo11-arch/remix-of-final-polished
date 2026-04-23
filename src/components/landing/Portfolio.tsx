@@ -117,13 +117,13 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               />
             </div>
           ) : (
-            <div className="relative z-10 w-full h-full overflow-visible">
+            <div className="group relative z-10 w-full h-full overflow-visible">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
               <img
                 src={project.image_url}
                 alt={t(project.title_en, project.title_bn)}
-                className="relative z-10 transition-all duration-500 ease-out hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] cursor-pointer"
+                className="relative z-10 cursor-pointer group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -133,9 +133,12 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   objectPosition: 'center',
                   backgroundColor: 'transparent',
                   display: 'block',
+                  transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s ease-out',
                 }}
                 loading="lazy"
               />
+              {/* Accent gradient sweep overlay — matches Services card */}
+              <div className="absolute inset-0 z-20 bg-gradient-to-br from-accent/[0.09] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100 pointer-events-none" />
             </div>
           )
         ) : (
