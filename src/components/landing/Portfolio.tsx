@@ -116,8 +116,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
                   draggable={false}
                 />
-                {/* Blue brand-tint overlay on hover — matches reference */}
-                <div className="absolute inset-0 z-20 bg-primary/30 mix-blend-multiply opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 pointer-events-none" />
+                {/* Strong deep-blue brand overlay on hover — matches reference */}
+                <div className="absolute inset-0 z-20 bg-primary opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-60 pointer-events-none" />          
               </div>
             </div>
           ) : (
