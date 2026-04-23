@@ -116,9 +116,11 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
                   draggable={false}
                 />
-                {/* Strong deep-blue brand overlay on hover — matches reference */}
                 {/* Brand-blue gradient fill on hover — matches reference */}
-                <div className="absolute inset-0 z-20 bg-gradient-to-br from-primary via-primary/80 to-primary/60 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-70 pointer-events-none" />          
+                <div
+                  className="absolute inset-0 z-20 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-80 pointer-events-none"
+                  style={{ background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 45%, hsl(217 91% 60% / 0.7) 100%)' }}
+                />
               </div>
             </div>
           ) : (
