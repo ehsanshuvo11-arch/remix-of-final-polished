@@ -313,8 +313,8 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative w-full h-full overflow-hidden transition-shadow duration-700 ease-out hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)]"
-        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s ease-out' }}
+        className="relative w-full h-full overflow-hidden"
+        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
       >
         <img
           src={src}
