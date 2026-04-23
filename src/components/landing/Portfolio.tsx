@@ -102,10 +102,10 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       >
         {project.image_url ? (
           imageExpanded ? (
-            <div className="group relative flex items-center justify-center w-full py-12 overflow-visible">
+            <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <div className="relative aspect-square w-full max-w-[80vh] overflow-hidden">
+              <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
                 <motion.img
                   src={project.image_url}
                   alt={t(project.title_en, project.title_bn)}
@@ -305,7 +305,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
   };
 
   return (
-    <div className="group relative z-10 w-full h-full overflow-visible">
+    <div className="group relative z-[60] w-full h-full overflow-visible isolate">
       {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
 
@@ -313,7 +313,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative w-full h-full overflow-hidden"
+        className="relative z-[60] w-full h-full overflow-hidden isolate"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
       >
         <img
