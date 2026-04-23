@@ -116,11 +116,6 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
                   draggable={false}
                 />
-                {/* Brand-blue gradient fill — always visible (matches reference) */}
-                <div
-                  className="absolute inset-0 z-20 pointer-events-none opacity-80 transition-opacity duration-700 ease-out group-hover:opacity-90"
-                  style={{ background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 45%, hsl(217 91% 60% / 0.7) 100%)' }}
-                />
                 {/* Title + Category — bottom-left overlay */}
                 <div className="absolute bottom-6 left-6 z-30 pointer-events-none flex flex-col gap-1">
                   <span
