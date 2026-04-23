@@ -121,6 +121,23 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   className="absolute inset-0 z-20 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-80 pointer-events-none"
                   style={{ background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 45%, hsl(217 91% 60% / 0.7) 100%)' }}
                 />
+                {/* Bottom-up dark readability gradient */}
+                <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                {/* Title + Category — bottom-left overlay */}
+                <div className="absolute bottom-5 left-5 z-30 pointer-events-none flex flex-col gap-1">
+                  <span
+                    className="text-white text-xl font-medium drop-shadow-md"
+                    style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
+                  >
+                    {t(project.title_en, project.title_bn)}
+                  </span>
+                  <span
+                    className="text-accent text-sm uppercase tracking-wider"
+                    style={{ fontFamily: 'Inter, "Helvetica Neue", Arial, "Noto Sans Bengali", sans-serif' }}
+                  >
+                    {t(project.category_en, project.category_bn)}
+                  </span>
+                </div>
               </div>
             </div>
           ) : (
