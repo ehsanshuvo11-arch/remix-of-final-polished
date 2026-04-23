@@ -23,8 +23,7 @@ export default function FilmGrain() {
         pointerEvents: "none",
         backgroundImage: DATA_URL,
         backgroundRepeat: "repeat",
-        opacity: 0.04,
-        mixBlendMode: "overlay",
+        opacity: 0.035,
       }}
     />
   );
