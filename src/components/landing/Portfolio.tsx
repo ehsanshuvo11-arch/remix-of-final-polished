@@ -458,29 +458,43 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image with animation + drag-to-swap */}
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          src={urls[current]}
-          alt={`${title} mockup ${current + 1}`}
-          className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing"
-          style={{ backgroundColor: 'transparent', boxShadow: 'none', filter: 'none' }}
-          onClick={(e) => e.stopPropagation()}
-          draggable={false}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={(_, info) => {
-            if (info.offset.x < -80 && current < total - 1) goNext();
-            else if (info.offset.x > 80 && current > 0) goPrev();
-          }}
-        />
-      </AnimatePresence>
+      {/* Main image with animation + drag-to-swap + 3D tilt */}
+      <div
+        className="relative flex items-center justify-center"
+        style={{ perspective: 1200 }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            src={urls[current]}
+            alt={`${title} mockup ${current + 1}`}
+            className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing will-change-transform"
+            style={{
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              filter: 'none',
+              rotateX,
+              rotateY,
+              transformStyle: 'preserve-3d',
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onMouseMove={handleImgMouseMove}
+            onMouseLeave={handleImgMouseLeave}
+            draggable={false}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -80 && current < total - 1) goNext();
+              else if (info.offset.x > 80 && current > 0) goPrev();
+            }}
+          />
+        </AnimatePresence>
+      </div>
 
       {/* Dot indicators */}
       {total > 1 && (
