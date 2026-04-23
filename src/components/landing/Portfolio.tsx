@@ -123,7 +123,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <img
                 src={project.image_url}
                 alt={t(project.title_en, project.title_bn)}
-                className="relative z-10"
+                className="relative z-10 transition-all duration-500 ease-out hover:scale-[1.02] hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] cursor-pointer"
                 style={{
                   position: 'absolute',
                   inset: 0,
