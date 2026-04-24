@@ -514,4 +514,4 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       )}
     </motion.div>
   );
-}
+}// Clean UI deployed
