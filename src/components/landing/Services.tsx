@@ -65,6 +65,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
     const rotateY = ((x - midX) / midX) * 6;
     const rotateX = ((midY - y) / midY) * 6;
     el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    el.style.setProperty('--mx', `${x}px`);
+    el.style.setProperty('--my', `${y}px`);
   };
 
   const handleTiltLeave = () => {
