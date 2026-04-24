@@ -28,6 +28,7 @@ import type {
 } from '@/types/database';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import TransformationsEditor from '@/components/admin/TransformationsEditor';
+import InquiriesEditor from '@/components/admin/InquiriesEditor';
 
 const LOGO_STORAGE_PATH = 'logo/current';
 const PUZZLE_STORAGE_PATH = 'puzzle/current';
@@ -224,6 +225,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           </button>
         </div>
 
+        <InquiriesEditor />
         <MetaEditor />
         <ColorsEditor />
         <HeroEditor />
