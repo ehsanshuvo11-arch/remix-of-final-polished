@@ -313,13 +313,13 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate bg-card"
+        className="relative z-[60] w-full h-full overflow-hidden isolate"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
       >
         <img
           src={src}
           alt={alt}
-          className="relative z-10 block w-full h-full object-cover object-center bg-card cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="relative z-10 block w-full h-full object-cover object-center cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           loading="lazy"
           draggable={false}
         />
