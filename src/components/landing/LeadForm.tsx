@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
+import { sendInquiryEmail } from '@/lib/email';
 
 const BUDGETS = [
   { value: 'below-20k', labelEn: 'Below 20,000 BDT', labelBn: '২০,০০০ টাকার নিচে' },
@@ -55,13 +56,16 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
     if (!stepValid || submitting) return;
     setSubmitting(true);
     setError(null);
-    const { error: insertError } = await supabase.from('inquiries').insert({
+    const payload = {
       client_name: data.client_name.trim(),
       brand_name: data.brand_name.trim(),
       email: data.email.trim(),
       store_url: data.store_url.trim() || null,
       budget_range: data.budget_range,
       project_details: data.project_details.trim(),
+    };
+    const { error: insertError } = await supabase.from('inquiries').insert({
+      ...payload,
       status: 'new',
     });
     setSubmitting(false);
@@ -73,6 +77,8 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
       );
       return;
     }
+    // Background email notification — never blocks the success state.
+    void sendInquiryEmail(payload);
     setDone(true);
   };
 
