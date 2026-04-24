@@ -83,3 +83,23 @@ export function useStats() {
     staleTime: 30000,
   });
 }
+
+export function useTransformations() {
+  return useQuery({
+    queryKey: ['transformations'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('transformations')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true, nullsFirst: false });
+      if (error) {
+        // Table may not exist yet — fail silently so the section just hides.
+        if ((error as { code?: string }).code === '42P01') return [] as Transformation[];
+        throw error;
+      }
+      return (data ?? []) as Transformation[];
+    },
+    staleTime: 30000,
+  });
+}

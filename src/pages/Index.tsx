@@ -12,9 +12,10 @@ import PuzzleGame from '@/components/landing/PuzzleGame';
 import PageLoader from '@/components/landing/PageLoader';
 import CustomCursor from '@/components/landing/CustomCursor';
 import SmoothScroll from '@/components/landing/SmoothScroll';
-import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats } from '@/hooks/use-site-content';
+import Transformations from '@/components/landing/Transformations';
+import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
-import type { HeroContent, AboutContent, ContactContent, FooterContent, DiscountContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, PuzzleContent } from '@/types/database';
+import type { HeroContent, AboutContent, ContactContent, FooterContent, DiscountContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, PuzzleContent, TransformationsMetaContent } from '@/types/database';
 
 export default function Index() {
   const [puzzleOpen, setPuzzleOpen] = useState(false);
@@ -38,6 +39,8 @@ export default function Index() {
   const { data: projects = [] } = usePortfolio();
   const { data: processSteps = [] } = useProcessSteps();
   const { data: stats = [] } = useStats();
+  const { data: transformations = [] } = useTransformations();
+  const { data: transformationsMeta } = useSiteSetting<TransformationsMetaContent>('transformations-meta');
 
   return (
     <SmoothScroll>
@@ -54,6 +57,7 @@ export default function Index() {
       <About content={aboutContent ?? null} stats={stats} />
       <Services services={services} content={servicesMeta ?? null} />
       <Portfolio projects={projects} content={portfolioMeta ?? null} />
+      <Transformations items={transformations} content={transformationsMeta ?? null} />
       <Process steps={processSteps} content={processMeta ?? null} />
       <Contact contact={contactContent ?? null} />
       <Footer footer={footerContent ?? null} />
