@@ -1,53 +1,63 @@
 
-Goal: remove the blue hover tint from Recent Projects without touching the image files, 3D tilt/scale, orange aura, or footer text.
+Goal: remove the hover-time color fill from Recent Projects so images stay in their original colors while preserving tilt, scale, and the breathing orange aura.
 
-What is actually causing it
-- The blue “gradient” is not coming from a remaining overlay inside `Portfolio.tsx`.
-- It is coming from the global `FilmGrain` layer in `src/components/FilmGrain.tsx`:
-  - `position: fixed`
-  - `zIndex: 50`
-  - `mixBlendMode: "overlay"`
-- The current portfolio fix only raises inner image wrappers. Those wrappers are still inside transformed/animated ancestors (`MotionReveal` / card containers), so they remain trapped under the global blend layer. On hover/expand, that blend becomes much more visible over the project image.
+What the code currently shows
+- In `src/components/landing/Portfolio.tsx`, there is no `from-accent` overlay div in `TiltImage` right now.
+- There are also no `bg-blue`, `bg-primary`, `group-hover:bg-*`, or pseudo-element overlays attached to the project image area.
+- The only hover effect on the project images is `group-hover:scale-[1.04]`.
+- The only portfolio-local color surface touching the image area is `bg-card`, currently applied in both states:
+  - Expanded view:
+    - wrapper around the image
+    - `<motion.img>` itself
+  - Collapsed `TiltImage`:
+    - inner wrapper
+    - `<img>` itself
 
 Implementation plan
-1. Raise the correct stacking level for the entire project card
-- In `src/components/landing/Portfolio.tsx`, move the “above film grain” stacking context from the inner image wrappers to the outer portfolio card wrapper / `MotionReveal` wrapper.
-- Apply `relative z-[60] isolate` at the card level so both:
-  - collapsed image view
-  - expanded inline full-view image
-  are rendered above the global film-grain layer.
+1. Remove portfolio-local background fills from the image area
+- Edit `src/components/landing/Portfolio.tsx`.
+- Delete `bg-card` from the expanded image wrapper and the expanded `<motion.img>`.
+- Delete `bg-card` from the collapsed `TiltImage` wrapper and the collapsed `<img>`.
+- This restores a fully transparent image stage so no card-colored fill appears during hover scaling.
 
-2. Keep the orange aura behind the image only
-- Preserve the existing orange aura with `-z-10`.
-- Keep it inside the new isolated card stacking context so it stays behind the image, but the whole card remains above the film grain.
+2. Confirm there are no hidden hover tint classes in the project media block
+- Re-check the collapsed and expanded media markup in `Portfolio.tsx` and remove any image-area-only hover tint class if present.
+- Specifically ensure there is no:
+  - `bg-gradient-*`
+  - `from-accent`
+  - `bg-blue-*`
+  - `bg-primary*`
+  - `group-hover:bg-*`
+  - `before:` / `after:` overlay attached to the image container
 
-3. Clean up now-unnecessary inner z-index workarounds
-- Simplify the duplicated `z-[60] isolate` classes on inner image wrappers if they are no longer needed after the card-level fix.
-- Do not touch:
-  - `<img>` / `<motion.img>` sources
-  - tilt math
-  - hover scale
-  - lightbox/tap zones
-  - footer text/buttons
+3. Preserve required visual behavior exactly
+- Keep `handleTilt` / `handleTiltLeave` unchanged.
+- Keep `group-hover:scale-[1.04]` unchanged.
+- Keep the orange aura `bg-[#fb923c]/[0.06] blur-[90px] ... animate-pulse` unchanged and visible.
+- Do not add `bg-white`.
+- Do not change saturation, blend modes, pulse behavior, or animation timing.
 
 4. Verify both portfolio states
-- Confirm the fix applies to:
-  - collapsed recent-project card on hover
-  - expanded inline “full view” image after clicking the card
-- Ensure the mockup lightbox remains unchanged since it already renders via portal at high z-index.
+- Collapsed card hover: image tilts/scales with no color fill.
+- Expanded inline view: enlarged image remains clean with no tinted surface behind it.
+- Lightbox remains untouched unless a portfolio-local tint is still visible there after the card cleanup.
 
 Files to update
 - `src/components/landing/Portfolio.tsx`
-- Possibly minor adjustment in `src/components/FilmGrain.tsx` only if the card-level stacking fix alone is insufficient
 
-Fallback if any tint still remains
-- Keep the global film grain for the rest of the site, but explicitly exclude the portfolio media area by:
-  - adding a portfolio-specific wrapper/class/data-attribute
-  - rendering that area in a higher isolated stacking context above the blend layer
-- This would still be a surgical fix, not a site-wide visual change.
+Technical details
+```text
+Current likely tint source inside Portfolio.tsx:
+- Expanded wrapper: class includes bg-card
+- Expanded image: class includes bg-card
+- TiltImage wrapper: class includes bg-card
+- TiltImage image: class includes bg-card
 
-Expected result
-- The Recent Projects images display in their original colors.
-- No blue hover wash in collapsed view.
-- No blue wash in expanded inline full view.
-- 3D tilt, scale animation, orange aura, footer text, and lightbox behavior all remain intact.
+Planned outcome:
+- remove those bg-card classes
+- keep only transform/tilt/aura behavior
+- leave all buttons/footer/case-study/lightbox controls unchanged
+```
+
+GitHub / deployment note
+- After approval in default mode, I will make the code edit that triggers Lovable’s GitHub sync. Manual `git push --force` is not available from this environment, but the synced change is what will create the new GitHub commit and trigger deployment.
