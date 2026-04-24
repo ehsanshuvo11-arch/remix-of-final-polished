@@ -187,6 +187,29 @@ export interface PuzzleContent {
   copiedBn?: string;
 }
 
+export interface Transformation {
+  id: string;
+  created_at?: string;
+  project_name: string;
+  before_image_url: string;
+  after_image_url: string;
+  is_active: boolean;
+  sort_order?: number;
+}
+
+export interface TransformationsMetaContent {
+  labelEn?: string;
+  labelBn?: string;
+  titleLine1En?: string;
+  titleLine1Bn?: string;
+  titleLine2En?: string;
+  titleLine2Bn?: string;
+  beforeLabelEn?: string;
+  beforeLabelBn?: string;
+  afterLabelEn?: string;
+  afterLabelBn?: string;
+}
+
 export interface ColorsContent {
   blue: string;
   orange: string;
