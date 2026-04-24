@@ -105,7 +105,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate bg-card">
+              <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
                 <motion.img
                   src={project.image_url}
                   alt={t(project.title_en, project.title_bn)}
