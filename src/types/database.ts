@@ -210,6 +210,18 @@ export interface TransformationsMetaContent {
   afterLabelBn?: string;
 }
 
+export interface Inquiry {
+  id: string;
+  created_at?: string;
+  client_name: string;
+  brand_name: string;
+  email: string;
+  store_url?: string | null;
+  budget_range: string;
+  project_details: string;
+  status: 'new' | 'contacted' | 'archived' | string;
+}
+
 export interface ColorsContent {
   blue: string;
   orange: string;
