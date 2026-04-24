@@ -6,7 +6,7 @@ import {
   normalizeServiceRow,
   normalizeStatRow,
 } from '@/lib/content-schema';
-import type { Service, PortfolioProject, ProcessStep, Stat } from '@/types/database';
+import type { Service, PortfolioProject, ProcessStep, Stat, Transformation } from '@/types/database';
 
 export function useSiteSetting<T = Record<string, any>>(key: string) {
   return useQuery({
