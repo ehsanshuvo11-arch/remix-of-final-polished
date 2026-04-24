@@ -112,7 +112,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative z-10 w-full h-full object-contain bg-card transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  className="relative z-10 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
                   draggable={false}
                 />
