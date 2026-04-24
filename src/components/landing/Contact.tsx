@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
-import MagneticButton from '@/components/landing/MagneticButton';
+import LeadForm from '@/components/landing/LeadForm';
 import type { ContactContent } from '@/types/database';
 
 interface ContactProps {
@@ -40,9 +39,6 @@ const WhatsAppIcon = () => (
 export default function Contact({ contact }: ContactProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
-  const [brand, setBrand] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
 
   const c = contact ?? {
     email: 'polished.bd@gmail.com',
@@ -57,15 +53,7 @@ export default function Contact({ contact }: ContactProps) {
     titleLine2Bn: 'যা নজর কাড়ে।',
     descEn: "Have a skincare brand that deserves better visuals? Let's talk. We take on a limited number of projects to ensure every client gets full attention.",
     descBn: 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও ভালো ভিজ্যুয়াল পাওয়ার যোগ্য? যোগাযোগ করুন। আমরা সীমিত সংখ্যক প্রজেক্ট নিই।',
-    brandPlaceholderEn: 'Your Brand Name / আপনার ব্র্যান্ডের নাম',
-    brandPlaceholderBn: 'আপনার ব্র্যান্ডের নাম / Your Brand Name',
-    emailPlaceholderEn: 'Email Address / ইমেইল',
-    emailPlaceholderBn: 'ইমেইল / Email Address',
-    messagePlaceholderEn: 'Tell us about your brand... / আপনার ব্র্যান্ড সম্পর্কে বলুন...',
-    messagePlaceholderBn: 'আপনার ব্র্যান্ড সম্পর্কে বলুন... / Tell us about your brand...',
-    submitLabelEn: 'Send Inquiry',
-    submitLabelBn: 'বার্তা পাঠান',
-  };
+  } as ContactContent;
 
   const links = [
     { icon: <EmailIcon />, label: c.email, href: `mailto:${c.email}` },
@@ -73,12 +61,6 @@ export default function Contact({ contact }: ContactProps) {
     { icon: <FacebookIcon />, label: c.fb, href: `https://facebook.com/${c.fb}` },
     { icon: <WhatsAppIcon />, label: c.wa, href: `https://wa.me/${c.wa.replace(/\D/g, '')}` },
   ];
-
-  const handleSubmit = () => {
-    const subject = encodeURIComponent(`Inquiry from ${brand || 'Website'}`);
-    const body = encodeURIComponent(`Brand: ${brand}\nEmail: ${email}\n\n${message}`);
-    window.location.href = `mailto:${c.email}?subject=${subject}&body=${body}`;
-  };
 
   const line1 = t(c.titleLine1En ?? "Let's build something", c.titleLine1Bn ?? 'আসুন এমন কিছু তৈরি করি');
   const line2 = t(c.titleLine2En ?? 'worth noticing.', c.titleLine2Bn ?? 'যা নজর কাড়ে।');
@@ -126,38 +108,7 @@ export default function Contact({ contact }: ContactProps) {
         </div>
 
         <MotionReveal delay={0.2}>
-          <div className="flex flex-col gap-4">
-            <input
-              type="text"
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              placeholder={t(c.brandPlaceholderEn ?? 'Your Brand Name', c.brandPlaceholderBn ?? 'আপনার ব্র্যান্ডের নাম')}
-              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
-            />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t(c.emailPlaceholderEn ?? 'Email Address', c.emailPlaceholderBn ?? 'ইমেইল')}
-              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
-            />
-            <textarea
-              rows={5}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder={t(c.messagePlaceholderEn ?? 'Tell us about your brand...', c.messagePlaceholderBn ?? 'আপনার ব্র্যান্ড সম্পর্কে বলুন...')}
-              className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm resize-none transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/8 focus:translate-x-1"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
-            />
-            <MagneticButton
-              onClick={handleSubmit}
-              className="w-full py-4 text-xs tracking-[2px] uppercase font-normal rounded-sm bg-accent text-accent-foreground text-center relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4)] active:scale-[0.97]"
-            >
-              {t(c.submitLabelEn ?? 'Send Inquiry', c.submitLabelBn ?? 'বার্তা পাঠান')}
-            </MagneticButton>
-          </div>
+          <LeadForm isBn={isBn} />
         </MotionReveal>
       </div>
     </div>
