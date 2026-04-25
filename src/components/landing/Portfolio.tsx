@@ -108,7 +108,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
                 <motion.img
                   src={project.image_url}
-                  alt={t(project.title_en, project.title_bn)}
+                  alt={`${t(project.title_en, project.title_bn)} — ${t(project.category_en, project.category_bn)} — Premium skincare brand identity and UI design by POLISHED`}
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -121,7 +121,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           ) : (
             <TiltImage
               src={project.image_url}
-              alt={t(project.title_en, project.title_bn)}
+              alt={`${t(project.title_en, project.title_bn)} — ${t(project.category_en, project.category_bn)} — Premium skincare brand identity and UI design by POLISHED`}
             />
           )
         ) : (
