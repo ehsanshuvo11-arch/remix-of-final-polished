@@ -348,7 +348,7 @@ function ThankYou({ isBn, onReset }: { isBn: boolean; onReset: () => void }) {
       </p>
       <button
         onClick={onReset}
-        className="text-[11px] tracking-[3px] uppercase text-accent border border-accent/60 px-6 py-3 min-h-[44px] rounded-sm hover:bg-accent hover:text-primary transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        className="text-[11px] tracking-[3px] uppercase text-accent border border-accent px-6 py-3 min-h-[44px] rounded-sm shadow-[0_0_0_rgba(251,146,60,0)] hover:shadow-[0_0_18px_rgba(251,146,60,0.45)] hover:border-accent transition-all duration-300 ease-in-out"
       >
         {t('Submit another inquiry', 'আরেকটি বার্তা পাঠান')}
       </button>
