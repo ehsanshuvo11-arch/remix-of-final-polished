@@ -457,7 +457,7 @@ function HeroEditor() {
     return await upsertSetting('hero', data);
   };
 
-  useDirtySection({ key: 'hero', label: 'Hero Section', data, save });
+  const { markLoaded } = useDirtySection({ key: 'hero', label: 'Hero Section', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -538,7 +538,7 @@ function NavigationEditor() {
     return await upsertSetting('nav', data);
   };
 
-  useDirtySection({ key: 'nav', label: 'Navigation Labels', data, save });
+  const { markLoaded } = useDirtySection({ key: 'nav', label: 'Navigation Labels', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -603,7 +603,7 @@ function AboutEditor() {
     return await upsertSetting('about', data);
   };
 
-  useDirtySection({ key: 'about', label: 'About Section', data, save });
+  const { markLoaded } = useDirtySection({ key: 'about', label: 'About Section', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -673,7 +673,7 @@ function ServicesMetaEditor() {
     return await upsertSetting('services-meta', data);
   };
 
-  useDirtySection({ key: 'services-meta', label: 'Services Header', data, save });
+  const { markLoaded } = useDirtySection({ key: 'services-meta', label: 'Services Header', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1144,7 +1144,7 @@ function PortfolioMetaEditor() {
     return await upsertSetting('portfolio-meta', data);
   };
 
-  useDirtySection({ key: 'portfolio-meta', label: 'Portfolio Header', data, save });
+  const { markLoaded } = useDirtySection({ key: 'portfolio-meta', label: 'Portfolio Header', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1269,7 +1269,7 @@ function ProcessMetaEditor() {
     return await upsertSetting('process-meta', data);
   };
 
-  useDirtySection({ key: 'process-meta', label: 'Process Header', data, save });
+  const { markLoaded } = useDirtySection({ key: 'process-meta', label: 'Process Header', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1336,7 +1336,7 @@ function ContactEditor() {
     return await upsertSetting('contact', data);
   };
 
-  useDirtySection({ key: 'contact', label: 'Contact Info', data, save });
+  const { markLoaded } = useDirtySection({ key: 'contact', label: 'Contact Info', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1626,7 +1626,7 @@ function DiscountEditor() {
     return await upsertSetting('discount', data);
   };
 
-  useDirtySection({ key: 'discount', label: 'Discount', data, save });
+  const { markLoaded } = useDirtySection({ key: 'discount', label: 'Discount', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1665,7 +1665,7 @@ function FooterEditor() {
     return await upsertSetting('footer', data);
   };
 
-  useDirtySection({ key: 'footer', label: 'Footer', data, save });
+  const { markLoaded } = useDirtySection({ key: 'footer', label: 'Footer', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1705,7 +1705,7 @@ function MetaEditor() {
     return await upsertSetting('meta', data);
   };
 
-  useDirtySection({ key: 'meta', label: 'Meta / SEO', data, save });
+  const { markLoaded } = useDirtySection({ key: 'meta', label: 'Meta / SEO', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
@@ -1740,7 +1740,7 @@ function ColorsEditor() {
     return await upsertSetting('colors', data);
   };
 
-  useDirtySection({ key: 'colors', label: 'Brand Colors', data, save });
+  const { markLoaded } = useDirtySection({ key: 'colors', label: 'Brand Colors', data, save });
 
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
