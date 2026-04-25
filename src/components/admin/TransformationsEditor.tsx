@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSaveRegistration } from '@/components/admin/SaveAllContext';
 import type { Transformation, TransformationsMetaContent } from '@/types/database';
 import { BeforeAfterSlider } from '@/components/landing/Transformations';
 
