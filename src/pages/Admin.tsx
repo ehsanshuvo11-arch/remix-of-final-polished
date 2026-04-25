@@ -748,7 +748,9 @@ function ServicesEditor() {
     }
 
     if (data) {
-      setServices((prev) => [...prev, normalizeServiceRow(data as Record<string, unknown>)]);
+      const next = [...services, normalizeServiceRow(data as Record<string, unknown>)];
+      setServices(next);
+      markLoaded(next);
       await refreshCollectionQueries('services');
     }
   };
@@ -760,7 +762,9 @@ function ServicesEditor() {
     if (!confirm(`Remove "${svc.name_en}"?`)) return;
     const { error } = await supabase.from('services').delete().eq('id', svc.id);
     if (error) { alert('Error removing: ' + error.message); return; }
-    setServices((prev) => prev.filter((_, i) => i !== idx));
+    const next = services.filter((_, i) => i !== idx);
+    setServices(next);
+    markLoaded(next);
     await refreshCollectionQueries('services');
   };
 
