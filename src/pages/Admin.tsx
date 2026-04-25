@@ -1822,16 +1822,24 @@ function PuzzleTextEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle().then(({ data: row }) => {
-      if (row?.value) setData(row.value);
+      if (row?.value) {
+        setData(row.value);
+        markLoaded(row.value);
+      } else {
+        markLoaded({});
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const save = async () => {
+  const save = async (): Promise<boolean> => {
     // Merge with existing puzzle data (images) rather than overwriting
     const { data: existing } = await supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle();
     const merged = { ...(existing?.value ?? {}), ...data };
-    if (await upsertSetting('puzzle', merged)) alert('Puzzle text saved!');
+    return await upsertSetting('puzzle', merged);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'puzzle-text', label: 'Puzzle Game Text', data, save });
 
   return (
     <AdminSection title="Puzzle Game Text">
