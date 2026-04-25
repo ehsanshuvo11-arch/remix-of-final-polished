@@ -56,11 +56,64 @@ export default function TransformationsEditor() {
         setMissingTable(true);
       } else if (rows) {
         setItems(rows as Transformation[]);
+        itemsBaseline.current = JSON.stringify(rows);
       }
-      if (metaRow?.value) setMeta(metaRow.value as TransformationsMetaContent);
+      if (metaRow?.value) {
+        setMeta(metaRow.value as TransformationsMetaContent);
+        metaBaseline.current = JSON.stringify(metaRow.value);
+      } else {
+        metaBaseline.current = JSON.stringify({});
+      }
       setLoading(false);
     })();
   }, []);
+
+  const itemsBaseline = useRef<string | null>(null);
+  const metaBaseline = useRef<string | null>(null);
+  const itemsDirty = itemsBaseline.current !== null && JSON.stringify(items) !== itemsBaseline.current;
+  const metaDirty = metaBaseline.current !== null && JSON.stringify(meta) !== metaBaseline.current;
+
+  useSaveRegistration({
+    key: 'transformations-meta',
+    label: 'Transformations Labels',
+    isDirty: metaDirty,
+    save: async () => {
+      const session = await ensureSession();
+      if (!session) return false;
+      const { error } = await supabase.from('site_settings').upsert({ key: 'transformations-meta', value: meta }, { onConflict: 'key' });
+      if (error) { alert('Meta save failed: ' + error.message); return false; }
+      qc.invalidateQueries({ queryKey: ['site-setting', 'transformations-meta'] });
+      metaBaseline.current = JSON.stringify(meta);
+      return true;
+    },
+  });
+
+  useSaveRegistration({
+    key: 'transformations-items',
+    label: 'Transformations',
+    isDirty: itemsDirty,
+    save: async () => {
+      const session = await ensureSession();
+      if (!session) return false;
+      for (const it of items) {
+        const { error } = await supabase
+          .from('transformations')
+          .update({
+            project_name: it.project_name,
+            before_image_url: it.before_image_url,
+            after_image_url: it.after_image_url,
+            is_active: it.is_active,
+            sort_order: it.sort_order,
+          })
+          .eq('id', it.id);
+        if (error) { alert('Save failed: ' + error.message); return false; }
+      }
+      itemsBaseline.current = JSON.stringify(items);
+      qc.invalidateQueries({ queryKey: ['transformations'] });
+      return true;
+    },
+  });
+
 
   const refresh = () => qc.invalidateQueries({ queryKey: ['transformations'] });
 
