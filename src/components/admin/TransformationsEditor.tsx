@@ -136,24 +136,6 @@ export default function TransformationsEditor() {
     setItems((p) => p.map((it, i) => (i === idx ? { ...it, [field]: value } : it)));
   };
 
-  const persistRow = async (idx: number) => {
-    const session = await ensureSession();
-    if (!session) return;
-    const it = items[idx];
-    const { error } = await supabase
-      .from('transformations')
-      .update({
-        project_name: it.project_name,
-        before_image_url: it.before_image_url,
-        after_image_url: it.after_image_url,
-        is_active: it.is_active,
-        sort_order: it.sort_order ?? idx + 1,
-      })
-      .eq('id', it.id);
-    if (error) { alert('Save failed: ' + error.message); return; }
-    refresh();
-  };
-
   const togglePublish = async (idx: number) => {
     const next = !items[idx].is_active;
     updateField(idx, 'is_active', next);
@@ -189,15 +171,6 @@ export default function TransformationsEditor() {
     const { error: uerr } = await supabase.from('transformations').update({ [field]: data.publicUrl }).eq('id', items[idx].id);
     if (uerr) alert('Save failed: ' + uerr.message);
     refresh();
-  };
-
-  const saveMeta = async () => {
-    const session = await ensureSession();
-    if (!session) return;
-    const { error } = await supabase.from('site_settings').upsert({ key: 'transformations-meta', value: meta }, { onConflict: 'key' });
-    if (error) { alert('Meta save failed: ' + error.message); return; }
-    qc.invalidateQueries({ queryKey: ['site-setting', 'transformations-meta'] });
-    alert('Section labels saved.');
   };
 
   return (
