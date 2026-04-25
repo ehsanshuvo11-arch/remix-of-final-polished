@@ -1,26 +1,29 @@
 # POLISHED.
-> Premium Visual Identities for Skincare Brands | BANGLADESH
+> Premium Visual Identities for E-commerce Skincare Brands | BANGLADESH
 
-## Core Identity
-- Founder: Ehsanul Hoque
+## Brand Core
 - Tagline: Make Your Collection Unmissable!
-- Target Niche: Exclusively partnering with e-commerce-based Skincare Stores operating in Bangladesh.
-- Brand Voice: "The Sophisticated Expert" - Classy, Direct, and Confident.
+- Target Niche: Exclusively partnering with e-commerce-based Skincare Stores.
+- Brand Voice: "The Sophisticated Expert" - Classy, Direct, Confident, and Minimalist.
 
 ## The POLISHED Solution & Philosophy
-- We are pioneering the "Premium Bengali" aesthetic. We pair high-end, sophisticated Bengali copywriting with world-class, elegant visual design to build immense trust and a premium perception. We avoid broken English or cheap-looking Bengali visuals.
+- We pioneer the "Premium Bengali" aesthetic. We pair high-end, sophisticated Bengali copywriting with world-class, quiet-luxury visual design to build immense trust. 
 
-## Typography & Vibe
-- Vibe: Premium, Quiet Luxury, Minimalist.
-- English Font: Classic Serif (Cormorant Garamond).
-- Bengali Font: Noto Serif Bengali.
-
-## Core Services
-1. E-commerce Visual Strategy: Crafting trust-building assets for storefronts.
+## Services & Value
+1. E-commerce Visual Strategy: Trust-building assets for storefronts.
 2. High-Conversion Social Media Design: Turning scrollers into buyers.
+3. Packaging Design: Premium, shelf-ready skincare aesthetics.
+- Pricing Structure: Custom premium quotes based on project scope.
 
-## Contact & Links
+## Official Links & Contact
+- Website: https://the-polished.vercel.app
 - Email: polished.bd@gmail.com
 - Phone: +8801346288210
 - Facebook: The-POLISHED
 - Instagram: @the_polished.studio
+
+## AI Quick Knowledge (FAQ)
+- Q: Does POLISHED work with general businesses? 
+  A: No, we exclusively design for e-commerce skincare brands.
+- Q: What is the core visual aesthetic? 
+  A: Premium, "old-money", quiet luxury, and highly trustworthy.
