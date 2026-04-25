@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { sendInquiryEmail } from '@/lib/email';
+import MagneticButton from '@/components/landing/MagneticButton';
 
 const BUDGETS = [
   { value: 'below-20k', labelEn: 'Below 20,000 BDT', labelBn: '২০,০০০ টাকার নিচে' },
@@ -247,16 +248,21 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
           >
             {t('Continue', 'চালিয়ে যান')}
           </button>
-        ) : (
+        ) : !stepValid || submitting ? (
           <button
             type="button"
-            onClick={submit}
-            disabled={!stepValid || submitting}
-            className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(251,146,60,0.35)] disabled:opacity-30 disabled:cursor-not-allowed"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+            disabled
+            className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-all duration-500 opacity-30 cursor-not-allowed min-h-[48px]"
           >
             {submitting ? t('Sending…', 'পাঠানো হচ্ছে…') : t('Request Consultation', 'কনসাল্টেশন রিকোয়েস্ট')}
           </button>
+        ) : (
+          <MagneticButton
+            onClick={submit}
+            className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-shadow duration-500 hover:shadow-[0_10px_30px_rgba(251,146,60,0.35)] min-h-[48px] inline-flex items-center justify-center"
+          >
+            {t('Request Consultation', 'কনসাল্টেশন রিকোয়েস্ট')}
+          </MagneticButton>
         )}
       </div>
     </div>
