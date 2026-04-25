@@ -130,7 +130,6 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                   value={data.client_name}
                   onChange={(v) => update('client_name', v)}
                   placeholder={t('Your full name', 'আপনার পুরো নাম')}
-                  autoFocus
                 />
                 <PolishedInput
                   value={data.brand_name}
@@ -200,7 +199,6 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                   value={data.email}
                   onChange={(v) => update('email', v)}
                   placeholder={t('Email address', 'ইমেইল ঠিকানা')}
-                  autoFocus
                 />
                 <p className="text-[12px] text-primary-foreground/40 leading-relaxed mt-1">
                   {t(
