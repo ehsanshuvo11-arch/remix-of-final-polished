@@ -128,8 +128,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
-            className="md:hidden fixed inset-0 z-[105]"
-            style={{ backgroundColor: '#1e3a8a' }}
+            className="md:hidden fixed inset-0 z-[105] bg-primary"
             onClick={() => setOpen(false)}
           >
             {/* Subtle depth gradient — diagonal orange wash */}
@@ -137,18 +136,18 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(ellipse 90% 70% at 100% 0%, rgba(251,146,60,0.18) 0%, rgba(251,146,60,0.08) 35%, rgba(251,146,60,0) 65%), radial-gradient(ellipse 80% 60% at 0% 100%, rgba(251,146,60,0.12) 0%, rgba(251,146,60,0.05) 40%, rgba(251,146,60,0) 70%)',
+                  'radial-gradient(ellipse 90% 70% at 100% 0%, hsl(var(--accent) / 0.18) 0%, hsl(var(--accent) / 0.08) 35%, transparent 65%), radial-gradient(ellipse 80% 60% at 0% 100%, hsl(var(--accent) / 0.12) 0%, hsl(var(--accent) / 0.05) 40%, transparent 70%)',
               }}
             />
             {/* Soft orange studio glow — top-right accent */}
             <div
-              className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none"
-              style={{ backgroundColor: '#fb923c', filter: 'blur(100px)', opacity: 0.12 }}
+              className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none bg-accent"
+              style={{ filter: 'blur(100px)', opacity: 0.12 }}
             />
 
-            <div className="relative h-full flex flex-col justify-center items-end px-8 py-24 pointer-events-none">
+            <div className="relative h-full flex flex-col justify-center items-end px-6 sm:px-8 py-24 pointer-events-none">
               <ul
-                className="flex flex-col items-end gap-7 pointer-events-auto"
+                className="flex flex-col items-end gap-6 sm:gap-7 pointer-events-auto w-full"
                 onClick={(e) => e.stopPropagation()}
               >
                 {navItems.map((item, i) => (
@@ -162,7 +161,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                       delay: 0.15 + i * 0.08,
                       ease: LUXE,
                     }}
-                    className="text-right"
+                    className="text-right w-full"
                   >
                     <a
                       href={item.href}
@@ -172,8 +171,8 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                         // Wait for overlay close before scrolling
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
-                      className="font-heading text-[44px] leading-tight font-light hover:text-accent transition-colors duration-500 block min-h-[56px] text-right"
-                      style={{ color: '#f9fafb', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+                      className="font-heading text-primary-foreground hover:text-accent text-[clamp(34px,9vw,52px)] leading-tight font-light transition-colors duration-500 block min-h-[56px] text-right [text-wrap:balance]"
+                      style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                     >
                       {item.label}
                     </a>
@@ -186,11 +185,10 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-16 pt-8 self-end w-full text-right pointer-events-none"
-                style={{ borderTop: '1px solid rgba(249,250,251,0.15)' }}
+                className="mt-16 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
               >
-                <p className="text-[10px] tracking-[3px] uppercase" style={{ color: 'rgba(249,250,251,0.45)' }}>
-                  POLISHED<span style={{ color: '#fb923c' }}>.</span> Studio
+                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/45">
+                  POLISHED<span className="text-accent">.</span> Studio
                 </p>
               </motion.div>
             </div>

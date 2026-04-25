@@ -84,7 +84,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         </p>
 
         <h1
-          className="font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(38px,8vw,96px)] leading-[1.05]"
+          className="font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
         >
          <span className="inline-block pt-4">
             <span className="inline-block" style={{ animation: 'wordReveal 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards', transform: 'translateY(110%)', clipPath: 'inset(-20% -10% 0 -10%)' }}>
@@ -92,7 +92,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             </span>
           </span>
           <br />
-          <span className="inline-block pt-4 text-[clamp(32px,6.5vw,80px)]">
+          <span className="inline-block pt-4 text-[clamp(28px,6.5vw,80px)]">
             <span className="inline-block" style={{ animation: 'wordReveal 1s cubic-bezier(0.22,1,0.36,1) 0.7s forwards', transform: 'translateY(110%)', clipPath: 'inset(-20% -10% 0 -10%)' }}>
               {parseItalic(t(hero.title2En, (hero as any).title2Bn || ''))}
             </span>

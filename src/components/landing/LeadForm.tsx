@@ -161,7 +161,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                         key={b.value}
                         type="button"
                         onClick={() => update('budget_range', b.value)}
-                        className={`text-left px-5 py-4 border rounded-sm text-sm transition-all duration-500 ${
+                        className={`text-left px-5 py-4 border rounded-sm text-sm transition-all duration-500 min-h-[48px] ${
                           active
                             ? 'border-accent bg-accent/10 text-primary-foreground'
                             : 'border-primary-foreground/10 text-primary-foreground/70 hover:border-primary-foreground/30 hover:bg-primary-foreground/5'
@@ -232,7 +232,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
           type="button"
           onClick={back}
           disabled={step === 0}
-          className="text-[11px] tracking-[3px] uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+          className="text-[11px] tracking-[3px] uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors disabled:opacity-20 disabled:cursor-not-allowed min-h-[44px] px-2 -ml-2"
         >
           ← {t('Back', 'পিছনে')}
         </button>
@@ -288,8 +288,8 @@ function PolishedInput({
       autoFocus={autoFocus}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)]"
-      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+      className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-base md:text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)] min-h-[48px]"
+      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)', fontSize: 'max(16px, 0.875rem)' }}
     />
   );
 }
@@ -305,8 +305,8 @@ function PolishedTextarea({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm resize-none transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)]"
-      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+      className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-base md:text-sm font-light outline-none rounded-sm resize-none transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)]"
+      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)', fontSize: 'max(16px, 0.875rem)' }}
     />
   );
 }
