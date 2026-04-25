@@ -1457,14 +1457,19 @@ function MarqueeEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'marquee').maybeSingle().then(({ data: row }) => {
-      if (row?.value?.items) setText(row.value.items.join('\n'));
+      const value = row?.value?.items ? row.value.items.join('\n') : '';
+      setText(value);
+      markLoaded(value);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const save = async () => {
+  const save = async (): Promise<boolean> => {
     const items = text.split('\n').filter((l) => l.trim());
-    if (await upsertSetting('marquee', { items })) alert('Marquee saved!');
+    return await upsertSetting('marquee', { items });
   };
+
+  const { markLoaded } = useDirtySection({ key: 'marquee', label: 'Marquee Text', data: text, save });
 
   return (
     <AdminSection title="Marquee Text">
