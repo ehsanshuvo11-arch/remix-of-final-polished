@@ -710,17 +710,25 @@ function ServicesEditor() {
 
   useEffect(() => {
     supabase.from('services').select('*').order('sort_order').then(({ data }) => {
-      if (data) setServices(data.map((r) => normalizeServiceRow(r as Record<string, unknown>)));
+      if (data) {
+        const rows = data.map((r) => normalizeServiceRow(r as Record<string, unknown>));
+        setServices(rows);
+        markLoaded(rows);
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateService = (idx: number, field: keyof Service, value: string) => {
     setServices((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
-  const save = async () => {
-    await saveCollection('services', services, 'services', 'Services saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('services', services, 'services');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'services', label: 'Services', data: services, save });
+
 
   const addService = async () => {
     const session = await ensureAuthenticatedSession();
