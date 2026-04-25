@@ -1210,17 +1210,23 @@ function ProcessEditor() {
 
   useEffect(() => {
     supabase.from('process_steps').select('*').order('sort_order').then(({ data }) => {
-      if (data) setSteps(data.map((r) => normalizeProcessStepRow(r as Record<string, unknown>)));
+      if (data) {
+        const rows = data.map((r) => normalizeProcessStepRow(r as Record<string, unknown>));
+        setSteps(rows); markLoaded(rows);
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateStep = (idx: number, field: keyof ProcessStep, value: string) => {
     setSteps((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
-  const save = async () => {
-    await saveCollection('process_steps', steps, 'process-steps', 'Process steps saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('process_steps', steps, 'process-steps');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'process_steps', label: 'Process Steps', data: steps, save });
 
   const addStep = async () => {
     const session = await ensureAuthenticatedSession();
@@ -1232,7 +1238,11 @@ function ProcessEditor() {
       ({ data, error } = await supabase.from('process_steps').insert(payload).select().single());
     }
     if (error) { alert('Error adding step: ' + error.message); return; }
-    if (data) { setSteps((prev) => [...prev, normalizeProcessStepRow(data as Record<string, unknown>)]); await refreshCollectionQueries('process-steps'); }
+    if (data) {
+      const next = [...steps, normalizeProcessStepRow(data as Record<string, unknown>)];
+      setSteps(next); markLoaded(next);
+      await refreshCollectionQueries('process-steps');
+    }
   };
 
   const removeStep = async (idx: number) => {
@@ -1242,7 +1252,8 @@ function ProcessEditor() {
     if (!confirm(`Remove "${step.title_en}"?`)) return;
     const { error } = await supabase.from('process_steps').delete().eq('id', step.id);
     if (error) { alert('Error removing: ' + error.message); return; }
-    setSteps((prev) => prev.filter((_, i) => i !== idx));
+    const next = steps.filter((_, i) => i !== idx);
+    setSteps(next); markLoaded(next);
     await refreshCollectionQueries('process-steps');
   };
 
