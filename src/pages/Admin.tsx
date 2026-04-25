@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
+import { SaveAllProvider, SaveAllBar, useSaveRegistration } from '@/components/admin/SaveAllContext';
 import {
   buildCollectionPayload,
   isSchemaColumnMismatch,
@@ -187,40 +188,43 @@ export default function Admin() {
 
 function LegacyContentDashboard() {
   return (
-    <div>
-      <div className="mb-10">
-        <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
-          Module
-        </p>
-        <h2 className="font-heading text-3xl text-primary-foreground font-light tracking-[2px]">
-          Content
-        </h2>
-        <p className="text-[12px] text-primary-foreground/40 mt-2">
-          Legacy editors. A refined content management module is coming in a later phase.
-        </p>
-      </div>
+    <SaveAllProvider>
+      <div className="pb-32">
+        <div className="mb-10">
+          <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
+            Module
+          </p>
+          <h2 className="font-heading text-3xl text-primary-foreground font-light tracking-[2px]">
+            Content
+          </h2>
+          <p className="text-[12px] text-primary-foreground/40 mt-2">
+            Edit any section, then click <span className="text-accent">Save All Changes</span> in the bottom-right to commit everything at once.
+          </p>
+        </div>
 
-      <MetaEditor />
-      <ColorsEditor />
-      <HeroEditor />
-      <NavigationEditor />
-      <AboutEditor />
-      <ServicesMetaEditor />
-      <ServicesEditor />
-      <StatsEditor />
-      <PortfolioMetaEditor />
-      <PortfolioEditor />
-      <TransformationsEditor />
-      <ProcessMetaEditor />
-      <ProcessEditor />
-      <ContactEditor />
-      <MarqueeEditor />
-      <LogoEditor />
-      <PuzzleImageEditor />
-      <PuzzleTextEditor />
-      <DiscountEditor />
-      <FooterEditor />
-    </div>
+        <MetaEditor />
+        <ColorsEditor />
+        <HeroEditor />
+        <NavigationEditor />
+        <AboutEditor />
+        <ServicesMetaEditor />
+        <ServicesEditor />
+        <StatsEditor />
+        <PortfolioMetaEditor />
+        <PortfolioEditor />
+        <TransformationsEditor />
+        <ProcessMetaEditor />
+        <ProcessEditor />
+        <ContactEditor />
+        <MarqueeEditor />
+        <LogoEditor />
+        <PuzzleImageEditor />
+        <PuzzleTextEditor />
+        <DiscountEditor />
+        <FooterEditor />
+      </div>
+      <SaveAllBar />
+    </SaveAllProvider>
   );
 }
 
