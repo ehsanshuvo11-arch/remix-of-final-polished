@@ -275,15 +275,26 @@ function AdminTextarea({ value, onChange, rows = 3, placeholder }: { value: stri
   );
 }
 
-function SaveButton({ onClick, label = 'Save' }: { onClick: () => void; label?: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className="px-8 py-3 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:bg-[hsl(28,96%,55%)] hover:-translate-y-0.5"
-    >
-      {label}
-    </button>
-  );
+// Hook: register a settings-row editor with the global Save All bar.
+function useSettingsSection<T>(opts: {
+  key: string;
+  label: string;
+  data: T;
+  snapshot: T | null;
+  setSnapshot: (s: T) => void;
+  save: () => Promise<boolean>;
+}) {
+  const isDirty = opts.snapshot !== null && !isSameJson(opts.data, opts.snapshot);
+  useSaveRegistration({
+    key: opts.key,
+    label: opts.label,
+    isDirty,
+    save: async () => {
+      const ok = await opts.save();
+      if (ok) opts.setSnapshot(opts.data);
+      return ok;
+    },
+  });
 }
 
 // ── Helper: upsert setting ──
