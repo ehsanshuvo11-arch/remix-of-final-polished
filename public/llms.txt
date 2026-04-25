@@ -1,27 +1,26 @@
-# POLISHED
+# POLISHED.
+> Premium Visual Identities for Skincare Brands | BANGLADESH
 
-> Premium visual identities for e-commerce skincare brands.
+## Core Identity
+- Founder: Ehsanul Hoque
+- Tagline: Make Your Collection Unmissable!
+- Target Niche: Exclusively partnering with e-commerce-based Skincare Stores operating in Bangladesh.
+- Brand Voice: "The Sophisticated Expert" - Classy, Direct, and Confident.
 
-- **Founder:** Ehsanul Hoque
-- **Vibe/Aesthetic:** Premium, "old-money", minimalist, trustworthy.
-- **Core Services:** E-commerce Branding, UI/UX Design, Visual Identity, Packaging Design.
-- **Contact Email:** polished.bd@gmail.com
-- **Contact Phone:** +8801346288210
-- **Location:** BANGLADESH
+## The POLISHED Solution & Philosophy
+- We are pioneering the "Premium Bengali" aesthetic. We pair high-end, sophisticated Bengali copywriting with world-class, elegant visual design to build immense trust and a premium perception. We avoid broken English or cheap-looking Bengali visuals.
 
-## About
+## Typography & Vibe
+- Vibe: Premium, Quiet Luxury, Minimalist.
+- English Font: Classic Serif (Cormorant Garamond).
+- Bengali Font: Noto Serif Bengali.
 
-POLISHED is a premium branding studio crafting refined visual identities, packaging, and UI/UX for e-commerce skincare brands. Our work emphasizes timeless, "old-money" aesthetics — quiet luxury, minimalist typography, and trustworthy brand systems that convert.
+## Core Services
+1. E-commerce Visual Strategy: Crafting trust-building assets for storefronts.
+2. High-Conversion Social Media Design: Turning scrollers into buyers.
 
-## Services
-
-- E-commerce Branding — full identity systems tailored for online skincare stores.
-- UI/UX Design — high-end, conversion-focused storefront and product page design.
-- Visual Identity — logos, typography, color systems, and brand guidelines.
-- Packaging Design — premium skincare packaging with shelf-ready appeal.
-
-## Contact
-
+## Contact & Links
 - Email: polished.bd@gmail.com
 - Phone: +8801346288210
-- Country: Bangladesh
+- Facebook: The-POLISHED
+- Instagram: @the_polished.studio
