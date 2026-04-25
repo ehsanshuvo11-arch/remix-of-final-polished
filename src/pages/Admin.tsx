@@ -896,8 +896,9 @@ function PortfolioEditor() {
 
   useEffect(() => {
     supabase.from('portfolio_projects').select('*').order('sort_order').then(({ data }) => {
-      if (data) setProjects(data);
+      if (data) { setProjects(data); markLoaded(data); }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateProject = (idx: number, field: keyof PortfolioProject, value: string | string[]) => {
