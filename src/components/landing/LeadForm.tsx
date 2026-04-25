@@ -161,7 +161,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                         key={b.value}
                         type="button"
                         onClick={() => update('budget_range', b.value)}
-                        className={`text-left px-5 py-4 border rounded-sm text-sm transition-all duration-500 ${
+                        className={`text-left px-5 py-4 border rounded-sm text-sm transition-all duration-500 min-h-[48px] ${
                           active
                             ? 'border-accent bg-accent/10 text-primary-foreground'
                             : 'border-primary-foreground/10 text-primary-foreground/70 hover:border-primary-foreground/30 hover:bg-primary-foreground/5'
