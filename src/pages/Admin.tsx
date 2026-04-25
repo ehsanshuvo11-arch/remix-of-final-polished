@@ -449,12 +449,18 @@ function HeroEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'hero').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('hero', data)) alert('Hero saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('hero', data);
   };
+
+  useDirtySection({ key: 'hero', label: 'Hero Section', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Hero Section">
@@ -524,12 +530,18 @@ function NavigationEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'nav').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('nav', data)) alert('Navigation saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('nav', data);
   };
+
+  useDirtySection({ key: 'nav', label: 'Navigation Labels', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Navigation Labels">
@@ -583,12 +595,18 @@ function AboutEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'about').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('about', data)) alert('About saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('about', data);
   };
+
+  useDirtySection({ key: 'about', label: 'About Section', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="About Section">
@@ -647,12 +665,18 @@ function ServicesMetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'services-meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('services-meta', data)) alert('Services header saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('services-meta', data);
   };
+
+  useDirtySection({ key: 'services-meta', label: 'Services Header', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Services Header">
@@ -1112,12 +1136,18 @@ function PortfolioMetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'portfolio-meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('portfolio-meta', data)) alert('Portfolio header saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('portfolio-meta', data);
   };
+
+  useDirtySection({ key: 'portfolio-meta', label: 'Portfolio Header', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Portfolio Header">
@@ -1231,12 +1261,18 @@ function ProcessMetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'process-meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('process-meta', data)) alert('Process header saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('process-meta', data);
   };
+
+  useDirtySection({ key: 'process-meta', label: 'Process Header', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Process Header">
@@ -1292,12 +1328,18 @@ function ContactEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'contact').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('contact', data)) alert('Contact saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('contact', data);
   };
+
+  useDirtySection({ key: 'contact', label: 'Contact Info', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Contact Info">
@@ -1576,12 +1618,18 @@ function DiscountEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'discount').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('discount', data)) alert('Discount saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('discount', data);
   };
+
+  useDirtySection({ key: 'discount', label: 'Discount', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Discount / Puzzle Reward">
@@ -1609,12 +1657,18 @@ function FooterEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'footer').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('footer', data)) alert('Footer saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('footer', data);
   };
+
+  useDirtySection({ key: 'footer', label: 'Footer', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Footer">
@@ -1643,12 +1697,18 @@ function MetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('meta', data)) alert('Meta/SEO saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('meta', data);
   };
+
+  useDirtySection({ key: 'meta', label: 'Meta / SEO', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Meta / SEO">
@@ -1672,12 +1732,18 @@ function ColorsEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'colors').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('colors', data)) alert('Colors saved! Refresh the main site to see changes.');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('colors', data);
   };
+
+  useDirtySection({ key: 'colors', label: 'Brand Colors', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Brand Colors">
