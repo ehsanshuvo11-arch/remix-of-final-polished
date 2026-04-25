@@ -275,26 +275,40 @@ function AdminTextarea({ value, onChange, rows = 3, placeholder }: { value: stri
   );
 }
 
-// Hook: register a settings-row editor with the global Save All bar.
-function useSettingsSection<T>(opts: {
+// Hook: register a section with the global Save All bar.
+// Tracks `data` against the last-loaded/last-saved snapshot to compute dirty.
+function useDirtySection<T>(opts: {
   key: string;
   label: string;
   data: T;
-  snapshot: T | null;
-  setSnapshot: (s: T) => void;
   save: () => Promise<boolean>;
 }) {
-  const isDirty = opts.snapshot !== null && !isSameJson(opts.data, opts.snapshot);
+  const snapshotRef = useRef<T | null>(null);
+  const [, force] = useState(0);
+
+  const isDirty =
+    snapshotRef.current !== null && !isSameJson(opts.data, snapshotRef.current);
+
   useSaveRegistration({
     key: opts.key,
     label: opts.label,
     isDirty,
     save: async () => {
       const ok = await opts.save();
-      if (ok) opts.setSnapshot(opts.data);
+      if (ok) {
+        snapshotRef.current = opts.data;
+        force((n) => n + 1);
+      }
       return ok;
     },
   });
+
+  return {
+    markLoaded: (value: T) => {
+      snapshotRef.current = value;
+      force((n) => n + 1);
+    },
+  };
 }
 
 // ── Helper: upsert setting ──
