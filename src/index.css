@@ -103,6 +103,23 @@
   }
   h1, h2, h3, h4 {
     font-family: 'Cormorant Garamond', serif;
+    /* Avoid awkward word breaks on small screens */
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  /* iOS auto-zoom prevention: form fields must be ≥16px on mobile */
+  @media (max-width: 767px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+  /* Tap target floor for interactive elements on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    a, button, [role="button"] {
+      min-height: 44px;
+    }
   }
 }
 
