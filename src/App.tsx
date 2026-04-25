@@ -30,6 +30,16 @@ const RouteCursorScope = () => {
     };
   }, [location.pathname]);
 
+  // Force scroll to top on first mount (no hash) so the page never lands mid-section.
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   return null;
 };
 
