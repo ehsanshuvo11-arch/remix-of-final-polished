@@ -130,7 +130,6 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                   value={data.client_name}
                   onChange={(v) => update('client_name', v)}
                   placeholder={t('Your full name', 'আপনার পুরো নাম')}
-                  autoFocus
                 />
                 <PolishedInput
                   value={data.brand_name}
@@ -200,7 +199,6 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                   value={data.email}
                   onChange={(v) => update('email', v)}
                   placeholder={t('Email address', 'ইমেইল ঠিকানা')}
-                  autoFocus
                 />
                 <p className="text-[12px] text-primary-foreground/40 leading-relaxed mt-1">
                   {t(
@@ -279,7 +277,7 @@ function StepHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
 }
 
 function PolishedInput({
-  value, onChange, placeholder, type = 'text', autoFocus = false,
+  value, onChange, placeholder, type = 'text',
 }: {
   value: string; onChange: (v: string) => void; placeholder?: string; type?: string; autoFocus?: boolean;
 }) {
@@ -287,7 +285,6 @@ function PolishedInput({
     <input
       type={type}
       value={value}
-      autoFocus={autoFocus}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)]"
