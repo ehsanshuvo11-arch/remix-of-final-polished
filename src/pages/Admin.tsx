@@ -1487,13 +1487,11 @@ function LogoEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'logo').maybeSingle().then(({ data: row }) => {
-      if (row?.value?.url) {
-        setUrl(withCacheBust(row.value.url));
-        return;
-      }
-
-      setUrl(withCacheBust(getPublicAssetUrl(LOGO_STORAGE_PATH)));
+      const next = withCacheBust(row?.value?.url ?? getPublicAssetUrl(LOGO_STORAGE_PATH));
+      setUrl(next);
+      markLoaded(stripCacheBust(next));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleUpload = async (file: File) => {
@@ -1509,17 +1507,12 @@ function LogoEditor() {
     setUrl(withCacheBust(getPublicAssetUrl(LOGO_STORAGE_PATH)));
   };
 
-  const save = async () => {
-    const cleanUrl = url.split('?')[0];
-    if (await upsertSetting('logo', { url: cleanUrl })) {
-      alert('Logo saved!');
-      return;
-    }
-
-    if (cleanUrl === getPublicAssetUrl(LOGO_STORAGE_PATH)) {
-      alert('Logo uploaded. The main site will use this uploaded logo even if the logo setting row is blocked.');
-    }
+  const cleanUrl = stripCacheBust(url);
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('logo', { url: cleanUrl });
   };
+
+  const { markLoaded } = useDirtySection({ key: 'logo', label: 'Logo', data: cleanUrl, save });
 
   return (
     <AdminSection title="Logo">
