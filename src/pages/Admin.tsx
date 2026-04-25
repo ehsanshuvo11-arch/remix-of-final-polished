@@ -58,6 +58,14 @@ function createEmptyPieceImages() {
   return Array.from({ length: PUZZLE_PIECE_COUNT }, () => '');
 }
 
+function buildPuzzleImagePayload(data: PuzzleContent): PuzzleContent {
+  return {
+    ...data,
+    imageUrl: stripCacheBust(data.imageUrl),
+    pieceImages: (data.pieceImages ?? createEmptyPieceImages()).map((item) => (item ? stripCacheBust(item) : '')),
+  };
+}
+
 async function ensureAuthenticatedSession() {
   const { data, error } = await supabase.auth.getSession();
 
