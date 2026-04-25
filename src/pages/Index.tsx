@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
@@ -19,16 +19,6 @@ import type { HeroContent, AboutContent, ContactContent, FooterContent, Discount
 
 export default function Index() {
   const [puzzleOpen, setPuzzleOpen] = useState(false);
-
-  // Always start at the top on initial mount (prevents browser scroll restoration
-  // or autofocus side-effects from landing the user mid-page).
-  useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-    window.scrollTo(0, 0);
-  }, []);
-
   const fallbackLogoUrl = supabase.storage.from('polished-assets').getPublicUrl('logo/current').data.publicUrl;
   const fallbackPuzzleImageUrl = supabase.storage.from('polished-assets').getPublicUrl('puzzle/current').data.publicUrl;
 
