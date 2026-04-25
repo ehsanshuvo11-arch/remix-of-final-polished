@@ -805,17 +805,24 @@ function StatsEditor() {
 
   useEffect(() => {
     supabase.from('stats').select('*').order('sort_order').then(({ data }) => {
-      if (data) setStats(data.map((r) => normalizeStatRow(r as Record<string, unknown>)));
+      if (data) {
+        const rows = data.map((r) => normalizeStatRow(r as Record<string, unknown>));
+        setStats(rows);
+        markLoaded(rows);
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateStat = (idx: number, field: keyof Stat, value: string) => {
     setStats((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
-  const save = async () => {
-    await saveCollection('stats', stats, 'stats', 'Stats saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('stats', stats, 'stats');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'stats', label: 'Stats', data: stats, save });
 
   const addStat = async () => {
     const session = await ensureAuthenticatedSession();
@@ -827,7 +834,11 @@ function StatsEditor() {
       ({ data, error } = await supabase.from('stats').insert(payload).select().single());
     }
     if (error) { alert('Error adding stat: ' + error.message); return; }
-    if (data) { setStats((prev) => [...prev, normalizeStatRow(data as Record<string, unknown>)]); await refreshCollectionQueries('stats'); }
+    if (data) {
+      const next = [...stats, normalizeStatRow(data as Record<string, unknown>)];
+      setStats(next); markLoaded(next);
+      await refreshCollectionQueries('stats');
+    }
   };
 
   const removeStat = async (idx: number) => {
@@ -837,7 +848,8 @@ function StatsEditor() {
     if (!confirm(`Remove "${stat.label_en}"?`)) return;
     const { error } = await supabase.from('stats').delete().eq('id', stat.id);
     if (error) { alert('Error removing: ' + error.message); return; }
-    setStats((prev) => prev.filter((_, i) => i !== idx));
+    const next = stats.filter((_, i) => i !== idx);
+    setStats(next); markLoaded(next);
     await refreshCollectionQueries('stats');
   };
 
