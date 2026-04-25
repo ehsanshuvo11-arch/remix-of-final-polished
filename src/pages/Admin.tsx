@@ -28,7 +28,9 @@ import type {
 } from '@/types/database';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import TransformationsEditor from '@/components/admin/TransformationsEditor';
-import InquiriesEditor from '@/components/admin/InquiriesEditor';
+import AdminLogin from '@/components/admin/AdminLogin';
+import AdminLayout, { type AdminModuleId } from '@/components/admin/AdminLayout';
+import InquiriesTable from '@/components/admin/InquiriesTable';
 
 const LOGO_STORAGE_PATH = 'logo/current';
 const PUZZLE_STORAGE_PATH = 'puzzle/current';
@@ -112,10 +114,9 @@ export default function Admin() {
     return () => { document.body.classList.remove('admin-panel'); };
   }, []);
   const [authed, setAuthed] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeModule, setActiveModule] = useState<AdminModuleId>('inquiries');
 
   // Check existing session with timeout fallback
   useEffect(() => {
@@ -125,12 +126,14 @@ export default function Admin() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       setAuthed(!!session);
+      setUserEmail(session?.user?.email ?? null);
       setLoading(false);
       clearTimeout(timeout);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setAuthed(!!session);
+      setUserEmail(session?.user?.email ?? null);
       setLoading(false);
       clearTimeout(timeout);
     }).catch(() => {
@@ -142,12 +145,6 @@ export default function Admin() {
       clearTimeout(timeout);
     };
   }, []);
-
-  const handleLogin = async () => {
-    setLoginError('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setLoginError(error.message);
-  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -165,88 +162,64 @@ export default function Admin() {
   }
 
   if (!authed) {
-    return (
-      <div className="min-h-screen bg-polished-dark-blue flex items-center justify-center p-6">
-        <div className="bg-primary border border-primary-foreground/10 rounded p-12 text-center w-full max-w-[380px]">
-          <h2 className="font-heading text-2xl text-primary-foreground font-light tracking-[2px] mb-2">
-            Admin Access
-          </h2>
-          <p className="text-[13px] text-primary-foreground/40 mb-7">Enter your credentials</p>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            className="w-full bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-4 py-3.5 text-sm outline-none rounded-sm mb-4 text-center placeholder:text-primary-foreground/30 focus:border-accent transition-colors"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-            className="w-full bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-4 py-3.5 text-sm outline-none rounded-sm mb-4 text-center tracking-[4px] placeholder:text-primary-foreground/30 placeholder:tracking-normal focus:border-accent transition-colors"
-          />
-          {loginError && (
-            <p className="text-accent/80 text-xs mb-4">{loginError}</p>
-          )}
-          <button
-            onClick={handleLogin}
-            className="w-full py-3.5 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:bg-[hsl(28,96%,55%)]"
-          >
-            Sign In
-          </button>
-        </div>
-      </div>
-    );
+    return <AdminLogin />;
   }
 
-  return <AdminDashboard onLogout={handleLogout} />;
+  return (
+    <AdminLayout
+      active={activeModule}
+      onSelect={setActiveModule}
+      onLogout={handleLogout}
+      userEmail={userEmail}
+    >
+      {activeModule === 'inquiries' && <InquiriesTable />}
+      {activeModule === 'content' && <LegacyContentDashboard />}
+    </AdminLayout>
+  );
 }
 
 // ────────────────────────────────────────────────
-// Admin Dashboard (after authentication)
+// Legacy content editors (Phase 2+ — kept available
+// behind the "Content" sidebar item so existing
+// editing functionality is not lost while we focus
+// on Phase 1: secure shell + Inquiries dashboard).
 // ────────────────────────────────────────────────
 
-function AdminDashboard({ onLogout }: { onLogout: () => void }) {
+function LegacyContentDashboard() {
   return (
-    <div className="min-h-screen bg-[rgba(10,20,50,0.98)] overflow-y-auto">
-      <div className="max-w-[860px] mx-auto py-14 px-6 md:px-10">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-12 border-b border-primary-foreground/10 pb-6">
-          <h1 className="font-heading text-3xl text-primary-foreground font-light tracking-[2px]">
-            POLISHED<span className="text-accent">.</span> Admin
-          </h1>
-          <button
-            onClick={onLogout}
-            className="text-primary-foreground/40 text-sm hover:text-accent transition-colors"
-          >
-            Logout
-          </button>
-        </div>
-
-        <InquiriesEditor />
-        <MetaEditor />
-        <ColorsEditor />
-        <HeroEditor />
-        <NavigationEditor />
-        <AboutEditor />
-        <ServicesMetaEditor />
-        <ServicesEditor />
-        <StatsEditor />
-        <PortfolioMetaEditor />
-        <PortfolioEditor />
-        <TransformationsEditor />
-        <ProcessMetaEditor />
-        <ProcessEditor />
-        <ContactEditor />
-        <MarqueeEditor />
-        <LogoEditor />
-        <PuzzleImageEditor />
-        <PuzzleTextEditor />
-        <DiscountEditor />
-        <FooterEditor />
+    <div>
+      <div className="mb-10">
+        <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
+          Module
+        </p>
+        <h2 className="font-heading text-3xl text-primary-foreground font-light tracking-[2px]">
+          Content
+        </h2>
+        <p className="text-[12px] text-primary-foreground/40 mt-2">
+          Legacy editors. A refined content management module is coming in a later phase.
+        </p>
       </div>
+
+      <MetaEditor />
+      <ColorsEditor />
+      <HeroEditor />
+      <NavigationEditor />
+      <AboutEditor />
+      <ServicesMetaEditor />
+      <ServicesEditor />
+      <StatsEditor />
+      <PortfolioMetaEditor />
+      <PortfolioEditor />
+      <TransformationsEditor />
+      <ProcessMetaEditor />
+      <ProcessEditor />
+      <ContactEditor />
+      <MarqueeEditor />
+      <LogoEditor />
+      <PuzzleImageEditor />
+      <PuzzleTextEditor />
+      <DiscountEditor />
+      <FooterEditor />
     </div>
   );
 }
