@@ -108,7 +108,7 @@ export default function MagneticButton({
           whileTap={{ scale: 0.97, transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] } }}
           className={className}
         >
-          <span className="relative z-10 inline-block">{children}</span>
+          <span className="relative z-10 text-primary-foreground inline-block">{children}</span>
         </Tag>
       </div>
     );
@@ -129,7 +129,7 @@ export default function MagneticButton({
       >
         <motion.span
           style={{ x: stx, y: sty, display: 'inline-block' }}
-          className="relative z-10"
+          className="relative z-10 text-primary-foreground"
         >
           {children}
         </motion.span>

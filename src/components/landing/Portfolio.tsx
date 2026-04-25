@@ -177,7 +177,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           onClick={toggleCaseStudy}
           className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100"
         >
-          <span className="relative z-10">
+          <span className="relative z-10 text-primary-foreground">
             {caseStudyOpen
               ? t('Hide case study', 'কেস স্টাডি লুকান')
               : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
