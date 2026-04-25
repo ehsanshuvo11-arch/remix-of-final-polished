@@ -1539,20 +1539,23 @@ function PuzzleImageEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle().then(({ data: row }) => {
+      let next: PuzzleContent;
       if (row?.value) {
-        setData({
+        next = {
           ...row.value,
           imageUrl: row.value.imageUrl ? withCacheBust(row.value.imageUrl) : withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)),
           pieceImages: Array.from({ length: PUZZLE_PIECE_COUNT }, (_, index) => {
             const url = row.value?.pieceImages?.[index];
             return url ? withCacheBust(url) : '';
           }),
-        });
-        return;
+        };
+      } else {
+        next = { imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)), pieceImages: createEmptyPieceImages() };
       }
-
-      setData((prev) => ({ ...prev, imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)) }));
+      setData(next);
+      markLoaded(buildPuzzleImagePayload(next));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleUpload = async (file: File) => {
@@ -1591,22 +1594,12 @@ function PuzzleImageEditor() {
     }));
   };
 
-  const save = async () => {
-    const payload: PuzzleContent = {
-      ...data,
-      imageUrl: stripCacheBust(data.imageUrl),
-      pieceImages: (data.pieceImages ?? createEmptyPieceImages()).map((item) => item ? stripCacheBust(item) : ''),
-    };
-
-    if (await upsertSetting('puzzle', payload)) {
-      alert('Puzzle image saved!');
-      return;
-    }
-
-    if (payload.imageUrl === getPublicAssetUrl(PUZZLE_STORAGE_PATH)) {
-      alert('Puzzle image uploaded. The main site will use this uploaded file even if the puzzle row is missing.');
-    }
+  const payload = useMemo(() => buildPuzzleImagePayload(data), [data]);
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('puzzle', payload);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'puzzle-image', label: 'Puzzle Game Image', data: payload, save });
 
   return (
     <AdminSection title="Puzzle Game Image">
