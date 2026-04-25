@@ -127,7 +127,7 @@ export function SaveAllBar() {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-50 pointer-events-none"
+      className="fixed bottom-24 right-6 z-50 pointer-events-none"
       aria-live="polite"
     >
       <button
