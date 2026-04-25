@@ -976,7 +976,8 @@ function PortfolioEditor() {
     }
 
     if (data) {
-      setProjects((prev) => [...prev, data]);
+      const next = [...projects, data];
+      setProjects(next); markLoaded(next);
       await refreshCollectionQueries('portfolio');
     }
   };
@@ -993,7 +994,8 @@ function PortfolioEditor() {
       return;
     }
 
-    setProjects((prev) => prev.filter((_, i) => i !== idx));
+    const next = projects.filter((_, i) => i !== idx);
+    setProjects(next); markLoaded(next);
     await refreshCollectionQueries('portfolio');
   };
 
