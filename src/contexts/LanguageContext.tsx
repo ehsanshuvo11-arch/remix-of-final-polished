@@ -127,7 +127,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
               return next;
             });
           }}
-          className="fixed bottom-28 right-7 md:bottom-28 z-[500] bg-primary text-primary-foreground border border-primary-foreground/15 rounded-full px-5 py-2.5 text-xs tracking-[2px] flex items-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5"
+          className="fixed bottom-7 right-7 z-[500] bg-primary text-primary-foreground border border-primary-foreground/15 rounded-full px-5 py-2.5 text-xs tracking-[2px] flex items-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5"
         >
           <span className="text-base">🌎</span>
           <span>{lang === 'en' ? 'বাংলা' : 'English'}</span>
