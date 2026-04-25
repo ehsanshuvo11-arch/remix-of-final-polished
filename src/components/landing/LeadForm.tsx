@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { sendInquiryEmail } from '@/lib/email';
+import MagneticButton from '@/components/landing/MagneticButton';
 
 const BUDGETS = [
   { value: 'below-20k', labelEn: 'Below 20,000 BDT', labelBn: '২০,০০০ টাকার নিচে' },
