@@ -505,7 +505,6 @@ function HeroEditor() {
           <AdminInput value={data.scrollBn ?? ''} onChange={(v) => setData({ ...data, scrollBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -560,7 +559,6 @@ function NavigationEditor() {
           <AdminInput value={data.contactBn ?? ''} onChange={(v) => setData({ ...data, contactBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -632,7 +630,6 @@ function AboutEditor() {
       <AdminField label="Quote (বাংলা)">
         <AdminTextarea value={data.quoteBn ?? ''} onChange={(v) => setData({ ...data, quoteBn: v })} rows={2} />
       </AdminField>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -679,7 +676,6 @@ function ServicesMetaEditor() {
           <AdminInput value={data.titleLine2Bn ?? ''} onChange={(v) => setData({ ...data, titleLine2Bn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -759,7 +755,6 @@ function ServicesEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addService} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Service
         </button>
@@ -835,7 +830,6 @@ function StatsEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addStat} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Stat
         </button>
@@ -1098,7 +1092,6 @@ function PortfolioEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addProject} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Project
         </button>
@@ -1148,7 +1141,6 @@ function PortfolioMetaEditor() {
           <AdminInput value={data.titleLine2Bn ?? ''} onChange={(v) => setData({ ...data, titleLine2Bn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1218,7 +1210,6 @@ function ProcessEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addStep} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Step
         </button>
@@ -1269,7 +1260,6 @@ function ProcessMetaEditor() {
           <AdminInput value={data.titleLine2Bn ?? ''} onChange={(v) => setData({ ...data, titleLine2Bn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1375,7 +1365,6 @@ function ContactEditor() {
           <AdminInput value={data.submitLabelBn ?? ''} onChange={(v) => setData({ ...data, submitLabelBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1400,7 +1389,6 @@ function MarqueeEditor() {
       <AdminField label="Items (one per line)">
         <AdminTextarea value={text} onChange={setText} rows={5} />
       </AdminField>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1456,7 +1444,6 @@ function LogoEditor() {
         <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">📸 Click to upload logo</span>
         {url && <img src={url} alt="Logo" className="max-w-[120px] max-h-[120px] mx-auto mt-3 rounded" />}
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1578,7 +1565,6 @@ function PuzzleImageEditor() {
           </div>
         ))}
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1607,7 +1593,6 @@ function DiscountEditor() {
           <AdminInput value={data.amount} onChange={(v) => setData({ ...data, amount: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1647,7 +1632,6 @@ function FooterEditor() {
           <AdminInput value={data.rightsTextBn ?? ''} onChange={(v) => setData({ ...data, rightsTextBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1677,7 +1661,6 @@ function MetaEditor() {
       <AdminField label="Google Analytics ID">
         <AdminInput value={data.gaId} onChange={(v) => setData({ ...data, gaId: v })} placeholder="G-XXXXXXXXXX" />
       </AdminField>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1724,7 +1707,6 @@ function ColorsEditor() {
           </div>
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1824,7 +1806,6 @@ function PuzzleTextEditor() {
           <AdminInput value={data.copiedBn ?? ''} onChange={(v) => setData({ ...data, copiedBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
