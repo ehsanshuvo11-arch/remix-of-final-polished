@@ -35,6 +35,17 @@ export default function PageLoader() {
             {letter}
           </span>
         ))}
+        <span
+          className="inline-block text-accent"
+          style={{
+            animation: `loaderChar 0.6s cubic-bezier(0.16,1,0.3,1) forwards`,
+            animationDelay: `${0.1 + letters.length * 0.08}s`,
+            opacity: 0,
+            transform: 'translateY(40px)',
+          }}
+        >
+          .
+        </span>
       </div>
       <div
         className="absolute bottom-0 left-0 h-0.5 bg-accent"
