@@ -288,8 +288,8 @@ function PolishedInput({
       autoFocus={autoFocus}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)]"
-      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+      className="bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-5 py-4 text-base md:text-sm font-light outline-none rounded-sm transition-all duration-500 placeholder:text-primary-foreground/30 focus:border-accent focus:bg-primary-foreground/[0.08] focus:shadow-[0_0_0_3px_rgba(251,146,60,0.12)] min-h-[48px]"
+      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)', fontSize: 'max(16px, 0.875rem)' }}
     />
   );
 }
