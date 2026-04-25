@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
+import { SaveAllProvider, SaveAllBar, useSaveRegistration } from '@/components/admin/SaveAllContext';
 import {
   buildCollectionPayload,
   isSchemaColumnMismatch,
@@ -55,6 +56,14 @@ function stripCacheBust(url: string) {
 
 function createEmptyPieceImages() {
   return Array.from({ length: PUZZLE_PIECE_COUNT }, () => '');
+}
+
+function buildPuzzleImagePayload(data: PuzzleContent): PuzzleContent {
+  return {
+    ...data,
+    imageUrl: stripCacheBust(data.imageUrl),
+    pieceImages: (data.pieceImages ?? createEmptyPieceImages()).map((item) => (item ? stripCacheBust(item) : '')),
+  };
 }
 
 async function ensureAuthenticatedSession() {
@@ -187,40 +196,43 @@ export default function Admin() {
 
 function LegacyContentDashboard() {
   return (
-    <div>
-      <div className="mb-10">
-        <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
-          Module
-        </p>
-        <h2 className="font-heading text-3xl text-primary-foreground font-light tracking-[2px]">
-          Content
-        </h2>
-        <p className="text-[12px] text-primary-foreground/40 mt-2">
-          Legacy editors. A refined content management module is coming in a later phase.
-        </p>
-      </div>
+    <SaveAllProvider>
+      <div className="pb-32">
+        <div className="mb-10">
+          <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
+            Module
+          </p>
+          <h2 className="font-heading text-3xl text-primary-foreground font-light tracking-[2px]">
+            Content
+          </h2>
+          <p className="text-[12px] text-primary-foreground/40 mt-2">
+            Edit any section, then click <span className="text-accent">Save All Changes</span> in the bottom-right to commit everything at once.
+          </p>
+        </div>
 
-      <MetaEditor />
-      <ColorsEditor />
-      <HeroEditor />
-      <NavigationEditor />
-      <AboutEditor />
-      <ServicesMetaEditor />
-      <ServicesEditor />
-      <StatsEditor />
-      <PortfolioMetaEditor />
-      <PortfolioEditor />
-      <TransformationsEditor />
-      <ProcessMetaEditor />
-      <ProcessEditor />
-      <ContactEditor />
-      <MarqueeEditor />
-      <LogoEditor />
-      <PuzzleImageEditor />
-      <PuzzleTextEditor />
-      <DiscountEditor />
-      <FooterEditor />
-    </div>
+        <MetaEditor />
+        <ColorsEditor />
+        <HeroEditor />
+        <NavigationEditor />
+        <AboutEditor />
+        <ServicesMetaEditor />
+        <ServicesEditor />
+        <StatsEditor />
+        <PortfolioMetaEditor />
+        <PortfolioEditor />
+        <TransformationsEditor />
+        <ProcessMetaEditor />
+        <ProcessEditor />
+        <ContactEditor />
+        <MarqueeEditor />
+        <LogoEditor />
+        <PuzzleImageEditor />
+        <PuzzleTextEditor />
+        <DiscountEditor />
+        <FooterEditor />
+      </div>
+      <SaveAllBar />
+    </SaveAllProvider>
   );
 }
 
@@ -271,15 +283,40 @@ function AdminTextarea({ value, onChange, rows = 3, placeholder }: { value: stri
   );
 }
 
-function SaveButton({ onClick, label = 'Save' }: { onClick: () => void; label?: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className="px-8 py-3 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm transition-all duration-300 hover:bg-[hsl(28,96%,55%)] hover:-translate-y-0.5"
-    >
-      {label}
-    </button>
-  );
+// Hook: register a section with the global Save All bar.
+// Tracks `data` against the last-loaded/last-saved snapshot to compute dirty.
+function useDirtySection<T>(opts: {
+  key: string;
+  label: string;
+  data: T;
+  save: () => Promise<boolean>;
+}) {
+  const snapshotRef = useRef<T | null>(null);
+  const [, force] = useState(0);
+
+  const isDirty =
+    snapshotRef.current !== null && !isSameJson(opts.data, snapshotRef.current);
+
+  useSaveRegistration({
+    key: opts.key,
+    label: opts.label,
+    isDirty,
+    save: async () => {
+      const ok = await opts.save();
+      if (ok) {
+        snapshotRef.current = opts.data;
+        force((n) => n + 1);
+      }
+      return ok;
+    },
+  });
+
+  return {
+    markLoaded: (value: T) => {
+      snapshotRef.current = value;
+      force((n) => n + 1);
+    },
+  };
 }
 
 // ── Helper: upsert setting ──
@@ -420,12 +457,18 @@ function HeroEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'hero').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('hero', data)) alert('Hero saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('hero', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'hero', label: 'Hero Section', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Hero Section">
@@ -476,7 +519,6 @@ function HeroEditor() {
           <AdminInput value={data.scrollBn ?? ''} onChange={(v) => setData({ ...data, scrollBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -496,12 +538,18 @@ function NavigationEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'nav').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('nav', data)) alert('Navigation saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('nav', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'nav', label: 'Navigation Labels', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Navigation Labels">
@@ -531,7 +579,6 @@ function NavigationEditor() {
           <AdminInput value={data.contactBn ?? ''} onChange={(v) => setData({ ...data, contactBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -556,12 +603,18 @@ function AboutEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'about').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('about', data)) alert('About saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('about', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'about', label: 'About Section', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="About Section">
@@ -603,7 +656,6 @@ function AboutEditor() {
       <AdminField label="Quote (বাংলা)">
         <AdminTextarea value={data.quoteBn ?? ''} onChange={(v) => setData({ ...data, quoteBn: v })} rows={2} />
       </AdminField>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -621,12 +673,18 @@ function ServicesMetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'services-meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('services-meta', data)) alert('Services header saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('services-meta', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'services-meta', label: 'Services Header', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Services Header">
@@ -650,7 +708,6 @@ function ServicesMetaEditor() {
           <AdminInput value={data.titleLine2Bn ?? ''} onChange={(v) => setData({ ...data, titleLine2Bn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -661,17 +718,25 @@ function ServicesEditor() {
 
   useEffect(() => {
     supabase.from('services').select('*').order('sort_order').then(({ data }) => {
-      if (data) setServices(data.map((r) => normalizeServiceRow(r as Record<string, unknown>)));
+      if (data) {
+        const rows = data.map((r) => normalizeServiceRow(r as Record<string, unknown>));
+        setServices(rows);
+        markLoaded(rows);
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateService = (idx: number, field: keyof Service, value: string) => {
     setServices((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
-  const save = async () => {
-    await saveCollection('services', services, 'services', 'Services saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('services', services, 'services');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'services', label: 'Services', data: services, save });
+
 
   const addService = async () => {
     const session = await ensureAuthenticatedSession();
@@ -691,7 +756,9 @@ function ServicesEditor() {
     }
 
     if (data) {
-      setServices((prev) => [...prev, normalizeServiceRow(data as Record<string, unknown>)]);
+      const next = [...services, normalizeServiceRow(data as Record<string, unknown>)];
+      setServices(next);
+      markLoaded(next);
       await refreshCollectionQueries('services');
     }
   };
@@ -703,7 +770,9 @@ function ServicesEditor() {
     if (!confirm(`Remove "${svc.name_en}"?`)) return;
     const { error } = await supabase.from('services').delete().eq('id', svc.id);
     if (error) { alert('Error removing: ' + error.message); return; }
-    setServices((prev) => prev.filter((_, i) => i !== idx));
+    const next = services.filter((_, i) => i !== idx);
+    setServices(next);
+    markLoaded(next);
     await refreshCollectionQueries('services');
   };
 
@@ -730,7 +799,6 @@ function ServicesEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addService} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Service
         </button>
@@ -745,17 +813,24 @@ function StatsEditor() {
 
   useEffect(() => {
     supabase.from('stats').select('*').order('sort_order').then(({ data }) => {
-      if (data) setStats(data.map((r) => normalizeStatRow(r as Record<string, unknown>)));
+      if (data) {
+        const rows = data.map((r) => normalizeStatRow(r as Record<string, unknown>));
+        setStats(rows);
+        markLoaded(rows);
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateStat = (idx: number, field: keyof Stat, value: string) => {
     setStats((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
-  const save = async () => {
-    await saveCollection('stats', stats, 'stats', 'Stats saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('stats', stats, 'stats');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'stats', label: 'Stats', data: stats, save });
 
   const addStat = async () => {
     const session = await ensureAuthenticatedSession();
@@ -767,7 +842,11 @@ function StatsEditor() {
       ({ data, error } = await supabase.from('stats').insert(payload).select().single());
     }
     if (error) { alert('Error adding stat: ' + error.message); return; }
-    if (data) { setStats((prev) => [...prev, normalizeStatRow(data as Record<string, unknown>)]); await refreshCollectionQueries('stats'); }
+    if (data) {
+      const next = [...stats, normalizeStatRow(data as Record<string, unknown>)];
+      setStats(next); markLoaded(next);
+      await refreshCollectionQueries('stats');
+    }
   };
 
   const removeStat = async (idx: number) => {
@@ -777,7 +856,8 @@ function StatsEditor() {
     if (!confirm(`Remove "${stat.label_en}"?`)) return;
     const { error } = await supabase.from('stats').delete().eq('id', stat.id);
     if (error) { alert('Error removing: ' + error.message); return; }
-    setStats((prev) => prev.filter((_, i) => i !== idx));
+    const next = stats.filter((_, i) => i !== idx);
+    setStats(next); markLoaded(next);
     await refreshCollectionQueries('stats');
   };
 
@@ -806,7 +886,6 @@ function StatsEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addStat} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Stat
         </button>
@@ -825,8 +904,9 @@ function PortfolioEditor() {
 
   useEffect(() => {
     supabase.from('portfolio_projects').select('*').order('sort_order').then(({ data }) => {
-      if (data) setProjects(data);
+      if (data) { setProjects(data); markLoaded(data); }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateProject = (idx: number, field: keyof PortfolioProject, value: string | string[]) => {
@@ -883,9 +963,11 @@ function PortfolioEditor() {
     updateProject(projIdx, 'mockup_urls', currentUrls.filter((_, i) => i !== mockupIdx));
   };
 
-  const save = async () => {
-    await saveCollection('portfolio_projects', projects, 'portfolio', 'Projects saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('portfolio_projects', projects, 'portfolio');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'portfolio_projects', label: 'Portfolio Projects', data: projects, save });
 
   const addProject = async () => {
     const session = await ensureAuthenticatedSession();
@@ -902,7 +984,8 @@ function PortfolioEditor() {
     }
 
     if (data) {
-      setProjects((prev) => [...prev, data]);
+      const next = [...projects, data];
+      setProjects(next); markLoaded(next);
       await refreshCollectionQueries('portfolio');
     }
   };
@@ -919,7 +1002,8 @@ function PortfolioEditor() {
       return;
     }
 
-    setProjects((prev) => prev.filter((_, i) => i !== idx));
+    const next = projects.filter((_, i) => i !== idx);
+    setProjects(next); markLoaded(next);
     await refreshCollectionQueries('portfolio');
   };
 
@@ -1069,7 +1153,6 @@ function PortfolioEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addProject} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Project
         </button>
@@ -1090,12 +1173,18 @@ function PortfolioMetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'portfolio-meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('portfolio-meta', data)) alert('Portfolio header saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('portfolio-meta', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'portfolio-meta', label: 'Portfolio Header', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Portfolio Header">
@@ -1119,7 +1208,6 @@ function PortfolioMetaEditor() {
           <AdminInput value={data.titleLine2Bn ?? ''} onChange={(v) => setData({ ...data, titleLine2Bn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1130,17 +1218,23 @@ function ProcessEditor() {
 
   useEffect(() => {
     supabase.from('process_steps').select('*').order('sort_order').then(({ data }) => {
-      if (data) setSteps(data.map((r) => normalizeProcessStepRow(r as Record<string, unknown>)));
+      if (data) {
+        const rows = data.map((r) => normalizeProcessStepRow(r as Record<string, unknown>));
+        setSteps(rows); markLoaded(rows);
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateStep = (idx: number, field: keyof ProcessStep, value: string) => {
     setSteps((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)));
   };
 
-  const save = async () => {
-    await saveCollection('process_steps', steps, 'process-steps', 'Process steps saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('process_steps', steps, 'process-steps');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'process_steps', label: 'Process Steps', data: steps, save });
 
   const addStep = async () => {
     const session = await ensureAuthenticatedSession();
@@ -1152,7 +1246,11 @@ function ProcessEditor() {
       ({ data, error } = await supabase.from('process_steps').insert(payload).select().single());
     }
     if (error) { alert('Error adding step: ' + error.message); return; }
-    if (data) { setSteps((prev) => [...prev, normalizeProcessStepRow(data as Record<string, unknown>)]); await refreshCollectionQueries('process-steps'); }
+    if (data) {
+      const next = [...steps, normalizeProcessStepRow(data as Record<string, unknown>)];
+      setSteps(next); markLoaded(next);
+      await refreshCollectionQueries('process-steps');
+    }
   };
 
   const removeStep = async (idx: number) => {
@@ -1162,7 +1260,8 @@ function ProcessEditor() {
     if (!confirm(`Remove "${step.title_en}"?`)) return;
     const { error } = await supabase.from('process_steps').delete().eq('id', step.id);
     if (error) { alert('Error removing: ' + error.message); return; }
-    setSteps((prev) => prev.filter((_, i) => i !== idx));
+    const next = steps.filter((_, i) => i !== idx);
+    setSteps(next); markLoaded(next);
     await refreshCollectionQueries('process-steps');
   };
 
@@ -1189,7 +1288,6 @@ function ProcessEditor() {
         </div>
       ))}
       <div className="flex gap-3 mt-4">
-        <SaveButton onClick={save} />
         <button onClick={addStep} className="px-6 py-3 border border-primary-foreground/20 text-primary-foreground/60 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition-colors">
           + Add Step
         </button>
@@ -1211,12 +1309,18 @@ function ProcessMetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'process-meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('process-meta', data)) alert('Process header saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('process-meta', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'process-meta', label: 'Process Header', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Process Header">
@@ -1240,7 +1344,6 @@ function ProcessMetaEditor() {
           <AdminInput value={data.titleLine2Bn ?? ''} onChange={(v) => setData({ ...data, titleLine2Bn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1273,12 +1376,18 @@ function ContactEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'contact').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('contact', data)) alert('Contact saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('contact', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'contact', label: 'Contact Info', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Contact Info">
@@ -1346,7 +1455,6 @@ function ContactEditor() {
           <AdminInput value={data.submitLabelBn ?? ''} onChange={(v) => setData({ ...data, submitLabelBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1357,21 +1465,25 @@ function MarqueeEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'marquee').maybeSingle().then(({ data: row }) => {
-      if (row?.value?.items) setText(row.value.items.join('\n'));
+      const value = row?.value?.items ? row.value.items.join('\n') : '';
+      setText(value);
+      markLoaded(value);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const save = async () => {
+  const save = async (): Promise<boolean> => {
     const items = text.split('\n').filter((l) => l.trim());
-    if (await upsertSetting('marquee', { items })) alert('Marquee saved!');
+    return await upsertSetting('marquee', { items });
   };
+
+  const { markLoaded } = useDirtySection({ key: 'marquee', label: 'Marquee Text', data: text, save });
 
   return (
     <AdminSection title="Marquee Text">
       <AdminField label="Items (one per line)">
         <AdminTextarea value={text} onChange={setText} rows={5} />
       </AdminField>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1383,13 +1495,11 @@ function LogoEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'logo').maybeSingle().then(({ data: row }) => {
-      if (row?.value?.url) {
-        setUrl(withCacheBust(row.value.url));
-        return;
-      }
-
-      setUrl(withCacheBust(getPublicAssetUrl(LOGO_STORAGE_PATH)));
+      const next = withCacheBust(row?.value?.url ?? getPublicAssetUrl(LOGO_STORAGE_PATH));
+      setUrl(next);
+      markLoaded(stripCacheBust(next));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleUpload = async (file: File) => {
@@ -1405,17 +1515,12 @@ function LogoEditor() {
     setUrl(withCacheBust(getPublicAssetUrl(LOGO_STORAGE_PATH)));
   };
 
-  const save = async () => {
-    const cleanUrl = url.split('?')[0];
-    if (await upsertSetting('logo', { url: cleanUrl })) {
-      alert('Logo saved!');
-      return;
-    }
-
-    if (cleanUrl === getPublicAssetUrl(LOGO_STORAGE_PATH)) {
-      alert('Logo uploaded. The main site will use this uploaded logo even if the logo setting row is blocked.');
-    }
+  const cleanUrl = stripCacheBust(url);
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('logo', { url: cleanUrl });
   };
+
+  const { markLoaded } = useDirtySection({ key: 'logo', label: 'Logo', data: cleanUrl, save });
 
   return (
     <AdminSection title="Logo">
@@ -1427,7 +1532,6 @@ function LogoEditor() {
         <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">📸 Click to upload logo</span>
         {url && <img src={url} alt="Logo" className="max-w-[120px] max-h-[120px] mx-auto mt-3 rounded" />}
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1443,20 +1547,23 @@ function PuzzleImageEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle().then(({ data: row }) => {
+      let next: PuzzleContent;
       if (row?.value) {
-        setData({
+        next = {
           ...row.value,
           imageUrl: row.value.imageUrl ? withCacheBust(row.value.imageUrl) : withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)),
           pieceImages: Array.from({ length: PUZZLE_PIECE_COUNT }, (_, index) => {
             const url = row.value?.pieceImages?.[index];
             return url ? withCacheBust(url) : '';
           }),
-        });
-        return;
+        };
+      } else {
+        next = { imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)), pieceImages: createEmptyPieceImages() };
       }
-
-      setData((prev) => ({ ...prev, imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)) }));
+      setData(next);
+      markLoaded(buildPuzzleImagePayload(next));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleUpload = async (file: File) => {
@@ -1495,22 +1602,12 @@ function PuzzleImageEditor() {
     }));
   };
 
-  const save = async () => {
-    const payload: PuzzleContent = {
-      ...data,
-      imageUrl: stripCacheBust(data.imageUrl),
-      pieceImages: (data.pieceImages ?? createEmptyPieceImages()).map((item) => item ? stripCacheBust(item) : ''),
-    };
-
-    if (await upsertSetting('puzzle', payload)) {
-      alert('Puzzle image saved!');
-      return;
-    }
-
-    if (payload.imageUrl === getPublicAssetUrl(PUZZLE_STORAGE_PATH)) {
-      alert('Puzzle image uploaded. The main site will use this uploaded file even if the puzzle row is missing.');
-    }
+  const payload = useMemo(() => buildPuzzleImagePayload(data), [data]);
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('puzzle', payload);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'puzzle-image', label: 'Puzzle Game Image', data: payload, save });
 
   return (
     <AdminSection title="Puzzle Game Image">
@@ -1549,7 +1646,6 @@ function PuzzleImageEditor() {
           </div>
         ))}
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1561,12 +1657,18 @@ function DiscountEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'discount').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('discount', data)) alert('Discount saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('discount', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'discount', label: 'Discount', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Discount / Puzzle Reward">
@@ -1578,7 +1680,6 @@ function DiscountEditor() {
           <AdminInput value={data.amount} onChange={(v) => setData({ ...data, amount: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1595,12 +1696,18 @@ function FooterEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'footer').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('footer', data)) alert('Footer saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('footer', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'footer', label: 'Footer', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Footer">
@@ -1618,7 +1725,6 @@ function FooterEditor() {
           <AdminInput value={data.rightsTextBn ?? ''} onChange={(v) => setData({ ...data, rightsTextBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1630,12 +1736,18 @@ function MetaEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'meta').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('meta', data)) alert('Meta/SEO saved!');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('meta', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'meta', label: 'Meta / SEO', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Meta / SEO">
@@ -1648,7 +1760,6 @@ function MetaEditor() {
       <AdminField label="Google Analytics ID">
         <AdminInput value={data.gaId} onChange={(v) => setData({ ...data, gaId: v })} placeholder="G-XXXXXXXXXX" />
       </AdminField>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1660,12 +1771,18 @@ function ColorsEditor() {
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'colors').maybeSingle().then(({ data: row }) => {
       if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
+      _setLoaded(true);
     });
   }, []);
 
-  const save = async () => {
-    if (await upsertSetting('colors', data)) alert('Colors saved! Refresh the main site to see changes.');
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('colors', data);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'colors', label: 'Brand Colors', data, save });
+
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
   return (
     <AdminSection title="Brand Colors">
@@ -1695,7 +1812,6 @@ function ColorsEditor() {
           </div>
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }
@@ -1706,16 +1822,24 @@ function PuzzleTextEditor() {
 
   useEffect(() => {
     supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle().then(({ data: row }) => {
-      if (row?.value) setData(row.value);
+      if (row?.value) {
+        setData(row.value);
+        markLoaded(row.value);
+      } else {
+        markLoaded({});
+      }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const save = async () => {
+  const save = async (): Promise<boolean> => {
     // Merge with existing puzzle data (images) rather than overwriting
     const { data: existing } = await supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle();
     const merged = { ...(existing?.value ?? {}), ...data };
-    if (await upsertSetting('puzzle', merged)) alert('Puzzle text saved!');
+    return await upsertSetting('puzzle', merged);
   };
+
+  const { markLoaded } = useDirtySection({ key: 'puzzle-text', label: 'Puzzle Game Text', data, save });
 
   return (
     <AdminSection title="Puzzle Game Text">
@@ -1795,7 +1919,6 @@ function PuzzleTextEditor() {
           <AdminInput value={data.copiedBn ?? ''} onChange={(v) => setData({ ...data, copiedBn: v })} />
         </AdminField>
       </div>
-      <SaveButton onClick={save} />
     </AdminSection>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSaveRegistration } from '@/components/admin/SaveAllContext';
 import type { Transformation, TransformationsMetaContent } from '@/types/database';
 import { BeforeAfterSlider } from '@/components/landing/Transformations';
 
@@ -55,11 +56,64 @@ export default function TransformationsEditor() {
         setMissingTable(true);
       } else if (rows) {
         setItems(rows as Transformation[]);
+        itemsBaseline.current = JSON.stringify(rows);
       }
-      if (metaRow?.value) setMeta(metaRow.value as TransformationsMetaContent);
+      if (metaRow?.value) {
+        setMeta(metaRow.value as TransformationsMetaContent);
+        metaBaseline.current = JSON.stringify(metaRow.value);
+      } else {
+        metaBaseline.current = JSON.stringify({});
+      }
       setLoading(false);
     })();
   }, []);
+
+  const itemsBaseline = useRef<string | null>(null);
+  const metaBaseline = useRef<string | null>(null);
+  const itemsDirty = itemsBaseline.current !== null && JSON.stringify(items) !== itemsBaseline.current;
+  const metaDirty = metaBaseline.current !== null && JSON.stringify(meta) !== metaBaseline.current;
+
+  useSaveRegistration({
+    key: 'transformations-meta',
+    label: 'Transformations Labels',
+    isDirty: metaDirty,
+    save: async () => {
+      const session = await ensureSession();
+      if (!session) return false;
+      const { error } = await supabase.from('site_settings').upsert({ key: 'transformations-meta', value: meta }, { onConflict: 'key' });
+      if (error) { alert('Meta save failed: ' + error.message); return false; }
+      qc.invalidateQueries({ queryKey: ['site-setting', 'transformations-meta'] });
+      metaBaseline.current = JSON.stringify(meta);
+      return true;
+    },
+  });
+
+  useSaveRegistration({
+    key: 'transformations-items',
+    label: 'Transformations',
+    isDirty: itemsDirty,
+    save: async () => {
+      const session = await ensureSession();
+      if (!session) return false;
+      for (const it of items) {
+        const { error } = await supabase
+          .from('transformations')
+          .update({
+            project_name: it.project_name,
+            before_image_url: it.before_image_url,
+            after_image_url: it.after_image_url,
+            is_active: it.is_active,
+            sort_order: it.sort_order,
+          })
+          .eq('id', it.id);
+        if (error) { alert('Save failed: ' + error.message); return false; }
+      }
+      itemsBaseline.current = JSON.stringify(items);
+      qc.invalidateQueries({ queryKey: ['transformations'] });
+      return true;
+    },
+  });
+
 
   const refresh = () => qc.invalidateQueries({ queryKey: ['transformations'] });
 
@@ -80,24 +134,6 @@ export default function TransformationsEditor() {
 
   const updateField = (idx: number, field: keyof Transformation, value: string | boolean | number) => {
     setItems((p) => p.map((it, i) => (i === idx ? { ...it, [field]: value } : it)));
-  };
-
-  const persistRow = async (idx: number) => {
-    const session = await ensureSession();
-    if (!session) return;
-    const it = items[idx];
-    const { error } = await supabase
-      .from('transformations')
-      .update({
-        project_name: it.project_name,
-        before_image_url: it.before_image_url,
-        after_image_url: it.after_image_url,
-        is_active: it.is_active,
-        sort_order: it.sort_order ?? idx + 1,
-      })
-      .eq('id', it.id);
-    if (error) { alert('Save failed: ' + error.message); return; }
-    refresh();
   };
 
   const togglePublish = async (idx: number) => {
@@ -137,15 +173,6 @@ export default function TransformationsEditor() {
     refresh();
   };
 
-  const saveMeta = async () => {
-    const session = await ensureSession();
-    if (!session) return;
-    const { error } = await supabase.from('site_settings').upsert({ key: 'transformations-meta', value: meta }, { onConflict: 'key' });
-    if (error) { alert('Meta save failed: ' + error.message); return; }
-    qc.invalidateQueries({ queryKey: ['site-setting', 'transformations-meta'] });
-    alert('Section labels saved.');
-  };
-
   return (
     <div className="mb-10 bg-primary-foreground/[0.03] border border-primary-foreground/[0.07] rounded p-7">
       <h3 className="font-heading text-xl text-primary-foreground font-normal mb-5 tracking-wider">
@@ -169,7 +196,7 @@ export default function TransformationsEditor() {
           <Field label="Before label (EN)"><Input value={meta.beforeLabelEn ?? ''} onChange={(v) => setMeta((m) => ({ ...m, beforeLabelEn: v }))} placeholder="Before" /></Field>
           <Field label="After label (EN)"><Input value={meta.afterLabelEn ?? ''} onChange={(v) => setMeta((m) => ({ ...m, afterLabelEn: v }))} placeholder="After" /></Field>
         </div>
-        <button onClick={saveMeta} className="mt-3 px-6 py-2 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm hover:opacity-90 transition">Save labels</button>
+        
       </div>
 
       {/* Items */}
@@ -221,10 +248,6 @@ export default function TransformationsEditor() {
                 <input ref={(el) => (afterRefs.current[i] = el)} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadImage(i, e.target.files[0], 'after')} />
                 <button onClick={() => afterRefs.current[i]?.click()} className="w-full px-4 py-2 border border-primary-foreground/20 text-primary-foreground/70 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition">Upload after</button>
               </div>
-            </div>
-
-            <div className="flex gap-2 mt-3">
-              <button onClick={() => persistRow(i)} className="px-6 py-2 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm hover:opacity-90 transition">Save</button>
             </div>
 
             {previewIdx === i && it.before_image_url && it.after_image_url && (
