@@ -3,8 +3,9 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
   const [hovered, setHovered] = useState(false);
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
+  const [visible, setVisible] = useState(false);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
 
   // Dot: near-instant 1:1 tracking — precision first
   const dotX = useSpring(cursorX, { stiffness: 800, damping: 50, mass: 0.1 });
@@ -22,7 +23,11 @@ export default function CustomCursor() {
     const onMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
+      setVisible(true);
     };
+
+    const onMouseLeaveWindow = () => setVisible(false);
+    const onMouseEnterWindow = () => setVisible(true);
 
     const selector = 'a,button,.service-card,.work-card,.stat-box,.play-btn,[role="button"],input,textarea';
 
@@ -39,6 +44,8 @@ export default function CustomCursor() {
     };
 
     document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseleave', onMouseLeaveWindow);
+    document.addEventListener('mouseenter', onMouseEnterWindow);
     attach();
 
     const observer = new MutationObserver(attach);
@@ -47,6 +54,8 @@ export default function CustomCursor() {
     return () => {
       document.body.style.cursor = '';
       document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeaveWindow);
+      document.removeEventListener('mouseenter', onMouseEnterWindow);
       document.querySelectorAll(selector).forEach(el => {
         el.removeEventListener('mouseenter', onEnter);
         el.removeEventListener('mouseleave', onLeave);
@@ -72,7 +81,7 @@ export default function CustomCursor() {
         animate={{
           width: hovered ? 18 : 10,
           height: hovered ? 18 : 10,
-          opacity: hovered ? 0.85 : 1,
+          opacity: visible ? (hovered ? 0.85 : 1) : 0,
         }}
         transition={{ type: 'spring', stiffness: 200, damping: 20, mass: 0.3 }}
       />
@@ -89,7 +98,7 @@ export default function CustomCursor() {
         animate={{
           width: hovered ? 56 : 40,
           height: hovered ? 56 : 40,
-          opacity: hovered ? 0.2 : 0.4,
+          opacity: visible ? (hovered ? 0.2 : 0.4) : 0,
         }}
         transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 0.4 }}
       />
