@@ -223,7 +223,7 @@ export default function TransformationsEditor() {
           <Field label="Before label (EN)"><Input value={meta.beforeLabelEn ?? ''} onChange={(v) => setMeta((m) => ({ ...m, beforeLabelEn: v }))} placeholder="Before" /></Field>
           <Field label="After label (EN)"><Input value={meta.afterLabelEn ?? ''} onChange={(v) => setMeta((m) => ({ ...m, afterLabelEn: v }))} placeholder="After" /></Field>
         </div>
-        <button onClick={saveMeta} className="mt-3 px-6 py-2 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm hover:opacity-90 transition">Save labels</button>
+        
       </div>
 
       {/* Items */}
@@ -275,10 +275,6 @@ export default function TransformationsEditor() {
                 <input ref={(el) => (afterRefs.current[i] = el)} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadImage(i, e.target.files[0], 'after')} />
                 <button onClick={() => afterRefs.current[i]?.click()} className="w-full px-4 py-2 border border-primary-foreground/20 text-primary-foreground/70 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition">Upload after</button>
               </div>
-            </div>
-
-            <div className="flex gap-2 mt-3">
-              <button onClick={() => persistRow(i)} className="px-6 py-2 bg-accent text-accent-foreground text-xs tracking-[2px] uppercase rounded-sm hover:opacity-90 transition">Save</button>
             </div>
 
             {previewIdx === i && it.before_image_url && it.after_image_url && (
