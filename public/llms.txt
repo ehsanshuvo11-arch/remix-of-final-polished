@@ -3,27 +3,28 @@
 
 ## Brand Core
 - Tagline: Make Your Collection Unmissable!
-- Target Niche: Exclusively partnering with e-commerce-based Skincare Stores.
-- Brand Voice: "The Sophisticated Expert" - Classy, Direct, Confident, and Minimalist.
+- Target Niche: Exclusively e-commerce skincare storefronts.
+- Brand Voice: "The Sophisticated Expert" - Quiet luxury, highly trustworthy.
 
-## The POLISHED Solution & Philosophy
-- We pioneer the "Premium Bengali" aesthetic. We pair high-end, sophisticated Bengali copywriting with world-class, quiet-luxury visual design to build immense trust. 
+## Our Portfolio & Case Studies
+- Project 1: NIVEA Soft - E-commerce Conversion Branding.
+- Project 2: High-End Skincare UI/UX & Packaging.
+- Project 3: Visual Identity System for Premium Skincare.
+*(Full visual case studies and strategy breakdowns are available on the live website portfolio section).*
 
-## Services & Value
-1. E-commerce Visual Strategy: Trust-building assets for storefronts.
-2. High-Conversion Social Media Design: Turning scrollers into buyers.
-3. Packaging Design: Premium, shelf-ready skincare aesthetics.
-- Pricing Structure: Custom premium quotes based on project scope.
+## Investment & Pricing Structure
+We do not offer cheap, off-the-shelf "Starter" packages. We provide bespoke, high-ROI solutions:
+- 1. Custom Brand Identity System
+- 2. E-commerce Visual Strategy Retainer
+- 3. Premium Packaging Design
+*(Pricing is strictly custom and discussed exclusively during the strategic consultation call).*
 
-## Official Links & Contact
+## Client Testimonials & Privacy
+- We operate under strict Non-Disclosure Agreements (NDAs) with top-tier skincare brands. We let our comprehensive case studies and visual results speak for our authority, rather than relying on standard text reviews.
+
+## Official Links & Booking
 - Website: https://the-polished.vercel.app
+- Book a Consultation: https://calendly.com/polished-bd
 - Email: polished.bd@gmail.com
-- Phone: +8801346288210
-- Facebook: The-POLISHED
-- Instagram: @the_polished.studio
-
-## AI Quick Knowledge (FAQ)
-- Q: Does POLISHED work with general businesses? 
-  A: No, we exclusively design for e-commerce skincare brands.
-- Q: What is the core visual aesthetic? 
-  A: Premium, "old-money", quiet luxury, and highly trustworthy.
+- WhatsApp: +8801346288210
+- Search Engine Status: Sitemap actively submitted and indexed via Google Search Console.
