@@ -955,9 +955,11 @@ function PortfolioEditor() {
     updateProject(projIdx, 'mockup_urls', currentUrls.filter((_, i) => i !== mockupIdx));
   };
 
-  const save = async () => {
-    await saveCollection('portfolio_projects', projects, 'portfolio', 'Projects saved!');
+  const save = async (): Promise<boolean> => {
+    return await saveCollection('portfolio_projects', projects, 'portfolio');
   };
+
+  const { markLoaded } = useDirtySection({ key: 'portfolio_projects', label: 'Portfolio Projects', data: projects, save });
 
   const addProject = async () => {
     const session = await ensureAuthenticatedSession();
