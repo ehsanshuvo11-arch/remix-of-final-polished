@@ -2,7 +2,13 @@ import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
-import SerumBottle3D from '@/components/landing/SerumBottle3D';
+import ClientOnly from '@/components/ClientOnly';
+import { lazy } from 'react';
+
+// Strictly client-only: the module is only ever fetched/evaluated inside
+// <ClientOnly> after mount, so its `three` / R3F imports never enter the
+// SSR module graph (defense in depth on top of the lazy() chain inside).
+const SerumBottle3D = lazy(() => import('@/components/landing/SerumBottle3D'));
 import type { HeroContent } from '@/types/database';
 import logoSvg from '@/assets/logo.svg';
 
