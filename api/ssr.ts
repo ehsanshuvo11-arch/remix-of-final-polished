@@ -190,20 +190,17 @@ function renderSeoBlock(data: {
   const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing, testimonials } = data;
 
   const heroTitle =
-    pickLocalized(hero || {}, 'title') ||
-    'POLISHED — Premium Visual Identities for E-commerce Skincare Brands';
+    pickLocalized(hero || {}, 'title');
   const heroTagline =
     pickLocalized(hero || {}, 'tagline') ||
-    pickLocalized(hero || {}, 'subtitle') ||
-    'Make Your Collection Unmissable!';
+    pickLocalized(hero || {}, 'subtitle');
 
   const aboutBody =
     stripHtml(pickLocalized(about || {}, 'body')) ||
-    stripHtml(pickLocalized(about || {}, 'description')) ||
-    'POLISHED is a specialist branding studio crafting premium, quiet-luxury visual identities exclusively for e-commerce skincare storefronts.';
+    stripHtml(pickLocalized(about || {}, 'description'));
 
-  const email = contact?.email || 'polished.bd@gmail.com';
-  const phone = contact?.phone || contact?.whatsapp || '+8801346288210';
+  const email = contact?.email || '';
+  const phone = contact?.phone || contact?.whatsapp || '';
 
   const servicesHtml = services
     .map((s) => {
