@@ -216,7 +216,7 @@ function renderSeoBlock(data: {
   const projectsHtml = projects
     .map((p) => {
       const title =
-        pickLocalized(p, 'title') || p.title || 'Untitled Project';
+        pickLocalized(p, 'title') || p.title || '';
       const titleSafe = escapeHtml(title);
       const category = escapeHtml(
         pickLocalized(p, 'category') || p.category || ''
@@ -228,50 +228,23 @@ function renderSeoBlock(data: {
       const hook = stripHtml(pickLocalized(p, 'hook'));
       const hookHtml = hook ? `<p class="project-hook"><strong>${escapeHtml(hook)}</strong></p>` : '';
 
-      // Full case study (preserve paragraph breaks, strip tags safely)
-      const caseStudyRaw =
-        pickLocalized(p, 'case_study') ||
-        pickLocalized(p, 'description') ||
-        '';
-      const caseStudyParagraphs = String(caseStudyRaw)
-        // turn </p> and <br> into newlines before stripping tags
-        .replace(/<\/p>/gi, '\n\n')
-        .replace(/<br\s*\/?>(?!\n)/gi, '\n')
-        .replace(/<[^>]*>/g, '')
-        .split(/\n\s*\n/)
-        .map((s) => s.replace(/\s+/g, ' ').trim())
-        .filter(Boolean);
-      const caseStudyHtml = caseStudyParagraphs
-        .map((para) => `<p>${escapeHtml(para)}</p>`)
+      const caseStudyHtml = collectCaseStudyBlocks(p)
+        .map(({ lang, paragraphs }) => `
+          <div class="case-study-language" lang="${escapeHtml(lang)}">
+            ${paragraphs.map((para) => `<p>${escapeHtml(para)}</p>`).join('')}
+          </div>`)
         .join('');
 
-      // Collect every visual asset for this project, normalized to absolute URLs
-      const imageUrls: string[] = [];
-      const pushImg = (raw: unknown) => {
-        const abs = toAbsoluteUrl(raw);
-        if (abs) imageUrls.push(abs);
-      };
-      pushImg(p.image_url);
-      pushImg(p.mockup_url);
-      pushImg(p.cover_image_url);
-      pushImg(p.thumbnail_url);
-      if (Array.isArray(p.mockup_urls)) p.mockup_urls.forEach(pushImg);
-      if (Array.isArray(p.images)) p.images.forEach(pushImg);
-      if (Array.isArray(p.gallery)) p.gallery.forEach(pushImg);
-      // Deduplicate while preserving order
-      const seen = new Set<string>();
-      const uniqueImages = imageUrls.filter((u) => {
-        if (seen.has(u)) return false;
-        seen.add(u);
-        return true;
-      });
+      // Collect EVERY project visual from every image/mockup/gallery field,
+      // normalize to absolute https:// URLs, and emit real <img> tags.
+      const uniqueImages = collectImageUrlsFromRecord(p);
 
       const figuresHtml = uniqueImages
         .map((url, idx) => {
           const isCover = idx === 0;
           const altText = isCover
-            ? `Premium brand identity cover visual for ${title} — ${category || 'skincare e-commerce case study'}`
-            : `Premium 3D packaging mockup ${idx} for ${title} — POLISHED case study`;
+            ? `Premium brand identity cover visual for ${title}`
+            : `Premium 3D Mockup for ${title}`;
           const captionText = isCover
             ? `${title} — cover visual`
             : `${title} — mockup ${idx}`;
@@ -287,11 +260,11 @@ function renderSeoBlock(data: {
       const pdfLinks: string[] = [];
       if (p.pdf_url_en)
         pdfLinks.push(
-          `<a href="${escapeHtml(p.pdf_url_en)}" rel="noopener">Download full case study (EN, PDF)</a>`
+          `<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_en))}" rel="noopener">Download full case study (EN, PDF)</a>`
         );
       if (p.pdf_url_bn)
         pdfLinks.push(
-          `<a href="${escapeHtml(p.pdf_url_bn)}" rel="noopener">Download full case study (BN, PDF)</a>`
+          `<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_bn))}" rel="noopener">Download full case study (BN, PDF)</a>`
         );
       const pdfHtml = pdfLinks.length
         ? `<p class="case-study-downloads">${pdfLinks.join(' · ')}</p>`
@@ -299,7 +272,7 @@ function renderSeoBlock(data: {
 
       return `
         <article class="portfolio-project" itemscope itemtype="https://schema.org/CreativeWork">
-          <h3 itemprop="name">${titleSafe}</h3>
+          ${titleSafe ? `<h3 itemprop="name">${titleSafe}</h3>` : ''}
           ${meta ? `<p class="project-meta"><em>${meta}</em></p>` : ''}
           ${hookHtml}
           ${figuresHtml}
