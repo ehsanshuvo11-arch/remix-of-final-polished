@@ -73,15 +73,17 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
       {/* 3D serum bottle — strictly client-only. Server render + first hydration
           tick render NOTHING here; the R3F module chain is only fetched after
-          useEffect fires inside <ClientOnly>. */}
+          useEffect fires inside <ClientOnly>. Suspense catches the lazy() wait. */}
       <ClientOnly>
-        <SerumBottle3D
-          className="hidden lg:block absolute right-[4%] top-1/2 -translate-y-1/2 w-[420px] h-[560px] xl:w-[480px] xl:h-[620px] z-[5] opacity-90"
-        />
-        {/* Mobile: small floating accent above headline */}
-        <SerumBottle3D
-          className="lg:hidden absolute right-4 top-20 w-[160px] h-[200px] z-[5] opacity-80"
-        />
+        <Suspense fallback={null}>
+          <SerumBottle3D
+            className="hidden lg:block absolute right-[4%] top-1/2 -translate-y-1/2 w-[420px] h-[560px] xl:w-[480px] xl:h-[620px] z-[5] opacity-90"
+          />
+          {/* Mobile: small floating accent above headline */}
+          <SerumBottle3D
+            className="lg:hidden absolute right-4 top-20 w-[160px] h-[200px] z-[5] opacity-80"
+          />
+        </Suspense>
       </ClientOnly>
 
       <div className="max-w-[900px] text-center relative z-10">
