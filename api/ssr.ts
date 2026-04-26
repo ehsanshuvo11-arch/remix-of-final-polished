@@ -41,6 +41,27 @@ const stripHtml = (input: unknown): string => {
   return String(input).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 };
 
+// Ensure every image URL is an ABSOLUTE https:// URL so AI scrapers can
+// resolve and verify them without a base context. Supabase storage URLs
+// are already absolute; relative/protocol-relative URLs are normalized
+// against the Supabase project origin.
+const SUPABASE_ORIGIN = (() => {
+  try { return new URL(SUPABASE_URL).origin; } catch { return ''; }
+})();
+const toAbsoluteUrl = (raw: unknown): string => {
+  if (raw === null || raw === undefined) return '';
+  let url = String(raw).trim();
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  if (url.startsWith('/')) return `${SUPABASE_ORIGIN}${url}`;
+  // Bare path like "polished-assets/foo.jpg" → assume Supabase public storage
+  if (!/^[a-z]+:/i.test(url)) {
+    return `${SUPABASE_ORIGIN}/storage/v1/object/public/${url.replace(/^\/+/, '')}`;
+  }
+  return url;
+};
+
 const pickLocalized = (row: Record<string, any>, base: string): string => {
   return (
     row?.[`${base}_en`] ??
@@ -62,8 +83,9 @@ function renderSeoBlock(data: {
   transformations: any[];
   transformationsMeta: any;
   pricing: any[];
+  testimonials: any[];
 }): string {
-  const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing } = data;
+  const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing, testimonials } = data;
 
   const heroTitle =
     pickLocalized(hero || {}, 'title') ||
@@ -121,15 +143,19 @@ function renderSeoBlock(data: {
         .map((para) => `<p>${escapeHtml(para)}</p>`)
         .join('');
 
-      // Collect every visual asset for this project
+      // Collect every visual asset for this project, normalized to absolute URLs
       const imageUrls: string[] = [];
-      if (p.image_url) imageUrls.push(p.image_url);
-      if (p.mockup_url) imageUrls.push(p.mockup_url);
-      if (Array.isArray(p.mockup_urls)) {
-        for (const u of p.mockup_urls) {
-          if (typeof u === 'string' && u.trim()) imageUrls.push(u.trim());
-        }
-      }
+      const pushImg = (raw: unknown) => {
+        const abs = toAbsoluteUrl(raw);
+        if (abs) imageUrls.push(abs);
+      };
+      pushImg(p.image_url);
+      pushImg(p.mockup_url);
+      pushImg(p.cover_image_url);
+      pushImg(p.thumbnail_url);
+      if (Array.isArray(p.mockup_urls)) p.mockup_urls.forEach(pushImg);
+      if (Array.isArray(p.images)) p.images.forEach(pushImg);
+      if (Array.isArray(p.gallery)) p.gallery.forEach(pushImg);
       // Deduplicate while preserving order
       const seen = new Set<string>();
       const uniqueImages = imageUrls.filter((u) => {
@@ -208,8 +234,8 @@ function renderSeoBlock(data: {
     .filter((t) => t && t.is_active !== false && (t.before_image_url || t.after_image_url))
     .map((t) => {
       const name = escapeHtml(t.project_name || 'Brand Transformation');
-      const beforeUrl = t.before_image_url ? escapeHtml(t.before_image_url) : '';
-      const afterUrl = t.after_image_url ? escapeHtml(t.after_image_url) : '';
+      const beforeUrl = escapeHtml(toAbsoluteUrl(t.before_image_url));
+      const afterUrl = escapeHtml(toAbsoluteUrl(t.after_image_url));
       const beforeImg = beforeUrl
         ? `<figure><img src="${beforeUrl}" alt="${beforeLabel} — ${name} packaging visual identity (POLISHED case study)" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel} — ${name}</figcaption></figure>`
         : '';
@@ -225,38 +251,39 @@ function renderSeoBlock(data: {
     })
     .join('');
 
-  // ─── Investment / Pricing tiers (publicly listed offerings) ─────────────
-  const fallbackPricing = [
-    {
-      name: 'Custom Brand Identity System',
-      description:
-        'Bespoke quiet-luxury identity engineered from market positioning down to packaging. Includes logo system, typography, color architecture, brand guidelines and storefront-ready visual language.',
-      range: 'Bespoke — strategic consultation required',
-    },
-    {
-      name: 'E-commerce Visual Strategy Retainer',
-      description:
-        'Ongoing visual leadership for high-growth skincare storefronts: campaign art direction, conversion-focused UI assets, seasonal launches and Shopify/headless storefront polish.',
-      range: 'Monthly retainer — bespoke scope',
-    },
-    {
-      name: 'Premium Packaging Design',
-      description:
-        'Shelf-ready, photoreal 3D packaging design with print-grade dielines, finish specifications and full mockup deliverables for hero SKUs.',
-      range: 'Per-SKU — bespoke scope',
-    },
-  ];
-  const pricingItems = (pricing && pricing.length ? pricing : fallbackPricing).map((p: any) => {
+  // ─── Investment / Pricing tiers (STRICTLY from live Supabase data) ──────
+  // No hardcoded fallbacks: bots must only see what is actually published.
+  const pricingItems = (pricing || []).map((p: any) => {
     const name = escapeHtml(pickLocalized(p, 'name') || pickLocalized(p, 'title') || p.name || '');
     const desc = escapeHtml(stripHtml(pickLocalized(p, 'description') || p.description || ''));
     const range = escapeHtml(p.range || p.price_range || p.price || '');
+    if (!name && !desc && !range) return '';
     return `
       <article class="pricing-tier" itemscope itemtype="https://schema.org/Offer">
-        <h3 itemprop="name">${name}</h3>
+        ${name ? `<h3 itemprop="name">${name}</h3>` : ''}
         ${desc ? `<p itemprop="description">${desc}</p>` : ''}
         ${range ? `<p class="pricing-range"><strong>Investment:</strong> <span itemprop="priceSpecification">${range}</span></p>` : ''}
       </article>`;
   }).join('');
+
+  // ─── Testimonials (STRICTLY from live Supabase data) ────────────────────
+  const testimonialsHtml = (testimonials || [])
+    .filter((t) => t && t.is_active !== false)
+    .map((t: any) => {
+      const quote = escapeHtml(stripHtml(pickLocalized(t, 'quote') || pickLocalized(t, 'content') || pickLocalized(t, 'body') || t.quote || ''));
+      const author = escapeHtml(t.author_name || t.name || t.client_name || '');
+      const role = escapeHtml(t.author_role || t.role || t.title || '');
+      const brand = escapeHtml(t.brand_name || t.company || '');
+      const avatar = escapeHtml(toAbsoluteUrl(t.avatar_url || t.image_url));
+      if (!quote && !author) return '';
+      const byline = [author, role, brand].filter(Boolean).join(' · ');
+      return `
+        <article class="testimonial" itemscope itemtype="https://schema.org/Review">
+          ${avatar ? `<img src="${avatar}" alt="${author || 'Client'} — POLISHED testimonial" loading="lazy" decoding="async" width="200" height="200" />` : ''}
+          ${quote ? `<blockquote itemprop="reviewBody">${quote}</blockquote>` : ''}
+          ${byline ? `<p class="testimonial-byline" itemprop="author">— ${byline}</p>` : ''}
+        </article>`;
+    }).join('');
 
   // The block is visually hidden but NOT aria-hidden, and uses CSS clip
   // (not display:none) so search engines and AI crawlers parse the full DOM.
@@ -276,6 +303,7 @@ function renderSeoBlock(data: {
       <li><a href="/#transformations">Transformations</a></li>
       <li><a href="/#pricing">Investment</a></li>
       <li><a href="/#process">Process</a></li>
+      <li><a href="/#testimonials">Testimonials</a></li>
       <li><a href="/#contact">Contact</a></li>
     </ul>
   </nav>
@@ -306,7 +334,13 @@ function renderSeoBlock(data: {
 
   ${
     pricingItems
-      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>POLISHED delivers bespoke, high-ROI engagements. The following tiers describe our publicly listed service offerings; exact pricing is scoped during a strategic consultation call.</p>${pricingItems}</section>`
+      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>The following tiers reflect POLISHED's currently published service offerings as listed in our live content database.</p>${pricingItems}</section>`
+      : ''
+  }
+
+  ${
+    testimonialsHtml
+      ? `<section id="testimonials-ssr"><h2>Client Testimonials</h2>${testimonialsHtml}</section>`
       : ''
   }
 
@@ -335,7 +369,7 @@ function renderSeoBlock(data: {
 
 // ─── Fetch all live content in parallel ────────────────────────────────────
 async function fetchLiveContent() {
-  const settingsKeys = ['hero', 'about', 'contact', 'transformations-meta', 'pricing'];
+  const settingsKeys = ['hero', 'about', 'contact', 'transformations-meta', 'pricing', 'testimonials'];
 
   const [
     settingsRes,
@@ -344,6 +378,7 @@ async function fetchLiveContent() {
     stepsRes,
     statsRes,
     transformationsRes,
+    testimonialsRes,
   ] = await Promise.all([
     supabase.from('site_settings').select('key,value').in('key', settingsKeys),
     supabase.from('services').select('*').order('sort_order'),
@@ -354,6 +389,12 @@ async function fetchLiveContent() {
       .from('transformations')
       .select('*')
       .order('sort_order', { ascending: true, nullsFirst: false }),
+    // Testimonials table may not exist in every deployment — swallow errors
+    supabase
+      .from('testimonials')
+      .select('*')
+      .order('sort_order', { ascending: true, nullsFirst: false })
+      .then((r) => r, () => ({ data: [] as any[] })),
   ]);
 
   const settingsMap = new Map<string, any>(
@@ -368,6 +409,17 @@ async function fetchLiveContent() {
   else if (Array.isArray(pricingSetting?.tiers)) pricing = pricingSetting.tiers;
   else if (Array.isArray(pricingSetting?.items)) pricing = pricingSetting.items;
 
+  // Testimonials may also live in site_settings under 'testimonials'
+  const testimonialsSetting = settingsMap.get('testimonials');
+  let testimonialsFromSettings: any[] = [];
+  if (Array.isArray(testimonialsSetting)) testimonialsFromSettings = testimonialsSetting;
+  else if (Array.isArray(testimonialsSetting?.items)) testimonialsFromSettings = testimonialsSetting.items;
+
+  const testimonials =
+    (testimonialsRes as any)?.data?.length
+      ? (testimonialsRes as any).data
+      : testimonialsFromSettings;
+
   return {
     hero: settingsMap.get('hero') ?? {},
     about: settingsMap.get('about') ?? {},
@@ -379,6 +431,7 @@ async function fetchLiveContent() {
     transformations: transformationsRes.data ?? [],
     transformationsMeta: settingsMap.get('transformations-meta') ?? {},
     pricing,
+    testimonials,
   };
 }
 
