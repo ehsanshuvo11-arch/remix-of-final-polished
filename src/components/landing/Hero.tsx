@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
+import SerumBottle3D from '@/components/landing/SerumBottle3D';
 import type { HeroContent } from '@/types/database';
 import logoSvg from '@/assets/logo.svg';
 
@@ -63,6 +64,15 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
       {/* Orbs with parallax */}
       <div ref={orb1Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ top: '-100px', right: '-100px', background: 'rgba(251,146,60,0.12)', filter: 'blur(80px)', animation: 'orbFloat 8s ease-in-out infinite' }} />
       <div ref={orb2Ref} className="absolute w-[400px] h-[400px] rounded-full pointer-events-none" style={{ bottom: '-50px', left: '-50px', background: 'rgba(99,102,241,0.08)', filter: 'blur(80px)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
+
+      {/* 3D serum bottle — desktop right rail; subtle, behind text on tablet */}
+      <SerumBottle3D
+        className="hidden lg:block absolute right-[4%] top-1/2 -translate-y-1/2 w-[420px] h-[560px] xl:w-[480px] xl:h-[620px] z-[5] opacity-90"
+      />
+      {/* Mobile: small floating accent above headline */}
+      <SerumBottle3D
+        className="lg:hidden absolute right-4 top-20 w-[160px] h-[200px] z-[5] opacity-80"
+      />
 
       <div className="max-w-[900px] text-center relative z-10">
         {/* Logo badge */}
