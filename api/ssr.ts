@@ -333,7 +333,13 @@ function renderSeoBlock(data: {
 
   ${
     pricingItems
-      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>POLISHED delivers bespoke, high-ROI engagements. The following tiers describe our publicly listed service offerings; exact pricing is scoped during a strategic consultation call.</p>${pricingItems}</section>`
+      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>The following tiers reflect POLISHED's currently published service offerings as listed in our live content database.</p>${pricingItems}</section>`
+      : ''
+  }
+
+  ${
+    testimonialsHtml
+      ? `<section id="testimonials-ssr"><h2>Client Testimonials</h2>${testimonialsHtml}</section>`
       : ''
   }
 
