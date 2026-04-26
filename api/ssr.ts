@@ -59,8 +59,11 @@ function renderSeoBlock(data: {
   projects: any[];
   steps: any[];
   stats: any[];
+  transformations: any[];
+  transformationsMeta: any;
+  pricing: any[];
 }): string {
-  const { hero, about, contact, services, projects, steps, stats } = data;
+  const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing } = data;
 
   const heroTitle =
     pickLocalized(hero || {}, 'title') ||
