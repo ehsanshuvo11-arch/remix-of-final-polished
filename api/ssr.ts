@@ -143,15 +143,19 @@ function renderSeoBlock(data: {
         .map((para) => `<p>${escapeHtml(para)}</p>`)
         .join('');
 
-      // Collect every visual asset for this project
+      // Collect every visual asset for this project, normalized to absolute URLs
       const imageUrls: string[] = [];
-      if (p.image_url) imageUrls.push(p.image_url);
-      if (p.mockup_url) imageUrls.push(p.mockup_url);
-      if (Array.isArray(p.mockup_urls)) {
-        for (const u of p.mockup_urls) {
-          if (typeof u === 'string' && u.trim()) imageUrls.push(u.trim());
-        }
-      }
+      const pushImg = (raw: unknown) => {
+        const abs = toAbsoluteUrl(raw);
+        if (abs) imageUrls.push(abs);
+      };
+      pushImg(p.image_url);
+      pushImg(p.mockup_url);
+      pushImg(p.cover_image_url);
+      pushImg(p.thumbnail_url);
+      if (Array.isArray(p.mockup_urls)) p.mockup_urls.forEach(pushImg);
+      if (Array.isArray(p.images)) p.images.forEach(pushImg);
+      if (Array.isArray(p.gallery)) p.gallery.forEach(pushImg);
       // Deduplicate while preserving order
       const seen = new Set<string>();
       const uniqueImages = imageUrls.filter((u) => {
