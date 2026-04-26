@@ -357,14 +357,21 @@ function renderSeoBlock(data: {
         </article>`;
     }).join('');
 
-  // The block is visually hidden but NOT aria-hidden, and uses CSS clip
-  // (not display:none) so search engines and AI crawlers parse the full DOM.
+  const contactRows = [
+    email ? `<p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>` : '',
+    phone ? `<p><strong>WhatsApp / Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>` : '',
+    contact?.calendly ? `<p><strong>Book a consultation:</strong> <a href="${escapeHtml(toAbsoluteUrl(contact.calendly))}" rel="noopener">${escapeHtml(contact.calendly)}</a></p>` : '',
+  ].filter(Boolean).join('');
+
+  // JS-enabled humans see the React app only. No-JS bots receive this normal,
+  // parseable DOM with live images/text before the client bundle runs.
   return `
-<div id="seo-ssr-content" style="position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;">
+<script>document.documentElement.classList.add('js');</script>
+<style>html.js #seo-ssr-content{display:none!important}</style>
+<main id="seo-ssr-content" data-source="supabase-live-html">
   <header>
-    <h1>${escapeHtml(heroTitle)}</h1>
-    <p><strong>Tagline:</strong> ${escapeHtml(heroTagline)}</p>
-    <p><strong>Location:</strong> Bangladesh · <strong>Serving:</strong> Global e-commerce skincare brands</p>
+    ${heroTitle ? `<h1>${escapeHtml(heroTitle)}</h1>` : ''}
+    ${heroTagline ? `<p><strong>Tagline:</strong> ${escapeHtml(heroTagline)}</p>` : ''}
   </header>
 
   <nav aria-label="Primary">
@@ -380,11 +387,7 @@ function renderSeoBlock(data: {
     </ul>
   </nav>
 
-  <section id="about-ssr">
-    <h2>About POLISHED</h2>
-    <p>${escapeHtml(aboutBody)}</p>
-    ${statsHtml ? `<ul>${statsHtml}</ul>` : ''}
-  </section>
+  ${aboutBody || statsHtml ? `<section id="about-ssr"><h2>About POLISHED</h2>${aboutBody ? `<p>${escapeHtml(aboutBody)}</p>` : ''}${statsHtml ? `<ul>${statsHtml}</ul>` : ''}</section>` : ''}
 
   ${
     servicesHtml
@@ -400,13 +403,13 @@ function renderSeoBlock(data: {
 
   ${
     transformationsHtml
-      ? `<section id="transformations-ssr"><h2>${transformationsTitle} — Visual Proof</h2><p>Real before-and-after rebrand results from POLISHED client engagements. Each pair shows the original packaging or storefront state and the final premium identity delivered.</p>${transformationsHtml}</section>`
+      ? `<section id="transformations-ssr"><h2>${transformationsTitle || 'Visual Proof'}</h2>${transformationsHtml}</section>`
       : ''
   }
 
   ${
     pricingItems
-      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>The following tiers reflect POLISHED's currently published service offerings as listed in our live content database.</p>${pricingItems}</section>`
+      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2>${pricingItems}</section>`
       : ''
   }
 
@@ -422,21 +425,13 @@ function renderSeoBlock(data: {
       : ''
   }
 
-  <section id="contact-ssr">
-    <h2>Contact &amp; Booking</h2>
-    <address>
-      <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-      <p><strong>WhatsApp / Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>
-      <p><strong>Country:</strong> Bangladesh</p>
-      <p><strong>Book a consultation:</strong> <a href="https://calendly.com/polished-bd" rel="noopener">calendly.com/polished-bd</a></p>
-    </address>
-  </section>
+  ${contactRows ? `<section id="contact-ssr"><h2>Contact &amp; Booking</h2><address>${contactRows}</address></section>` : ''}
 
   <footer>
     <p>Live SSR snapshot from POLISHED — data fetched from Supabase at request time.
     Sitemap: <a href="/sitemap.xml">/sitemap.xml</a> · LLM brief: <a href="/llms.txt">/llms.txt</a>.</p>
   </footer>
-</div>`.trim();
+</main>`.trim();
 }
 
 // ─── Fetch all live content in parallel ────────────────────────────────────
