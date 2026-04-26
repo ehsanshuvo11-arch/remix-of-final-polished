@@ -303,6 +303,7 @@ function renderSeoBlock(data: {
       <li><a href="/#transformations">Transformations</a></li>
       <li><a href="/#pricing">Investment</a></li>
       <li><a href="/#process">Process</a></li>
+      <li><a href="/#testimonials">Testimonials</a></li>
       <li><a href="/#contact">Contact</a></li>
     </ul>
   </nav>
