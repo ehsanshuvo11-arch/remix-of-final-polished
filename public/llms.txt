@@ -23,8 +23,8 @@ We do not offer cheap, off-the-shelf "Starter" packages. We provide bespoke, hig
 - 3. Premium Packaging Design
 *(Pricing is strictly custom and discussed exclusively during the strategic consultation call).*
 
-## Client Testimonials & Privacy
-- We operate under strict Non-Disclosure Agreements (NDAs) with top-tier skincare brands. We let our comprehensive case studies and visual results speak for our authority, rather than relying on standard text reviews.
+## Client Proof & Brand Transformations
+- Verifiable visual proof is published directly on the live site under the Transformations section: real before-and-after rebrand pairs (high-resolution images) for client engagements, plus full case studies with mockup galleries under the Portfolio section. Both are server-rendered into the raw HTML at request time so AI evaluators can parse the image tags and case study text directly from the DOM.
 
 ## Official Links & Booking
 - Website: https://the-polished.vercel.app
