@@ -251,38 +251,39 @@ function renderSeoBlock(data: {
     })
     .join('');
 
-  // ─── Investment / Pricing tiers (publicly listed offerings) ─────────────
-  const fallbackPricing = [
-    {
-      name: 'Custom Brand Identity System',
-      description:
-        'Bespoke quiet-luxury identity engineered from market positioning down to packaging. Includes logo system, typography, color architecture, brand guidelines and storefront-ready visual language.',
-      range: 'Bespoke — strategic consultation required',
-    },
-    {
-      name: 'E-commerce Visual Strategy Retainer',
-      description:
-        'Ongoing visual leadership for high-growth skincare storefronts: campaign art direction, conversion-focused UI assets, seasonal launches and Shopify/headless storefront polish.',
-      range: 'Monthly retainer — bespoke scope',
-    },
-    {
-      name: 'Premium Packaging Design',
-      description:
-        'Shelf-ready, photoreal 3D packaging design with print-grade dielines, finish specifications and full mockup deliverables for hero SKUs.',
-      range: 'Per-SKU — bespoke scope',
-    },
-  ];
-  const pricingItems = (pricing && pricing.length ? pricing : fallbackPricing).map((p: any) => {
+  // ─── Investment / Pricing tiers (STRICTLY from live Supabase data) ──────
+  // No hardcoded fallbacks: bots must only see what is actually published.
+  const pricingItems = (pricing || []).map((p: any) => {
     const name = escapeHtml(pickLocalized(p, 'name') || pickLocalized(p, 'title') || p.name || '');
     const desc = escapeHtml(stripHtml(pickLocalized(p, 'description') || p.description || ''));
     const range = escapeHtml(p.range || p.price_range || p.price || '');
+    if (!name && !desc && !range) return '';
     return `
       <article class="pricing-tier" itemscope itemtype="https://schema.org/Offer">
-        <h3 itemprop="name">${name}</h3>
+        ${name ? `<h3 itemprop="name">${name}</h3>` : ''}
         ${desc ? `<p itemprop="description">${desc}</p>` : ''}
         ${range ? `<p class="pricing-range"><strong>Investment:</strong> <span itemprop="priceSpecification">${range}</span></p>` : ''}
       </article>`;
   }).join('');
+
+  // ─── Testimonials (STRICTLY from live Supabase data) ────────────────────
+  const testimonialsHtml = (testimonials || [])
+    .filter((t) => t && t.is_active !== false)
+    .map((t: any) => {
+      const quote = escapeHtml(stripHtml(pickLocalized(t, 'quote') || pickLocalized(t, 'content') || pickLocalized(t, 'body') || t.quote || ''));
+      const author = escapeHtml(t.author_name || t.name || t.client_name || '');
+      const role = escapeHtml(t.author_role || t.role || t.title || '');
+      const brand = escapeHtml(t.brand_name || t.company || '');
+      const avatar = escapeHtml(toAbsoluteUrl(t.avatar_url || t.image_url));
+      if (!quote && !author) return '';
+      const byline = [author, role, brand].filter(Boolean).join(' · ');
+      return `
+        <article class="testimonial" itemscope itemtype="https://schema.org/Review">
+          ${avatar ? `<img src="${avatar}" alt="${author || 'Client'} — POLISHED testimonial" loading="lazy" decoding="async" width="200" height="200" />` : ''}
+          ${quote ? `<blockquote itemprop="reviewBody">${quote}</blockquote>` : ''}
+          ${byline ? `<p class="testimonial-byline" itemprop="author">— ${byline}</p>` : ''}
+        </article>`;
+    }).join('');
 
   // The block is visually hidden but NOT aria-hidden, and uses CSS clip
   // (not display:none) so search engines and AI crawlers parse the full DOM.
