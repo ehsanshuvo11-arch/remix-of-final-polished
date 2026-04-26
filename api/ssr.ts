@@ -295,24 +295,24 @@ function renderSeoBlock(data: {
     })
     .join('');
 
-  // ─── Transformations (real visual before/after proof) ───────────────────
+  // ─── Transformations (real visual proof) ────────────────────────────────
   const transformationsTitle = escapeHtml(
-    transformationsMeta?.titleLine1En || transformationsMeta?.titleLine1Bn || 'Brand Transformations'
+    transformationsMeta?.titleLine1En || transformationsMeta?.titleLine1Bn || ''
   );
-  const beforeLabel = escapeHtml(transformationsMeta?.beforeLabelEn || 'Before');
-  const afterLabel = escapeHtml(transformationsMeta?.afterLabelEn || 'After');
+  const beforeLabel = escapeHtml(transformationsMeta?.beforeLabelEn || 'Original visual');
+  const afterLabel = escapeHtml(transformationsMeta?.afterLabelEn || 'Final visual');
 
   const transformationsHtml = (transformations || [])
     .filter((t) => t && t.is_active !== false && (t.before_image_url || t.after_image_url))
     .map((t) => {
-      const name = escapeHtml(t.project_name || 'Brand Transformation');
-      const beforeUrl = escapeHtml(toAbsoluteUrl(t.before_image_url));
-      const afterUrl = escapeHtml(toAbsoluteUrl(t.after_image_url));
+      const name = escapeHtml(t.project_name || '');
+      const beforeUrl = escapeHtml(toAbsoluteHttpsUrl(t.before_image_url));
+      const afterUrl = escapeHtml(toAbsoluteHttpsUrl(t.after_image_url));
       const beforeImg = beforeUrl
-        ? `<figure><img src="${beforeUrl}" alt="${beforeLabel} — ${name} packaging visual identity (POLISHED case study)" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel} — ${name}</figcaption></figure>`
+        ? `<figure><img src="${beforeUrl}" alt="${beforeLabel}${name ? ` for ${name}` : ''}" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel}${name ? ` — ${name}` : ''}</figcaption></figure>`
         : '';
       const afterImg = afterUrl
-        ? `<figure><img src="${afterUrl}" alt="${afterLabel} — ${name} premium rebrand by POLISHED" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${afterLabel} — ${name}</figcaption></figure>`
+        ? `<figure><img src="${afterUrl}" alt="${afterLabel}${name ? ` for ${name}` : ''}" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${afterLabel}${name ? ` — ${name}` : ''}</figcaption></figure>`
         : '';
       return `
         <article class="transformation" itemscope itemtype="https://schema.org/ImageObject">
