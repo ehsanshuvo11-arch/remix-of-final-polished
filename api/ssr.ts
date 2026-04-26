@@ -88,16 +88,92 @@ function renderSeoBlock(data: {
 
   const projectsHtml = projects
     .map((p) => {
-      const title = escapeHtml(pickLocalized(p, 'title'));
+      const title =
+        pickLocalized(p, 'title') || p.title || 'Untitled Project';
+      const titleSafe = escapeHtml(title);
+      const category = escapeHtml(
+        pickLocalized(p, 'category') || p.category || ''
+      );
       const client = escapeHtml(pickLocalized(p, 'client') || p.client || '');
-      const category = escapeHtml(pickLocalized(p, 'category') || p.category || '');
-      const desc = escapeHtml(stripHtml(pickLocalized(p, 'description')));
       const meta = [client, category].filter(Boolean).join(' · ');
+
+      // Hook / teaser
+      const hook = stripHtml(pickLocalized(p, 'hook'));
+      const hookHtml = hook ? `<p class="project-hook"><strong>${escapeHtml(hook)}</strong></p>` : '';
+
+      // Full case study (preserve paragraph breaks, strip tags safely)
+      const caseStudyRaw =
+        pickLocalized(p, 'case_study') ||
+        pickLocalized(p, 'description') ||
+        '';
+      const caseStudyParagraphs = String(caseStudyRaw)
+        // turn </p> and <br> into newlines before stripping tags
+        .replace(/<\/p>/gi, '\n\n')
+        .replace(/<br\s*\/?>(?!\n)/gi, '\n')
+        .replace(/<[^>]*>/g, '')
+        .split(/\n\s*\n/)
+        .map((s) => s.replace(/\s+/g, ' ').trim())
+        .filter(Boolean);
+      const caseStudyHtml = caseStudyParagraphs
+        .map((para) => `<p>${escapeHtml(para)}</p>`)
+        .join('');
+
+      // Collect every visual asset for this project
+      const imageUrls: string[] = [];
+      if (p.image_url) imageUrls.push(p.image_url);
+      if (p.mockup_url) imageUrls.push(p.mockup_url);
+      if (Array.isArray(p.mockup_urls)) {
+        for (const u of p.mockup_urls) {
+          if (typeof u === 'string' && u.trim()) imageUrls.push(u.trim());
+        }
+      }
+      // Deduplicate while preserving order
+      const seen = new Set<string>();
+      const uniqueImages = imageUrls.filter((u) => {
+        if (seen.has(u)) return false;
+        seen.add(u);
+        return true;
+      });
+
+      const figuresHtml = uniqueImages
+        .map((url, idx) => {
+          const isCover = idx === 0;
+          const altText = isCover
+            ? `Premium brand identity cover visual for ${title} — ${category || 'skincare e-commerce case study'}`
+            : `Premium 3D packaging mockup ${idx} for ${title} — POLISHED case study`;
+          const captionText = isCover
+            ? `${title} — cover visual`
+            : `${title} — mockup ${idx}`;
+          return `
+        <figure>
+          <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" width="1200" height="900" />
+          <figcaption>${escapeHtml(captionText)}</figcaption>
+        </figure>`;
+        })
+        .join('');
+
+      // PDF case study links if present
+      const pdfLinks: string[] = [];
+      if (p.pdf_url_en)
+        pdfLinks.push(
+          `<a href="${escapeHtml(p.pdf_url_en)}" rel="noopener">Download full case study (EN, PDF)</a>`
+        );
+      if (p.pdf_url_bn)
+        pdfLinks.push(
+          `<a href="${escapeHtml(p.pdf_url_bn)}" rel="noopener">Download full case study (BN, PDF)</a>`
+        );
+      const pdfHtml = pdfLinks.length
+        ? `<p class="case-study-downloads">${pdfLinks.join(' · ')}</p>`
+        : '';
+
       return `
-        <article>
-          <h3>${title}</h3>
-          ${meta ? `<p><em>${meta}</em></p>` : ''}
-          ${desc ? `<p>${desc}</p>` : ''}
+        <article class="portfolio-project" itemscope itemtype="https://schema.org/CreativeWork">
+          <h3 itemprop="name">${titleSafe}</h3>
+          ${meta ? `<p class="project-meta"><em>${meta}</em></p>` : ''}
+          ${hookHtml}
+          ${figuresHtml}
+          ${caseStudyHtml ? `<div class="case-study" itemprop="description">${caseStudyHtml}</div>` : ''}
+          ${pdfHtml}
         </article>`;
     })
     .join('');
