@@ -234,8 +234,8 @@ function renderSeoBlock(data: {
     .filter((t) => t && t.is_active !== false && (t.before_image_url || t.after_image_url))
     .map((t) => {
       const name = escapeHtml(t.project_name || 'Brand Transformation');
-      const beforeUrl = t.before_image_url ? escapeHtml(t.before_image_url) : '';
-      const afterUrl = t.after_image_url ? escapeHtml(t.after_image_url) : '';
+      const beforeUrl = escapeHtml(toAbsoluteUrl(t.before_image_url));
+      const afterUrl = escapeHtml(toAbsoluteUrl(t.after_image_url));
       const beforeImg = beforeUrl
         ? `<figure><img src="${beforeUrl}" alt="${beforeLabel} — ${name} packaging visual identity (POLISHED case study)" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel} — ${name}</figcaption></figure>`
         : '';
