@@ -59,8 +59,11 @@ function renderSeoBlock(data: {
   projects: any[];
   steps: any[];
   stats: any[];
+  transformations: any[];
+  transformationsMeta: any;
+  pricing: any[];
 }): string {
-  const { hero, about, contact, services, projects, steps, stats } = data;
+  const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing } = data;
 
   const heroTitle =
     pickLocalized(hero || {}, 'title') ||
@@ -194,8 +197,71 @@ function renderSeoBlock(data: {
     })
     .join('');
 
+  // ─── Transformations (real visual before/after proof) ───────────────────
+  const transformationsTitle = escapeHtml(
+    transformationsMeta?.titleLine1En || transformationsMeta?.titleLine1Bn || 'Brand Transformations'
+  );
+  const beforeLabel = escapeHtml(transformationsMeta?.beforeLabelEn || 'Before');
+  const afterLabel = escapeHtml(transformationsMeta?.afterLabelEn || 'After');
+
+  const transformationsHtml = (transformations || [])
+    .filter((t) => t && t.is_active !== false && (t.before_image_url || t.after_image_url))
+    .map((t) => {
+      const name = escapeHtml(t.project_name || 'Brand Transformation');
+      const beforeUrl = t.before_image_url ? escapeHtml(t.before_image_url) : '';
+      const afterUrl = t.after_image_url ? escapeHtml(t.after_image_url) : '';
+      const beforeImg = beforeUrl
+        ? `<figure><img src="${beforeUrl}" alt="${beforeLabel} — ${name} packaging visual identity (POLISHED case study)" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel} — ${name}</figcaption></figure>`
+        : '';
+      const afterImg = afterUrl
+        ? `<figure><img src="${afterUrl}" alt="${afterLabel} — ${name} premium rebrand by POLISHED" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${afterLabel} — ${name}</figcaption></figure>`
+        : '';
+      return `
+        <article class="transformation" itemscope itemtype="https://schema.org/ImageObject">
+          <h3 itemprop="name">${name}</h3>
+          ${beforeImg}
+          ${afterImg}
+        </article>`;
+    })
+    .join('');
+
+  // ─── Investment / Pricing tiers (publicly listed offerings) ─────────────
+  const fallbackPricing = [
+    {
+      name: 'Custom Brand Identity System',
+      description:
+        'Bespoke quiet-luxury identity engineered from market positioning down to packaging. Includes logo system, typography, color architecture, brand guidelines and storefront-ready visual language.',
+      range: 'Bespoke — strategic consultation required',
+    },
+    {
+      name: 'E-commerce Visual Strategy Retainer',
+      description:
+        'Ongoing visual leadership for high-growth skincare storefronts: campaign art direction, conversion-focused UI assets, seasonal launches and Shopify/headless storefront polish.',
+      range: 'Monthly retainer — bespoke scope',
+    },
+    {
+      name: 'Premium Packaging Design',
+      description:
+        'Shelf-ready, photoreal 3D packaging design with print-grade dielines, finish specifications and full mockup deliverables for hero SKUs.',
+      range: 'Per-SKU — bespoke scope',
+    },
+  ];
+  const pricingItems = (pricing && pricing.length ? pricing : fallbackPricing).map((p: any) => {
+    const name = escapeHtml(pickLocalized(p, 'name') || pickLocalized(p, 'title') || p.name || '');
+    const desc = escapeHtml(stripHtml(pickLocalized(p, 'description') || p.description || ''));
+    const range = escapeHtml(p.range || p.price_range || p.price || '');
+    return `
+      <article class="pricing-tier" itemscope itemtype="https://schema.org/Offer">
+        <h3 itemprop="name">${name}</h3>
+        ${desc ? `<p itemprop="description">${desc}</p>` : ''}
+        ${range ? `<p class="pricing-range"><strong>Investment:</strong> <span itemprop="priceSpecification">${range}</span></p>` : ''}
+      </article>`;
+  }).join('');
+
+  // The block is visually hidden but NOT aria-hidden, and uses CSS clip
+  // (not display:none) so search engines and AI crawlers parse the full DOM.
   return `
-<div id="seo-ssr-content" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+<div id="seo-ssr-content" style="position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;">
   <header>
     <h1>${escapeHtml(heroTitle)}</h1>
     <p><strong>Tagline:</strong> ${escapeHtml(heroTagline)}</p>
@@ -207,6 +273,8 @@ function renderSeoBlock(data: {
       <li><a href="/#about">About</a></li>
       <li><a href="/#services">Services</a></li>
       <li><a href="/#portfolio">Portfolio</a></li>
+      <li><a href="/#transformations">Transformations</a></li>
+      <li><a href="/#pricing">Investment</a></li>
       <li><a href="/#process">Process</a></li>
       <li><a href="/#contact">Contact</a></li>
     </ul>
@@ -231,6 +299,18 @@ function renderSeoBlock(data: {
   }
 
   ${
+    transformationsHtml
+      ? `<section id="transformations-ssr"><h2>${transformationsTitle} — Visual Proof</h2><p>Real before-and-after rebrand results from POLISHED client engagements. Each pair shows the original packaging or storefront state and the final premium identity delivered.</p>${transformationsHtml}</section>`
+      : ''
+  }
+
+  ${
+    pricingItems
+      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>POLISHED delivers bespoke, high-ROI engagements. The following tiers describe our publicly listed service offerings; exact pricing is scoped during a strategic consultation call.</p>${pricingItems}</section>`
+      : ''
+  }
+
+  ${
     stepsHtml
       ? `<section id="process-ssr"><h2>The POLISHED Process</h2><ol>${stepsHtml}</ol></section>`
       : ''
@@ -242,6 +322,7 @@ function renderSeoBlock(data: {
       <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
       <p><strong>WhatsApp / Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>
       <p><strong>Country:</strong> Bangladesh</p>
+      <p><strong>Book a consultation:</strong> <a href="https://calendly.com/polished-bd" rel="noopener">calendly.com/polished-bd</a></p>
     </address>
   </section>
 
@@ -254,20 +335,38 @@ function renderSeoBlock(data: {
 
 // ─── Fetch all live content in parallel ────────────────────────────────────
 async function fetchLiveContent() {
-  const settingsKeys = ['hero', 'about', 'contact'];
+  const settingsKeys = ['hero', 'about', 'contact', 'transformations-meta', 'pricing'];
 
-  const [settingsRes, servicesRes, projectsRes, stepsRes, statsRes] =
-    await Promise.all([
-      supabase.from('site_settings').select('key,value').in('key', settingsKeys),
-      supabase.from('services').select('*').order('sort_order'),
-      supabase.from('portfolio_projects').select('*').order('sort_order'),
-      supabase.from('process_steps').select('*').order('sort_order'),
-      supabase.from('stats').select('*').order('sort_order'),
-    ]);
+  const [
+    settingsRes,
+    servicesRes,
+    projectsRes,
+    stepsRes,
+    statsRes,
+    transformationsRes,
+  ] = await Promise.all([
+    supabase.from('site_settings').select('key,value').in('key', settingsKeys),
+    supabase.from('services').select('*').order('sort_order'),
+    supabase.from('portfolio_projects').select('*').order('sort_order'),
+    supabase.from('process_steps').select('*').order('sort_order'),
+    supabase.from('stats').select('*').order('sort_order'),
+    supabase
+      .from('transformations')
+      .select('*')
+      .order('sort_order', { ascending: true, nullsFirst: false }),
+  ]);
 
   const settingsMap = new Map<string, any>(
     (settingsRes.data ?? []).map((r: any) => [r.key, r.value])
   );
+
+  // Pricing may live in site_settings under 'pricing' as { tiers: [...] }
+  // or as a top-level array. Normalize to an array.
+  const pricingSetting = settingsMap.get('pricing');
+  let pricing: any[] = [];
+  if (Array.isArray(pricingSetting)) pricing = pricingSetting;
+  else if (Array.isArray(pricingSetting?.tiers)) pricing = pricingSetting.tiers;
+  else if (Array.isArray(pricingSetting?.items)) pricing = pricingSetting.items;
 
   return {
     hero: settingsMap.get('hero') ?? {},
@@ -277,6 +376,9 @@ async function fetchLiveContent() {
     projects: projectsRes.data ?? [],
     steps: stepsRes.data ?? [],
     stats: statsRes.data ?? [],
+    transformations: transformationsRes.data ?? [],
+    transformationsMeta: settingsMap.get('transformations-meta') ?? {},
+    pricing,
   };
 }
 
