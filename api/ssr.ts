@@ -41,6 +41,27 @@ const stripHtml = (input: unknown): string => {
   return String(input).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 };
 
+// Ensure every image URL is an ABSOLUTE https:// URL so AI scrapers can
+// resolve and verify them without a base context. Supabase storage URLs
+// are already absolute; relative/protocol-relative URLs are normalized
+// against the Supabase project origin.
+const SUPABASE_ORIGIN = (() => {
+  try { return new URL(SUPABASE_URL).origin; } catch { return ''; }
+})();
+const toAbsoluteUrl = (raw: unknown): string => {
+  if (raw === null || raw === undefined) return '';
+  let url = String(raw).trim();
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  if (url.startsWith('/')) return `${SUPABASE_ORIGIN}${url}`;
+  // Bare path like "polished-assets/foo.jpg" → assume Supabase public storage
+  if (!/^[a-z]+:/i.test(url)) {
+    return `${SUPABASE_ORIGIN}/storage/v1/object/public/${url.replace(/^\/+/, '')}`;
+  }
+  return url;
+};
+
 const pickLocalized = (row: Record<string, any>, base: string): string => {
   return (
     row?.[`${base}_en`] ??
