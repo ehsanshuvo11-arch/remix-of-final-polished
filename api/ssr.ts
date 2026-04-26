@@ -335,20 +335,38 @@ function renderSeoBlock(data: {
 
 // ─── Fetch all live content in parallel ────────────────────────────────────
 async function fetchLiveContent() {
-  const settingsKeys = ['hero', 'about', 'contact'];
+  const settingsKeys = ['hero', 'about', 'contact', 'transformations-meta', 'pricing'];
 
-  const [settingsRes, servicesRes, projectsRes, stepsRes, statsRes] =
-    await Promise.all([
-      supabase.from('site_settings').select('key,value').in('key', settingsKeys),
-      supabase.from('services').select('*').order('sort_order'),
-      supabase.from('portfolio_projects').select('*').order('sort_order'),
-      supabase.from('process_steps').select('*').order('sort_order'),
-      supabase.from('stats').select('*').order('sort_order'),
-    ]);
+  const [
+    settingsRes,
+    servicesRes,
+    projectsRes,
+    stepsRes,
+    statsRes,
+    transformationsRes,
+  ] = await Promise.all([
+    supabase.from('site_settings').select('key,value').in('key', settingsKeys),
+    supabase.from('services').select('*').order('sort_order'),
+    supabase.from('portfolio_projects').select('*').order('sort_order'),
+    supabase.from('process_steps').select('*').order('sort_order'),
+    supabase.from('stats').select('*').order('sort_order'),
+    supabase
+      .from('transformations')
+      .select('*')
+      .order('sort_order', { ascending: true, nullsFirst: false }),
+  ]);
 
   const settingsMap = new Map<string, any>(
     (settingsRes.data ?? []).map((r: any) => [r.key, r.value])
   );
+
+  // Pricing may live in site_settings under 'pricing' as { tiers: [...] }
+  // or as a top-level array. Normalize to an array.
+  const pricingSetting = settingsMap.get('pricing');
+  let pricing: any[] = [];
+  if (Array.isArray(pricingSetting)) pricing = pricingSetting;
+  else if (Array.isArray(pricingSetting?.tiers)) pricing = pricingSetting.tiers;
+  else if (Array.isArray(pricingSetting?.items)) pricing = pricingSetting.items;
 
   return {
     hero: settingsMap.get('hero') ?? {},
@@ -358,6 +376,9 @@ async function fetchLiveContent() {
     projects: projectsRes.data ?? [],
     steps: stepsRes.data ?? [],
     stats: statsRes.data ?? [],
+    transformations: transformationsRes.data ?? [],
+    transformationsMeta: settingsMap.get('transformations-meta') ?? {},
+    pricing,
   };
 }
 
