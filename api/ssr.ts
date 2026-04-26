@@ -56,9 +56,11 @@ const toAbsoluteUrl = (raw: unknown): string => {
   if (/^http:\/\//i.test(url)) return url.replace(/^http:\/\//i, 'https://');
   if (url.startsWith('//')) return `https:${url}`;
   if (url.startsWith('/')) return `${SUPABASE_ORIGIN}${url}`;
-  // Bare path like "polished-assets/foo.jpg" → assume Supabase public storage
+  // Bare path like "gallery/foo.jpg" → assume the public polished-assets bucket
   if (!/^[a-z]+:/i.test(url)) {
-    return `${SUPABASE_ORIGIN}/storage/v1/object/public/${url.replace(/^\/+/, '')}`;
+    const path = url.replace(/^\/+/, '');
+    const storagePath = path.startsWith('polished-assets/') ? path : `polished-assets/${path}`;
+    return `${SUPABASE_ORIGIN}/storage/v1/object/public/${storagePath}`;
   }
   return url;
 };
@@ -87,11 +89,37 @@ const parseJsonLike = (value: string): unknown => {
   }
 };
 
+const extractRichObjectText = (input: unknown): string[] => {
+  const chunks: string[] = [];
+  const visit = (node: unknown) => {
+    if (!node) return;
+    if (typeof node === 'string') {
+      const text = stripHtml(node);
+      if (text) chunks.push(text);
+      return;
+    }
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+      return;
+    }
+    if (typeof node === 'object') {
+      const record = node as Record<string, unknown>;
+      if (typeof record.text === 'string') chunks.push(record.text);
+      if (record.content) visit(record.content);
+    }
+  };
+  visit(input);
+  return chunks.map((s) => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+};
+
 const richTextToParagraphs = (input: unknown): string[] => {
   if (input === null || input === undefined) return [];
+  if (typeof input === 'string') {
+    const parsed = parseJsonLike(input);
+    if (parsed !== input) return richTextToParagraphs(parsed);
+  }
   if (typeof input === 'object') {
-    const maybeJsonText = JSON.stringify(input);
-    return maybeJsonText ? [stripHtml(maybeJsonText)].filter(Boolean) : [];
+    return extractRichObjectText(input);
   }
 
   return String(input)
