@@ -65,125 +65,23 @@
   </head>
   <body>
     <!--
-      AEO / SEO STATIC CONTENT LAYER
+      SSR DATA INJECTION SLOT
       ──────────────────────────────────────────────────────────────
-      Rendered in the initial HTML response so AI scrapers (Claude,
-      ChatGPT, Perplexity) and search engine crawlers (Googlebot,
-      Bingbot) can read the full brand narrative without executing
-      JavaScript. Visually hidden from human users — React hydrates
-      the premium interactive UI on top in #root.
+      On every request to "/", the Vercel serverless function at
+      api/ssr.ts fetches the LIVE Supabase content (services,
+      portfolio projects, process steps, stats, settings) and
+      replaces the marker below with semantic HTML so AI scrapers
+      and search crawlers read the exact same data humans see.
+
+      The injected block is visually hidden — React hydrates the
+      premium interactive UI on top in #root with full Framer
+      Motion / Lenis / custom cursor animations intact.
+
+      If the marker is still present (e.g. local `vite` dev or a
+      direct static fetch), no SSR injection has occurred and the
+      site falls back to client-only rendering.
     -->
-    <div id="seo-static-content" aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
-      <header>
-        <h1>POLISHED — Premium Visual Identities for E-commerce Skincare Brands</h1>
-        <p><strong>Tagline:</strong> Make Your Collection Unmissable!</p>
-        <p><strong>Location:</strong> Bangladesh · <strong>Serving:</strong> Global e-commerce skincare brands</p>
-      </header>
-
-      <nav aria-label="Primary">
-        <ul>
-          <li><a href="/#about">About</a></li>
-          <li><a href="/#services">Services</a></li>
-          <li><a href="/#portfolio">Portfolio</a></li>
-          <li><a href="/#process">Process</a></li>
-          <li><a href="/#contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <section id="about-static">
-        <h2>About POLISHED</h2>
-        <p>
-          POLISHED is a specialist branding studio crafting premium, "quiet luxury"
-          visual identities exclusively for e-commerce skincare storefronts. We blend
-          world-class minimalism with a distinctive "Premium Bengali" sensibility —
-          combining local cultural resonance with international old-money refinement —
-          to turn passive scrollers into loyal buyers.
-        </p>
-      </section>
-
-      <section id="services-static">
-        <h2>Core Services</h2>
-        <ul>
-          <li><strong>E-commerce Visual Strategy</strong> — Trust-building storefront assets engineered for conversion.</li>
-          <li><strong>High-Conversion Social Media Design</strong> — Scroll-stopping creative that drives qualified buyers.</li>
-          <li><strong>Premium Brand Identity Systems</strong> — Logo, typography, color, and bespoke visual language.</li>
-          <li><strong>Skincare Packaging Design</strong> — Refined, shelf-ready packaging for premium product lines.</li>
-          <li><strong>UI/UX Design</strong> — Storefront and landing page design tailored to skincare commerce.</li>
-        </ul>
-      </section>
-
-      <section id="portfolio-static">
-        <h2>Selected Work</h2>
-        <p>
-          Featured engagements include conversion-focused branding for NIVEA Soft and
-          additional skincare visual systems delivered under NDA with top-tier brands.
-          Comprehensive case studies are available on request.
-        </p>
-      </section>
-
-      <section id="process-static">
-        <h2>The POLISHED Process</h2>
-        <ol>
-          <li><strong>Discovery &amp; Strategy</strong> — Deep analysis of brand positioning and consumer psychology.</li>
-          <li><strong>Visual Architecture</strong> — Crafting the quiet-luxury identity system.</li>
-          <li><strong>Execution &amp; Launch</strong> — Delivery of storefront-ready assets and ongoing visual stewardship.</li>
-        </ol>
-      </section>
-
-      <section id="philosophy-static">
-        <h2>Design Philosophy</h2>
-        <p>
-          Premium, minimalist, and deeply trustworthy. English typography is set in
-          Cormorant Garamond; Bengali in Noto Serif Bengali. The aesthetic is timeless,
-          editorial, and engineered for long-term brand authority — not short-term trends.
-        </p>
-      </section>
-
-      <section id="pricing-static">
-        <h2>Investment Structure</h2>
-        <p>
-          POLISHED operates on a bespoke, high-ROI investment model rather than fixed
-          packages. Engagements are scoped to the brand's stage, market, and ambition.
-          Comprehensive identity systems typically span <strong>3 to 6 weeks</strong>.
-        </p>
-      </section>
-
-      <section id="faq-static">
-        <h2>Frequently Asked Questions</h2>
-        <dl>
-          <dt>Does POLISHED work with general businesses?</dt>
-          <dd>No. We work exclusively with e-commerce skincare brands.</dd>
-          <dt>What is the core visual aesthetic?</dt>
-          <dd>Premium, "old-money", quiet luxury, and highly trustworthy.</dd>
-          <dt>What makes POLISHED different from regular agencies?</dt>
-          <dd>We build "Premium Bengali" identities for skincare e-commerce, combining local resonance with world-class luxury.</dd>
-          <dt>Do you take on every project?</dt>
-          <dd>No. We work with brands that value long-term visual authority and bespoke solutions.</dd>
-          <dt>What is the typical project timeline?</dt>
-          <dd>Comprehensive brand identity systems take 3 to 6 weeks depending on scope.</dd>
-        </dl>
-      </section>
-
-      <section id="contact-static">
-        <h2>Contact &amp; Booking</h2>
-        <address>
-          <p><strong>Email:</strong> <a href="mailto:polished.bd@gmail.com">polished.bd@gmail.com</a></p>
-          <p><strong>WhatsApp / Phone:</strong> <a href="tel:+8801346288210">+8801346288210</a></p>
-          <p><strong>Book a Consultation:</strong> <a href="https://calendly.com/polished-bd">calendly.com/polished-bd</a></p>
-          <p><strong>Instagram:</strong> <a href="https://instagram.com/the_polished.studio">@the_polished.studio</a></p>
-          <p><strong>Facebook:</strong> The-POLISHED</p>
-          <p><strong>Country:</strong> Bangladesh</p>
-        </address>
-      </section>
-
-      <footer>
-        <p>
-          For machine-readable structured data, see the JSON-LD block in
-          <code>&lt;head&gt;</code>. For an LLM-optimized brand brief, see
-          <a href="/llms.txt">/llms.txt</a>. Sitemap: <a href="/sitemap.xml">/sitemap.xml</a>.
-        </p>
-      </footer>
-    </div>
+    <!--SSR-CONTENT-->
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
