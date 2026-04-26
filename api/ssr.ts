@@ -52,7 +52,8 @@ const toAbsoluteUrl = (raw: unknown): string => {
   if (raw === null || raw === undefined) return '';
   let url = String(raw).trim();
   if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
+  if (/^https:\/\//i.test(url)) return url;
+  if (/^http:\/\//i.test(url)) return url.replace(/^http:\/\//i, 'https://');
   if (url.startsWith('//')) return `https:${url}`;
   if (url.startsWith('/')) return `${SUPABASE_ORIGIN}${url}`;
   // Bare path like "polished-assets/foo.jpg" → assume Supabase public storage
@@ -62,6 +63,11 @@ const toAbsoluteUrl = (raw: unknown): string => {
   return url;
 };
 
+const toAbsoluteHttpsUrl = (raw: unknown): string => {
+  const url = toAbsoluteUrl(raw);
+  return /^https:\/\//i.test(url) ? url : '';
+};
+
 const pickLocalized = (row: Record<string, any>, base: string): string => {
   return (
     row?.[`${base}_en`] ??
@@ -69,6 +75,102 @@ const pickLocalized = (row: Record<string, any>, base: string): string => {
     row?.[`${base}_bn`] ??
     ''
   );
+};
+
+const parseJsonLike = (value: string): unknown => {
+  const trimmed = value.trim();
+  if (!trimmed || !/^[\[{]/.test(trimmed)) return value;
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return value;
+  }
+};
+
+const richTextToParagraphs = (input: unknown): string[] => {
+  if (input === null || input === undefined) return [];
+  if (typeof input === 'object') {
+    const maybeJsonText = JSON.stringify(input);
+    return maybeJsonText ? [stripHtml(maybeJsonText)].filter(Boolean) : [];
+  }
+
+  return String(input)
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<br\s*\/?>(?!\n)/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .split(/\n\s*\n|\n/)
+    .map((s) => s.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+};
+
+const collectCaseStudyBlocks = (project: Record<string, any>) => {
+  const sources = [
+    { lang: 'en', value: project.case_study_en ?? project.case_study },
+    { lang: 'bn', value: project.case_study_bn },
+    { lang: 'en', value: project.description_en ?? project.description },
+    { lang: 'bn', value: project.description_bn },
+  ];
+
+  const seen = new Set<string>();
+  return sources
+    .map(({ lang, value }) => {
+      const paragraphs = richTextToParagraphs(value).filter((paragraph) => {
+        const key = paragraph.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return { lang, paragraphs };
+    })
+    .filter((block) => block.paragraphs.length > 0);
+};
+
+const imageKeyPattern = /(image|img|photo|picture|mockup|gallery|thumbnail|cover|visual|asset|avatar|logo|before|after)/i;
+const imageExtensionPattern = /\.(avif|webp|png|jpe?g|gif|svg)(?:[?#].*)?$/i;
+const nonImageExtensionPattern = /\.(pdf|mp4|mov|webm|zip|docx?|xlsx?|pptx?)(?:[?#].*)?$/i;
+
+const looksLikeImage = (raw: unknown, keyPath: string[]): boolean => {
+  if (typeof raw !== 'string') return false;
+  const value = raw.trim();
+  if (!value || value.startsWith('data:') || value.startsWith('blob:')) return false;
+  if (nonImageExtensionPattern.test(value)) return false;
+  const keyHint = keyPath.some((key) => imageKeyPattern.test(key));
+  return keyHint || imageExtensionPattern.test(value) || /storage\/v1\/object\/public\/polished-assets/i.test(value);
+};
+
+const collectImageUrlsFromRecord = (record: Record<string, any>): string[] => {
+  const urls: string[] = [];
+  const visit = (value: unknown, keyPath: string[]) => {
+    if (value === null || value === undefined) return;
+
+    if (typeof value === 'string') {
+      const parsed = parseJsonLike(value);
+      if (parsed !== value) {
+        visit(parsed, keyPath);
+        return;
+      }
+      if (looksLikeImage(value, keyPath)) {
+        const absoluteUrl = toAbsoluteHttpsUrl(value);
+        if (absoluteUrl) urls.push(absoluteUrl);
+      }
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach((item) => visit(item, keyPath));
+      return;
+    }
+
+    if (typeof value === 'object') {
+      Object.entries(value as Record<string, unknown>).forEach(([key, next]) => {
+        visit(next, [...keyPath, key]);
+      });
+    }
+  };
+
+  visit(record, []);
+  return Array.from(new Set(urls));
 };
 
 // ─── Build the SSR-injected semantic HTML block ────────────────────────────
