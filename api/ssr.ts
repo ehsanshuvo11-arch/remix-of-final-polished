@@ -369,7 +369,7 @@ function renderSeoBlock(data: {
 
 // ─── Fetch all live content in parallel ────────────────────────────────────
 async function fetchLiveContent() {
-  const settingsKeys = ['hero', 'about', 'contact', 'transformations-meta', 'pricing'];
+  const settingsKeys = ['hero', 'about', 'contact', 'transformations-meta', 'pricing', 'testimonials'];
 
   const [
     settingsRes,
