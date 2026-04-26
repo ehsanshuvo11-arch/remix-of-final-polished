@@ -83,8 +83,9 @@ function renderSeoBlock(data: {
   transformations: any[];
   transformationsMeta: any;
   pricing: any[];
+  testimonials: any[];
 }): string {
-  const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing } = data;
+  const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing, testimonials } = data;
 
   const heroTitle =
     pickLocalized(hero || {}, 'title') ||
