@@ -378,6 +378,7 @@ async function fetchLiveContent() {
     stepsRes,
     statsRes,
     transformationsRes,
+    testimonialsRes,
   ] = await Promise.all([
     supabase.from('site_settings').select('key,value').in('key', settingsKeys),
     supabase.from('services').select('*').order('sort_order'),
@@ -388,6 +389,12 @@ async function fetchLiveContent() {
       .from('transformations')
       .select('*')
       .order('sort_order', { ascending: true, nullsFirst: false }),
+    // Testimonials table may not exist in every deployment — swallow errors
+    supabase
+      .from('testimonials')
+      .select('*')
+      .order('sort_order', { ascending: true, nullsFirst: false })
+      .then((r) => r, () => ({ data: [] as any[] })),
   ]);
 
   const settingsMap = new Map<string, any>(
@@ -402,6 +409,17 @@ async function fetchLiveContent() {
   else if (Array.isArray(pricingSetting?.tiers)) pricing = pricingSetting.tiers;
   else if (Array.isArray(pricingSetting?.items)) pricing = pricingSetting.items;
 
+  // Testimonials may also live in site_settings under 'testimonials'
+  const testimonialsSetting = settingsMap.get('testimonials');
+  let testimonialsFromSettings: any[] = [];
+  if (Array.isArray(testimonialsSetting)) testimonialsFromSettings = testimonialsSetting;
+  else if (Array.isArray(testimonialsSetting?.items)) testimonialsFromSettings = testimonialsSetting.items;
+
+  const testimonials =
+    (testimonialsRes as any)?.data?.length
+      ? (testimonialsRes as any).data
+      : testimonialsFromSettings;
+
   return {
     hero: settingsMap.get('hero') ?? {},
     about: settingsMap.get('about') ?? {},
@@ -413,6 +431,7 @@ async function fetchLiveContent() {
     transformations: transformationsRes.data ?? [],
     transformationsMeta: settingsMap.get('transformations-meta') ?? {},
     pricing,
+    testimonials,
   };
 }
 
