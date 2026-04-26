@@ -248,7 +248,7 @@ function renderSeoBlock(data: {
             : `${projectLabel} — mockup ${idx}`;
           return `
         <figure>
-          <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" width="1200" height="900" />
+          <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" itemprop="image" loading="lazy" decoding="async" width="1200" height="900" />
           <figcaption>${escapeHtml(captionText)}</figcaption>
         </figure>`;
         })
@@ -317,7 +317,7 @@ function renderSeoBlock(data: {
         : '';
       return `
         <article class="transformation" itemscope itemtype="https://schema.org/ImageObject">
-          <h3 itemprop="name">${name}</h3>
+          ${name ? `<h3 itemprop="name">${name}</h3>` : ''}
           ${beforeImg}
           ${afterImg}
         </article>`;
@@ -329,13 +329,26 @@ function renderSeoBlock(data: {
   const pricingItems = (pricing || []).map((p: any) => {
     const name = escapeHtml(pickLocalized(p, 'name') || pickLocalized(p, 'title') || p.name || '');
     const desc = escapeHtml(stripHtml(pickLocalized(p, 'description') || p.description || ''));
-    const range = escapeHtml(p.range || p.price_range || p.price || '');
-    if (!name && !desc && !range) return '';
+    const range = escapeHtml(
+      p.range ||
+      p.price_range ||
+      p.price ||
+      p.investment ||
+      p.investment_range ||
+      p.budget_range ||
+      [p.min_price || p.minimum || p.from, p.max_price || p.maximum || p.to].filter(Boolean).join(' – ')
+    );
+    const featureSource = p.features || p.deliverables || p.includes || p.items || [];
+    const features = (Array.isArray(featureSource) ? featureSource : richTextToParagraphs(featureSource))
+      .map((item: any) => stripHtml(typeof item === 'string' ? item : item?.label || item?.name || item?.title || item?.description || ''))
+      .filter(Boolean);
+    if (!name && !desc && !range && !features.length) return '';
     return `
       <article class="pricing-tier" itemscope itemtype="https://schema.org/Offer">
         ${name ? `<h3 itemprop="name">${name}</h3>` : ''}
         ${desc ? `<p itemprop="description">${desc}</p>` : ''}
         ${range ? `<p class="pricing-range"><strong>Investment:</strong> <span itemprop="priceSpecification">${range}</span></p>` : ''}
+        ${features.length ? `<ul>${features.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
       </article>`;
   }).join('');
 
@@ -347,7 +360,7 @@ function renderSeoBlock(data: {
       const author = escapeHtml(t.author_name || t.name || t.client_name || '');
       const role = escapeHtml(t.author_role || t.role || t.title || '');
       const brand = escapeHtml(t.brand_name || t.company || '');
-      const avatar = escapeHtml(toAbsoluteUrl(t.avatar_url || t.image_url));
+      const avatar = escapeHtml(toAbsoluteHttpsUrl(t.avatar_url || t.image_url));
       if (!quote && !author) return '';
       const byline = [author, role, brand].filter(Boolean).join(' · ');
       return `
