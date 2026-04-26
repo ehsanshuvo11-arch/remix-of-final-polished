@@ -52,14 +52,22 @@ const toAbsoluteUrl = (raw: unknown): string => {
   if (raw === null || raw === undefined) return '';
   let url = String(raw).trim();
   if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
+  if (/^https:\/\//i.test(url)) return url;
+  if (/^http:\/\//i.test(url)) return url.replace(/^http:\/\//i, 'https://');
   if (url.startsWith('//')) return `https:${url}`;
   if (url.startsWith('/')) return `${SUPABASE_ORIGIN}${url}`;
-  // Bare path like "polished-assets/foo.jpg" → assume Supabase public storage
+  // Bare path like "gallery/foo.jpg" → assume the public polished-assets bucket
   if (!/^[a-z]+:/i.test(url)) {
-    return `${SUPABASE_ORIGIN}/storage/v1/object/public/${url.replace(/^\/+/, '')}`;
+    const path = url.replace(/^\/+/, '');
+    const storagePath = path.startsWith('polished-assets/') ? path : `polished-assets/${path}`;
+    return `${SUPABASE_ORIGIN}/storage/v1/object/public/${storagePath}`;
   }
   return url;
+};
+
+const toAbsoluteHttpsUrl = (raw: unknown): string => {
+  const url = toAbsoluteUrl(raw);
+  return /^https:\/\//i.test(url) ? url : '';
 };
 
 const pickLocalized = (row: Record<string, any>, base: string): string => {
@@ -69,6 +77,128 @@ const pickLocalized = (row: Record<string, any>, base: string): string => {
     row?.[`${base}_bn`] ??
     ''
   );
+};
+
+const parseJsonLike = (value: string): unknown => {
+  const trimmed = value.trim();
+  if (!trimmed || !/^[\[{]/.test(trimmed)) return value;
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    return value;
+  }
+};
+
+const extractRichObjectText = (input: unknown): string[] => {
+  const chunks: string[] = [];
+  const visit = (node: unknown) => {
+    if (!node) return;
+    if (typeof node === 'string') {
+      const text = stripHtml(node);
+      if (text) chunks.push(text);
+      return;
+    }
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+      return;
+    }
+    if (typeof node === 'object') {
+      const record = node as Record<string, unknown>;
+      if (typeof record.text === 'string') chunks.push(record.text);
+      if (record.content) visit(record.content);
+    }
+  };
+  visit(input);
+  return chunks.map((s) => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+};
+
+const richTextToParagraphs = (input: unknown): string[] => {
+  if (input === null || input === undefined) return [];
+  if (typeof input === 'string') {
+    const parsed = parseJsonLike(input);
+    if (parsed !== input) return richTextToParagraphs(parsed);
+  }
+  if (typeof input === 'object') {
+    return extractRichObjectText(input);
+  }
+
+  return String(input)
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<br\s*\/?>(?!\n)/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .split(/\n\s*\n|\n/)
+    .map((s) => s.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+};
+
+const collectCaseStudyBlocks = (project: Record<string, any>) => {
+  const sources = [
+    { lang: 'en', value: project.case_study_en ?? project.case_study },
+    { lang: 'bn', value: project.case_study_bn },
+    { lang: 'en', value: project.description_en ?? project.description },
+    { lang: 'bn', value: project.description_bn },
+  ];
+
+  const seen = new Set<string>();
+  return sources
+    .map(({ lang, value }) => {
+      const paragraphs = richTextToParagraphs(value).filter((paragraph) => {
+        const key = paragraph.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return { lang, paragraphs };
+    })
+    .filter((block) => block.paragraphs.length > 0);
+};
+
+const imageKeyPattern = /(image|img|photo|picture|mockup|gallery|thumbnail|cover|visual|asset|avatar|logo|before|after)/i;
+const imageExtensionPattern = /\.(avif|webp|png|jpe?g|gif|svg)(?:[?#].*)?$/i;
+const nonImageExtensionPattern = /\.(pdf|mp4|mov|webm|zip|docx?|xlsx?|pptx?)(?:[?#].*)?$/i;
+
+const looksLikeImage = (raw: unknown, keyPath: string[]): boolean => {
+  if (typeof raw !== 'string') return false;
+  const value = raw.trim();
+  if (!value || value.startsWith('data:') || value.startsWith('blob:')) return false;
+  if (nonImageExtensionPattern.test(value)) return false;
+  const keyHint = keyPath.some((key) => imageKeyPattern.test(key));
+  return keyHint || imageExtensionPattern.test(value) || /storage\/v1\/object\/public\/polished-assets/i.test(value);
+};
+
+const collectImageUrlsFromRecord = (record: Record<string, any>): string[] => {
+  const urls: string[] = [];
+  const visit = (value: unknown, keyPath: string[]) => {
+    if (value === null || value === undefined) return;
+
+    if (typeof value === 'string') {
+      const parsed = parseJsonLike(value);
+      if (parsed !== value) {
+        visit(parsed, keyPath);
+        return;
+      }
+      if (looksLikeImage(value, keyPath)) {
+        const absoluteUrl = toAbsoluteHttpsUrl(value);
+        if (absoluteUrl) urls.push(absoluteUrl);
+      }
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach((item) => visit(item, keyPath));
+      return;
+    }
+
+    if (typeof value === 'object') {
+      Object.entries(value as Record<string, unknown>).forEach(([key, next]) => {
+        visit(next, [...keyPath, key]);
+      });
+    }
+  };
+
+  visit(record, []);
+  return Array.from(new Set(urls));
 };
 
 // ─── Build the SSR-injected semantic HTML block ────────────────────────────
@@ -88,20 +218,17 @@ function renderSeoBlock(data: {
   const { hero, about, contact, services, projects, steps, stats, transformations, transformationsMeta, pricing, testimonials } = data;
 
   const heroTitle =
-    pickLocalized(hero || {}, 'title') ||
-    'POLISHED — Premium Visual Identities for E-commerce Skincare Brands';
+    pickLocalized(hero || {}, 'title');
   const heroTagline =
     pickLocalized(hero || {}, 'tagline') ||
-    pickLocalized(hero || {}, 'subtitle') ||
-    'Make Your Collection Unmissable!';
+    pickLocalized(hero || {}, 'subtitle');
 
   const aboutBody =
     stripHtml(pickLocalized(about || {}, 'body')) ||
-    stripHtml(pickLocalized(about || {}, 'description')) ||
-    'POLISHED is a specialist branding studio crafting premium, quiet-luxury visual identities exclusively for e-commerce skincare storefronts.';
+    stripHtml(pickLocalized(about || {}, 'description'));
 
-  const email = contact?.email || 'polished.bd@gmail.com';
-  const phone = contact?.phone || contact?.whatsapp || '+8801346288210';
+  const email = contact?.email || '';
+  const phone = contact?.phone || contact?.whatsapp || '';
 
   const servicesHtml = services
     .map((s) => {
@@ -114,8 +241,9 @@ function renderSeoBlock(data: {
   const projectsHtml = projects
     .map((p) => {
       const title =
-        pickLocalized(p, 'title') || p.title || 'Untitled Project';
+        pickLocalized(p, 'title') || p.title || '';
       const titleSafe = escapeHtml(title);
+      const projectLabel = title || 'portfolio project';
       const category = escapeHtml(
         pickLocalized(p, 'category') || p.category || ''
       );
@@ -126,56 +254,29 @@ function renderSeoBlock(data: {
       const hook = stripHtml(pickLocalized(p, 'hook'));
       const hookHtml = hook ? `<p class="project-hook"><strong>${escapeHtml(hook)}</strong></p>` : '';
 
-      // Full case study (preserve paragraph breaks, strip tags safely)
-      const caseStudyRaw =
-        pickLocalized(p, 'case_study') ||
-        pickLocalized(p, 'description') ||
-        '';
-      const caseStudyParagraphs = String(caseStudyRaw)
-        // turn </p> and <br> into newlines before stripping tags
-        .replace(/<\/p>/gi, '\n\n')
-        .replace(/<br\s*\/?>(?!\n)/gi, '\n')
-        .replace(/<[^>]*>/g, '')
-        .split(/\n\s*\n/)
-        .map((s) => s.replace(/\s+/g, ' ').trim())
-        .filter(Boolean);
-      const caseStudyHtml = caseStudyParagraphs
-        .map((para) => `<p>${escapeHtml(para)}</p>`)
+      const caseStudyHtml = collectCaseStudyBlocks(p)
+        .map(({ lang, paragraphs }) => `
+          <div class="case-study-language" lang="${escapeHtml(lang)}">
+            ${paragraphs.map((para) => `<p>${escapeHtml(para)}</p>`).join('')}
+          </div>`)
         .join('');
 
-      // Collect every visual asset for this project, normalized to absolute URLs
-      const imageUrls: string[] = [];
-      const pushImg = (raw: unknown) => {
-        const abs = toAbsoluteUrl(raw);
-        if (abs) imageUrls.push(abs);
-      };
-      pushImg(p.image_url);
-      pushImg(p.mockup_url);
-      pushImg(p.cover_image_url);
-      pushImg(p.thumbnail_url);
-      if (Array.isArray(p.mockup_urls)) p.mockup_urls.forEach(pushImg);
-      if (Array.isArray(p.images)) p.images.forEach(pushImg);
-      if (Array.isArray(p.gallery)) p.gallery.forEach(pushImg);
-      // Deduplicate while preserving order
-      const seen = new Set<string>();
-      const uniqueImages = imageUrls.filter((u) => {
-        if (seen.has(u)) return false;
-        seen.add(u);
-        return true;
-      });
+      // Collect EVERY project visual from every image/mockup/gallery field,
+      // normalize to absolute https:// URLs, and emit real <img> tags.
+      const uniqueImages = collectImageUrlsFromRecord(p);
 
       const figuresHtml = uniqueImages
         .map((url, idx) => {
           const isCover = idx === 0;
           const altText = isCover
-            ? `Premium brand identity cover visual for ${title} — ${category || 'skincare e-commerce case study'}`
-            : `Premium 3D packaging mockup ${idx} for ${title} — POLISHED case study`;
+            ? `Premium brand identity cover visual for ${projectLabel}`
+            : `Premium 3D Mockup for ${projectLabel}`;
           const captionText = isCover
-            ? `${title} — cover visual`
-            : `${title} — mockup ${idx}`;
+            ? `${projectLabel} — cover visual`
+            : `${projectLabel} — mockup ${idx}`;
           return `
         <figure>
-          <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" width="1200" height="900" />
+          <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" itemprop="image" loading="lazy" decoding="async" width="1200" height="900" />
           <figcaption>${escapeHtml(captionText)}</figcaption>
         </figure>`;
         })
@@ -185,11 +286,11 @@ function renderSeoBlock(data: {
       const pdfLinks: string[] = [];
       if (p.pdf_url_en)
         pdfLinks.push(
-          `<a href="${escapeHtml(p.pdf_url_en)}" rel="noopener">Download full case study (EN, PDF)</a>`
+          `<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_en))}" rel="noopener">Download full case study (EN, PDF)</a>`
         );
       if (p.pdf_url_bn)
         pdfLinks.push(
-          `<a href="${escapeHtml(p.pdf_url_bn)}" rel="noopener">Download full case study (BN, PDF)</a>`
+          `<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_bn))}" rel="noopener">Download full case study (BN, PDF)</a>`
         );
       const pdfHtml = pdfLinks.length
         ? `<p class="case-study-downloads">${pdfLinks.join(' · ')}</p>`
@@ -197,7 +298,7 @@ function renderSeoBlock(data: {
 
       return `
         <article class="portfolio-project" itemscope itemtype="https://schema.org/CreativeWork">
-          <h3 itemprop="name">${titleSafe}</h3>
+          ${titleSafe ? `<h3 itemprop="name">${titleSafe}</h3>` : ''}
           ${meta ? `<p class="project-meta"><em>${meta}</em></p>` : ''}
           ${hookHtml}
           ${figuresHtml}
@@ -223,28 +324,28 @@ function renderSeoBlock(data: {
     })
     .join('');
 
-  // ─── Transformations (real visual before/after proof) ───────────────────
+  // ─── Transformations (real visual proof) ────────────────────────────────
   const transformationsTitle = escapeHtml(
-    transformationsMeta?.titleLine1En || transformationsMeta?.titleLine1Bn || 'Brand Transformations'
+    transformationsMeta?.titleLine1En || transformationsMeta?.titleLine1Bn || ''
   );
-  const beforeLabel = escapeHtml(transformationsMeta?.beforeLabelEn || 'Before');
-  const afterLabel = escapeHtml(transformationsMeta?.afterLabelEn || 'After');
+  const beforeLabel = escapeHtml(transformationsMeta?.beforeLabelEn || 'Original visual');
+  const afterLabel = escapeHtml(transformationsMeta?.afterLabelEn || 'Final visual');
 
   const transformationsHtml = (transformations || [])
     .filter((t) => t && t.is_active !== false && (t.before_image_url || t.after_image_url))
     .map((t) => {
-      const name = escapeHtml(t.project_name || 'Brand Transformation');
-      const beforeUrl = escapeHtml(toAbsoluteUrl(t.before_image_url));
-      const afterUrl = escapeHtml(toAbsoluteUrl(t.after_image_url));
+      const name = escapeHtml(t.project_name || '');
+      const beforeUrl = escapeHtml(toAbsoluteHttpsUrl(t.before_image_url));
+      const afterUrl = escapeHtml(toAbsoluteHttpsUrl(t.after_image_url));
       const beforeImg = beforeUrl
-        ? `<figure><img src="${beforeUrl}" alt="${beforeLabel} — ${name} packaging visual identity (POLISHED case study)" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel} — ${name}</figcaption></figure>`
+        ? `<figure><img src="${beforeUrl}" alt="${beforeLabel}${name ? ` for ${name}` : ''}" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${beforeLabel}${name ? ` — ${name}` : ''}</figcaption></figure>`
         : '';
       const afterImg = afterUrl
-        ? `<figure><img src="${afterUrl}" alt="${afterLabel} — ${name} premium rebrand by POLISHED" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${afterLabel} — ${name}</figcaption></figure>`
+        ? `<figure><img src="${afterUrl}" alt="${afterLabel}${name ? ` for ${name}` : ''}" loading="lazy" decoding="async" width="1200" height="900" /><figcaption>${afterLabel}${name ? ` — ${name}` : ''}</figcaption></figure>`
         : '';
       return `
         <article class="transformation" itemscope itemtype="https://schema.org/ImageObject">
-          <h3 itemprop="name">${name}</h3>
+          ${name ? `<h3 itemprop="name">${name}</h3>` : ''}
           ${beforeImg}
           ${afterImg}
         </article>`;
@@ -256,13 +357,26 @@ function renderSeoBlock(data: {
   const pricingItems = (pricing || []).map((p: any) => {
     const name = escapeHtml(pickLocalized(p, 'name') || pickLocalized(p, 'title') || p.name || '');
     const desc = escapeHtml(stripHtml(pickLocalized(p, 'description') || p.description || ''));
-    const range = escapeHtml(p.range || p.price_range || p.price || '');
-    if (!name && !desc && !range) return '';
+    const range = escapeHtml(
+      p.range ||
+      p.price_range ||
+      p.price ||
+      p.investment ||
+      p.investment_range ||
+      p.budget_range ||
+      [p.min_price || p.minimum || p.from, p.max_price || p.maximum || p.to].filter(Boolean).join(' – ')
+    );
+    const featureSource = p.features || p.deliverables || p.includes || p.items || [];
+    const features = (Array.isArray(featureSource) ? featureSource : richTextToParagraphs(featureSource))
+      .map((item: any) => stripHtml(typeof item === 'string' ? item : item?.label || item?.name || item?.title || item?.description || ''))
+      .filter(Boolean);
+    if (!name && !desc && !range && !features.length) return '';
     return `
       <article class="pricing-tier" itemscope itemtype="https://schema.org/Offer">
         ${name ? `<h3 itemprop="name">${name}</h3>` : ''}
         ${desc ? `<p itemprop="description">${desc}</p>` : ''}
         ${range ? `<p class="pricing-range"><strong>Investment:</strong> <span itemprop="priceSpecification">${range}</span></p>` : ''}
+        ${features.length ? `<ul>${features.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
       </article>`;
   }).join('');
 
@@ -274,7 +388,7 @@ function renderSeoBlock(data: {
       const author = escapeHtml(t.author_name || t.name || t.client_name || '');
       const role = escapeHtml(t.author_role || t.role || t.title || '');
       const brand = escapeHtml(t.brand_name || t.company || '');
-      const avatar = escapeHtml(toAbsoluteUrl(t.avatar_url || t.image_url));
+      const avatar = escapeHtml(toAbsoluteHttpsUrl(t.avatar_url || t.image_url));
       if (!quote && !author) return '';
       const byline = [author, role, brand].filter(Boolean).join(' · ');
       return `
@@ -285,14 +399,21 @@ function renderSeoBlock(data: {
         </article>`;
     }).join('');
 
-  // The block is visually hidden but NOT aria-hidden, and uses CSS clip
-  // (not display:none) so search engines and AI crawlers parse the full DOM.
+  const contactRows = [
+    email ? `<p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>` : '',
+    phone ? `<p><strong>WhatsApp / Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>` : '',
+    contact?.calendly ? `<p><strong>Book a consultation:</strong> <a href="${escapeHtml(toAbsoluteUrl(contact.calendly))}" rel="noopener">${escapeHtml(contact.calendly)}</a></p>` : '',
+  ].filter(Boolean).join('');
+
+  // JS-enabled humans see the React app only. No-JS bots receive this normal,
+  // parseable DOM with live images/text before the client bundle runs.
   return `
-<div id="seo-ssr-content" style="position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;">
+<script>document.documentElement.classList.add('js');</script>
+<style>html.js #seo-ssr-content{display:none!important}</style>
+<main id="seo-ssr-content" data-source="supabase-live-html">
   <header>
-    <h1>${escapeHtml(heroTitle)}</h1>
-    <p><strong>Tagline:</strong> ${escapeHtml(heroTagline)}</p>
-    <p><strong>Location:</strong> Bangladesh · <strong>Serving:</strong> Global e-commerce skincare brands</p>
+    ${heroTitle ? `<h1>${escapeHtml(heroTitle)}</h1>` : ''}
+    ${heroTagline ? `<p><strong>Tagline:</strong> ${escapeHtml(heroTagline)}</p>` : ''}
   </header>
 
   <nav aria-label="Primary">
@@ -308,11 +429,7 @@ function renderSeoBlock(data: {
     </ul>
   </nav>
 
-  <section id="about-ssr">
-    <h2>About POLISHED</h2>
-    <p>${escapeHtml(aboutBody)}</p>
-    ${statsHtml ? `<ul>${statsHtml}</ul>` : ''}
-  </section>
+  ${aboutBody || statsHtml ? `<section id="about-ssr"><h2>About POLISHED</h2>${aboutBody ? `<p>${escapeHtml(aboutBody)}</p>` : ''}${statsHtml ? `<ul>${statsHtml}</ul>` : ''}</section>` : ''}
 
   ${
     servicesHtml
@@ -328,13 +445,13 @@ function renderSeoBlock(data: {
 
   ${
     transformationsHtml
-      ? `<section id="transformations-ssr"><h2>${transformationsTitle} — Visual Proof</h2><p>Real before-and-after rebrand results from POLISHED client engagements. Each pair shows the original packaging or storefront state and the final premium identity delivered.</p>${transformationsHtml}</section>`
+      ? `<section id="transformations-ssr"><h2>${transformationsTitle || 'Visual Proof'}</h2>${transformationsHtml}</section>`
       : ''
   }
 
   ${
     pricingItems
-      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2><p>The following tiers reflect POLISHED's currently published service offerings as listed in our live content database.</p>${pricingItems}</section>`
+      ? `<section id="pricing-ssr"><h2>Investment &amp; Engagement Tiers</h2>${pricingItems}</section>`
       : ''
   }
 
@@ -350,21 +467,13 @@ function renderSeoBlock(data: {
       : ''
   }
 
-  <section id="contact-ssr">
-    <h2>Contact &amp; Booking</h2>
-    <address>
-      <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-      <p><strong>WhatsApp / Phone:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>
-      <p><strong>Country:</strong> Bangladesh</p>
-      <p><strong>Book a consultation:</strong> <a href="https://calendly.com/polished-bd" rel="noopener">calendly.com/polished-bd</a></p>
-    </address>
-  </section>
+  ${contactRows ? `<section id="contact-ssr"><h2>Contact &amp; Booking</h2><address>${contactRows}</address></section>` : ''}
 
   <footer>
     <p>Live SSR snapshot from POLISHED — data fetched from Supabase at request time.
     Sitemap: <a href="/sitemap.xml">/sitemap.xml</a> · LLM brief: <a href="/llms.txt">/llms.txt</a>.</p>
   </footer>
-</div>`.trim();
+</main>`.trim();
 }
 
 // ─── Fetch all live content in parallel ────────────────────────────────────
