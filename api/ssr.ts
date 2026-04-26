@@ -215,6 +215,7 @@ function renderSeoBlock(data: {
       const title =
         pickLocalized(p, 'title') || p.title || '';
       const titleSafe = escapeHtml(title);
+      const projectLabel = title || 'portfolio project';
       const category = escapeHtml(
         pickLocalized(p, 'category') || p.category || ''
       );
@@ -240,11 +241,11 @@ function renderSeoBlock(data: {
         .map((url, idx) => {
           const isCover = idx === 0;
           const altText = isCover
-            ? `Premium brand identity cover visual for ${title}`
-            : `Premium 3D Mockup for ${title}`;
+            ? `Premium brand identity cover visual for ${projectLabel}`
+            : `Premium 3D Mockup for ${projectLabel}`;
           const captionText = isCover
-            ? `${title} — cover visual`
-            : `${title} — mockup ${idx}`;
+            ? `${projectLabel} — cover visual`
+            : `${projectLabel} — mockup ${idx}`;
           return `
         <figure>
           <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" loading="lazy" decoding="async" width="1200" height="900" />
