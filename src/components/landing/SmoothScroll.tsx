@@ -16,15 +16,16 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     const lenis = new Lenis(
       touch
         ? {
-            // Premium momentum-style scrolling for phones / tablets
-            // syncTouch makes finger drags feel weighted and glide on release
-            duration: 1.6,
+            // On phones/tablets, defer to the OS-native momentum scroll —
+            // it's GPU-accelerated and genuinely buttery. Lenis only handles
+            // smoothWheel (for hybrid touch laptops) and programmatic scrolls
+            // (anchor links). syncTouch is intentionally OFF to avoid the
+            // rubbery lag it introduces on real phones.
+            duration: 1.2,
             easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
             smoothWheel: true,
-            syncTouch: true,
-            syncTouchLerp: 0.085, // glide weight after finger lifts
-            
-            touchMultiplier: 2,
+            syncTouch: false,
+            touchMultiplier: 1.6,
             lerp: 0.1,
           }
         : {
