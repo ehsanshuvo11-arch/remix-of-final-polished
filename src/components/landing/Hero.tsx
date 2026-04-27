@@ -4,6 +4,7 @@ import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { HeroContent } from '@/types/database';
 import logoSvg from '@/assets/logo.svg';
+import RevealText from '@/components/landing/RevealText';
 
 interface HeroProps {
   content: HeroContent | null;
@@ -86,17 +87,12 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <h1
           className="font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
         >
-         <span className="inline-block pt-4">
-            <span className="inline-block" style={{ animation: 'wordReveal 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards', transform: 'translateY(110%)', clipPath: 'inset(-20% -10% 0 -10%)' }}>
-              {parseItalic(t(hero.titleEn, hero.titleBn))}
-            </span>
-          </span>
-          <br />
-          <span className="inline-block pt-4 text-[clamp(28px,6.5vw,80px)]">
-            <span className="inline-block" style={{ animation: 'wordReveal 1s cubic-bezier(0.22,1,0.36,1) 0.7s forwards', transform: 'translateY(110%)', clipPath: 'inset(-20% -10% 0 -10%)' }}>
-              {parseItalic(t(hero.title2En, (hero as any).title2Bn || ''))}
-            </span>
-          </span>
+          <RevealText as="span" delay={0.4} className="block pt-4">
+            {t(hero.titleEn, hero.titleBn)}
+          </RevealText>
+          <RevealText as="span" delay={0.6} className="block pt-4 text-[clamp(28px,6.5vw,80px)] italic text-accent">
+            {t(hero.title2En.replace(/\*/g, ''), ((hero as any).title2Bn || '').replace(/\*/g, ''))}
+          </RevealText>
         </h1>
 
         <p className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0 }}>
