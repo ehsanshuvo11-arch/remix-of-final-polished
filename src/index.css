@@ -224,8 +224,13 @@ html[data-lang="bn"] label,
 html[data-lang="bn"] div {
   font-family: 'Noto Sans Bengali', 'Hind Siliguri', sans-serif;
   letter-spacing: normal !important;
-  line-height: 1.6;
+  line-height: 1.5;
   word-spacing: 0;
+}
+
+html[data-lang="bn"] p,
+html[data-lang="bn"] li {
+  line-height: 1.5 !important;
 }
 
 html[data-lang="bn"] h1,
@@ -237,9 +242,13 @@ html[data-lang="bn"] h6,
 html[data-lang="bn"] .font-heading {
   font-family: 'Noto Serif Bengali', serif !important;
   letter-spacing: normal !important;
-  line-height: 1.45;
+  line-height: 1.2 !important;
   font-style: normal; /* Bengali has no italic — italic glyphs render as faux-skew, kills the look */
 }
+
+html[data-lang="bn"] h1 { line-height: 1.15 !important; }
+html[data-lang="bn"] h2 { line-height: 1.2 !important; }
+html[data-lang="bn"] h3 { line-height: 1.25 !important; }
 
 /* Italic <em> inside Bengali should render upright (Bengali script lacks an italic form). */
 html[data-lang="bn"] em,
