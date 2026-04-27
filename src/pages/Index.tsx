@@ -50,16 +50,9 @@ export default function Index() {
   return (
     <SmoothScroll>
     <div className="font-body">
-      <PageLoader
-        onDismissStart={() => setLoaderActive(false)}
-        onComplete={() => setHeroReady(true)}
-      />
+      <PageLoader onComplete={() => setHeroReady(true)} />
       <CustomCursor />
-      <Navbar
-        onPuzzleOpen={() => setPuzzleOpen(true)}
-        content={navContent ?? null}
-        loaderActive={loaderActive}
-      />
+      <Navbar onPuzzleOpen={() => setPuzzleOpen(true)} content={navContent ?? null} />
       <motion.div
         initial={false}
         animate={
