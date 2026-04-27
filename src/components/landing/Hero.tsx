@@ -77,21 +77,26 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           }}
         />
 
+        {/* Eyebrow + Headline are intentionally locked to English in all locales
+            to preserve the brand's signature wordmark feel. */}
         <p
+          lang="en"
           className="text-[11px] tracking-[4px] uppercase text-accent mb-5 font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0 }}
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
-          {t(hero.eyebrowEn, hero.eyebrowBn)}
+          {hero.eyebrowEn}
         </p>
 
         <h1
+          lang="en"
           className="font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
           <RevealText as="span" delay={0.4} className="block pt-4">
-            {t(hero.titleEn, hero.titleBn)}
+            {hero.titleEn}
           </RevealText>
           <RevealText as="span" delay={0.6} className="block pt-4 text-[clamp(28px,6.5vw,80px)] italic text-accent">
-            {t(hero.title2En.replace(/\*/g, ''), ((hero as any).title2Bn || '').replace(/\*/g, ''))}
+            {hero.title2En.replace(/\*/g, '')}
           </RevealText>
         </h1>
 
