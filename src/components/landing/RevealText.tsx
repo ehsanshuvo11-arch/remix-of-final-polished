@@ -42,7 +42,14 @@ export default function RevealText({
         <span
           key={i}
           className="inline-block overflow-hidden align-bottom"
-          style={{ marginRight: splitBy === 'word' ? '0.28em' : 0 }}
+          style={{
+            marginRight: splitBy === 'word' ? '0.28em' : 0,
+            // Italic glyphs (esp. trailing punctuation like "!") lean right and get
+            // clipped by overflow:hidden. Pad the mask and offset to keep layout stable.
+            paddingRight: '0.15em',
+            marginLeft: '-0.05em',
+            paddingBottom: '0.15em',
+          }}
         >
           <motion.span
             className="inline-block will-change-transform"
