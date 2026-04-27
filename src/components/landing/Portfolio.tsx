@@ -315,9 +315,9 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         onMouseLeave={handleTiltLeave}
         className="relative z-[60] w-full h-full overflow-hidden isolate"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
-        whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-        viewport={{ once: true, amount: 0.1 }}
+        initial={{ opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' }}
+        whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+        viewport={{ once: true, amount: 0.01 }}
         transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
         <motion.img
@@ -328,7 +328,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
           draggable={false}
           initial={{ scale: 1.15 }}
           whileInView={{ scale: 1.0 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.01 }}
           transition={{ duration: 2.0, ease: [0.76, 0, 0.24, 1] }}
         />
       </motion.div>
