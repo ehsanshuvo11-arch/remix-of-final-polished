@@ -147,6 +147,21 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         />
       )}
 
+      {/* Dynamic description shown below the expanded image (independent of "View full case study") */}
+      <AnimatePresence>
+        {imageExpanded && caseStudy && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-4 px-1 text-muted-foreground leading-relaxed text-base font-sans antialiased [&_strong]:font-semibold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-3"
+            style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Controls — ALWAYS visible */}
       <div className="mt-3 px-1 flex flex-wrap items-center gap-4">
         <button
@@ -158,28 +173,16 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             : t('Click image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}
         </button>
 
-        {caseStudy && (
-          <button
-            onClick={toggleCaseStudy}
-            aria-expanded={caseStudyOpen}
-            className="group inline-flex items-center gap-2.5 text-foreground/70 text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent active:scale-[0.97]"
-          >
-            <span className="relative">
-              {caseStudyOpen
-                ? t('Hide strategy', 'স্ট্র্যাটেজি লুকান')
-                : t('Read case study', 'কেস স্টাডি পড়ুন')}
-              <span className="absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-out group-hover:scale-x-100" />
-            </span>
-            <motion.span
-              animate={{ rotate: caseStudyOpen ? 45 : 0 }}
-              transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-              className="inline-flex h-[14px] w-[14px] items-center justify-center text-base leading-none"
-              aria-hidden="true"
-            >
-              +
-            </motion.span>
-          </button>
-        )}
+        <button
+          onClick={toggleCaseStudy}
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100"
+        >
+          <span className="relative z-10 text-primary-foreground">
+            {caseStudyOpen
+              ? t('Hide case study', 'কেস স্টাডি লুকান')
+              : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
+          </span>
+        </button>
 
         {hasMockups && (
           <button
@@ -191,14 +194,14 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         )}
       </div>
 
-      {/* Case study content — revealed only on explicit user toggle */}
-      <AnimatePresence initial={false}>
+      {/* Case study content */}
+      <AnimatePresence>
         {caseStudyOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
