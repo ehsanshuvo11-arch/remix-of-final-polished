@@ -11,21 +11,32 @@ function isTouchDevice() {
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // On touch devices, let native momentum scrolling handle everything
-    if (isTouchDevice()) return;
+    const touch = isTouchDevice();
 
-    const lenis = new Lenis({
-      duration: 2.4,
-      easing: (t: number) => {
-        // Smoother, longer-tail easing for a silky glide
-        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-      },
-      smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 1.5,
-      wheelMultiplier: 0.7,
-      lerp: 0.075,
-    });
+    const lenis = new Lenis(
+      touch
+        ? {
+            // Premium momentum-style scrolling for phones / tablets
+            // syncTouch makes finger drags feel weighted and glide on release
+            duration: 1.6,
+            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            syncTouch: true,
+            syncTouchLerp: 0.085, // glide weight after finger lifts
+            touchInertiaMultiplier: 28, // longer, silkier coast
+            touchMultiplier: 2,
+            lerp: 0.1,
+          }
+        : {
+            duration: 2.4,
+            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            syncTouch: false,
+            touchMultiplier: 1.5,
+            wheelMultiplier: 0.7,
+            lerp: 0.075,
+          }
+    );
     lenisInstance = lenis;
 
     function raf(time: number) {
