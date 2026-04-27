@@ -61,8 +61,8 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
       />
 
       {/* Orbs with parallax */}
-      <div ref={orb1Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ top: '-100px', right: '-100px', background: 'rgba(251,146,60,0.12)', filter: 'blur(80px)', animation: 'orbFloat 8s ease-in-out infinite' }} />
-      <div ref={orb2Ref} className="absolute w-[400px] h-[400px] rounded-full pointer-events-none" style={{ bottom: '-50px', left: '-50px', background: 'rgba(99,102,241,0.08)', filter: 'blur(80px)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
+      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.18) 0%, rgba(251,146,60,0.08) 35%, rgba(251,146,60,0) 70%)', animation: 'orbFloat 8s ease-in-out infinite' }} />
+      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(99,102,241,0.05) 40%, rgba(99,102,241,0) 70%)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
         {/* Logo badge */}
