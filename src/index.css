@@ -256,7 +256,36 @@ html[data-lang="bn"] [class*="uppercase"] {
   text-transform: none !important; /* Bengali has no uppercase */
 }
 
-
+/* ─────────────────────────────────────────────────────────────
+   English opt-out inside Bengali pages
+   Any element (or subtree) explicitly marked [lang="en"] is
+   treated as English content and keeps its original typography,
+   italic forms, letter-spacing and uppercase transforms — even
+   when the global locale is Bengali. Used for the brand wordmark
+   and the hero headline which must always render in English.
+   ───────────────────────────────────────────────────────────── */
+html[data-lang="bn"] [lang="en"],
+html[data-lang="bn"] [lang="en"] * {
+  font-family: inherit;
+  letter-spacing: revert !important;
+  text-transform: revert !important;
+  font-style: revert !important;
+  line-height: revert;
+  word-spacing: normal;
+}
+html[data-lang="bn"] [lang="en"].font-heading,
+html[data-lang="bn"] [lang="en"] .font-heading,
+html[data-lang="bn"] h1[lang="en"],
+html[data-lang="bn"] h2[lang="en"],
+html[data-lang="bn"] h3[lang="en"] {
+  font-family: 'Cormorant Garamond', serif !important;
+}
+html[data-lang="bn"] [lang="en"] em,
+html[data-lang="bn"] [lang="en"] i,
+html[data-lang="bn"] [lang="en"] .italic {
+  font-style: italic !important;
+  font-family: 'Cormorant Garamond', serif !important;
+}
 
 /* Scroll reveal */
 /* Scroll reveal — luxury easing */
