@@ -1,6 +1,7 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import RevealText from '@/components/landing/RevealText';
 import type { AboutContent, Stat } from '@/types/database';
 
 interface AboutProps {
@@ -49,11 +50,8 @@ export default function About({ content, stats }: AboutProps) {
             </p>
           </MotionReveal>
           <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            <WordReveal delay={0.1}>{line1}</WordReveal>
-            <br />
-            <em className="italic">
-              <WordReveal delay={0.25}>{line2}</WordReveal>
-            </em>
+            <RevealText as="span" className="block">{line1}</RevealText>
+            <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
           </h2>
           <MotionReveal delay={0.3}>
             <p className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
