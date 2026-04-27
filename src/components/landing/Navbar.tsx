@@ -2,16 +2,23 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
+import { BRAND_LAYOUT_ID } from '@/components/landing/PageLoader';
 import type { NavContent } from '@/types/database';
 
 interface NavbarProps {
   onPuzzleOpen: () => void;
   content?: NavContent | null;
+  /**
+   * When true, the loader still owns the shared `brand-logo` layoutId.
+   * The Navbar must not render its motion logo yet, otherwise Framer
+   * Motion will see two elements with the same layoutId and snap.
+   */
+  loaderActive?: boolean;
 }
 
 const LUXE = [0.22, 1, 0.36, 1] as const;
 
-export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
+export default function Navbar({ onPuzzleOpen, content, loaderActive = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { t } = useLanguage();
@@ -61,20 +68,36 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             : 'py-[22px] px-6 md:px-14 bg-transparent border-b border-transparent'
         }`}
       >
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            const lenis = getLenis();
-            if (lenis) lenis.scrollTo(0, { duration: 2.4 });
-            else window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center ${
-            scrolled || open ? 'text-primary' : 'text-primary-foreground'
-          } ${open ? '!text-primary-foreground' : ''}`}
-        >
-          POLISHED<span className="text-accent">.</span>
-        </a>
+        {/* Brand wordmark — receives the shared `brand-logo` layoutId
+            ONLY once the loader has begun dismissing. Until then we render
+            an invisible placeholder that reserves the same hit area, so
+            there is exactly one element with this layoutId at any time. */}
+        {loaderActive ? (
+          <span
+            aria-hidden
+            className="font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] min-h-[44px] min-w-[44px] flex items-center opacity-0 select-none pointer-events-none"
+          >
+            POLISHED.
+          </span>
+        ) : (
+          <motion.a
+            layoutId={BRAND_LAYOUT_ID}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              const lenis = getLenis();
+              if (lenis) lenis.scrollTo(0, { duration: 2.4 });
+              else window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+            className={`font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center uppercase ${
+              scrolled || open ? 'text-primary' : 'text-primary-foreground'
+            } ${open ? '!text-primary-foreground' : ''}`}
+            style={{ letterSpacing: '4px' }}
+          >
+            POLISHED<span className="text-accent">.</span>
+          </motion.a>
+        )}
 
         {/* Desktop nav */}
         <ul className="hidden md:flex items-center gap-9">
