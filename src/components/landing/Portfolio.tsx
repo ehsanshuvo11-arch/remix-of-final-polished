@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from 'framer-motion';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -287,6 +288,17 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
 function TiltImage({ src, alt }: { src: string; alt: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const isMobile = useIsMobileDevice();
+
+  // ── Velocity-based subtle scale (desktop only) ──
+  // Map page scroll velocity → tiny scaleY 1.0 → 1.015 max.
+  // Spring-back snaps it cleanly to rest. Image-only, never the container,
+  // so click targets, hook text and case-study layout are not affected.
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, { stiffness: 400, damping: 30, mass: 0.4 });
+  // Clamp to a sliver — the "quiet luxury" tell is what you almost don't see.
+  const velocityScaleY = useTransform(smoothVelocity, [-3000, 0, 3000], [1.015, 1, 1.015]);
 
   const handleTilt = (e: React.MouseEvent) => {
     const el = wrapperRef.current;
@@ -330,6 +342,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
           animate={{ scale: imageLoaded ? 1.0 : 1.03 }}
           transition={{ duration: 2.0, ease: [0.76, 0, 0.24, 1] }}
           onLoad={() => setImageLoaded(true)}
+          style={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' }}
         />
       </motion.div>
     </div>

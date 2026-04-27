@@ -13,6 +13,7 @@ import PuzzleGame from '@/components/landing/PuzzleGame';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 import CustomCursor from '@/components/landing/CustomCursor';
 import SmoothScroll from '@/components/landing/SmoothScroll';
+import SectionTheme from '@/components/landing/SectionTheme';
 import Transformations from '@/components/landing/Transformations';
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
@@ -51,6 +52,7 @@ export default function Index() {
     <SmoothScroll>
     <div className="font-body">
       <PageLoader onComplete={() => setHeroReady(true)} />
+      <SectionTheme />
       <CustomCursor />
       <Navbar onPuzzleOpen={() => setPuzzleOpen(true)} content={navContent ?? null} />
       <motion.div
