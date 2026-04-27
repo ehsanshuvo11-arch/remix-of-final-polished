@@ -15,13 +15,16 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     if (isTouchDevice()) return;
 
     const lenis = new Lenis({
-      duration: 1.8,
+      duration: 2.4,
       easing: (t: number) => {
-        return t === 1 ? 1 : 1 - Math.pow(2, -12 * t);
+        // Smoother, longer-tail easing for a silky glide
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
       },
       smoothWheel: true,
+      syncTouch: false,
       touchMultiplier: 1.5,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 0.7,
+      lerp: 0.075,
     });
     lenisInstance = lenis;
 
