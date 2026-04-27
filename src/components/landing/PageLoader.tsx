@@ -1,56 +1,149 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export default function PageLoader() {
-  const [hidden, setHidden] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
+const SESSION_KEY = 'polished_loader_shown';
+
+interface PageLoaderProps {
+  onComplete?: () => void;
+}
+
+export default function PageLoader({ onComplete }: PageLoaderProps) {
+  // Decide synchronously so we never flash a loader on subsequent navigations.
+  const [show, setShow] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return sessionStorage.getItem(SESSION_KEY) !== '1';
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
-    const timer = setTimeout(() => setFadeOut(true), 1800);
-    const hideTimer = setTimeout(() => setHidden(true), 2400);
-    return () => { clearTimeout(timer); clearTimeout(hideTimer); };
-  }, []);
+    if (!show) {
+      onComplete?.();
+      return;
+    }
 
-  if (hidden) return null;
+    // Lock body scroll while loader is on screen.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    // Total choreography:
+    //  0.0s – 1.0s : wordmark reveal (mask slide + blur-to-sharp)
+    //  1.0s – 1.5s : hold
+    //  1.5s – 2.4s : curtain drops up (0.9s cubic ease-in-out)
+    const dismissTimer = window.setTimeout(() => {
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch { /* noop */ }
+      setShow(false);
+      // Match the curtain duration so hero entrance is in sync.
+      window.setTimeout(() => onComplete?.(), 900);
+    }, 1500);
+
+    return () => {
+      window.clearTimeout(dismissTimer);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [show, onComplete]);
 
   const letters = 'POLISHED'.split('');
 
   return (
-    <div
-      className={`fixed inset-0 bg-primary z-[9999] flex items-center justify-center transition-all duration-600 ${
-        fadeOut ? 'opacity-0 -translate-y-full pointer-events-none' : ''
-      }`}
-    >
-      <div className="font-heading text-[32px] tracking-[6px] text-primary-foreground uppercase overflow-hidden">
-        {letters.map((letter, i) => (
-          <span
-            key={i}
-            className="inline-block"
-            style={{
-              animation: `loaderChar 0.6s cubic-bezier(0.16,1,0.3,1) forwards`,
-              animationDelay: `${0.1 + i * 0.08}s`,
-              opacity: 0,
-              transform: 'translateY(40px)',
-            }}
-          >
-            {letter}
-          </span>
-        ))}
-        <span
-          className="inline-block text-accent"
-          style={{
-            animation: `loaderChar 0.6s cubic-bezier(0.16,1,0.3,1) forwards`,
-            animationDelay: `${0.1 + letters.length * 0.08}s`,
-            opacity: 0,
-            transform: 'translateY(40px)',
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          key="cinematic-loader"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
+          initial={{ y: 0 }}
+          exit={{ y: '-100%' }}
+          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          onAnimationComplete={(def) => {
+            // Restore overflow once curtain fully exits
+            if ((def as { y?: string })?.y === '-100%') {
+              document.body.style.overflow = '';
+            }
           }}
         >
-          .
-        </span>
-      </div>
-      <div
-        className="absolute bottom-0 left-0 h-0.5 bg-accent"
-        style={{ animation: 'loaderBar 1.6s cubic-bezier(0.25,0.46,0.45,0.94) forwards' }}
-      />
-    </div>
+          {/* Subtle vertical sheen for richness */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-40"
+            style={{
+              background:
+                'radial-gradient(ellipse at 50% 50%, hsl(var(--primary-foreground) / 0.06), transparent 60%)',
+            }}
+          />
+
+          {/* Wordmark with overflow mask for slide-up reveal */}
+          <div className="relative overflow-hidden px-6">
+            <div
+              className="font-heading uppercase text-primary-foreground"
+              style={{
+                fontFamily: '"Cormorant Garamond", serif',
+                letterSpacing: '0.18em',
+                fontSize: 'clamp(2.25rem, 7vw, 5.25rem)',
+                fontWeight: 500,
+                lineHeight: 1.1,
+                display: 'flex',
+              }}
+            >
+              {letters.map((letter, i) => (
+                <span
+                  key={i}
+                  className="relative inline-block overflow-hidden"
+                  style={{ paddingBottom: '0.12em' }}
+                >
+                  <motion.span
+                    className="inline-block"
+                    initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
+                    animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.05 + i * 0.045,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    {letter}
+                  </motion.span>
+                </span>
+              ))}
+              <span
+                className="relative inline-block overflow-hidden"
+                style={{ paddingBottom: '0.12em' }}
+              >
+                <motion.span
+                  className="inline-block text-accent"
+                  initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
+                  animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.05 + letters.length * 0.045,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  .
+                </motion.span>
+              </span>
+            </div>
+
+            {/* Hairline accent under the wordmark */}
+            <motion.div
+              className="absolute bottom-0 left-0 h-px w-full bg-primary-foreground/30"
+              initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
+}
+
+export function shouldShowLoader() {
+  if (typeof window === 'undefined') return false;
+  try {
+    return sessionStorage.getItem(SESSION_KEY) !== '1';
+  } catch {
+    return true;
+  }
 }
