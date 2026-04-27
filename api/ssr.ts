@@ -178,13 +178,6 @@ const collectImageUrlsFromRecord = (record: Record<string, any>): string[] => {
         visit(parsed, keyPath);
         return;
       }
-      if (keyPath.some((key) => imageKeyPattern.test(key)) && /[\n,]/.test(value)) {
-        const parts = value.split(/[\n,]+/).map((part) => part.trim()).filter(Boolean);
-        if (parts.length > 1) {
-          parts.forEach((part) => visit(part, keyPath));
-          return;
-        }
-      }
       if (looksLikeImage(value, keyPath)) {
         const absoluteUrl = toAbsoluteHttpsUrl(value);
         if (absoluteUrl) urls.push(absoluteUrl);
@@ -206,67 +199,6 @@ const collectImageUrlsFromRecord = (record: Record<string, any>): string[] => {
 
   visit(record, []);
   return Array.from(new Set(urls));
-};
-
-const renderPortfolioProjectsHtml = (projects: any[]): string => {
-  return (projects || [])
-    .map((p) => {
-      const title = pickLocalized(p, 'title') || p.title || '';
-      const titleSafe = escapeHtml(title);
-      const category = escapeHtml(pickLocalized(p, 'category') || p.category || '');
-      const client = escapeHtml(pickLocalized(p, 'client') || p.client || '');
-      const meta = [client, category].filter(Boolean).join(' · ');
-      const hook = stripHtml(pickLocalized(p, 'hook'));
-      const uniqueImages = collectImageUrlsFromRecord(p).filter((url) => /^https:\/\//i.test(url));
-      const caseStudyBlocks = collectCaseStudyBlocks(p);
-
-      // This is the forced raw HTML string injection path for AI/non-JS scrapers.
-      // Every portfolio image URL discovered from the Supabase row is appended as
-      // a literal <img src="https://..."> tag before the response is sent.
-      let html = '<article class="portfolio-project" itemscope itemtype="https://schema.org/CreativeWork">';
-
-      if (titleSafe) html += `<h3 itemprop="name">${titleSafe}</h3>`;
-      if (meta) html += `<p class="project-meta"><em>${meta}</em></p>`;
-      if (hook) html += `<p class="project-hook"><strong>${escapeHtml(hook)}</strong></p>`;
-
-      uniqueImages.forEach((url, imageIndex) => {
-        const altText = title
-          ? `Premium 3D Mockup for ${title}`
-          : 'Premium Mockup';
-        const captionText = title
-          ? `${title} — mockup ${imageIndex + 1}`
-          : `Mockup ${imageIndex + 1}`;
-        html += `<figure>`;
-        html += `<img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" itemprop="image" loading="lazy" decoding="async" width="1200" height="900" />`;
-        html += `<figcaption>${escapeHtml(captionText)}</figcaption>`;
-        html += `</figure>`;
-      });
-
-      if (caseStudyBlocks.length) {
-        html += '<div class="case-study" itemprop="description">';
-        caseStudyBlocks.forEach(({ lang, paragraphs }) => {
-          html += `<div class="case-study-language" lang="${escapeHtml(lang)}">`;
-          paragraphs.forEach((paragraph) => {
-            html += `<p>${escapeHtml(paragraph)}</p>`;
-          });
-          html += '</div>';
-        });
-        html += '</div>';
-      }
-
-      const pdfLinks: string[] = [];
-      if (p.pdf_url_en) {
-        pdfLinks.push(`<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_en))}" rel="noopener">Download full case study (EN, PDF)</a>`);
-      }
-      if (p.pdf_url_bn) {
-        pdfLinks.push(`<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_bn))}" rel="noopener">Download full case study (BN, PDF)</a>`);
-      }
-      if (pdfLinks.length) html += `<p class="case-study-downloads">${pdfLinks.join(' · ')}</p>`;
-
-      html += '</article>';
-      return html;
-    })
-    .join('');
 };
 
 // ─── Build the SSR-injected semantic HTML block ────────────────────────────
@@ -306,7 +238,75 @@ function renderSeoBlock(data: {
     })
     .join('');
 
-  const projectsHtml = renderPortfolioProjectsHtml(projects);
+  const projectsHtml = projects
+    .map((p) => {
+      const title =
+        pickLocalized(p, 'title') || p.title || '';
+      const titleSafe = escapeHtml(title);
+      const projectLabel = title || 'portfolio project';
+      const category = escapeHtml(
+        pickLocalized(p, 'category') || p.category || ''
+      );
+      const client = escapeHtml(pickLocalized(p, 'client') || p.client || '');
+      const meta = [client, category].filter(Boolean).join(' · ');
+
+      // Hook / teaser
+      const hook = stripHtml(pickLocalized(p, 'hook'));
+      const hookHtml = hook ? `<p class="project-hook"><strong>${escapeHtml(hook)}</strong></p>` : '';
+
+      const caseStudyHtml = collectCaseStudyBlocks(p)
+        .map(({ lang, paragraphs }) => `
+          <div class="case-study-language" lang="${escapeHtml(lang)}">
+            ${paragraphs.map((para) => `<p>${escapeHtml(para)}</p>`).join('')}
+          </div>`)
+        .join('');
+
+      // Collect EVERY project visual from every image/mockup/gallery field,
+      // normalize to absolute https:// URLs, and emit real <img> tags.
+      const uniqueImages = collectImageUrlsFromRecord(p);
+
+      const figuresHtml = uniqueImages
+        .map((url, idx) => {
+          const isCover = idx === 0;
+          const altText = isCover
+            ? `Premium brand identity cover visual for ${projectLabel}`
+            : `Premium 3D Mockup for ${projectLabel}`;
+          const captionText = isCover
+            ? `${projectLabel} — cover visual`
+            : `${projectLabel} — mockup ${idx}`;
+          return `
+        <figure>
+          <img src="${escapeHtml(url)}" alt="${escapeHtml(altText)}" itemprop="image" loading="lazy" decoding="async" width="1200" height="900" />
+          <figcaption>${escapeHtml(captionText)}</figcaption>
+        </figure>`;
+        })
+        .join('');
+
+      // PDF case study links if present
+      const pdfLinks: string[] = [];
+      if (p.pdf_url_en)
+        pdfLinks.push(
+          `<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_en))}" rel="noopener">Download full case study (EN, PDF)</a>`
+        );
+      if (p.pdf_url_bn)
+        pdfLinks.push(
+          `<a href="${escapeHtml(toAbsoluteUrl(p.pdf_url_bn))}" rel="noopener">Download full case study (BN, PDF)</a>`
+        );
+      const pdfHtml = pdfLinks.length
+        ? `<p class="case-study-downloads">${pdfLinks.join(' · ')}</p>`
+        : '';
+
+      return `
+        <article class="portfolio-project" itemscope itemtype="https://schema.org/CreativeWork">
+          ${titleSafe ? `<h3 itemprop="name">${titleSafe}</h3>` : ''}
+          ${meta ? `<p class="project-meta"><em>${meta}</em></p>` : ''}
+          ${hookHtml}
+          ${figuresHtml}
+          ${caseStudyHtml ? `<div class="case-study" itemprop="description">${caseStudyHtml}</div>` : ''}
+          ${pdfHtml}
+        </article>`;
+    })
+    .join('');
 
   const stepsHtml = steps
     .map((s, i) => {
@@ -575,9 +575,12 @@ export default async function handler(req: any, res: any) {
     const html = template.replace('<!--SSR-CONTENT-->', seoBlock);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+    // Bots get fresh data; humans get a fast CDN edge cache that revalidates
+    // in the background. Tune as needed.
+    res.setHeader(
+      'Cache-Control',
+      'public, max-age=0, s-maxage=60, stale-while-revalidate=300'
+    );
     res.status(200).send(html);
   } catch (err) {
     // On failure, fall back to the un-injected template so the React app
@@ -586,9 +589,7 @@ export default async function handler(req: any, res: any) {
     console.error('[ssr]', err);
     try {
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
+      res.setHeader('Cache-Control', 'no-store');
       res.status(200).send(getTemplate());
     } catch {
       res.status(500).send('SSR error');
