@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface RevealTextProps {
   children: string;
@@ -33,6 +34,7 @@ export default function RevealText({
     : children.split(' ');
 
   const Wrapper = Tag as any;
+  const isMobile = useIsMobileDevice();
 
   return (
     <Wrapper className={className}>
@@ -44,7 +46,7 @@ export default function RevealText({
         >
           <motion.span
             className="inline-block will-change-transform"
-            initial={{ y: '100%' }}
+            initial={isMobile ? { y: '0%' } : { y: '100%' }}
             whileInView={{ y: '0%' }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{

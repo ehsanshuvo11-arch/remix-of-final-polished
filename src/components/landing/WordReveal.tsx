@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface WordRevealProps {
   children: string;
@@ -19,6 +20,7 @@ export default function WordReveal({
 }: WordRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -40px 0px', amount: 0.2 });
+  const isMobile = useIsMobileDevice();
 
   const words = children.split(' ');
 
@@ -28,8 +30,8 @@ export default function WordReveal({
         <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
           <motion.span
             className="inline-block"
-            initial={{ y: '110%', opacity: 0 }}
-            animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
+            initial={isMobile ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
+            animate={isMobile ? { y: '0%', opacity: 1 } : (isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 })}
             transition={{
               duration: 0.9,
               delay: delay + i * 0.04,
