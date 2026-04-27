@@ -20,10 +20,8 @@ import type { HeroContent, AboutContent, ContactContent, FooterContent, Discount
 
 export default function Index() {
   const [puzzleOpen, setPuzzleOpen] = useState(false);
-  // While true, the loader owns the shared `brand-logo` layoutId.
-  // Flips to false the instant the loader begins its exit, which is
-  // when the shared-layout morph into the Navbar should start.
-  const [loaderActive, setLoaderActive] = useState(() => shouldShowLoader());
+  // If the loader is going to show, hold the hero in its pre-entrance state.
+  // SSR-safe: defaults to "ready" on the server so prerendered HTML is visible.
   const [heroReady, setHeroReady] = useState(() => !shouldShowLoader());
 
   const fallbackLogoUrl = supabase.storage.from('polished-assets').getPublicUrl('logo/current').data.publicUrl;
