@@ -28,13 +28,16 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             lerp: 0.1,
           }
         : {
-            duration: 2.4,
-            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+            // Butter-smooth desktop wheel scrolling
+            // Lower lerp = silkier, more cinematic glide
+            // Gentle wheelMultiplier keeps small wheel ticks from feeling jumpy
+            duration: 2.6,
+            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -11 * t)),
             smoothWheel: true,
             syncTouch: false,
+            wheelMultiplier: 0.55,
             touchMultiplier: 1.5,
-            wheelMultiplier: 0.7,
-            lerp: 0.075,
+            lerp: 0.055,
           }
     );
     lenisInstance = lenis;
