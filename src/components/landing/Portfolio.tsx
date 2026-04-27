@@ -309,21 +309,29 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
       {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
 
-      <div
+      <motion.div
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
         className="relative z-[60] w-full h-full overflow-hidden isolate"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
+        initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
+        whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
-        <img
+        <motion.img
           src={src}
           alt={alt}
-          className="relative z-10 block w-full h-full object-cover object-center cursor-pointer transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="relative z-10 block w-full h-full object-cover object-center cursor-pointer will-change-transform"
           loading="lazy"
           draggable={false}
+          initial={{ scale: 1.15 }}
+          whileInView={{ scale: 1.0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 2.0, ease: [0.76, 0, 0.24, 1] }}
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
