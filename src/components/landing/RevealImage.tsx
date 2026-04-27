@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface RevealImageProps {
   src: string;
@@ -25,22 +26,24 @@ export default function RevealImage({
   delay = 0,
   loading = 'lazy',
 }: RevealImageProps) {
+  const isMobile = useIsMobileDevice();
+
   return (
     <motion.div
       className={`relative overflow-hidden ${containerClassName}`}
-      initial={{ clipPath: 'inset(100% 0% 0% 0%)' }}
+      initial={isMobile ? { clipPath: 'inset(0% 0% 0% 0%)' } : { clipPath: 'inset(100% 0% 0% 0%)' }}
       whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 1.2, delay, ease: LUXURY_EASE as any }}
+      transition={{ duration: isMobile ? 0 : 1.2, delay: isMobile ? 0 : delay, ease: LUXURY_EASE as any }}
     >
       <motion.img
         src={src}
         alt={alt}
         className={`block w-full h-full will-change-transform ${className}`}
-        initial={{ scale: 1.15 }}
+        initial={isMobile ? { scale: 1.0 } : { scale: 1.15 }}
         whileInView={{ scale: 1.0 }}
         viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 2.0, delay, ease: LUXURY_EASE as any }}
+        transition={{ duration: isMobile ? 0 : 2.0, delay: isMobile ? 0 : delay, ease: LUXURY_EASE as any }}
         draggable={false}
         loading={loading}
       />

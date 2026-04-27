@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 type Direction = 'up' | 'left' | 'right';
 
@@ -30,19 +31,22 @@ export default function MotionReveal({
 }: MotionRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once, margin: '0px 0px -40px 0px', amount: 0.08 });
+  const isMobile = useIsMobileDevice();
 
   const offset = directionMap[direction];
-  const initial = {
-    opacity: 0,
-    x: distance !== undefined && direction !== 'up' ? (direction === 'left' ? -distance : distance) : (offset.x ?? 0),
-    y: distance !== undefined && direction === 'up' ? distance : (offset.y ?? 0),
-  };
+  const initial = isMobile
+    ? { opacity: 1, x: 0, y: 0 }
+    : {
+        opacity: 0,
+        x: distance !== undefined && direction !== 'up' ? (direction === 'left' ? -distance : distance) : (offset.x ?? 0),
+        y: distance !== undefined && direction === 'up' ? distance : (offset.y ?? 0),
+      };
 
   return (
     <motion.div
       ref={ref}
       initial={initial}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : initial}
+      animate={isMobile ? { opacity: 1, x: 0, y: 0 } : (isInView ? { opacity: 1, x: 0, y: 0 } : initial)}
       transition={{
         duration,
         delay,
