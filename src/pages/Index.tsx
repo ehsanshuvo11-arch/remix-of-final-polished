@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
@@ -9,7 +10,7 @@ import Process from '@/components/landing/Process';
 import Contact from '@/components/landing/Contact';
 import Footer from '@/components/landing/Footer';
 import PuzzleGame from '@/components/landing/PuzzleGame';
-import PageLoader from '@/components/landing/PageLoader';
+import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 import CustomCursor from '@/components/landing/CustomCursor';
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import Transformations from '@/components/landing/Transformations';
@@ -19,6 +20,10 @@ import type { HeroContent, AboutContent, ContactContent, FooterContent, Discount
 
 export default function Index() {
   const [puzzleOpen, setPuzzleOpen] = useState(false);
+  // If the loader is going to show, hold the hero in its pre-entrance state.
+  // SSR-safe: defaults to "ready" on the server so prerendered HTML is visible.
+  const [heroReady, setHeroReady] = useState(() => !shouldShowLoader());
+
   const fallbackLogoUrl = supabase.storage.from('polished-assets').getPublicUrl('logo/current').data.publicUrl;
   const fallbackPuzzleImageUrl = supabase.storage.from('polished-assets').getPublicUrl('puzzle/current').data.publicUrl;
 
@@ -45,14 +50,25 @@ export default function Index() {
   return (
     <SmoothScroll>
     <div className="font-body">
-      <PageLoader />
+      <PageLoader onComplete={() => setHeroReady(true)} />
       <CustomCursor />
       <Navbar onPuzzleOpen={() => setPuzzleOpen(true)} content={navContent ?? null} />
-      <Hero
-        content={heroContent ?? null}
-        logoUrl={logoData?.url ?? fallbackLogoUrl}
-        onPuzzleOpen={() => setPuzzleOpen(true)}
-      />
+      <motion.div
+        initial={false}
+        animate={
+          heroReady
+            ? { opacity: 1, scale: 1 }
+            : { opacity: 0, scale: 1.05 }
+        }
+        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformOrigin: '50% 50%', willChange: 'transform, opacity' }}
+      >
+        <Hero
+          content={heroContent ?? null}
+          logoUrl={logoData?.url ?? fallbackLogoUrl}
+          onPuzzleOpen={() => setPuzzleOpen(true)}
+        />
+      </motion.div>
       <Marquee items={marqueeData?.items ?? []} />
       <About content={aboutContent ?? null} stats={stats} />
       <Services services={services} content={servicesMeta ?? null} />
