@@ -2,18 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
-import { BRAND_LAYOUT_ID } from '@/components/landing/PageLoader';
 import type { NavContent } from '@/types/database';
 
 interface NavbarProps {
   onPuzzleOpen: () => void;
   content?: NavContent | null;
-  /**
-   * When true, the loader still owns the shared `brand-logo` layoutId.
-   * The Navbar must not render its motion logo yet, otherwise Framer
-   * Motion will see two elements with the same layoutId and snap.
-   */
-  loaderActive?: boolean;
 }
 
 const LUXE = [0.22, 1, 0.36, 1] as const;
