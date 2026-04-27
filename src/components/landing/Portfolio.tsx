@@ -89,7 +89,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
       <div
         ref={cardRef}
         className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-          imageExpanded ? 'h-auto' : 'h-[160px] sm:h-[260px] md:h-[260px]'
+          imageExpanded ? 'h-auto' : 'h-[220px] sm:h-[260px] md:h-[260px]'
         }`}
         onClick={() => {
           toggleImageExpand();
