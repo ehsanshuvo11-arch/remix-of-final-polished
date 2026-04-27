@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Hind+Siliguri:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Hind+Siliguri:wght@300;400;500;600&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -201,6 +201,61 @@
 html[data-lang="bn"] .lang-en { display: none !important; }
 html[data-lang="en"] .lang-bn { display: none !important; }
 html:not([data-lang="bn"]) .lang-bn { display: none !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   Bengali (Bangla) Typography — Premium localization layer
+   ─────────────────────────────────────────────────────────────
+   Bengali uses combining vowel-marker glyphs (কার). Any non-zero
+   letter-spacing detaches the markers from their base consonant
+   (e.g. "বিশ্বাস" → "ব ি শ্বাস"). Force normal spacing for all
+   Bengali content, swap to a premium Bengali serif for headings
+   and a humanist sans for body, and slightly increase line-height
+   to give ascenders/descenders room to breathe.
+   ───────────────────────────────────────────────────────────── */
+html[data-lang="bn"] body,
+html[data-lang="bn"] p,
+html[data-lang="bn"] a,
+html[data-lang="bn"] span,
+html[data-lang="bn"] li,
+html[data-lang="bn"] button,
+html[data-lang="bn"] input,
+html[data-lang="bn"] textarea,
+html[data-lang="bn"] label,
+html[data-lang="bn"] div {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', sans-serif;
+  letter-spacing: normal !important;
+  line-height: 1.6;
+  word-spacing: 0;
+}
+
+html[data-lang="bn"] h1,
+html[data-lang="bn"] h2,
+html[data-lang="bn"] h3,
+html[data-lang="bn"] h4,
+html[data-lang="bn"] h5,
+html[data-lang="bn"] h6,
+html[data-lang="bn"] .font-heading {
+  font-family: 'Noto Serif Bengali', serif !important;
+  letter-spacing: normal !important;
+  line-height: 1.45;
+  font-style: normal; /* Bengali has no italic — italic glyphs render as faux-skew, kills the look */
+}
+
+/* Italic <em> inside Bengali should render upright (Bengali script lacks an italic form). */
+html[data-lang="bn"] em,
+html[data-lang="bn"] i,
+html[data-lang="bn"] .italic {
+  font-style: normal !important;
+  font-family: 'Noto Serif Bengali', serif;
+}
+
+/* Kill uppercase tracking on small caps labels — letter-spacing breaks Bengali. */
+html[data-lang="bn"] [class*="tracking-"],
+html[data-lang="bn"] [class*="uppercase"] {
+  letter-spacing: normal !important;
+  text-transform: none !important; /* Bengali has no uppercase */
+}
+
 
 
 /* Scroll reveal */
