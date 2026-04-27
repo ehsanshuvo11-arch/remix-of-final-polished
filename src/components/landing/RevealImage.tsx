@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
-import { ImgHTMLAttributes } from 'react';
 
-interface RevealImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+interface RevealImageProps {
   src: string;
   alt: string;
+  className?: string;
   containerClassName?: string;
   delay?: number;
+  loading?: 'lazy' | 'eager';
 }
 
 const LUXURY_EASE = [0.76, 0, 0.24, 1] as const;
@@ -22,7 +23,7 @@ export default function RevealImage({
   containerClassName = '',
   className = '',
   delay = 0,
-  ...imgProps
+  loading = 'lazy',
 }: RevealImageProps) {
   return (
     <motion.div
@@ -41,7 +42,7 @@ export default function RevealImage({
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 2.0, delay, ease: LUXURY_EASE as any }}
         draggable={false}
-        {...imgProps}
+        loading={loading}
       />
     </motion.div>
   );
