@@ -23,7 +23,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             smoothWheel: true,
             syncTouch: true,
             syncTouchLerp: 0.085, // glide weight after finger lifts
-            touchInertiaMultiplier: 28, // longer, silkier coast
+            
             touchMultiplier: 2,
             lerp: 0.1,
           }
