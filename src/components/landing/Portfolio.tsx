@@ -286,6 +286,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
 
 function TiltImage({ src, alt }: { src: string; alt: string }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleTilt = (e: React.MouseEvent) => {
     const el = wrapperRef.current;
@@ -313,12 +314,11 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate"
+        className="relative z-[60] w-full h-full overflow-hidden isolate bg-muted/20"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        initial={{ opacity: 0, clipPath: 'inset(100% 0% 0% 0%)' }}
-        whileInView={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
-        viewport={{ once: true, amount: 0.01 }}
-        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+        initial={false}
+        animate={{ opacity: imageLoaded ? 1 : 0.35 }}
+        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
       >
         <motion.img
           src={src}
@@ -326,10 +326,10 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
           className="relative z-10 block w-full h-full object-cover object-center cursor-pointer will-change-transform"
           loading="lazy"
           draggable={false}
-          initial={{ scale: 1.15 }}
-          whileInView={{ scale: 1.0 }}
-          viewport={{ once: true, amount: 0.01 }}
+          initial={false}
+          animate={{ scale: imageLoaded ? 1.0 : 1.03 }}
           transition={{ duration: 2.0, ease: [0.76, 0, 0.24, 1] }}
+          onLoad={() => setImageLoaded(true)}
         />
       </motion.div>
     </div>
