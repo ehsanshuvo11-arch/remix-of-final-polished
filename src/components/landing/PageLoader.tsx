@@ -2,26 +2,21 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SESSION_KEY = 'polished_loader_shown';
-export const BRAND_LAYOUT_ID = 'brand-logo';
 
 interface PageLoaderProps {
   onComplete?: () => void;
-  onDismissStart?: () => void;
 }
 
-export function shouldShowLoader() {
-  if (typeof window === 'undefined') return false;
-  try {
-    return sessionStorage.getItem(SESSION_KEY) !== '1';
-  } catch {
-    return true;
-  }
-}
-
-const LUXE = [0.76, 0, 0.24, 1] as const;
-
-export default function PageLoader({ onComplete, onDismissStart }: PageLoaderProps) {
-  const [show, setShow] = useState(() => shouldShowLoader());
+export default function PageLoader({ onComplete }: PageLoaderProps) {
+  // Decide synchronously so we never flash a loader on subsequent navigations.
+  const [show, setShow] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return sessionStorage.getItem(SESSION_KEY) !== '1';
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
     if (!show) {
@@ -29,28 +24,28 @@ export default function PageLoader({ onComplete, onDismissStart }: PageLoaderPro
       return;
     }
 
+    // Lock body scroll while loader is on screen.
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    // Timeline:
-    //  0.0s – 0.9s : wordmark reveal (mask slide + blur-to-sharp)
-    //  0.9s – 2.1s : 1.2s anticipation hold
-    //  2.1s        : trigger morph — overlay clip-paths away,
-    //                shared layout logo glides into the Navbar position
-    //  2.1s – 3.3s : 1.2s shared layout transition
+    // Total choreography:
+    //  0.0s – 1.0s : wordmark reveal (mask slide + blur-to-sharp)
+    //  1.0s – 1.5s : hold
+    //  1.5s – 2.4s : curtain drops up (0.9s cubic ease-in-out)
     const dismissTimer = window.setTimeout(() => {
       try { sessionStorage.setItem(SESSION_KEY, '1'); } catch { /* noop */ }
-      onDismissStart?.();
       setShow(false);
-      // Match the morph duration so hero entrance is in sync.
-      window.setTimeout(() => onComplete?.(), 1200);
-    }, 2100);
+      // Match the curtain duration so hero entrance is in sync.
+      window.setTimeout(() => onComplete?.(), 900);
+    }, 1500);
 
     return () => {
       window.clearTimeout(dismissTimer);
       document.body.style.overflow = prevOverflow;
     };
-  }, [show, onComplete, onDismissStart]);
+  }, [show, onComplete]);
+
+  const letters = 'POLISHED'.split('');
 
   return (
     <AnimatePresence>
@@ -58,14 +53,15 @@ export default function PageLoader({ onComplete, onDismissStart }: PageLoaderPro
         <motion.div
           key="cinematic-loader"
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
-          initial={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-          exit={{ clipPath: 'inset(0% 0% 100% 0%)' }}
-          transition={{ duration: 1.2, ease: LUXE }}
-          onAnimationComplete={() => {
-            document.body.style.overflow = '';
+          initial={{ y: 0 }}
+          exit={{ y: '-100%' }}
+          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          onAnimationComplete={(def) => {
+            if ((def as { y?: string })?.y === '-100%') {
+              document.body.style.overflow = '';
+            }
           }}
         >
-          {/* Subtle vertical sheen for richness */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 opacity-40"
@@ -75,37 +71,75 @@ export default function PageLoader({ onComplete, onDismissStart }: PageLoaderPro
             }}
           />
 
-          {/* Hairline accent — fades out as the curtain leaves */}
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 h-px bg-primary-foreground/30"
-            initial={{ width: 0 }}
-            animate={{ width: 'min(420px, 60vw)' }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{ top: 'calc(50% + clamp(2.4rem, 6vw, 4.4rem))' }}
-          />
+          <div className="relative overflow-hidden px-6">
+            <div
+              className="font-heading uppercase text-primary-foreground"
+              style={{
+                fontFamily: '"Cormorant Garamond", serif',
+                letterSpacing: '0.18em',
+                fontSize: 'clamp(2.25rem, 7vw, 5.25rem)',
+                fontWeight: 500,
+                lineHeight: 1.1,
+                display: 'flex',
+              }}
+            >
+              {letters.map((letter, i) => (
+                <span
+                  key={i}
+                  className="relative inline-block overflow-hidden"
+                  style={{ paddingBottom: '0.12em' }}
+                >
+                  <motion.span
+                    className="inline-block"
+                    initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
+                    animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.05 + i * 0.045,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    {letter}
+                  </motion.span>
+                </span>
+              ))}
+              <span
+                className="relative inline-block overflow-hidden"
+                style={{ paddingBottom: '0.12em' }}
+              >
+                <motion.span
+                  className="inline-block text-accent"
+                  initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
+                  animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.05 + letters.length * 0.045,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  .
+                </motion.span>
+              </span>
+            </div>
 
-          {/* SHARED LAYOUT WORDMARK
-              This element shares layoutId="brand-logo" with the Navbar.
-              When the loader unmounts, Framer Motion animates the layout
-              transition from this large centered position to the small
-              Navbar position — gliding, scaling, and morphing in one shot. */}
-          <motion.div
-            layoutId={BRAND_LAYOUT_ID}
-            className="font-heading uppercase text-primary-foreground"
-            style={{
-              fontFamily: '"Cormorant Garamond", serif',
-              letterSpacing: '0.18em',
-              fontSize: 'clamp(2.25rem, 7vw, 5.25rem)',
-              fontWeight: 500,
-              lineHeight: 1.1,
-            }}
-            transition={{ duration: 1.2, ease: LUXE }}
-          >
-            POLISHED<span className="text-accent">.</span>
-          </motion.div>
+            <motion.div
+              className="absolute bottom-0 left-0 h-px w-full bg-primary-foreground/30"
+              initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
+}
+
+export function shouldShowLoader() {
+  if (typeof window === 'undefined') return false;
+  try {
+    return sessionStorage.getItem(SESSION_KEY) !== '1';
+  } catch {
+    return true;
+  }
 }
