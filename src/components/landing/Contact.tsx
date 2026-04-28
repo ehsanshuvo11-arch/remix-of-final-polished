@@ -76,12 +76,18 @@ export default function Contact({ contact }: ContactProps) {
               {c.sectionLabelEn ?? 'Get In Touch'}
             </p>
           </MotionReveal>
-          <h2 lang="en" className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            <WordReveal delay={0.1}>{line1}</WordReveal>
-            <br />
-            <em className="italic">
-              <WordReveal delay={0.25}>{line2}</WordReveal>
-            </em>
+          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+            {isBn ? (
+              <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত? আসুন কথা বলি।</WordReveal>
+            ) : (
+              <>
+                <WordReveal delay={0.1}>{line1}</WordReveal>
+                <br />
+                <em className="italic">
+                  <WordReveal delay={0.25}>{line2}</WordReveal>
+                </em>
+              </>
+            )}
           </h2>
           <MotionReveal delay={0.15}>
             <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary-foreground/50 mb-10">
