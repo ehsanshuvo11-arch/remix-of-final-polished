@@ -1,6 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import type { Transformation, TransformationsMetaContent } from '@/types/database';
@@ -11,8 +10,6 @@ interface TransformationsProps {
 }
 
 export default function Transformations({ items, content }: TransformationsProps) {
-  const { t } = useLanguage();
-
   // CRITICAL: hide entirely if no active items
   const active = items?.filter((i) => i.is_active && i.before_image_url && i.after_image_url) ?? [];
   if (active.length === 0) return null;
@@ -23,18 +20,18 @@ export default function Transformations({ items, content }: TransformationsProps
       className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto"
     >
       <MotionReveal>
-        <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-          {t(content?.labelEn ?? 'Transformations', content?.labelBn ?? 'রূপান্তর')}
+        <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+          {content?.labelEn ?? 'Transformations'}
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 className="font-heading font-normal text-primary mb-12 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang="en" className="font-heading font-normal text-primary mb-12 text-[clamp(36px,5vw,60px)] leading-[1.1]">
           <WordReveal delay={0.1}>
-            {t(content?.titleLine1En ?? 'Before', content?.titleLine1Bn ?? 'আগে')}
+            {content?.titleLine1En ?? 'Before'}
           </WordReveal>{' '}
           <em className="italic">
             <WordReveal delay={0.25}>
-              {t(content?.titleLine2En ?? '& after.', content?.titleLine2Bn ?? '& পরে।')}
+              {content?.titleLine2En ?? '& after.'}
             </WordReveal>
           </em>
         </h2>
@@ -58,9 +55,8 @@ function TransformationCard({
   item: Transformation;
   content: TransformationsMetaContent | null;
 }) {
-  const { t } = useLanguage();
-  const beforeLabel = t(content?.beforeLabelEn ?? 'Before', content?.beforeLabelBn ?? 'আগে');
-  const afterLabel = t(content?.afterLabelEn ?? 'After', content?.afterLabelBn ?? 'পরে');
+  const beforeLabel = content?.beforeLabelEn ?? 'Before';
+  const afterLabel = content?.afterLabelEn ?? 'After';
 
   return (
     <div>

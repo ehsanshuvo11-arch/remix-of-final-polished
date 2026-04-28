@@ -4,7 +4,6 @@ import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
@@ -16,8 +15,6 @@ interface PortfolioProps {
 }
 
 export default function Portfolio({ projects, content }: PortfolioProps) {
-  const { t } = useLanguage();
-
   const defaultProjects: PortfolioProject[] = [
     { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
     { id: '2', sort_order: 2, title_en: 'Project 02', title_bn: 'প্রজেক্ট ০২', category_en: 'Brand Identity', category_bn: 'ব্র্যান্ড আইডেন্টিটি', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
@@ -52,7 +49,6 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 }
 
 function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
-  const { t, lang } = useLanguage();
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
@@ -64,9 +60,9 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  const caseStudy = t(project.case_study_en ?? '', project.case_study_bn ?? '');
-  const hook = t(project.hook_en ?? '', project.hook_bn ?? '');
-  const pdfUrl = lang === 'bn' ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
+  const caseStudy = project.case_study_en ?? '';
+  const hook = project.hook_en ?? '';
+  const pdfUrl = project.pdf_url_en;
 
   const toggleImageExpand = useCallback(() => {
     setImageExpanded((prev) => !prev);
@@ -109,7 +105,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
                 <motion.img
                   src={project.image_url}
-                  alt={`${t(project.title_en, project.title_bn)} — ${t(project.category_en, project.category_bn)} — Premium skincare brand identity and UI design by POLISHED`}
+                  alt={`${project.title_en} — ${project.category_en} — Premium skincare brand identity and UI design by POLISHED`}
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -122,7 +118,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           ) : (
             <TiltImage
               src={project.image_url}
-              alt={`${t(project.title_en, project.title_bn)} — ${t(project.category_en, project.category_bn)} — Premium skincare brand identity and UI design by POLISHED`}
+              alt={`${project.title_en} — ${project.category_en} — Premium skincare brand identity and UI design by POLISHED`}
             />
           )
         ) : (
@@ -133,7 +129,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
             </svg>
             <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
-              {t(project.title_en, project.title_bn)}
+              {project.title_en}
             </span>
           </div>
         )}
@@ -155,8 +151,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
         >
           {imageExpanded
-            ? t('Click to collapse', 'সংকুচিত করতে ক্লিক করুন')
-            : t('Click image for full view', 'সম্পূর্ণ দেখতে ছবিতে ক্লিক করুন')}
+            ? 'Click to collapse'
+            : 'Click image for full view'}
         </button>
 
         <button
@@ -165,8 +161,8 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
         >
           <span className="relative z-10 text-primary-foreground">
             {caseStudyOpen
-              ? t('Hide case study', 'কেস স্টাডি লুকান')
-              : t('View full case study', 'সম্পূর্ণ কেস স্টাডি দেখুন')}
+              ? 'Hide case study'
+              : 'View full case study'}
           </span>
         </button>
 
@@ -175,7 +171,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             onClick={openLightbox}
             className="inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97]"
           >
-            <span>{t('View project mockups', 'প্রজেক্ট মকআপ দেখুন')}</span>
+            <span>View project mockups</span>
           </button>
         )}
       </div>
@@ -192,7 +188,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
               <p className="text-[11px] tracking-[2px] uppercase text-accent mb-3 font-medium">
-                {t('Case Study', 'কেস স্টাডি')}
+                Case Study
               </p>
               {caseStudy && (
                 <div
@@ -233,7 +229,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:bg-accent/20 active:scale-[0.97]"
                 >
-                  📄 {t('Download PDF', 'পিডিএফ ডাউনলোড')}
+                  📄 Download PDF
                 </a>
               )}
               <div className="mt-5">
@@ -241,7 +237,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
                   onClick={() => setCaseStudyOpen(false)}
                   className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
                 >
-                  {t('Show less', 'সংক্ষেপে দেখুন')}
+                  Show less
                 </button>
               </div>
             </div>
@@ -256,7 +252,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <MockupLightbox
               urls={mockupUrls}
               initialIndex={lightboxIndex}
-              title={t(project.title_en, project.title_bn)}
+              title={project.title_en}
               onClose={() => setLightboxOpen(false)}
             />
           )}

@@ -20,8 +20,7 @@ function parseItalic(text: string) {
 }
 
 export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
-  const { t, lang } = useLanguage();
-  const isBn = lang === 'bn';
+  const { t } = useLanguage();
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
 
@@ -111,7 +110,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             className="play-btn group inline-flex items-center justify-center gap-3 px-7 sm:px-10 py-4 sm:py-4.5 bg-transparent border-[1.5px] border-accent/50 text-accent text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100"
           >
             <span className="w-2 h-2 bg-accent rounded-full group-hover:bg-primary-foreground" style={{ animation: 'pulseDot 1.5s infinite' }} />
-            {t(hero.playCtaEn ?? 'Play & Unlock a Bonus', hero.playCtaBn ?? 'খেলুন ও বোনাস পান')}
+            {hero.playCtaEn ?? 'Play & Unlock a Bonus'}
           </MagneticButton>
         </div>
 
@@ -130,7 +129,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             }}
             className="inline-flex items-center justify-center px-8 sm:px-11 py-4 text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100"
           >
-            {t(hero.viewWorkEn ?? 'View Our Work', hero.viewWorkBn ?? 'আমাদের কাজ দেখুন')}
+            {hero.viewWorkEn ?? 'View Our Work'}
           </MagneticButton>
 
           <MagneticButton
@@ -146,14 +145,14 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             }}
             className="inline-flex items-center justify-center px-8 sm:px-11 py-4 text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100"
           >
-            {t(hero.startProjectEn ?? 'Start a Project', hero.startProjectBn ?? 'প্রজেক্ট শুরু')}
+            {hero.startProjectEn ?? 'Start a Project'}
           </MagneticButton>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-primary-foreground/30 text-[10px] tracking-[3px] uppercase" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
-        {t(hero.scrollEn ?? 'Scroll', hero.scrollBn ?? 'স্ক্রল')}
+        {hero.scrollEn ?? 'Scroll'}
         <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }} />
       </div>
 
