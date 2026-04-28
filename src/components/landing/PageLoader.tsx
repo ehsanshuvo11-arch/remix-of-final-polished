@@ -74,7 +74,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           <div className="relative overflow-hidden px-6">
             <div
               lang="en"
-              className="font-heading uppercase text-primary-foreground"
+              className="brand-wordmark font-heading uppercase text-primary-foreground"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '4px',
