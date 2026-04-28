@@ -8,6 +8,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
@@ -33,11 +34,17 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
-          <em className="italic">
-            <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
-          </em>
+        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          {isBn ? (
+            <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
+          ) : (
+            <>
+              <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
+              <em className="italic">
+                <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
+              </em>
+            </>
+          )}
         </h2>
       </MotionReveal>
 
