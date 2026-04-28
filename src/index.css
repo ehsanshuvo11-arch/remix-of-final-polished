@@ -251,11 +251,18 @@ html[data-lang="bn"] :where(h1, h2, h3, h4, h5, h6) {
 html[data-lang="bn"] :where(p, li, a, span, button, label, blockquote, em, strong) {
   line-height: 1.7;
 }
-/* Reveal/clip containers must not crop ascenders or descenders */
+/* Reveal/clip containers must not crop ascenders or descenders.
+   WordReveal and RevealText wrap each word/line in `overflow-hidden`
+   spans for slide-up animations — those crop Bengali reph/matras.
+   In Bengali mode, swap to overflow-visible (slide animation still
+   works, it just won't be clipped — acceptable trade-off for legibility). */
 html[data-lang="bn"] .reveal-element,
 html[data-lang="bn"] .reveal-left,
-html[data-lang="bn"] .reveal-right,
-html[data-lang="bn"] [class*="overflow-hidden"]:where(h1, h2, h3, h4, h5, h6, p, span, div) {
+html[data-lang="bn"] .reveal-right {
+  overflow: visible !important;
+}
+html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6, p) .overflow-hidden,
+html[data-lang="bn"] span.overflow-hidden {
   overflow: visible !important;
 }
 /* Italic accent lines (e.g. "Unmissable!") - Bengali italics not desired,
