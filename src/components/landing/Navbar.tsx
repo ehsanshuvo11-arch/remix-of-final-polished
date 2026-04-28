@@ -175,6 +175,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                         // Wait for overlay close before scrolling
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
+                      lang="en"
                       className="font-heading text-primary-foreground hover:text-accent text-[clamp(34px,9vw,52px)] leading-tight font-light transition-colors duration-500 block min-h-[56px] text-right [text-wrap:balance]"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                     >
