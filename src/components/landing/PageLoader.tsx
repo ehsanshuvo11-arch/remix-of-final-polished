@@ -65,7 +65,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
               document.documentElement.style.overflow = '';
               const lenis = (window as unknown as { lenis?: { start?: () => void } }).lenis;
               lenis?.start?.();
-              onComplete?.();
             }
           }}
         >
