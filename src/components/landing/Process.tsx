@@ -34,12 +34,18 @@ export default function Process({ steps, content }: ProcessProps) {
             {content?.labelEn ?? 'How It Works'}
           </p>
         </MotionReveal>
-        <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          <WordReveal delay={0.1}>{line1}</WordReveal>
-          <br />
-          <em className="italic">
-            <WordReveal delay={0.25}>{line2}</WordReveal>
-          </em>
+        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          {isBn ? (
+            <WordReveal delay={0.1}>নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।</WordReveal>
+          ) : (
+            <>
+              <WordReveal delay={0.1}>{line1}</WordReveal>
+              <br />
+              <em className="italic">
+                <WordReveal delay={0.25}>{line2}</WordReveal>
+              </em>
+            </>
+          )}
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-14">
