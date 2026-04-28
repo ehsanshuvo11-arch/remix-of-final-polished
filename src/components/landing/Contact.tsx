@@ -78,7 +78,13 @@ export default function Contact({ contact }: ContactProps) {
           </MotionReveal>
           <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
             {isBn ? (
-              <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত? আসুন কথা বলি।</WordReveal>
+              <>
+                <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?</WordReveal>
+                <br />
+                <em className="italic text-accent">
+                  <WordReveal delay={0.25}>আসুন কথা বলি।</WordReveal>
+                </em>
+              </>
             ) : (
               <>
                 <WordReveal delay={0.1}>{line1}</WordReveal>
