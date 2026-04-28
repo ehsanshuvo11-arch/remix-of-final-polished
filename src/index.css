@@ -233,6 +233,52 @@ html[data-lang="bn"] strong {
   font-family: 'Noto Serif Bengali', serif !important;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Bengali clipping fix
+   ─────────────────────────────────────────────────────────────
+   Bengali script uses tall above-baseline marks (reph, ref,
+   ikar, etc.) and below-baseline conjuncts that need extra
+   vertical room. English line-heights like `leading-tight`
+   (1.1-1.2) and lineHeight: 1.08 clip these marks, especially
+   when combined with `overflow: hidden` on reveal containers.
+   We enforce a minimum line-height for Bengali text and ensure
+   reveal/clip wrappers expose enough vertical breathing room.
+   ───────────────────────────────────────────────────────────── */
+html[data-lang="bn"] h1:not([lang="en"]),
+html[data-lang="bn"] h2:not([lang="en"]),
+html[data-lang="bn"] h3:not([lang="en"]),
+html[data-lang="bn"] h4:not([lang="en"]),
+html[data-lang="bn"] h5:not([lang="en"]),
+html[data-lang="bn"] h6:not([lang="en"]) {
+  line-height: 1.45 !important;
+  padding-block: 0.08em;
+}
+html[data-lang="bn"] p:not([lang="en"]),
+html[data-lang="bn"] li:not([lang="en"]),
+html[data-lang="bn"] blockquote:not([lang="en"]) {
+  line-height: 1.7;
+}
+/* Reveal/clip containers must not crop ascenders or descenders.
+   WordReveal and RevealText wrap each word/line in `overflow-hidden`
+   spans for slide-up animations — those crop Bengali reph/matras.
+   In Bengali mode, swap to overflow-visible (slide animation still
+   works, it just won't be clipped — acceptable trade-off for legibility). */
+html[data-lang="bn"] .reveal-element,
+html[data-lang="bn"] .reveal-left,
+html[data-lang="bn"] .reveal-right {
+  overflow: visible !important;
+}
+html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6, p) .overflow-hidden,
+html[data-lang="bn"] span.overflow-hidden {
+  overflow: visible !important;
+}
+/* Italic accent lines (e.g. "Unmissable!") - Bengali italics not desired,
+   but if any italic Bengali appears, give it room */
+html[data-lang="bn"] em,
+html[data-lang="bn"] i {
+  font-style: normal !important;
+}
+
 /* Carve-outs: keep English-tagged elements and the logo in Latin serif */
 html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en"] * {
