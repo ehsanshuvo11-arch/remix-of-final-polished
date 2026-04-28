@@ -66,12 +66,26 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
             }
           }}
         >
+          {/* Soft corner glows — adds depth so the curtain doesn't read as flat navy */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-40"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: [
+                'radial-gradient(ellipse 60% 55% at 0% 0%, hsl(var(--accent) / 0.18), transparent 60%)',
+                'radial-gradient(ellipse 55% 50% at 100% 100%, hsl(var(--primary-foreground) / 0.12), transparent 65%)',
+                'radial-gradient(ellipse 45% 40% at 100% 0%, hsl(var(--primary-foreground) / 0.06), transparent 70%)',
+                'radial-gradient(ellipse 50% 45% at 0% 100%, hsl(var(--accent) / 0.08), transparent 70%)',
+              ].join(', '),
+            }}
+          />
+          {/* Subtle center vignette to keep wordmark in focus */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
             style={{
               background:
-                'radial-gradient(ellipse at 50% 50%, hsl(var(--primary-foreground) / 0.06), transparent 60%)',
+                'radial-gradient(ellipse at 50% 50%, transparent 40%, hsl(var(--primary) / 0.45) 100%)',
             }}
           />
 
