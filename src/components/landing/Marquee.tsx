@@ -33,8 +33,8 @@ export default function Marquee({ items }: MarqueeProps) {
   const trackContent = displayItems.map((item, i) => (
     <span key={i} lang={isBn ? 'bn' : 'en'}>
       <span
-        className={`${isBn ? 'text-[15px] font-medium tracking-[1px] normal-case' : 'font-heading text-[15px] font-medium tracking-[3px] uppercase'} text-accent-foreground px-10`}
-        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+        className={`${isBn ? 'text-[15px] tracking-[1px] normal-case' : 'font-heading text-[15px] font-medium tracking-[3px] uppercase'} text-accent-foreground px-10`}
+        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", fontWeight: 200 } : undefined}
       >
         {item}
       </span>
