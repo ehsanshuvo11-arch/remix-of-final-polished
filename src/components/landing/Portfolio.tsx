@@ -153,7 +153,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       {hook && (
         <div
           className="mt-4 px-1 font-sans text-base font-medium text-foreground/90 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
-          style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
+          style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
         />
       )}
@@ -231,7 +231,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                     prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
                     prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
                   "
-                  style={{ fontFamily: 'Arial, Helvetica, "Noto Sans Bengali", sans-serif' }}
+                  style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
                 >
                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
                 </div>
