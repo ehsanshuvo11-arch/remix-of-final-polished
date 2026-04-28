@@ -66,17 +66,26 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  // Per-case-study local language override. Initializes from the global locale
+  // but can be toggled independently — only this card's content switches.
+  const [caseStudyLang, setCaseStudyLang] = useState<'en' | 'bn'>(isBn ? 'bn' : 'en');
+  const csIsBn = caseStudyLang === 'bn';
+
   const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
   // Locale-aware field mapping with English fallback when BN translation missing.
+  // Card chrome (title, category, hook) follows the global locale; the case
+  // study body + PDF follow the local micro-toggle.
   const pick = (bn: string | null | undefined, en: string | null | undefined) =>
     isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+  const pickCs = (bn: string | null | undefined, en: string | null | undefined) =>
+    csIsBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
   const title = pick(project.title_bn, project.title_en);
   const category = pick(project.category_bn, project.category_en);
-  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const caseStudy = pickCs(project.case_study_bn, project.case_study_en);
   const hook = pick(project.hook_bn, project.hook_en);
-  const pdfUrl = isBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
+  const pdfUrl = csIsBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
 
   const toggleImageExpand = useCallback(() => {
     setImageExpanded((prev) => !prev);
@@ -201,11 +210,41 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             className="overflow-hidden"
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
-              <p className="text-[11px] tracking-[2px] uppercase text-accent mb-3 font-medium">
-                Case Study
-              </p>
+              <div className="mb-3 flex items-center justify-between gap-4 flex-wrap">
+                <p className="text-[11px] tracking-[2px] uppercase text-accent font-medium">
+                  Case Study
+                </p>
+                {/* Premium micro-toggle — quiet luxury, text-only */}
+                <div className="flex items-center gap-2 text-[11px] tracking-[1px] text-muted-foreground/70 select-none">
+                  <span className="uppercase">Read in:</span>
+                  <button
+                    type="button"
+                    onClick={() => setCaseStudyLang('en')}
+                    aria-pressed={!csIsBn}
+                    className={`transition-colors duration-300 ease-out ${
+                      !csIsBn ? 'text-accent font-semibold' : 'text-muted-foreground/60 hover:text-foreground'
+                    }`}
+                  >
+                    English
+                  </button>
+                  <span className="text-muted-foreground/30">|</span>
+                  <button
+                    type="button"
+                    onClick={() => setCaseStudyLang('bn')}
+                    aria-pressed={csIsBn}
+                    lang="bn"
+                    style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+                    className={`transition-colors duration-300 ease-out ${
+                      csIsBn ? 'text-accent font-semibold' : 'text-muted-foreground/60 hover:text-foreground'
+                    }`}
+                  >
+                    বাংলা
+                  </button>
+                </div>
+              </div>
               {caseStudy && (
                 <div
+                  lang={csIsBn ? 'bn' : 'en'}
                   className="prose prose-lg prose-invert max-w-none
                     font-sans tracking-normal antialiased
                     text-foreground font-medium leading-loose
@@ -231,7 +270,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                     prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
                     prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
                   "
-                  style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
+                  style={{ fontFamily: csIsBn ? "'Noto Serif Bengali', serif" : 'Arial, Helvetica, sans-serif' }}
                 >
                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
                 </div>
