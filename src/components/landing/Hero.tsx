@@ -106,8 +106,8 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
                 letterSpacing: '0',
-                wordSpacing: '0.15em',
-                fontWeight: 300,
+                wordSpacing: 'normal',
+                fontWeight: 400,
               }}
             >
               <RevealText
@@ -121,7 +121,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-4 text-[clamp(26px,6vw,72px)] text-accent italic font-light [word-spacing:normal]"
+                className="hero-accent-line block pt-4 text-[clamp(32px,7vw,84px)] text-accent italic [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
