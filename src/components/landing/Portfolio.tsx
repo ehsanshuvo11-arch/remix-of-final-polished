@@ -50,14 +50,14 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 
       <div className="flex flex-col gap-16 md:gap-24 mt-14">
         {displayProjects.map((project, i) => (
-          <ProjectCard key={project.id} project={project} index={i} />
+          <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
         ))}
       </div>
     </section>
   );
 }
 
-function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
+function ProjectCard({ project, index, isBn }: { project: PortfolioProject; index: number; isBn: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
@@ -69,9 +69,14 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  const caseStudy = project.case_study_en ?? '';
-  const hook = project.hook_en ?? '';
-  const pdfUrl = project.pdf_url_en;
+  // Locale-aware field mapping with English fallback when BN translation missing.
+  const pick = (bn: string | null | undefined, en: string | null | undefined) =>
+    isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+  const title = pick(project.title_bn, project.title_en);
+  const category = pick(project.category_bn, project.category_en);
+  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const hook = pick(project.hook_bn, project.hook_en);
+  const pdfUrl = isBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
 
   const toggleImageExpand = useCallback(() => {
     setImageExpanded((prev) => !prev);
@@ -114,7 +119,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
                 <motion.img
                   src={project.image_url}
-                  alt={`${project.title_en} — ${project.category_en} — Premium skincare brand identity and UI design by POLISHED`}
+                  alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -127,7 +132,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
           ) : (
             <TiltImage
               src={project.image_url}
-              alt={`${project.title_en} — ${project.category_en} — Premium skincare brand identity and UI design by POLISHED`}
+              alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
             />
           )
         ) : (
@@ -138,7 +143,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
               <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
             </svg>
             <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
-              {project.title_en}
+              {title}
             </span>
           </div>
         )}
@@ -261,7 +266,7 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
             <MockupLightbox
               urls={mockupUrls}
               initialIndex={lightboxIndex}
-              title={project.title_en}
+              title={title}
               onClose={() => setLightboxOpen(false)}
             />
           )}
