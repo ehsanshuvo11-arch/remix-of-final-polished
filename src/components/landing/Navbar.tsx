@@ -97,8 +97,9 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                   e.preventDefault();
                   scrollTo(item.href);
                 }}
-                lang="en"
-                className={`text-[13px] tracking-[1.5px] uppercase font-normal relative transition-colors duration-200 ${linkClass} after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
+                lang={isBn ? 'bn' : 'en'}
+                className={`${isBn ? 'text-[13px] tracking-[0.5px] normal-case' : 'text-[13px] tracking-[1.5px] uppercase'} font-normal relative transition-colors duration-200 ${linkClass} after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
+                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
               >
                 {item.label}
               </a>
