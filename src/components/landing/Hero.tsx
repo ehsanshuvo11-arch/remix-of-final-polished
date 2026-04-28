@@ -61,9 +61,9 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         }}
       />
 
-      {/* Orbs with parallax */}
-      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.18) 0%, rgba(251,146,60,0.08) 35%, rgba(251,146,60,0) 70%)', animation: 'orbFloat 8s ease-in-out infinite' }} />
-      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(99,102,241,0.05) 40%, rgba(99,102,241,0) 70%)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
+      {/* Orbs with parallax — toned down for cleaner navy field */}
+      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)', animation: 'orbFloat 8s ease-in-out infinite' }} />
+      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
         {/* Logo badge */}
@@ -187,9 +187,8 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }} />
       </div>
 
-      {/* Subtle orange glow at bottom */}
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-accent/60" />
-      <div className="absolute bottom-0 left-0 w-full h-[12px] bg-gradient-to-t from-accent/25 to-transparent blur-[4px]" />
+      {/* Hairline accent at bottom — no glow bleed */}
+      <div className="absolute bottom-0 left-0 w-full h-px bg-accent/40" />
     </section>
   );
 }
