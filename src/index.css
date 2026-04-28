@@ -272,7 +272,7 @@ html[data-lang="bn"] h4,
 html[data-lang="bn"] h5,
 html[data-lang="bn"] h6,
 html[data-lang="bn"] .font-heading {
-  font-family: 'Noto Serif Bengali', serif !important;
+  font-family: 'Cormorant Garamond', 'Noto Serif Bengali', serif !important;
   letter-spacing: 0 !important;
   line-height: 1.2 !important;
   font-style: normal; /* Bengali has no italic — italic glyphs render as faux-skew, kills the look */
