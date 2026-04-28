@@ -307,18 +307,32 @@ html[data-lang="bn"] [class*="uppercase"] {
    ───────────────────────────────────────────────────────────── */
 html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en"] * {
-  font-family: inherit;
   letter-spacing: revert !important;
   text-transform: revert !important;
   font-style: revert !important;
   line-height: revert;
   word-spacing: normal;
 }
+/* English subtree inside Bangla pages: keep body copy in DM Sans */
+html[data-lang="bn"] [lang="en"],
+html[data-lang="bn"] [lang="en"] p,
+html[data-lang="bn"] [lang="en"] span,
+html[data-lang="bn"] [lang="en"] a,
+html[data-lang="bn"] [lang="en"] li,
+html[data-lang="bn"] [lang="en"] div {
+  font-family: 'DM Sans', sans-serif !important;
+}
+/* English headings (and ALL their descendants — RevealText spans) keep Cormorant */
 html[data-lang="bn"] [lang="en"].font-heading,
+html[data-lang="bn"] [lang="en"].font-heading *,
 html[data-lang="bn"] [lang="en"] .font-heading,
+html[data-lang="bn"] [lang="en"] .font-heading *,
 html[data-lang="bn"] h1[lang="en"],
+html[data-lang="bn"] h1[lang="en"] *,
 html[data-lang="bn"] h2[lang="en"],
-html[data-lang="bn"] h3[lang="en"] {
+html[data-lang="bn"] h2[lang="en"] *,
+html[data-lang="bn"] h3[lang="en"],
+html[data-lang="bn"] h3[lang="en"] * {
   font-family: 'Cormorant Garamond', serif !important;
 }
 html[data-lang="bn"] [lang="en"] em,
