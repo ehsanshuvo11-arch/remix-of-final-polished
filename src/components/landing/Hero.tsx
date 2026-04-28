@@ -20,7 +20,8 @@ function parseItalic(text: string) {
 }
 
 export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const isBn = lang === 'bn';
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
 
@@ -87,15 +88,15 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         </p>
 
         <h1
-          lang="en"
+          lang={isBn ? 'bn' : 'en'}
           className="font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          style={isBn ? undefined : { fontFamily: "'Cormorant Garamond', serif" }}
         >
           <RevealText as="span" delay={0.4} className="block pt-4">
-            {hero.titleEn}
+            {t('Make Your Collection', 'আপনার কালেকশন হোক')}
           </RevealText>
           <RevealText as="span" delay={0.6} className="block pt-4 text-[clamp(28px,6.5vw,80px)] italic text-accent">
-            {hero.title2En.replace(/\*/g, '')}
+            {t('Unmissable!', 'অনবদ্য!')}
           </RevealText>
         </h1>
 
