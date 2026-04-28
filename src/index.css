@@ -227,10 +227,13 @@ html[data-lang="bn"] input,
 html[data-lang="bn"] textarea,
 html[data-lang="bn"] label,
 html[data-lang="bn"] div {
-  font-family: 'DM Sans', 'Noto Serif Bengali', serif !important;
+  /* Noto Serif Bengali strictly enforced for all Bengali content (matches the
+     classic serif feel of Cormorant Garamond used for English). */
+  font-family: 'Noto Serif Bengali', 'Cormorant Garamond', serif !important;
   letter-spacing: 0 !important;
-  line-height: 1.5;
   word-spacing: 0;
+  /* line-height intentionally unset — inherit the EXACT same Tailwind leading
+     classes (leading-[1.7], leading-[1.85], etc.) used by the English layout. */
 }
 
 /* Any Latin-script run explicitly tagged inside Bengali content keeps
@@ -260,11 +263,6 @@ html[data-lang="bn"] [lang="en"] .italic {
   font-style: italic !important;
 }
 
-html[data-lang="bn"] p,
-html[data-lang="bn"] li {
-  line-height: 1.5 !important;
-}
-
 html[data-lang="bn"] h1,
 html[data-lang="bn"] h2,
 html[data-lang="bn"] h3,
@@ -272,27 +270,33 @@ html[data-lang="bn"] h4,
 html[data-lang="bn"] h5,
 html[data-lang="bn"] h6,
 html[data-lang="bn"] .font-heading {
-  font-family: 'Cormorant Garamond', 'Noto Serif Bengali', serif !important;
+  font-family: 'Noto Serif Bengali', 'Cormorant Garamond', serif !important;
   letter-spacing: 0 !important;
-  line-height: 1.2 !important;
-  font-style: normal; /* Bengali has no italic — italic glyphs render as faux-skew, kills the look */
+  /* Inherit same leading-[1.1] / leading-[1.08] tailwind classes as English. */
+  font-style: normal;
 }
 
-html[data-lang="bn"] h1,
-html[data-lang="bn"] h2,
-html[data-lang="bn"] h3 { line-height: 1.2 !important; }
-
-/* Italic <em> inside Bengali should render upright (Bengali script lacks an italic form). */
+/* Body Bengali em/italic stays upright (no faux-italic). The hero accent
+   highlight word is intentionally allowed to render italic — see escape
+   hatch below — to preserve the brand's signature accent treatment. */
 html[data-lang="bn"] em,
 html[data-lang="bn"] i,
 html[data-lang="bn"] .italic {
   font-style: normal !important;
-  font-family: 'Noto Serif Bengali', serif;
+  font-family: 'Noto Serif Bengali', serif !important;
+}
+
+/* Brand-accent highlight (italic + orange) IS allowed to keep its italic
+   treatment in Bengali — this is the signature focal word per brand brief. */
+html[data-lang="bn"] em.text-accent,
+html[data-lang="bn"] .italic.text-accent,
+html[data-lang="bn"] .hero-accent-line {
+  font-style: italic !important;
 }
 
 /* Kill uppercase tracking on small caps labels — letter-spacing breaks Bengali. */
-html[data-lang="bn"] [class*="tracking-"],
-html[data-lang="bn"] [class*="uppercase"] {
+html[data-lang="bn"] [class*="tracking-"]:not([lang="en"]):not([lang="en"] *),
+html[data-lang="bn"] [class*="uppercase"]:not([lang="en"]):not([lang="en"] *) {
   letter-spacing: normal !important;
   text-transform: none !important; /* Bengali has no uppercase */
 }
