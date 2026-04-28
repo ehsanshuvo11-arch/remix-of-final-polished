@@ -233,6 +233,38 @@ html[data-lang="bn"] strong {
   font-family: 'Noto Serif Bengali', serif !important;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Bengali clipping fix
+   ─────────────────────────────────────────────────────────────
+   Bengali script uses tall above-baseline marks (reph, ref,
+   ikar, etc.) and below-baseline conjuncts that need extra
+   vertical room. English line-heights like `leading-tight`
+   (1.1-1.2) and lineHeight: 1.08 clip these marks, especially
+   when combined with `overflow: hidden` on reveal containers.
+   We enforce a minimum line-height for Bengali text and ensure
+   reveal/clip wrappers expose enough vertical breathing room.
+   ───────────────────────────────────────────────────────────── */
+html[data-lang="bn"] :where(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.45 !important;
+  padding-block: 0.08em;
+}
+html[data-lang="bn"] :where(p, li, a, span, button, label, blockquote, em, strong) {
+  line-height: 1.7;
+}
+/* Reveal/clip containers must not crop ascenders or descenders */
+html[data-lang="bn"] .reveal-element,
+html[data-lang="bn"] .reveal-left,
+html[data-lang="bn"] .reveal-right,
+html[data-lang="bn"] [class*="overflow-hidden"]:where(h1, h2, h3, h4, h5, h6, p, span, div) {
+  overflow: visible !important;
+}
+/* Italic accent lines (e.g. "Unmissable!") - Bengali italics not desired,
+   but if any italic Bengali appears, give it room */
+html[data-lang="bn"] em,
+html[data-lang="bn"] i {
+  font-style: normal !important;
+}
+
 /* Carve-outs: keep English-tagged elements and the logo in Latin serif */
 html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en"] * {
