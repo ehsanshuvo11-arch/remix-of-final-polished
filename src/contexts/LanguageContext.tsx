@@ -95,7 +95,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setLang('bn')}
                 className="px-12 py-4 text-sm tracking-[3px] uppercase bg-transparent border border-primary-foreground/25 text-primary-foreground/80 rounded-sm font-normal transition-all duration-300 hover:border-accent hover:text-accent hover:-translate-y-1 active:scale-[0.96]"
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                style={{ fontFamily: "'Noto Serif Bengali', serif" }}
               >
                 বাংলা
               </motion.button>
