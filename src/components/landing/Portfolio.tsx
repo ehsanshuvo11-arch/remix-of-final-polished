@@ -396,26 +396,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   const touchDeltaX = useRef(0);
   const total = urls.length;
 
-  // 3D tilt motion values (smooth spring follow)
-  const mvX = useMotionValue(0); // -0.5 .. 0.5
-  const mvY = useMotionValue(0);
-  const springConfig = { stiffness: 120, damping: 18, mass: 0.6 };
-  const sx = useSpring(mvX, springConfig);
-  const sy = useSpring(mvY, springConfig);
-  const rotateY = useTransform(sx, [-0.5, 0.5], [-8, 8]); // horizontal mouse → Y-axis tilt
-  const rotateX = useTransform(sy, [-0.5, 0.5], [6, -6]); // vertical mouse → X-axis tilt (inverted)
+  // 3D tilt removed for a calm, distortion-free viewing experience.
 
-  const handleImgMouseMove = (e: React.MouseEvent<HTMLImageElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    mvX.set(px);
-    mvY.set(py);
-  };
-  const handleImgMouseLeave = () => {
-    mvX.set(0);
-    mvY.set(0);
-  };
 
   const goNext = useCallback(() => setCurrent((c) => Math.min(c + 1, total - 1)), [total]);
   const goPrev = useCallback(() => setCurrent((c) => Math.max(c - 1, 0)), []);
@@ -514,11 +496,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image with animation + drag-to-swap + 3D tilt */}
-      <div
-        className="relative flex items-center justify-center"
-        style={{ perspective: 1200 }}
-      >
+      {/* Main image — fade + drag-to-swap only (no hover tilt for a calm viewing experience) */}
+      <div className="relative flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.img
             key={current}
@@ -533,13 +512,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
               backgroundColor: 'transparent',
               boxShadow: 'none',
               filter: 'none',
-              rotateX,
-              rotateY,
-              transformStyle: 'preserve-3d',
             }}
             onClick={(e) => e.stopPropagation()}
-            onMouseMove={handleImgMouseMove}
-            onMouseLeave={handleImgMouseLeave}
             draggable={false}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
