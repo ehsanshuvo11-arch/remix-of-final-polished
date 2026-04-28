@@ -29,15 +29,15 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
   return (
     <section id="work" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
-        <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-          {t(content?.labelEn ?? 'Selected Work', content?.labelBn ?? 'বাছাই করা কাজ')}
+        <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+          {content?.labelEn ?? 'Selected Work'}
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          <WordReveal delay={0.1}>{t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'আমাদের সিগনেচার')}</WordReveal>{' '}
+        <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
           <em className="italic">
-            <WordReveal delay={0.25}>{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্টসমূহ।')}</WordReveal>
+            <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
           </em>
         </h2>
       </MotionReveal>

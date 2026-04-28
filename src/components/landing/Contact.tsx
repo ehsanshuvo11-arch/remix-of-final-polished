@@ -62,19 +62,21 @@ export default function Contact({ contact }: ContactProps) {
     { icon: <WhatsAppIcon />, label: c.wa, href: `https://wa.me/${c.wa.replace(/\D/g, '')}` },
   ];
 
-  const line1 = t(c.titleLine1En ?? "Let's build something", c.titleLine1Bn ?? 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?');
-  const line2 = t(c.titleLine2En ?? 'worth noticing.', c.titleLine2Bn ?? 'আসুন কথা বলি।');
+  // Contact heading/label/desc locked to English in all locales
+  const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+  const line1 = c.titleLine1En ?? "Let's build something";
+  const line2 = c.titleLine2En ?? 'worth noticing.';
 
   return (
     <div id="contact" className="bg-primary">
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
         <div>
           <MotionReveal>
-            <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {t(c.sectionLabelEn ?? 'Get In Touch', c.sectionLabelBn ?? 'যোগাযোগ করুন')}
+            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+              {c.sectionLabelEn ?? 'Get In Touch'}
             </p>
           </MotionReveal>
-          <h2 className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <h2 lang="en" className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
             <WordReveal delay={0.1}>{line1}</WordReveal>
             <br />
             <em className="italic">
@@ -82,8 +84,8 @@ export default function Contact({ contact }: ContactProps) {
             </em>
           </h2>
           <MotionReveal delay={0.15}>
-            <p className="text-[15px] leading-[1.85] text-primary-foreground/50 mb-10">
-              {t(c.descEn ?? "Have a skincare brand that deserves better visuals? Let's talk.", c.descBn ?? 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও ভালো ভিজ্যুয়াল পাওয়ার যোগ্য?')}
+            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary-foreground/50 mb-10">
+              {c.descEn ?? "Have a skincare brand that deserves better visuals? Let's talk."}
             </p>
           </MotionReveal>
 
