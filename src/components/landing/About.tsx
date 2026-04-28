@@ -51,18 +51,26 @@ export default function About({ content, stats }: AboutProps) {
               {about.labelEn ?? 'About Polished'}
             </p>
           </MotionReveal>
-          <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            <RevealText as="span" className="block">{line1}</RevealText>
-            <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
+          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+            {isBn ? (
+              <RevealText as="span" className="block">এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই বিশ্বাস জন্মায়।</RevealText>
+            ) : (
+              <>
+                <RevealText as="span" className="block">{line1}</RevealText>
+                <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
+              </>
+            )}
           </h2>
           <MotionReveal delay={0.3}>
-            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-              {about.p1En}
+            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
+              {isBn ? (
+                <><span lang="en">POLISHED</span>{' তৈরি হয়েছে ই-কমার্স স্কিনকেয়ার ব্র্যান্ডগুলোর জন্য, যারা প্রিমিয়াম এবং বিশ্বাসযোগ্য একটি পরিচয় দাঁড় করাতে চায়। আমাদের লক্ষ্য একটাই—আপনার ব্র্যান্ডকে সাধারণের ভিড় থেকে আলাদা করে একটি এক্সক্লুসিভ অবস্থানে নিয়ে যাওয়া।'}</>
+              ) : about.p1En}
             </p>
           </MotionReveal>
           <MotionReveal delay={0.4}>
-            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-              {about.p2En}
+            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
+              {isBn ? about.p2Bn : about.p2En}
             </p>
           </MotionReveal>
           <MotionReveal delay={0.5}>
