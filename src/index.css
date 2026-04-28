@@ -242,8 +242,8 @@ html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en-US"],
 html[data-lang="bn"] .lang-en-inline {
   font-family: 'DM Sans', sans-serif !important;
-  letter-spacing: revert !important;
-  line-height: revert !important;
+  letter-spacing: unset;
+  line-height: unset;
   word-spacing: normal !important;
 }
 html[data-lang="bn"] h1 [lang="en"],
