@@ -8,6 +8,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
@@ -15,6 +16,8 @@ interface PortfolioProps {
 }
 
 export default function Portfolio({ projects, content }: PortfolioProps) {
+  const { t, lang } = useLanguage();
+  const isBn = lang === 'bn';
   const defaultProjects: PortfolioProject[] = [
     { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
     { id: '2', sort_order: 2, title_en: 'Project 02', title_bn: 'প্রজেক্ট ০২', category_en: 'Brand Identity', category_bn: 'ব্র্যান্ড আইডেন্টিটি', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
@@ -31,11 +34,17 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
-          <em className="italic">
-            <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
-          </em>
+        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          {isBn ? (
+            <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
+          ) : (
+            <>
+              <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
+              <em className="italic">
+                <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
+              </em>
+            </>
+          )}
         </h2>
       </MotionReveal>
 

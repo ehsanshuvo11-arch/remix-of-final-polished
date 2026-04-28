@@ -33,12 +33,18 @@ export default function Services({ services, content }: ServicesProps) {
             {content?.labelEn ?? 'What We Do'}
           </p>
         </MotionReveal>
-        <h2 lang="en" className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          <WordReveal delay={0.1}>{line1}</WordReveal>
-          <br />
-          <em className="italic">
-            <WordReveal delay={0.25}>{line2}</WordReveal>
-          </em>
+        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          {isBn ? (
+            <WordReveal delay={0.1}>স্কিনকেয়ার ব্র্যান্ডের জন্য এক্সক্লুসিভ ভিজ্যুয়াল আইডেন্টিটি।</WordReveal>
+          ) : (
+            <>
+              <WordReveal delay={0.1}>{line1}</WordReveal>
+              <br />
+              <em className="italic">
+                <WordReveal delay={0.25}>{line2}</WordReveal>
+              </em>
+            </>
+          )}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-14">
@@ -87,11 +93,13 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         <div className="font-heading text-5xl font-light text-primary-foreground/[0.06] leading-none mb-7 transition-all duration-700 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">
           {String(index + 1).padStart(2, '0')}
         </div>
-        <div lang="en" className="font-heading text-xl font-normal text-primary-foreground mb-3.5 leading-tight">
-          {service.name_en}
+        <div lang={isBn ? 'bn' : 'en'} className="font-heading text-xl font-normal text-primary-foreground mb-3.5 leading-tight">
+          {isBn
+            ? (index === 0 ? 'সোশ্যাল মিডিয়া ডিজাইন' : index === 1 ? 'প্রিমিয়াম বাংলা ভিজ্যুয়াল ডিজাইন' : service.name_bn || service.name_en)
+            : service.name_en}
         </div>
-        <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[13px] leading-[1.75] text-primary-foreground/50 relative z-10">
-          {service.desc_en}
+        <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }} className="text-[13px] leading-[1.75] text-primary-foreground/50 relative z-10">
+          {isBn ? (service.desc_bn || service.desc_en) : service.desc_en}
         </p>
         <div className="absolute bottom-0 left-9 right-9 h-px bg-gradient-to-r from-accent to-transparent scale-x-0 origin-left transition-transform duration-700 group-hover:scale-x-100" />
       </div>
