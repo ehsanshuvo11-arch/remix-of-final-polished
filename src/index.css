@@ -221,6 +221,23 @@ html:not([data-lang="bn"]) .lang-bn { display: none !important; }
   font-style: normal;
 }
 
+/* Force ALL Bengali text to use Noto Serif Bengali.
+   Elements explicitly tagged [lang="en"] keep English fonts (Hero, etc.). */
+html[data-lang="bn"] body,
+html[data-lang="bn"] body *:not([lang="en"]):not([lang="en"] *) {
+  font-family: 'Noto Serif Bengali', 'Cormorant Garamond', serif !important;
+}
+
+html[data-lang="bn"] [lang="en"],
+html[data-lang="bn"] [lang="en"] * {
+  font-family: revert !important;
+}
+
+/* Brand wordmark always stays English serif */
+html[data-lang="bn"] .brand-wordmark {
+  font-family: 'Cormorant Garamond', serif !important;
+}
+
 /* Scroll reveal */
 /* Scroll reveal — luxury easing */
 .reveal-element {
