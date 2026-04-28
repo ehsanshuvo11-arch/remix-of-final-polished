@@ -77,13 +77,13 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           }}
         />
 
-        {/* Eyebrow uses locale content; headline below mirrors the same DOM in BN */}
+        {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
-          lang={isBn ? 'bn' : 'en'}
+          lang="en"
           className="text-[11px] tracking-[4px] uppercase text-accent mb-5 font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'Inter', sans-serif" }}
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
-          {isBn ? (hero.eyebrowBn || hero.eyebrowEn) : hero.eyebrowEn}
+          {hero.eyebrowEn}
         </p>
 
         {(() => {
@@ -127,8 +127,8 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           );
         })()}
 
-        <p lang={isBn ? 'bn' : 'en'} className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'DM Sans', sans-serif" }}>
-          {isBn ? (hero.subBn || hero.subEn) : hero.subEn}
+        <p lang="en" className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
+          {hero.subEn}
         </p>
 
         {/* Play button — Magnetic */}
