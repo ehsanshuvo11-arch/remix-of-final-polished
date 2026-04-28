@@ -21,8 +21,8 @@ export default function Process({ steps, content }: ProcessProps) {
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
 
-  const line1 = t(content?.titleLine1En ?? 'A process built on', content?.titleLine1Bn ?? 'নির্ভুলতার উপর');
-  const line2 = t(content?.titleLine2En ?? 'precision.', content?.titleLine2Bn ?? 'গড়া প্রক্রিয়া।');
+  const line1 = t(content?.titleLine1En ?? 'A process built on', content?.titleLine1Bn ?? 'নিখুঁত কাজের পেছনের');
+  const line2 = t(content?.titleLine2En ?? 'precision.', content?.titleLine2Bn ?? 'মাস্টারপ্ল্যান।');
 
   return (
     <div className="bg-secondary">

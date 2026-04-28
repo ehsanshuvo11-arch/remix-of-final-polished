@@ -48,9 +48,9 @@ export default function Contact({ contact }: ContactProps) {
     sectionLabelEn: 'Get In Touch',
     sectionLabelBn: 'যোগাযোগ করুন',
     titleLine1En: "Let's build something",
-    titleLine1Bn: 'আসুন এমন কিছু তৈরি করি',
+    titleLine1Bn: 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?',
     titleLine2En: 'worth noticing.',
-    titleLine2Bn: 'যা নজর কাড়ে।',
+    titleLine2Bn: 'আসুন কথা বলি।',
     descEn: "Have a skincare brand that deserves better visuals? Let's talk. We take on a limited number of projects to ensure every client gets full attention.",
     descBn: 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও ভালো ভিজ্যুয়াল পাওয়ার যোগ্য? যোগাযোগ করুন। আমরা সীমিত সংখ্যক প্রজেক্ট নিই।',
   } as ContactContent;
@@ -62,8 +62,8 @@ export default function Contact({ contact }: ContactProps) {
     { icon: <WhatsAppIcon />, label: c.wa, href: `https://wa.me/${c.wa.replace(/\D/g, '')}` },
   ];
 
-  const line1 = t(c.titleLine1En ?? "Let's build something", c.titleLine1Bn ?? 'আসুন এমন কিছু তৈরি করি');
-  const line2 = t(c.titleLine2En ?? 'worth noticing.', c.titleLine2Bn ?? 'যা নজর কাড়ে।');
+  const line1 = t(c.titleLine1En ?? "Let's build something", c.titleLine1Bn ?? 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?');
+  const line2 = t(c.titleLine2En ?? 'worth noticing.', c.titleLine2Bn ?? 'আসুন কথা বলি।');
 
   return (
     <div id="contact" className="bg-primary">

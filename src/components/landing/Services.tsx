@@ -20,8 +20,8 @@ export default function Services({ services, content }: ServicesProps) {
 
   const displayServices = services.length > 0 ? services : defaultServices;
 
-  const line1 = t(content?.titleLine1En ?? 'Services built for', content?.titleLine1Bn ?? 'ই-কমার্স ভিত্তিক স্কিনকেয়ার');
-  const line2 = t(content?.titleLine2En ?? 'ecommerce-based skincare brands.', content?.titleLine2Bn ?? 'ব্র্যান্ডের জন্য তৈরি সেবা।');
+  const line1 = t(content?.titleLine1En ?? 'Services built for', content?.titleLine1Bn ?? 'স্কিনকেয়ার ব্র্যান্ডের জন্য');
+  const line2 = t(content?.titleLine2En ?? 'ecommerce-based skincare brands.', content?.titleLine2Bn ?? 'এক্সক্লুসিভ ভিজ্যুয়াল আইডেন্টিটি।');
 
   return (
     <div id="services" className="bg-primary">

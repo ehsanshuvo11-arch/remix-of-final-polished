@@ -17,11 +17,11 @@ export default function About({ content, stats }: AboutProps) {
     labelEn: 'About Polished',
     labelBn: 'পলিশড সম্পর্কে',
     titleLine1En: 'Design that earns',
-    titleLine1Bn: 'ডিজাইন যা অর্জন করে',
+    titleLine1Bn: 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই',
     titleLine2En: 'trust at first glance.',
-    titleLine2Bn: 'প্রথম দর্শনেই বিশ্বাস।',
+    titleLine2Bn: 'বিশ্বাস জন্মায়।',
     p1En: 'POLISHED is built for mid-range ecommerce-based skincare brands that want to look premium, intentional, and unforgettable — without the agency overhead.',
-    p1Bn: 'POLISHED তৈরি হয়েছে মিড-রেঞ্জ ইকমার্স-ভিত্তিক স্কিনকেয়ার ব্র্যান্ডের জন্য যারা প্রিমিয়াম, উদ্দেশ্যমূলক এবং অবিস্মরণীয় দেখতে চায়।',
+    p1Bn: 'POLISHED তৈরি হয়েছে ই-কমার্স স্কিনকেয়ার ব্র্যান্ডগুলোর জন্য, যারা প্রিমিয়াম এবং বিশ্বাসযোগ্য একটি পরিচয় দাঁড় করাতে চায়। আমাদের লক্ষ্য একটাই—আপনার ব্র্যান্ডকে সাধারণের ভিড় থেকে আলাদা করে একটি এক্সক্লুসিভ অবস্থানে নিয়ে যাওয়া।',
     p2En: 'We specialize in clean, structured visuals that position your brand above the noise of generic Canva-level design. From Instagram posts to full visual identities — everything is built with precision and purpose.',
     p2Bn: 'আমরা পরিচ্ছন্ন, কাঠামোবদ্ধ ভিজ্যুয়ালে বিশেষজ্ঞ যা আপনার ব্র্যান্ডকে জেনেরিক ক্যানভা-লেভেল ডিজাইনের উপরে তুলে ধরে।',
     quoteEn: '— Identifying a gap: professional Bangla visual design done right.',
@@ -37,8 +37,8 @@ export default function About({ content, stats }: AboutProps) {
 
   const displayStats = stats.length > 0 ? stats : defaultStats;
 
-  const line1 = t(about.titleLine1En ?? 'Design that earns', about.titleLine1Bn ?? 'ডিজাইন যা অর্জন করে');
-  const line2 = t(about.titleLine2En ?? 'trust at first glance.', about.titleLine2Bn ?? 'প্রথম দর্শনেই বিশ্বাস।');
+  const line1 = t(about.titleLine1En ?? 'Design that earns', about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই');
+  const line2 = t(about.titleLine2En ?? 'trust at first glance.', about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।');
 
   return (
     <section id="about" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
