@@ -35,11 +35,13 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
     ? 'text-muted-foreground hover:text-accent'
     : 'text-primary-foreground/70 hover:text-accent';
 
+  // Nav labels are intentionally locked to English in all locales
+  // to preserve the brand's signature wordmark feel (matches Hero + logo).
   const navItems = [
-    { label: t(content?.aboutEn ?? 'About', content?.aboutBn ?? 'আমাদের সম্পর্কে'), href: '#about' },
-    { label: t(content?.servicesEn ?? 'Services', content?.servicesBn ?? 'সেবাসমূহ'), href: '#services' },
-    { label: t(content?.workEn ?? 'Work', content?.workBn ?? 'কাজ'), href: '#work' },
-    { label: t(content?.contactEn ?? 'Contact', content?.contactBn ?? 'যোগাযোগ'), href: '#contact' },
+    { label: content?.aboutEn ?? 'About', href: '#about' },
+    { label: content?.servicesEn ?? 'Services', href: '#services' },
+    { label: content?.workEn ?? 'Work', href: '#work' },
+    { label: content?.contactEn ?? 'Contact', href: '#contact' },
   ];
 
   const scrollTo = (href: string) => {
@@ -87,6 +89,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                   e.preventDefault();
                   scrollTo(item.href);
                 }}
+                lang="en"
                 className={`text-[13px] tracking-[1.5px] uppercase font-normal relative transition-colors duration-200 ${linkClass} after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
               >
                 {item.label}
@@ -172,6 +175,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                         // Wait for overlay close before scrolling
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
+                      lang="en"
                       className="font-heading text-primary-foreground hover:text-accent text-[clamp(34px,9vw,52px)] leading-tight font-light transition-colors duration-500 block min-h-[56px] text-right [text-wrap:balance]"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                     >
