@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface RevealTextProps {
-  children: string;
+  children: ReactNode;
   className?: string;
   delay?: number;
   duration?: number;
