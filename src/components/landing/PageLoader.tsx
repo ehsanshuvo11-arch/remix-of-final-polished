@@ -139,10 +139,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 }
 
 export function shouldShowLoader() {
-  if (typeof window === 'undefined') return false;
-  try {
-    return sessionStorage.getItem(SESSION_KEY) !== '1';
-  } catch {
-    return true;
-  }
+  // Loader now plays on every refresh — signature brand entrance.
+  return typeof window !== 'undefined';
 }
