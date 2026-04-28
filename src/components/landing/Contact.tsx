@@ -110,7 +110,7 @@ export default function Contact({ contact }: ContactProps) {
         </div>
 
         <MotionReveal delay={0.2}>
-          <LeadForm isBn={isBn} />
+          <LeadForm isBn={false} />
         </MotionReveal>
       </div>
     </div>
