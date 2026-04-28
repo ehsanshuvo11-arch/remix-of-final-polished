@@ -35,9 +35,9 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
       </MotionReveal>
       <MotionReveal delay={0.1}>
         <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-          <WordReveal delay={0.1}>{t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'সাম্প্রতিক')}</WordReveal>{' '}
+          <WordReveal delay={0.1}>{t(content?.titleLine1En ?? 'Recent', content?.titleLine1Bn ?? 'আমাদের সিগনেচার')}</WordReveal>{' '}
           <em className="italic">
-            <WordReveal delay={0.25}>{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্ট।')}</WordReveal>
+            <WordReveal delay={0.25}>{t(content?.titleLine2En ?? 'projects.', content?.titleLine2Bn ?? 'প্রজেক্টসমূহ।')}</WordReveal>
           </em>
         </h2>
       </MotionReveal>
