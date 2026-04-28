@@ -9,10 +9,10 @@ interface PageLoaderProps {
 //  0.00s – ~0.75s : wordmark reveal
 //  ~0.75s – ~0.85s : 0.1s breath
 //  ~0.85s – ~1.35s : curtain slides up (0.5s premium cubic-bezier)
-const REVEAL_END_MS = 800; // matches longest letter end (~0.79s)
-const MIN_HOLD_MS = 60;
+const REVEAL_END_MS = 600; // matches longest letter end (~0.59s)
+const MIN_HOLD_MS = 40;
 const HOLD_MS = REVEAL_END_MS + MIN_HOLD_MS;
-const EXIT_S = 0.45;
+const EXIT_S = 0.35;
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
@@ -115,8 +115,8 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                     initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
                     animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
                     transition={{
-                      duration: 0.55,
-                      delay: 0.04 + i * 0.025,
+                      duration: 0.42,
+                      delay: 0.03 + i * 0.018,
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
@@ -133,8 +133,8 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                   initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
                   animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
                   transition={{
-                    duration: 0.55,
-                    delay: 0.04 + letters.length * 0.025,
+                    duration: 0.42,
+                    delay: 0.03 + letters.length * 0.018,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >
@@ -147,7 +147,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
               className="absolute bottom-0 left-0 h-px w-full bg-primary-foreground/30"
               initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>
         </motion.div>
