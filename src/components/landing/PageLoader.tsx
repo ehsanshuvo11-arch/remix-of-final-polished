@@ -9,10 +9,10 @@ interface PageLoaderProps {
 //  0.00s – ~0.75s : wordmark reveal
 //  ~0.75s – ~0.85s : 0.1s breath
 //  ~0.85s – ~1.35s : curtain slides up (0.5s premium cubic-bezier)
-const REVEAL_END_MS = 750;
-const MIN_HOLD_MS = 100;
+const REVEAL_END_MS = 800; // matches longest letter end (~0.79s)
+const MIN_HOLD_MS = 60;
 const HOLD_MS = REVEAL_END_MS + MIN_HOLD_MS;
-const EXIT_S = 0.5;
+const EXIT_S = 0.45;
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
@@ -34,6 +34,9 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     lenis?.stop?.();
 
     const dismissTimer = window.setTimeout(() => {
+      // Notify parent the moment the curtain begins exiting so the page
+      // underneath can fade in *behind* the rising curtain — no blank gap.
+      onComplete?.();
       setShow(false);
     }, HOLD_MS);
 
@@ -62,7 +65,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
               document.documentElement.style.overflow = '';
               const lenis = (window as unknown as { lenis?: { start?: () => void } }).lenis;
               lenis?.start?.();
-              onComplete?.();
             }
           }}
         >
