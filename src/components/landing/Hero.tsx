@@ -104,7 +104,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           <RevealText
             as="span"
             delay={0.6}
-            className={`block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent ${isBn ? '' : 'italic'}`}
+            className={`hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent ${isBn ? '' : 'italic'}`}
           >
             {t('Unmissable!', 'অনবদ্য!')}
           </RevealText>
