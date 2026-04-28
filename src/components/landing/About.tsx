@@ -51,9 +51,16 @@ export default function About({ content, stats }: AboutProps) {
               {about.labelEn ?? 'About Polished'}
             </p>
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.2]">
             {isBn ? (
-              <RevealText as="span" className="block">এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই বিশ্বাস জন্মায়।</RevealText>
+              <>
+                <RevealText as="span" className="block">
+                  {(about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই')}
+                </RevealText>
+                <RevealText as="span" delay={0.15} className="block italic">
+                  {(about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।')}
+                </RevealText>
+              </>
             ) : (
               <>
                 <RevealText as="span" className="block">{line1}</RevealText>
