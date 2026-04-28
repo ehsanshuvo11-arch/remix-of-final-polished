@@ -131,7 +131,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
               className="absolute bottom-0 left-0 h-px w-full bg-primary-foreground/30"
               initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>
         </motion.div>
