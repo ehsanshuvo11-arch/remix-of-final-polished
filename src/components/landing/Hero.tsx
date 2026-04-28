@@ -101,19 +101,13 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           <RevealText as="span" delay={0.4} className="block pt-4">
             {t('Make Your Collection', 'আপনার কালেকশন হোক')}
           </RevealText>
-          <RevealText as="span" delay={0.6} className="block pt-4 text-[clamp(28px,6.5vw,80px)]">
-            <em
-              className="italic text-accent not-italic-bn"
-              style={{
-                fontFamily: isBn
-                  ? "'Noto Serif Bengali', 'Cormorant Garamond', serif"
-                  : "'Cormorant Garamond', serif",
-                fontStyle: isBn ? 'normal' : 'italic',
-                color: 'hsl(var(--accent))',
-              }}
-            >
-              {t('Unmissable!', 'অনবদ্য!')}
-            </em>
+          <RevealText
+            as="span"
+            delay={0.6}
+            className="block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent"
+            // Apply italic only for Latin script — Bengali has no italic form.
+          >
+            {t('Unmissable!', 'অনবদ্য!')}
           </RevealText>
         </h1>
 
