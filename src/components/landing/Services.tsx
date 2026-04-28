@@ -35,7 +35,13 @@ export default function Services({ services, content }: ServicesProps) {
         </MotionReveal>
         <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
           {isBn ? (
-            <WordReveal delay={0.1}>স্কিনকেয়ার ব্র্যান্ডের জন্য এক্সক্লুসিভ ভিজ্যুয়াল আইডেন্টিটি।</WordReveal>
+            <>
+              <WordReveal delay={0.1}>স্কিনকেয়ার ব্র্যান্ডের জন্য</WordReveal>
+              <br />
+              <em className="italic text-accent">
+                <WordReveal delay={0.25}>এক্সক্লুসিভ ভিজ্যুয়াল আইডেন্টিটি।</WordReveal>
+              </em>
+            </>
           ) : (
             <>
               <WordReveal delay={0.1}>{line1}</WordReveal>

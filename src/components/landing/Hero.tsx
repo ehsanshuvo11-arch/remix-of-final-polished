@@ -77,39 +77,42 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           }}
         />
 
-        {/* Eyebrow + Headline are intentionally locked to English in all locales
-            to preserve the brand's signature wordmark feel. */}
+        {/* Eyebrow uses locale content; headline below mirrors the same DOM in BN */}
         <p
-          lang="en"
+          lang={isBn ? 'bn' : 'en'}
           className="text-[11px] tracking-[4px] uppercase text-accent mb-5 font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'Inter', sans-serif" }}
         >
-          {hero.eyebrowEn}
+          {isBn ? (hero.eyebrowBn || hero.eyebrowEn) : hero.eyebrowEn}
         </p>
 
         <h1
-          lang="en"
+          lang={isBn ? 'bn' : 'en'}
           className="hero-headline font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: isBn
+              ? "'Noto Serif Bengali', 'Cormorant Garamond', serif"
+              : "'Cormorant Garamond', serif",
             lineHeight: 1.08,
             letterSpacing: '-0.02em',
           }}
         >
           <RevealText as="span" delay={0.4} className="block pt-4">
-            Make Your Collection
+            {isBn ? (hero.titleBn || 'আপনার কালেকশন হোক') : 'Make Your Collection'}
           </RevealText>
           <RevealText
             as="span"
             delay={0.6}
             className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
           >
-            Unmissable!
+            {isBn
+              ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
+              : 'Unmissable!'}
           </RevealText>
         </h1>
 
-        <p lang="en" className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
-          {hero.subEn}
+        <p lang={isBn ? 'bn' : 'en'} className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'DM Sans', sans-serif" }}>
+          {isBn ? (hero.subBn || hero.subEn) : hero.subEn}
         </p>
 
         {/* Play button — Magnetic */}
