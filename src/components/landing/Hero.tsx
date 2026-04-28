@@ -101,11 +101,12 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
+              className="hero-headline font-heading font-light text-primary-foreground mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
-                letterSpacing: '-0.02em',
+                letterSpacing: '0',
+                wordSpacing: '0.15em',
                 fontWeight: 300,
               }}
             >
@@ -120,7 +121,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
+                className="hero-accent-line block pt-4 text-[clamp(26px,6vw,72px)] text-accent italic font-light [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
