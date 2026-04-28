@@ -193,7 +193,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
                 className="mt-16 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
               >
-                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/45">
+                <p lang="en" className="brand-wordmark text-[10px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
                   POLISHED<span className="text-accent">.</span> Studio
                 </p>
               </motion.div>
