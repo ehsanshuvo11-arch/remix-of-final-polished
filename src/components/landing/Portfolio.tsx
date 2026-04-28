@@ -50,14 +50,14 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 
       <div className="flex flex-col gap-16 md:gap-24 mt-14">
         {displayProjects.map((project, i) => (
-          <ProjectCard key={project.id} project={project} index={i} />
+          <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
         ))}
       </div>
     </section>
   );
 }
 
-function ProjectCard({ project, index }: { project: PortfolioProject; index: number }) {
+function ProjectCard({ project, index, isBn }: { project: PortfolioProject; index: number; isBn: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
@@ -69,9 +69,14 @@ function ProjectCard({ project, index }: { project: PortfolioProject; index: num
   const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  const caseStudy = project.case_study_en ?? '';
-  const hook = project.hook_en ?? '';
-  const pdfUrl = project.pdf_url_en;
+  // Locale-aware field mapping with English fallback when BN translation missing.
+  const pick = (bn: string | null | undefined, en: string | null | undefined) =>
+    isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+  const title = pick(project.title_bn, project.title_en);
+  const category = pick(project.category_bn, project.category_en);
+  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const hook = pick(project.hook_bn, project.hook_en);
+  const pdfUrl = isBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
 
   const toggleImageExpand = useCallback(() => {
     setImageExpanded((prev) => !prev);
