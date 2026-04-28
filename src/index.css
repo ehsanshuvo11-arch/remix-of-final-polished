@@ -221,38 +221,6 @@ html:not([data-lang="bn"]) .lang-bn { display: none !important; }
   font-style: normal;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Bengali Typography Rules
-   ─────────────────────────────────────────────────────────────
-   1. Bengali text → 'Noto Serif Bengali' (only the Bangla glyphs).
-   2. Anything tagged [lang="en"] keeps the original English fonts
-      (Cormorant Garamond / DM Sans / Inter) — untouched.
-   3. ALL sizing, weight, letter-spacing, line-height, transforms
-      remain identical to English mode → zero layout shift.
-   ───────────────────────────────────────────────────────────── */
-
-/* Apply Noto Serif Bengali ONLY to elements that aren't English-locked. */
-html[data-lang="bn"] body,
-html[data-lang="bn"] body *:not([lang="en"]):not([lang="en"] *) {
-  font-family: 'Noto Serif Bengali', 'Cormorant Garamond', serif !important;
-  /* Preserve English-mode metrics — no size/spacing shifts */
-  font-size-adjust: 0.5;
-}
-
-/* English-locked elements: fully revert to inherited English typography */
-html[data-lang="bn"] [lang="en"],
-html[data-lang="bn"] [lang="en"] * {
-  font-family: revert !important;
-  font-size-adjust: none !important;
-}
-
-/* Brand wordmark always stays English serif */
-html[data-lang="bn"] .brand-wordmark,
-html[data-lang="bn"] .brand-wordmark * {
-  font-family: 'Cormorant Garamond', serif !important;
-  font-size-adjust: none !important;
-}
-
 /* Scroll reveal */
 /* Scroll reveal — luxury easing */
 .reveal-element {
