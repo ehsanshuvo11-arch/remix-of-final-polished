@@ -35,11 +35,13 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
     ? 'text-muted-foreground hover:text-accent'
     : 'text-primary-foreground/70 hover:text-accent';
 
+  // Nav labels are intentionally locked to English in all locales
+  // to preserve the brand's signature wordmark feel (matches Hero + logo).
   const navItems = [
-    { label: t(content?.aboutEn ?? 'About', content?.aboutBn ?? 'আমাদের সম্পর্কে'), href: '#about' },
-    { label: t(content?.servicesEn ?? 'Services', content?.servicesBn ?? 'সেবাসমূহ'), href: '#services' },
-    { label: t(content?.workEn ?? 'Work', content?.workBn ?? 'কাজ'), href: '#work' },
-    { label: t(content?.contactEn ?? 'Contact', content?.contactBn ?? 'যোগাযোগ'), href: '#contact' },
+    { label: content?.aboutEn ?? 'About', href: '#about' },
+    { label: content?.servicesEn ?? 'Services', href: '#services' },
+    { label: content?.workEn ?? 'Work', href: '#work' },
+    { label: content?.contactEn ?? 'Contact', href: '#contact' },
   ];
 
   const scrollTo = (href: string) => {
