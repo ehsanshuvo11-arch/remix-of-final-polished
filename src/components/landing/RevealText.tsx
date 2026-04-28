@@ -29,9 +29,10 @@ export default function RevealText({
   splitBy = 'word',
   as: Tag = 'span',
 }: RevealTextProps) {
+  const text = typeof children === 'string' ? children : String(children ?? '');
   const parts = splitBy === 'line'
-    ? children.split('\n')
-    : children.split(' ');
+    ? text.split('\n')
+    : text.split(' ');
 
   const Wrapper = Tag as any;
   const isMobile = useIsMobileDevice();
