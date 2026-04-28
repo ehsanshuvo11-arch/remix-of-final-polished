@@ -210,11 +210,41 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             className="overflow-hidden"
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
-              <p className="text-[11px] tracking-[2px] uppercase text-accent mb-3 font-medium">
-                Case Study
-              </p>
+              <div className="mb-3 flex items-center justify-between gap-4 flex-wrap">
+                <p className="text-[11px] tracking-[2px] uppercase text-accent font-medium">
+                  Case Study
+                </p>
+                {/* Premium micro-toggle — quiet luxury, text-only */}
+                <div className="flex items-center gap-2 text-[11px] tracking-[1px] text-muted-foreground/70 select-none">
+                  <span className="uppercase">Read in:</span>
+                  <button
+                    type="button"
+                    onClick={() => setCaseStudyLang('en')}
+                    aria-pressed={!csIsBn}
+                    className={`transition-colors duration-300 ease-out ${
+                      !csIsBn ? 'text-accent font-semibold' : 'text-muted-foreground/60 hover:text-foreground'
+                    }`}
+                  >
+                    English
+                  </button>
+                  <span className="text-muted-foreground/30">|</span>
+                  <button
+                    type="button"
+                    onClick={() => setCaseStudyLang('bn')}
+                    aria-pressed={csIsBn}
+                    lang="bn"
+                    style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+                    className={`transition-colors duration-300 ease-out ${
+                      csIsBn ? 'text-accent font-semibold' : 'text-muted-foreground/60 hover:text-foreground'
+                    }`}
+                  >
+                    বাংলা
+                  </button>
+                </div>
+              </div>
               {caseStudy && (
                 <div
+                  lang={csIsBn ? 'bn' : 'en'}
                   className="prose prose-lg prose-invert max-w-none
                     font-sans tracking-normal antialiased
                     text-foreground font-medium leading-loose
@@ -240,7 +270,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                     prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
                     prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
                   "
-                  style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
+                  style={{ fontFamily: csIsBn ? "'Noto Serif Bengali', serif" : 'Arial, Helvetica, sans-serif' }}
                 >
                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
                 </div>
