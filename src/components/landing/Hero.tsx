@@ -77,13 +77,13 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           }}
         />
 
-        {/* Eyebrow uses locale content; headline below mirrors the same DOM in BN */}
+        {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
-          lang={isBn ? 'bn' : 'en'}
+          lang="en"
           className="text-[11px] tracking-[4px] uppercase text-accent mb-5 font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'Inter', sans-serif" }}
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
-          {isBn ? (hero.eyebrowBn || hero.eyebrowEn) : hero.eyebrowEn}
+          {hero.eyebrowEn}
         </p>
 
         {(() => {
