@@ -21,18 +21,20 @@ export default function Process({ steps, content }: ProcessProps) {
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
 
-  const line1 = t(content?.titleLine1En ?? 'A process built on', content?.titleLine1Bn ?? 'নিখুঁত কাজের পেছনের');
-  const line2 = t(content?.titleLine2En ?? 'precision.', content?.titleLine2Bn ?? 'মাস্টারপ্ল্যান।');
+  // Process headings/labels locked to English in all locales
+  const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+  const line1 = content?.titleLine1En ?? 'A process built on';
+  const line2 = content?.titleLine2En ?? 'precision.';
 
   return (
     <div className="bg-secondary">
       <section id="process" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
-          <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {t(content?.labelEn ?? 'How It Works', content?.labelBn ?? 'কীভাবে কাজ হয়')}
+          <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+            {content?.labelEn ?? 'How It Works'}
           </p>
         </MotionReveal>
-        <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
           <WordReveal delay={0.1}>{line1}</WordReveal>
           <br />
           <em className="italic">
@@ -62,11 +64,11 @@ function StepCard({ step, index }: { step: ProcessStep; index: number }) {
         <div className="font-heading text-[40px] font-light text-primary/20 mb-4">
           {String(index + 1).padStart(2, '0')}
         </div>
-        <div className="font-heading text-xl font-medium text-primary mb-2.5">
-          {t(step.title_en, step.title_bn)}
+        <div lang="en" className="font-heading text-xl font-medium text-primary mb-2.5">
+          {step.title_en}
         </div>
-        <p className="text-[13px] leading-[1.75] text-muted-foreground">
-          {t(step.desc_en, step.desc_bn)}
+        <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[13px] leading-[1.75] text-muted-foreground">
+          {step.desc_en}
         </p>
       </div>
     </MotionReveal>

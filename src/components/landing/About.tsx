@@ -37,35 +37,37 @@ export default function About({ content, stats }: AboutProps) {
 
   const displayStats = stats.length > 0 ? stats : defaultStats;
 
-  const line1 = t(about.titleLine1En ?? 'Design that earns', about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই');
-  const line2 = t(about.titleLine2En ?? 'trust at first glance.', about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।');
+  // About copy is intentionally locked to English in all locales
+  const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+  const line1 = about.titleLine1En ?? 'Design that earns';
+  const line2 = about.titleLine2En ?? 'trust at first glance.';
 
   return (
     <section id="about" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div>
           <MotionReveal>
-            <p className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {t(about.labelEn ?? 'About Polished', about.labelBn ?? 'পলিশড সম্পর্কে')}
+            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+              {about.labelEn ?? 'About Polished'}
             </p>
           </MotionReveal>
-          <h2 className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <h2 lang="en" className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
             <RevealText as="span" className="block">{line1}</RevealText>
             <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
           </h2>
           <MotionReveal delay={0.3}>
-            <p className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-              {t(about.p1En, about.p1Bn)}
+            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
+              {about.p1En}
             </p>
           </MotionReveal>
           <MotionReveal delay={0.4}>
-            <p className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-              {t(about.p2En, about.p2Bn)}
+            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
+              {about.p2En}
             </p>
           </MotionReveal>
           <MotionReveal delay={0.5}>
-            <p className="text-[15px] leading-[1.85] text-primary italic">
-              {t(about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.', about.quoteBn ?? '— একটি ফাঁক চিহ্নিত করা: পেশাদার বাংলা ভিজ্যুয়াল ডিজাইন সঠিকভাবে।')}
+            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary italic">
+              {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
             </p>
           </MotionReveal>
         </div>
@@ -79,8 +81,8 @@ export default function About({ content, stats }: AboutProps) {
                 <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
-                <div className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
-                  {t(stat.label_en, stat.label_bn)}
+                <div lang="en" style={enFont} className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
+                  {stat.label_en}
                 </div>
               </div>
             </MotionReveal>
