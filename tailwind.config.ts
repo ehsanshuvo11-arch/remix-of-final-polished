@@ -16,7 +16,7 @@ export default {
       fontFamily: {
         heading: ['"Cormorant Garamond"', 'serif'],
         body: ['"DM Sans"', 'sans-serif'],
-        bangla: ['"Hind Siliguri"', 'sans-serif'],
+        bangla: ['"Noto Serif Bengali"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

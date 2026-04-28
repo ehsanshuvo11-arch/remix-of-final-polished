@@ -203,20 +203,46 @@ html[data-lang="en"] .lang-bn { display: none !important; }
 html:not([data-lang="bn"]) .lang-bn { display: none !important; }
 
 /* ─────────────────────────────────────────────────────────────
-   Bengali (Bangla) Typography — DISABLED
+   Bengali (Bangla) Typography
    ─────────────────────────────────────────────────────────────
-   Per brand decision, the Bengali locale must render with the
-   EXACT same typography, sizing, tracking, uppercase transforms
-   and layout as the English version. All previous Bengali-only
-   font-family / letter-spacing / line-height / text-transform
-   overrides have been removed so Tailwind utility classes apply
-   identically in both locales. Only language visibility toggles
-   (lang-en / lang-bn) remain above.
+   In Bengali mode, ALL Bengali text renders in 'Noto Serif Bengali'.
+   Sizing, weights, line-heights, letter-spacing and layout are
+   inherited from the English Tailwind utilities — only font-family
+   is overridden so EN/BN layout parity is preserved.
+   English-tagged elements ([lang="en"]) and the brand wordmark are
+   carved out and remain in their original Latin serif/sans stack.
    ───────────────────────────────────────────────────────────── */
+html[data-lang="bn"] body,
+html[data-lang="bn"] h1,
+html[data-lang="bn"] h2,
+html[data-lang="bn"] h3,
+html[data-lang="bn"] h4,
+html[data-lang="bn"] h5,
+html[data-lang="bn"] h6,
+html[data-lang="bn"] p,
+html[data-lang="bn"] span,
+html[data-lang="bn"] a,
+html[data-lang="bn"] button,
+html[data-lang="bn"] li,
+html[data-lang="bn"] label,
+html[data-lang="bn"] input,
+html[data-lang="bn"] textarea,
+html[data-lang="bn"] blockquote,
+html[data-lang="bn"] em,
+html[data-lang="bn"] strong {
+  font-family: 'Noto Serif Bengali', serif !important;
+}
+
+/* Carve-outs: keep English-tagged elements and the logo in Latin serif */
+html[data-lang="bn"] [lang="en"],
+html[data-lang="bn"] [lang="en"] * {
+  font-family: 'Cormorant Garamond', 'DM Sans', serif !important;
+}
 
 /* Brand wordmark (logo) — always English serif, regardless of locale */
-.brand-wordmark {
-  font-family: 'Cormorant Garamond', serif;
+.brand-wordmark,
+html[data-lang="bn"] .brand-wordmark {
+  font-family: 'Cormorant Garamond', serif !important;
   letter-spacing: 4px;
   font-style: normal;
 }
