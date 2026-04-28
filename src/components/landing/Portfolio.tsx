@@ -514,11 +514,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image with animation + drag-to-swap + 3D tilt */}
-      <div
-        className="relative flex items-center justify-center"
-        style={{ perspective: 1200 }}
-      >
+      {/* Main image — fade + drag-to-swap only (no hover tilt for a calm viewing experience) */}
+      <div className="relative flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.img
             key={current}
@@ -533,13 +530,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
               backgroundColor: 'transparent',
               boxShadow: 'none',
               filter: 'none',
-              rotateX,
-              rotateY,
-              transformStyle: 'preserve-3d',
             }}
             onClick={(e) => e.stopPropagation()}
-            onMouseMove={handleImgMouseMove}
-            onMouseLeave={handleImgMouseLeave}
             draggable={false}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
