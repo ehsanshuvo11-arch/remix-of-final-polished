@@ -242,8 +242,8 @@ html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en-US"],
 html[data-lang="bn"] .lang-en-inline {
   font-family: 'DM Sans', sans-serif !important;
-  letter-spacing: revert !important;
-  line-height: revert !important;
+  letter-spacing: unset;
+  line-height: unset;
   word-spacing: normal !important;
 }
 html[data-lang="bn"] h1 [lang="en"],
@@ -311,10 +311,10 @@ html[data-lang="bn"] [class*="uppercase"]:not([lang="en"]):not([lang="en"] *) {
    ───────────────────────────────────────────────────────────── */
 html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en"] * {
-  letter-spacing: revert !important;
-  text-transform: revert !important;
-  font-style: revert !important;
-  line-height: revert;
+  letter-spacing: unset;
+  text-transform: unset;
+  font-style: unset;
+  line-height: unset;
   word-spacing: normal;
 }
 /* English subtree inside Bangla pages: keep body copy in DM Sans */
