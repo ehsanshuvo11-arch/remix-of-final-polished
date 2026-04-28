@@ -4,7 +4,6 @@ import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
