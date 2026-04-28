@@ -5,14 +5,14 @@ interface PageLoaderProps {
   onComplete?: () => void;
 }
 
-// Curtain choreography (perfectly continuous — no dead time):
-//  0.00s – ~1.45s : wordmark reveal (last letter finishes ~1.45s in)
-//  ~1.45s – ~1.60s : minimal 0.15s breath
-//  ~1.60s – ~2.30s : curtain slides up (0.7s premium cubic-bezier)
-const REVEAL_END_MS = 1450; // matches longest letter animation end
-const MIN_HOLD_MS = 150;    // 0.15s — just enough to avoid a hard cut
+// Curtain choreography (snappy, continuous):
+//  0.00s – ~0.75s : wordmark reveal
+//  ~0.75s – ~0.85s : 0.1s breath
+//  ~0.85s – ~1.35s : curtain slides up (0.5s premium cubic-bezier)
+const REVEAL_END_MS = 750;
+const MIN_HOLD_MS = 100;
 const HOLD_MS = REVEAL_END_MS + MIN_HOLD_MS;
-const EXIT_S = 0.7;
+const EXIT_S = 0.5;
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
