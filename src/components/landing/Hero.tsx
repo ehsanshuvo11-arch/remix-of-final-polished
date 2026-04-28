@@ -86,52 +86,48 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           {isBn ? (hero.eyebrowBn || hero.eyebrowEn) : hero.eyebrowEn}
         </p>
 
-        <h1
-          lang={isBn ? 'bn' : 'en'}
-          className="hero-headline font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
-          style={{
-            fontFamily: isBn
-              ? "'Noto Serif Bengali', 'Cormorant Garamond', serif"
-              : "'Cormorant Garamond', serif",
-            lineHeight: 1.08,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {(() => {
-            const BASE = 0.4;
-            const STAGGER = 0.15;
-            // Use real spaces so RevealText can split into words ("Make" / "Your" / "Collection")
-            const line1 = isBn
-              ? (hero.titleBn || 'আপনার কালেকশন হোক')
-              : 'Make Your Collection';
-            const line2 = isBn
-              ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
-              : 'Unmissable!';
-            // Count words in line 1 to continue the cascade seamlessly into line 2
-            const line1Words = line1.split(/\s+/).filter(Boolean);
-            const line2Delay = BASE + line1Words.length * STAGGER;
-            return (
-              <>
-                <RevealText
-                  as="span"
-                  delay={BASE}
-                  className="block pt-4 whitespace-nowrap"
-                  stagger={STAGGER}
-                >
-                  {line1}
-                </RevealText>
-                <RevealText
-                  as="span"
-                  delay={line2Delay}
-                  className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
-                  stagger={STAGGER}
-                >
-                  {line2}
-                </RevealText>
-              </>
-            );
-          })()}
-        </h1>
+        {(() => {
+          // Zero-shift headline: identical DOM, classes, fonts, sizes, and animation
+          // timings for EN and BN. Only the raw text strings differ.
+          const BASE = 0.4;
+          const STAGGER = 0.15;
+          const line1 = isBn
+            ? (hero.titleBn || 'আপনার কালেকশন হোক')
+            : 'Make Your Collection';
+          const line2 = isBn
+            ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
+            : 'Unmissable!';
+          // Fixed delay for line 2 — independent of locale/word count to guarantee
+          // identical animation choreography across languages.
+          const line2Delay = BASE + 3 * STAGGER;
+          return (
+            <h1
+              className="hero-headline font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                lineHeight: 1.08,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              <RevealText
+                as="span"
+                delay={BASE}
+                className="block pt-4 whitespace-nowrap"
+                stagger={STAGGER}
+              >
+                {line1}
+              </RevealText>
+              <RevealText
+                as="span"
+                delay={line2Delay}
+                className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
+                stagger={STAGGER}
+              >
+                {line2}
+              </RevealText>
+            </h1>
+          );
+        })()}
 
         <p lang={isBn ? 'bn' : 'en'} className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'DM Sans', sans-serif" }}>
           {isBn ? (hero.subBn || hero.subEn) : hero.subEn}
