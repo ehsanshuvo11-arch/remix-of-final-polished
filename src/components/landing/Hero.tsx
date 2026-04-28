@@ -142,7 +142,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
            
           >
             <span className="w-2 h-2 bg-accent rounded-full group-hover:bg-primary-foreground" style={{ animation: 'pulseDot 1.5s infinite' }} />
-            <span lang={isBn ? 'bn' : 'en'}>
+            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'এক্সক্লুসিভ বোনাস আনলক করুন' : (hero.playCtaEn ?? 'Play & Unlock a Bonus')}
             </span>
           </MagneticButton>
@@ -164,7 +164,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             className={`inline-flex items-center justify-center px-8 sm:px-11 py-4 ${isBn ? 'text-[12px] sm:text-[13px] tracking-[0.5px] normal-case' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
-            <span lang={isBn ? 'bn' : 'en'}>
+            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'এক্সপ্লোর করুন' : (hero.viewWorkEn ?? 'View Our Work')}
             </span>
           </MagneticButton>
@@ -183,7 +183,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             className={`inline-flex items-center justify-center px-8 sm:px-11 py-4 ${isBn ? 'text-[12px] sm:text-[13px] tracking-[0.5px] normal-case' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase'} font-normal rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] min-h-[48px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
-            <span lang={isBn ? 'bn' : 'en'}>
+            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'প্রজেক্ট শুরু করুন' : (hero.startProjectEn ?? 'Start a Project')}
             </span>
           </MagneticButton>
