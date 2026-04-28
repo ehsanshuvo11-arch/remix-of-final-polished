@@ -73,15 +73,16 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 
           <div className="relative overflow-hidden px-6">
             <div
-              className="font-heading uppercase text-primary-foreground"
+              lang="en"
+              className="brand-wordmark font-heading uppercase text-primary-foreground"
               style={{
-                fontFamily: '"Cormorant Garamond", serif',
-                letterSpacing: '0.18em',
+                fontFamily: "'Cormorant Garamond', serif",
+                letterSpacing: '4px',
                 fontSize: 'clamp(2.25rem, 7vw, 5.25rem)',
-                fontWeight: 500,
+                fontWeight: 600,
                 lineHeight: 1.1,
                 display: 'flex',
-              }}
+              } as React.CSSProperties}
             >
               {letters.map((letter, i) => (
                 <span
