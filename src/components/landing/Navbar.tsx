@@ -14,7 +14,8 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const isBn = lang === 'bn';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -35,14 +36,20 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
     ? 'text-muted-foreground hover:text-accent'
     : 'text-primary-foreground/70 hover:text-accent';
 
-  // Nav labels are intentionally locked to English in all locales
-  // to preserve the brand's signature wordmark feel (matches Hero + logo).
-  const navItems = [
-    { label: content?.aboutEn ?? 'About', href: '#about' },
-    { label: content?.servicesEn ?? 'Services', href: '#services' },
-    { label: content?.workEn ?? 'Work', href: '#work' },
-    { label: content?.contactEn ?? 'Contact', href: '#contact' },
-  ];
+  // EN: keep English wordmark feel. BN: localized labels per request.
+  const navItems = isBn
+    ? [
+        { label: 'পরিচিতি', href: '#about' },
+        { label: 'এক্সপার্টিজ', href: '#services' },
+        { label: 'সিগনেচার প্রজেক্ট', href: '#work' },
+        { label: 'যোগাযোগ', href: '#contact' },
+      ]
+    : [
+        { label: content?.aboutEn ?? 'About', href: '#about' },
+        { label: content?.servicesEn ?? 'Services', href: '#services' },
+        { label: content?.workEn ?? 'Work', href: '#work' },
+        { label: content?.contactEn ?? 'Contact', href: '#contact' },
+      ];
 
   const scrollTo = (href: string) => {
     const id = href.replace('#', '');
