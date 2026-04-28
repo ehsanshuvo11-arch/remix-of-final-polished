@@ -212,6 +212,11 @@ html:not([data-lang="bn"]) .lang-bn { display: none !important; }
    and a humanist sans for body, and slightly increase line-height
    to give ascenders/descenders room to breathe.
    ───────────────────────────────────────────────────────────── */
+/* Dual-script font stack: Latin glyphs render in DM Sans / Cormorant Garamond
+   (via unicode-range), Bengali glyphs fall through to Noto Serif Bengali.
+   Browsers pick the first family in the stack whose unicode-range covers the
+   character — so "Polished Studios" inside a Bengali paragraph keeps its
+   English typography while "বিশ্বাস" renders in the Bengali serif. */
 html[data-lang="bn"] body,
 html[data-lang="bn"] p,
 html[data-lang="bn"] a,
@@ -222,10 +227,37 @@ html[data-lang="bn"] input,
 html[data-lang="bn"] textarea,
 html[data-lang="bn"] label,
 html[data-lang="bn"] div {
-  font-family: 'Noto Serif Bengali', serif !important;
+  font-family: 'DM Sans', 'Noto Serif Bengali', serif !important;
   letter-spacing: 0 !important;
   line-height: 1.5;
   word-spacing: 0;
+}
+
+/* Any Latin-script run explicitly tagged inside Bengali content keeps
+   the full English typographic treatment (italic, tracking, leading). */
+html[data-lang="bn"] [lang="en"],
+html[data-lang="bn"] [lang="en-US"],
+html[data-lang="bn"] .lang-en-inline {
+  font-family: 'DM Sans', sans-serif !important;
+  letter-spacing: revert !important;
+  line-height: revert !important;
+  word-spacing: normal !important;
+}
+html[data-lang="bn"] h1 [lang="en"],
+html[data-lang="bn"] h2 [lang="en"],
+html[data-lang="bn"] h3 [lang="en"],
+html[data-lang="bn"] h4 [lang="en"],
+html[data-lang="bn"] .font-heading [lang="en"],
+html[data-lang="bn"] [lang="en"].font-heading,
+html[data-lang="bn"] [lang="en"] em,
+html[data-lang="bn"] [lang="en"] i,
+html[data-lang="bn"] [lang="en"] .italic {
+  font-family: 'Cormorant Garamond', serif !important;
+}
+html[data-lang="bn"] [lang="en"] em,
+html[data-lang="bn"] [lang="en"] i,
+html[data-lang="bn"] [lang="en"] .italic {
+  font-style: italic !important;
 }
 
 html[data-lang="bn"] p,
@@ -240,7 +272,7 @@ html[data-lang="bn"] h4,
 html[data-lang="bn"] h5,
 html[data-lang="bn"] h6,
 html[data-lang="bn"] .font-heading {
-  font-family: 'Noto Serif Bengali', serif !important;
+  font-family: 'Cormorant Garamond', 'Noto Serif Bengali', serif !important;
   letter-spacing: 0 !important;
   line-height: 1.2 !important;
   font-style: normal; /* Bengali has no italic — italic glyphs render as faux-skew, kills the look */
