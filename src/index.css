@@ -337,13 +337,11 @@ html[data-lang="bn"] .brand-wordmark * {
   font-style: normal !important;
 }
 
-/* ─── Hero headline escape hatch — preserve English-version metrics in Bengali ─── */
-/* Bengali glyphs render visually larger than Latin at the same font-size,
-   so we scale down the Bengali hero headline to match the English layout. */
+/* ─── Hero headline escape hatch — match English sizing exactly in Bengali ─── */
 html[data-lang="bn"] .hero-headline {
-  font-size: clamp(24px, 6vw, 72px) !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.01em !important;
+  font-size: clamp(32px, 8vw, 96px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
 }
 html[data-lang="bn"] .hero-headline > span {
   font-size: inherit !important;
@@ -351,7 +349,8 @@ html[data-lang="bn"] .hero-headline > span {
   letter-spacing: inherit !important;
 }
 html[data-lang="bn"] .hero-headline .hero-accent-line {
-  font-size: clamp(20px, 5vw, 60px) !important;
+  font-size: clamp(28px, 6.5vw, 80px) !important;
+  line-height: 1.08 !important;
 }
 
 /* Scroll reveal */
