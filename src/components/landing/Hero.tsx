@@ -97,25 +97,39 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             letterSpacing: '-0.02em',
           }}
         >
-          <RevealText
-            as="span"
-            delay={0.4}
-            className="block pt-4"
-            stagger={isBn ? 0 : 0.1}
-          >
-            {isBn
+          {(() => {
+            const BASE = 0.4;
+            const STAGGER = 0.15;
+            const line1 = isBn
               ? (hero.titleBn || 'আপনার কালেকশন হোক').replace(/\s+/g, '\u00A0')
-              : 'Make Your Collection'}
-          </RevealText>
-          <RevealText
-            as="span"
-            delay={0.6}
-            className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
-          >
-            {isBn
+              : 'Make Your Collection';
+            const line2 = isBn
               ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
-              : 'Unmissable!'}
-          </RevealText>
+              : 'Unmissable!';
+            // Count words in line 1 to continue the cascade into line 2
+            const line1WordCount = line1.split(' ').filter(Boolean).length;
+            const line2Delay = BASE + line1WordCount * STAGGER;
+            return (
+              <>
+                <RevealText
+                  as="span"
+                  delay={BASE}
+                  className="block pt-4"
+                  stagger={STAGGER}
+                >
+                  {line1}
+                </RevealText>
+                <RevealText
+                  as="span"
+                  delay={line2Delay}
+                  className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
+                  stagger={STAGGER}
+                >
+                  {line2}
+                </RevealText>
+              </>
+            );
+          })()}
         </h1>
 
         <p lang={isBn ? 'bn' : 'en'} className="text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: isBn ? "'Noto Sans Bengali', sans-serif" : "'DM Sans', sans-serif" }}>
