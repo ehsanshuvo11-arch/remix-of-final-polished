@@ -100,11 +100,13 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           const line2Delay = BASE + 3 * STAGGER;
           return (
             <h1
+              lang="en"
               className="hero-headline font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
                 letterSpacing: '-0.02em',
+                fontWeight: 300,
               }}
             >
               <RevealText
