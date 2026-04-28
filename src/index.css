@@ -285,6 +285,18 @@ html[data-lang="bn"] [lang="en"] * {
   font-family: 'Cormorant Garamond', 'DM Sans', serif !important;
 }
 
+/* Eyebrow tagline + DM Sans body copy must stay in their declared sans-serif
+   font even in BN mode (the [lang="en"] carve-out above would otherwise force
+   them into Cormorant serif and break visual parity with EN mode). */
+html[data-lang="bn"] [lang="en"].font-sans-eyebrow,
+html[data-lang="bn"] [lang="en"].font-sans-eyebrow * {
+  font-family: 'Inter', sans-serif !important;
+}
+html[data-lang="bn"] [lang="en"].font-sans-body,
+html[data-lang="bn"] [lang="en"].font-sans-body * {
+  font-family: 'DM Sans', sans-serif !important;
+}
+
 /* Brand wordmark (logo) — always English serif, regardless of locale */
 .brand-wordmark,
 html[data-lang="bn"] .brand-wordmark {
