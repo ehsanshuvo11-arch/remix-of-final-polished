@@ -99,8 +99,8 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                     initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
                     animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
                     transition={{
-                      duration: 1,
-                      delay: 0.05 + i * 0.045,
+                      duration: 0.55,
+                      delay: 0.04 + i * 0.025,
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
