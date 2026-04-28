@@ -106,8 +106,8 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
                 letterSpacing: '0',
-                wordSpacing: '0.15em',
-                fontWeight: 300,
+                wordSpacing: 'normal',
+                fontWeight: 400,
               }}
             >
               <RevealText
