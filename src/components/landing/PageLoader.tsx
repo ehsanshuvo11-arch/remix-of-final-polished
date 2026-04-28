@@ -52,10 +52,15 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
           initial={{ y: 0 }}
           exit={{ y: '-100%' }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: EXIT_S, ease: [0.76, 0, 0.24, 1] }}
           onAnimationComplete={(def) => {
             if ((def as { y?: string })?.y === '-100%') {
+              // Curtain has fully cleared the viewport — release scroll locks.
               document.body.style.overflow = '';
+              document.documentElement.style.overflow = '';
+              const lenis = (window as unknown as { lenis?: { start?: () => void } }).lenis;
+              lenis?.start?.();
+              onComplete?.();
             }
           }}
         >
