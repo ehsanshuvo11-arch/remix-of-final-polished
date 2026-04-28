@@ -91,12 +91,10 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           // timings for EN and BN. Only the raw text strings differ.
           const BASE = 0.4;
           const STAGGER = 0.15;
-          const line1 = isBn
-            ? (hero.titleBn || 'আপনার কালেকশন হোক')
-            : 'Make Your Collection';
-          const line2 = isBn
-            ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
-            : 'Unmissable!';
+          // Headline is locked to English in both locales to guarantee zero layout shift
+          // and identical typography (font, weight, size, spacing) across language toggles.
+          const line1 = 'Make Your Collection';
+          const line2 = 'Unmissable!';
           // Fixed delay for line 2 — independent of locale/word count to guarantee
           // identical animation choreography across languages.
           const line2Delay = BASE + 3 * STAGGER;
