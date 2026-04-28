@@ -9,8 +9,8 @@ interface PageLoaderProps {
 //  0.0s – 1.0s : wordmark reveal (mask slide + blur-to-sharp)
 //  1.0s – 1.8s : hold so the user admires "POLISHED."
 //  1.8s – 3.0s : curtain slides up (1.2s premium cubic-bezier)
-const HOLD_MS = 1800;
-const EXIT_S = 1.2;
+const HOLD_MS = 900;
+const EXIT_S = 0.8;
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
