@@ -97,8 +97,15 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
             letterSpacing: '-0.02em',
           }}
         >
-          <RevealText as="span" delay={0.4} className="block pt-4">
-            {isBn ? (hero.titleBn || 'আপনার কালেকশন হোক') : 'Make Your Collection'}
+          <RevealText
+            as="span"
+            delay={0.4}
+            className="block pt-4"
+            stagger={isBn ? 0 : 0.1}
+          >
+            {isBn
+              ? (hero.titleBn || 'আপনার কালেকশন হোক').replace(/\s+/g, '\u00A0')
+              : 'Make Your Collection'}
           </RevealText>
           <RevealText
             as="span"
