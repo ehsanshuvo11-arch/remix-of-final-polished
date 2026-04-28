@@ -88,23 +88,27 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         </p>
 
         <h1
-          lang="en"
+          lang={isBn ? 'bn' : 'en'}
           className="hero-headline font-heading font-light text-primary-foreground tracking-[-0.02em] mb-6 text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance]"
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: isBn
+              ? "'Noto Serif Bengali', 'Cormorant Garamond', serif"
+              : "'Cormorant Garamond', serif",
             lineHeight: 1.08,
             letterSpacing: '-0.02em',
           }}
         >
           <RevealText as="span" delay={0.4} className="block pt-4">
-            Make Your Collection
+            {isBn ? (hero.titleBn || 'আপনার কালেকশন হোক') : 'Make Your Collection'}
           </RevealText>
           <RevealText
             as="span"
             delay={0.6}
             className="hero-accent-line block pt-4 text-[clamp(28px,6.5vw,80px)] text-accent italic"
           >
-            Unmissable!
+            {isBn
+              ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
+              : 'Unmissable!'}
           </RevealText>
         </h1>
 
