@@ -311,10 +311,10 @@ html[data-lang="bn"] [class*="uppercase"]:not([lang="en"]):not([lang="en"] *) {
    ───────────────────────────────────────────────────────────── */
 html[data-lang="bn"] [lang="en"],
 html[data-lang="bn"] [lang="en"] * {
-  letter-spacing: revert !important;
-  text-transform: revert !important;
-  font-style: revert !important;
-  line-height: revert;
+  letter-spacing: unset;
+  text-transform: unset;
+  font-style: unset;
+  line-height: unset;
   word-spacing: normal;
 }
 /* English subtree inside Bangla pages: keep body copy in DM Sans */
