@@ -1,22 +1,20 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SESSION_KEY = 'polished_loader_shown';
-
 interface PageLoaderProps {
   onComplete?: () => void;
 }
 
+// Curtain choreography:
+//  0.0s – 1.0s : wordmark reveal (mask slide + blur-to-sharp)
+//  1.0s – 1.8s : hold so the user admires "POLISHED."
+//  1.8s – 3.0s : curtain slides up (1.2s premium cubic-bezier)
+const HOLD_MS = 1800;
+const EXIT_S = 1.2;
+
 export default function PageLoader({ onComplete }: PageLoaderProps) {
-  // Decide synchronously so we never flash a loader on subsequent navigations.
-  const [show, setShow] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    try {
-      return sessionStorage.getItem(SESSION_KEY) !== '1';
-    } catch {
-      return true;
-    }
-  });
+  // Always run on every hard refresh — no session/local storage gating.
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
     if (!show) {
@@ -24,24 +22,23 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       return;
     }
 
-    // Lock body scroll while loader is on screen.
-    const prevOverflow = document.body.style.overflow;
+    // Lock body + html scroll (covers Lenis which reads from html/body).
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    // Pause Lenis if present on window.
+    const lenis = (window as unknown as { lenis?: { stop?: () => void; start?: () => void } }).lenis;
+    lenis?.stop?.();
 
-    // Total choreography:
-    //  0.0s – 1.0s : wordmark reveal (mask slide + blur-to-sharp)
-    //  1.0s – 1.5s : hold
-    //  1.5s – 2.4s : curtain drops up (0.9s cubic ease-in-out)
     const dismissTimer = window.setTimeout(() => {
-      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch { /* noop */ }
       setShow(false);
-      // Match the curtain duration so hero entrance is in sync.
-      window.setTimeout(() => onComplete?.(), 900);
-    }, 1500);
+    }, HOLD_MS);
 
     return () => {
       window.clearTimeout(dismissTimer);
-      document.body.style.overflow = prevOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
     };
   }, [show, onComplete]);
 
@@ -55,10 +52,15 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
           initial={{ y: 0 }}
           exit={{ y: '-100%' }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: EXIT_S, ease: [0.76, 0, 0.24, 1] }}
           onAnimationComplete={(def) => {
             if ((def as { y?: string })?.y === '-100%') {
+              // Curtain has fully cleared the viewport — release scroll locks.
               document.body.style.overflow = '';
+              document.documentElement.style.overflow = '';
+              const lenis = (window as unknown as { lenis?: { start?: () => void } }).lenis;
+              lenis?.start?.();
+              onComplete?.();
             }
           }}
         >
@@ -137,10 +139,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 }
 
 export function shouldShowLoader() {
-  if (typeof window === 'undefined') return false;
-  try {
-    return sessionStorage.getItem(SESSION_KEY) !== '1';
-  } catch {
-    return true;
-  }
+  // Loader now plays on every refresh — signature brand entrance.
+  return typeof window !== 'undefined';
 }
