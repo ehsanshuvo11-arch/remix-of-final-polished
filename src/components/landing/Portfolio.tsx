@@ -119,7 +119,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
               <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
                 <motion.img
                   src={project.image_url}
-                  alt={`${project.title_en} — ${project.category_en} — Premium skincare brand identity and UI design by POLISHED`}
+                  alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -132,7 +132,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
           ) : (
             <TiltImage
               src={project.image_url}
-              alt={`${project.title_en} — ${project.category_en} — Premium skincare brand identity and UI design by POLISHED`}
+              alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
             />
           )
         ) : (
@@ -143,7 +143,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
               <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
             </svg>
             <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
-              {project.title_en}
+              {title}
             </span>
           </div>
         )}
@@ -266,7 +266,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             <MockupLightbox
               urls={mockupUrls}
               initialIndex={lightboxIndex}
-              title={project.title_en}
+              title={title}
               onClose={() => setLightboxOpen(false)}
             />
           )}
