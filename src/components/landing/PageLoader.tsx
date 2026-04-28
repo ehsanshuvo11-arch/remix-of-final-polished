@@ -34,6 +34,9 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     lenis?.stop?.();
 
     const dismissTimer = window.setTimeout(() => {
+      // Notify parent the moment the curtain begins exiting so the page
+      // underneath can fade in *behind* the rising curtain — no blank gap.
+      onComplete?.();
       setShow(false);
     }, HOLD_MS);
 
