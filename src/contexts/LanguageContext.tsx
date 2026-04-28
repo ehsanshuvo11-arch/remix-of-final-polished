@@ -29,10 +29,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [showPopup, setShowPopup] = useState(() => !localStorage.getItem('polished_lang'));
   const [transitioning, setTransitioning] = useState(false);
 
+  const syncDocumentLanguage = () => {
+    document.documentElement.setAttribute('data-lang', 'en');
+    document.documentElement.setAttribute('lang', 'en');
+  };
+
   const setLang = (l: Lang) => {
     setLangState(l);
     localStorage.setItem('polished_lang', l);
-    document.documentElement.setAttribute('data-lang', l);
+    syncDocumentLanguage();
     // Luxurious transition out
     setTransitioning(true);
     setTimeout(() => {
@@ -42,10 +47,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    if (lang) document.documentElement.setAttribute('data-lang', lang);
+    syncDocumentLanguage();
   }, [lang]);
 
-  const t = (en: string, bn: string) => lang === 'bn' && bn ? bn : en;
+  const t = (en: string, _bn: string) => en;
 
   return (
     <LanguageContext.Provider value={{ lang: lang || 'en', setLang, t }}>
@@ -123,7 +128,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             setLangState(prev => {
               const next = prev === 'en' ? 'bn' : 'en';
               localStorage.setItem('polished_lang', next);
-              document.documentElement.setAttribute('data-lang', next);
+              syncDocumentLanguage();
               return next;
             });
           }}
