@@ -100,21 +100,22 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           {(() => {
             const BASE = 0.4;
             const STAGGER = 0.15;
+            // Use real spaces so RevealText can split into words ("Make" / "Your" / "Collection")
             const line1 = isBn
-              ? (hero.titleBn || 'আপনার কালেকশন হোক').replace(/\s+/g, '\u00A0')
+              ? (hero.titleBn || 'আপনার কালেকশন হোক')
               : 'Make Your Collection';
             const line2 = isBn
               ? (hero.title2Bn || '*অনবদ্য!*').replace(/\*/g, '')
               : 'Unmissable!';
-            // Count words in line 1 to continue the cascade into line 2
-            const line1WordCount = line1.split(' ').filter(Boolean).length;
-            const line2Delay = BASE + line1WordCount * STAGGER;
+            // Count words in line 1 to continue the cascade seamlessly into line 2
+            const line1Words = line1.split(/\s+/).filter(Boolean);
+            const line2Delay = BASE + line1Words.length * STAGGER;
             return (
               <>
                 <RevealText
                   as="span"
                   delay={BASE}
-                  className="block pt-4"
+                  className="block pt-4 whitespace-nowrap"
                   stagger={STAGGER}
                 >
                   {line1}
