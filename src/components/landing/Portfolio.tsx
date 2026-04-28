@@ -66,17 +66,26 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  // Per-case-study local language override. Initializes from the global locale
+  // but can be toggled independently — only this card's content switches.
+  const [caseStudyLang, setCaseStudyLang] = useState<'en' | 'bn'>(isBn ? 'bn' : 'en');
+  const csIsBn = caseStudyLang === 'bn';
+
   const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
   // Locale-aware field mapping with English fallback when BN translation missing.
+  // Card chrome (title, category, hook) follows the global locale; the case
+  // study body + PDF follow the local micro-toggle.
   const pick = (bn: string | null | undefined, en: string | null | undefined) =>
     isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+  const pickCs = (bn: string | null | undefined, en: string | null | undefined) =>
+    csIsBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
   const title = pick(project.title_bn, project.title_en);
   const category = pick(project.category_bn, project.category_en);
-  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const caseStudy = pickCs(project.case_study_bn, project.case_study_en);
   const hook = pick(project.hook_bn, project.hook_en);
-  const pdfUrl = isBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
+  const pdfUrl = csIsBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
 
   const toggleImageExpand = useCallback(() => {
     setImageExpanded((prev) => !prev);
