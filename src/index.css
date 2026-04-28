@@ -203,172 +203,22 @@ html[data-lang="en"] .lang-bn { display: none !important; }
 html:not([data-lang="bn"]) .lang-bn { display: none !important; }
 
 /* ─────────────────────────────────────────────────────────────
-   Bengali (Bangla) Typography — Premium localization layer
+   Bengali (Bangla) Typography — DISABLED
    ─────────────────────────────────────────────────────────────
-   Bengali uses combining vowel-marker glyphs (কার). Any non-zero
-   letter-spacing detaches the markers from their base consonant
-   (e.g. "বিশ্বাস" → "ব ি শ্বাস"). Force normal spacing for all
-   Bengali content, swap to a premium Bengali serif for headings
-   and a humanist sans for body, and slightly increase line-height
-   to give ascenders/descenders room to breathe.
+   Per brand decision, the Bengali locale must render with the
+   EXACT same typography, sizing, tracking, uppercase transforms
+   and layout as the English version. All previous Bengali-only
+   font-family / letter-spacing / line-height / text-transform
+   overrides have been removed so Tailwind utility classes apply
+   identically in both locales. Only language visibility toggles
+   (lang-en / lang-bn) remain above.
    ───────────────────────────────────────────────────────────── */
-/* Dual-script font stack: Latin glyphs render in DM Sans / Cormorant Garamond
-   (via unicode-range), Bengali glyphs fall through to Noto Serif Bengali.
-   Browsers pick the first family in the stack whose unicode-range covers the
-   character — so "Polished Studios" inside a Bengali paragraph keeps its
-   English typography while "বিশ্বাস" renders in the Bengali serif. */
-html[data-lang="bn"] body,
-html[data-lang="bn"] p,
-html[data-lang="bn"] a,
-html[data-lang="bn"] span,
-html[data-lang="bn"] li,
-html[data-lang="bn"] button,
-html[data-lang="bn"] input,
-html[data-lang="bn"] textarea,
-html[data-lang="bn"] label,
-html[data-lang="bn"] div {
-  /* Noto Serif Bengali strictly enforced for all Bengali content (matches the
-     classic serif feel of Cormorant Garamond used for English). */
-  font-family: 'Noto Serif Bengali', 'Cormorant Garamond', serif !important;
-  letter-spacing: 0 !important;
-  word-spacing: 0;
-  /* line-height intentionally unset — inherit the EXACT same Tailwind leading
-     classes (leading-[1.7], leading-[1.85], etc.) used by the English layout. */
-}
 
-/* Any Latin-script run explicitly tagged inside Bengali content keeps
-   the full English typographic treatment (italic, tracking, leading). */
-html[data-lang="bn"] [lang="en"],
-html[data-lang="bn"] [lang="en-US"],
-html[data-lang="bn"] .lang-en-inline {
-  font-family: 'DM Sans', sans-serif !important;
-  letter-spacing: unset;
-  line-height: unset;
-  word-spacing: normal !important;
-}
-html[data-lang="bn"] h1 [lang="en"],
-html[data-lang="bn"] h2 [lang="en"],
-html[data-lang="bn"] h3 [lang="en"],
-html[data-lang="bn"] h4 [lang="en"],
-html[data-lang="bn"] .font-heading [lang="en"],
-html[data-lang="bn"] [lang="en"].font-heading,
-html[data-lang="bn"] [lang="en"] em,
-html[data-lang="bn"] [lang="en"] i,
-html[data-lang="bn"] [lang="en"] .italic {
-  font-family: 'Cormorant Garamond', serif !important;
-}
-html[data-lang="bn"] [lang="en"] em,
-html[data-lang="bn"] [lang="en"] i,
-html[data-lang="bn"] [lang="en"] .italic {
-  font-style: italic !important;
-}
-
-html[data-lang="bn"] h1,
-html[data-lang="bn"] h2,
-html[data-lang="bn"] h3,
-html[data-lang="bn"] h4,
-html[data-lang="bn"] h5,
-html[data-lang="bn"] h6,
-html[data-lang="bn"] .font-heading {
-  font-family: 'Noto Serif Bengali', 'Cormorant Garamond', serif !important;
-  letter-spacing: 0 !important;
-  /* Inherit same leading-[1.1] / leading-[1.08] tailwind classes as English. */
+/* Brand wordmark (logo) — always English serif, regardless of locale */
+.brand-wordmark {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 4px;
   font-style: normal;
-}
-
-/* Body Bengali em/italic stays upright (no faux-italic). The hero accent
-   highlight word is intentionally allowed to render italic — see escape
-   hatch below — to preserve the brand's signature accent treatment. */
-html[data-lang="bn"] em,
-html[data-lang="bn"] i,
-html[data-lang="bn"] .italic {
-  font-style: normal !important;
-  font-family: 'Noto Serif Bengali', serif !important;
-}
-
-/* Brand-accent highlight (italic + orange) IS allowed to keep its italic
-   treatment in Bengali — this is the signature focal word per brand brief. */
-html[data-lang="bn"] em.text-accent,
-html[data-lang="bn"] .italic.text-accent,
-html[data-lang="bn"] .hero-accent-line {
-  font-style: italic !important;
-}
-
-/* Kill uppercase tracking on small caps labels — letter-spacing breaks Bengali. */
-html[data-lang="bn"] [class*="tracking-"]:not([lang="en"]):not([lang="en"] *),
-html[data-lang="bn"] [class*="uppercase"]:not([lang="en"]):not([lang="en"] *) {
-  letter-spacing: normal !important;
-  text-transform: none !important; /* Bengali has no uppercase */
-}
-
-/* ─────────────────────────────────────────────────────────────
-   English opt-out inside Bengali pages
-   Any element (or subtree) explicitly marked [lang="en"] is
-   treated as English content and keeps its original typography,
-   italic forms, letter-spacing and uppercase transforms — even
-   when the global locale is Bengali. Used for the brand wordmark
-   and the hero headline which must always render in English.
-   ───────────────────────────────────────────────────────────── */
-html[data-lang="bn"] [lang="en"],
-html[data-lang="bn"] [lang="en"] * {
-  letter-spacing: unset;
-  text-transform: unset;
-  font-style: unset;
-  line-height: unset;
-  word-spacing: normal;
-}
-/* English subtree inside Bangla pages: keep body copy in DM Sans */
-html[data-lang="bn"] [lang="en"],
-html[data-lang="bn"] [lang="en"] p,
-html[data-lang="bn"] [lang="en"] span,
-html[data-lang="bn"] [lang="en"] a,
-html[data-lang="bn"] [lang="en"] li,
-html[data-lang="bn"] [lang="en"] div {
-  font-family: 'DM Sans', sans-serif !important;
-}
-/* English headings (and ALL their descendants — RevealText spans) keep Cormorant */
-html[data-lang="bn"] [lang="en"].font-heading,
-html[data-lang="bn"] [lang="en"].font-heading *,
-html[data-lang="bn"] [lang="en"] .font-heading,
-html[data-lang="bn"] [lang="en"] .font-heading *,
-html[data-lang="bn"] h1[lang="en"],
-html[data-lang="bn"] h1[lang="en"] *,
-html[data-lang="bn"] h2[lang="en"],
-html[data-lang="bn"] h2[lang="en"] *,
-html[data-lang="bn"] h3[lang="en"],
-html[data-lang="bn"] h3[lang="en"] * {
-  font-family: 'Cormorant Garamond', serif !important;
-}
-html[data-lang="bn"] [lang="en"] em,
-html[data-lang="bn"] [lang="en"] i,
-html[data-lang="bn"] [lang="en"] .italic {
-  font-style: italic !important;
-  font-family: 'Cormorant Garamond', serif !important;
-}
-
-/* ─── Brand wordmark (logo) — ALWAYS English serif, regardless of locale ─── */
-.brand-wordmark,
-html[data-lang="bn"] .brand-wordmark,
-html[data-lang="bn"] .brand-wordmark * {
-  font-family: 'Cormorant Garamond', serif !important;
-  letter-spacing: 4px !important;
-  font-style: normal !important;
-}
-
-/* ─── Hero headline escape hatch — match English sizing exactly in Bengali ─── */
-html[data-lang="bn"] .hero-headline {
-  font-size: clamp(32px, 8vw, 96px) !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.02em !important;
-}
-html[data-lang="bn"] .hero-headline > span {
-  font-size: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-}
-html[data-lang="bn"] .hero-headline .hero-accent-line {
-  font-size: clamp(28px, 6.5vw, 80px) !important;
-  line-height: 1.08 !important;
 }
 
 /* Scroll reveal */
