@@ -244,11 +244,11 @@ html[data-lang="bn"] strong {
    We enforce a minimum line-height for Bengali text and ensure
    reveal/clip wrappers expose enough vertical breathing room.
    ───────────────────────────────────────────────────────────── */
-html[data-lang="bn"] :where(h1, h2, h3, h4, h5, h6) {
+html[data-lang="bn"] :where(h1, h2, h3, h4, h5, h6):not([lang="en"]):not([lang="en"] *) {
   line-height: 1.45 !important;
   padding-block: 0.08em;
 }
-html[data-lang="bn"] :where(p, li, a, span, button, label, blockquote, em, strong) {
+html[data-lang="bn"] :where(p, li, blockquote):not([lang="en"]):not([lang="en"] *) {
   line-height: 1.7;
 }
 /* Reveal/clip containers must not crop ascenders or descenders.
