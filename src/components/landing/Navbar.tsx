@@ -72,9 +72,10 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             else window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           lang="en"
-          className={`font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center ${
+          className={`brand-wordmark font-heading text-[18px] md:text-[22px] font-semibold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center ${
             scrolled || open ? 'text-primary' : 'text-primary-foreground'
           } ${open ? '!text-primary-foreground' : ''}`}
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
           POLISHED<span className="text-accent">.</span>
         </a>
@@ -192,7 +193,7 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
                 className="mt-16 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
               >
-                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/45">
+                <p lang="en" className="brand-wordmark text-[10px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
                   POLISHED<span className="text-accent">.</span> Studio
                 </p>
               </motion.div>
