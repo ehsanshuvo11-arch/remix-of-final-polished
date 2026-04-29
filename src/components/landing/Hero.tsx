@@ -134,11 +134,10 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         </p>
 
         {/* Play button — Magnetic */}
-        <div className="mb-3 md:mb-8 flex justify-center px-6 md:px-0" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1s forwards', opacity: 0 }}>
+        <div className="flex flex-col w-full max-w-[280px] mx-auto gap-4 md:max-w-none md:contents" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1s forwards', opacity: 0 }}>
           <MagneticButton
             onClick={onPuzzleOpen}
-            className={`play-btn group inline-flex w-full max-w-[230px] md:max-w-none md:w-auto items-center justify-center gap-2 sm:gap-3 px-5 sm:px-10 py-2.5 sm:py-4.5 md:min-w-[320px] bg-transparent border-[1.5px] border-accent/50 text-accent ${isBn ? 'text-[11px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[9px] sm:text-[13px] tracking-[1.8px] sm:tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-auto md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
-           
+            className={`play-btn group w-full py-3.5 text-xs tracking-[0.1em] flex justify-center items-center gap-2 md:gap-3 md:inline-flex md:w-auto md:px-10 md:py-4.5 md:min-w-[320px] bg-transparent border-[1.5px] border-accent/50 text-accent ${isBn ? 'md:text-[18px] md:tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'md:text-[13px] md:tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
           >
             <span className="w-2 h-2 bg-accent rounded-full group-hover:bg-primary-foreground" style={{ animation: 'pulseDot 1.5s infinite' }} />
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
@@ -148,7 +147,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         </div>
 
         {/* CTA buttons — Magnetic */}
-        <div className="flex flex-col md:flex-row gap-2.5 md:gap-4 justify-center items-center md:items-center px-6 md:px-0" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
+        <div className="flex flex-col w-full max-w-[280px] mx-auto gap-4 mt-4 md:flex-row md:max-w-none md:gap-4 md:mt-8 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
           <MagneticButton
             as="a"
             href="#work"
@@ -160,8 +159,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`inline-flex w-full max-w-[230px] md:max-w-none md:w-auto items-center justify-center px-5 sm:px-11 py-2.5 sm:py-4 md:min-w-[220px] ${isBn ? 'text-[11px] sm:text-[18px] tracking-[0.5px] normal-case leading-[1.3]' : 'text-[9px] sm:text-[13px] tracking-[1.8px] sm:tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] h-auto md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
-           
+            className={`w-full py-3.5 text-xs tracking-[0.1em] flex justify-center items-center md:inline-flex md:w-auto md:px-11 md:py-4 md:min-w-[220px] ${isBn ? 'md:text-[18px] md:tracking-[0.5px] normal-case leading-[1.3]' : 'md:text-[13px] md:tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'এক্সপ্লোর করুন' : (hero.viewWorkEn ?? 'View Our Work')}
@@ -179,8 +177,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`inline-flex w-full max-w-[230px] md:max-w-none md:w-auto items-center justify-center px-5 sm:px-11 py-2.5 sm:py-4 md:min-w-[220px] ${isBn ? 'text-[11px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[9px] sm:text-[13px] tracking-[1.8px] sm:tracking-[2.5px] uppercase font-normal'} rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-auto md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
-           
+            className={`w-full py-3.5 text-xs tracking-[0.1em] flex justify-center items-center md:inline-flex md:w-auto md:px-11 md:py-4 md:min-w-[220px] ${isBn ? 'md:text-[18px] md:tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'md:text-[13px] md:tracking-[2.5px] uppercase font-normal'} rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'প্রজেক্ট শুরু করুন' : (hero.startProjectEn ?? 'Start a Project')}
