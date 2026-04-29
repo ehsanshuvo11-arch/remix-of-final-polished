@@ -266,14 +266,14 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             disabled
             className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-all duration-500 opacity-30 cursor-not-allowed min-h-[48px]"
           >
-            {submitting ? t('Sending…', 'পাঠানো হচ্ছে…') : t('Request Consultation', 'কনসাল্টেশন রিকোয়েস্ট')}
+            {submitting ? t('Sending…', 'সাবমিট হচ্ছে...') : t('Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
           </button>
         ) : (
           <MagneticButton
             onClick={submit}
             className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-shadow duration-500 hover:shadow-[0_10px_30px_rgba(251,146,60,0.35)] min-h-[48px] inline-flex items-center justify-center"
           >
-            {t('Request Consultation', 'কনসাল্টেশন রিকোয়েস্ট')}
+            {t('Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
           </MagneticButton>
         )}
       </div>
