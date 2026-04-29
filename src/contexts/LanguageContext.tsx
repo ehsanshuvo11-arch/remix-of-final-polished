@@ -158,13 +158,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         Fixed dimensions + overflow:hidden physically prevents any text reflow / squish
         underneath the curtain while React commits the new language.
       */}
+      {/*
+        Children render with a soft structural lock during the curtain transition.
+        We deliberately omit `contain: size` (which would collapse the page to 0x0
+        on mobile because no explicit dimensions are set) and instead use
+        layout/paint/style containment which is safe across iOS Safari + Chrome.
+      */}
       <div
         style={
           curtain !== 'idle'
             ? {
-                contain: 'layout paint size style',
+                contain: 'layout paint style',
                 willChange: 'contents',
-                overflow: 'hidden',
               }
             : undefined
         }
