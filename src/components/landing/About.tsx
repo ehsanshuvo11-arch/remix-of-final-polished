@@ -87,9 +87,15 @@ export default function About({ content, stats }: AboutProps) {
             </p>
           </MotionReveal>
           <MotionReveal delay={0.5}>
-            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary italic">
-              {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
-            </p>
+            {isBn ? (
+              <p lang="bn" className="text-[15px] leading-[1.85] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                — আমাদের সিগনেচার: নিখুঁত ও প্রফেশনাল বাংলা ভিজ্যুয়াল আইডেন্টিটি।
+              </p>
+            ) : (
+              <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary italic">
+                {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
+              </p>
+            )}
           </MotionReveal>
         </div>
 
