@@ -47,9 +47,15 @@ export default function About({ content, stats }: AboutProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div>
           <MotionReveal>
-            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {about.labelEn ?? 'About Polished'}
-            </p>
+            {isBn ? (
+              <p lang="bn" className="text-[10px] tracking-[4px] text-accent mb-4 font-medium" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                ব্র্যান্ড ফিলোসফি
+              </p>
+            ) : (
+              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+                {about.labelEn ?? 'About Polished'}
+              </p>
+            )}
           </MotionReveal>
           <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.2]">
             {isBn ? (
