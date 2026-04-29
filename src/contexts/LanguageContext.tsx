@@ -116,7 +116,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      {children}
+      {/* Crossfade between languages — outgoing fades 0.15s, incoming 0.3s */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={lang}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            opacity: {
+              duration: 0.3,
+              ease: [0.76, 0, 0.24, 1],
+            },
+          }}
+          style={{ willChange: 'opacity' }}
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Floating language toggle */}
       {!showPopup && !transitioning && (
