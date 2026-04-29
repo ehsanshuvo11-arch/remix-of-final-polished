@@ -48,7 +48,7 @@ export default function About({ content, stats }: AboutProps) {
         <div>
           <MotionReveal>
             {isBn ? (
-              <p lang="bn" className="text-[10px] tracking-[4px] text-accent mb-4 font-medium" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                 ব্র্যান্ড ফিলোসফি
               </p>
             ) : (
