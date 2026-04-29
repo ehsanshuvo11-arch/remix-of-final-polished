@@ -154,15 +154,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       </AnimatePresence>
 
       {/*
-        Children render with a structural lock during the curtain transition.
-        `whitespace-nowrap` on the wrapper prevents text from re-flowing/squishing
-        while the language string changes underneath the curtain. The curtain itself
-        guarantees no visible glitch can leak through.
+        Children render with a HARD structural lock during the curtain transition.
+        Fixed dimensions + overflow:hidden physically prevents any text reflow / squish
+        underneath the curtain while React commits the new language.
       */}
       <div
         style={
           curtain !== 'idle'
-            ? { contain: 'layout paint', willChange: 'contents' }
+            ? {
+                contain: 'layout paint size style',
+                willChange: 'contents',
+                overflow: 'hidden',
+              }
             : undefined
         }
       >
@@ -170,9 +173,26 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       </div>
 
       {/*
-        SEQUENCED CURTAIN — drops first, then we swap language behind it, then it lifts.
-        Single element animates `y` from -100% → 0 (covering) and 0 → -100% (lifting).
+        SEQUENCED CURTAIN.
+        Two layers working together to guarantee zero-glitch:
+          1. INSTANT BLOCKER — appears the same frame the user clicks. Pure opacity
+             snap (no transform), so there is literally no frame where the screen is
+             not covered. Mounted for the entire 'covering' + 'lifting' duration.
+          2. ANIMATED CURTAIN — slides in/out on top of the blocker for the luxe feel.
+        The state swap only fires after the animated curtain reports 100% coverage.
       */}
+      {curtain !== 'idle' && (
+        <div
+          aria-hidden
+          className="fixed inset-0 z-[9996] bg-primary pointer-events-auto"
+          style={{
+            opacity: curtain === 'covering' ? 1 : 0,
+            transition: curtain === 'lifting'
+              ? `opacity ${CURTAIN_LIFT_S}s cubic-bezier(0.22,1,0.36,1) ${CURTAIN_LIFT_S * 0.55}s`
+              : 'none',
+          }}
+        />
+      )}
       <AnimatePresence>
         {curtain !== 'idle' && (
           <motion.div
