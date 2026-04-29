@@ -49,7 +49,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-3 py-16 sm:px-8 md:px-14 md:py-20 bg-primary"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 pt-16 pb-24 sm:px-8 md:px-14 md:py-20 bg-primary"
     >
       {/* Animated grid */}
       <div
@@ -70,7 +70,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <img
           src={logoSvg}
           alt="POLISHED Logo"
-          className="w-12 h-12 md:w-[100px] md:h-[100px] mx-auto mb-3 md:mb-9"
+          className="w-14 h-14 mb-6 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
             animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
@@ -80,7 +80,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
           lang="en"
-          className="font-sans-eyebrow text-[9px] md:text-[11px] tracking-[2px] md:tracking-[4px] uppercase text-accent mb-6 md:mb-5 font-normal"
+          className="font-sans-eyebrow text-[10px] tracking-[0.2em] mb-8 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase text-accent font-normal"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
@@ -101,10 +101,9 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground mb-7 md:mb-6 text-[clamp(38px,10.2vw,140px)] md:text-[clamp(48px,8vw,96px)] leading-[1.02] md:leading-[1.08] whitespace-nowrap text-center -ml-[0.21em] md:ml-0"
+              className="hero-headline font-heading font-light text-primary-foreground text-4xl leading-tight mb-2 md:mb-6 md:text-[clamp(48px,8vw,96px)] md:leading-[1.08] whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
-                lineHeight: 1.08,
                 letterSpacing: '0',
                 wordSpacing: 'normal',
                 fontWeight: 400,
@@ -113,7 +112,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={BASE}
-                className="block pt-4 whitespace-nowrap"
+                className="block whitespace-nowrap"
                 stagger={STAGGER}
               >
                 {line1}
@@ -121,7 +120,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-2 md:pt-4 text-[clamp(34px,9.05vw,123px)] md:text-[clamp(42px,7vw,84px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-4xl italic mb-12 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] text-accent whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
