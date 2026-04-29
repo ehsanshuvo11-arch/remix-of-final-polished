@@ -70,7 +70,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <img
           src={logoSvg}
           alt="POLISHED Logo"
-          className="w-10 h-10 mb-6 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
+          className="w-14 h-14 mb-7 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
             animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
