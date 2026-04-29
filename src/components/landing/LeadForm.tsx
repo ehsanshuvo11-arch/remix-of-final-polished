@@ -90,6 +90,18 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
 
   return (
     <div className="relative">
+      {/* Bengali-only premium form heading */}
+      {isBn && (
+        <div className="mb-8" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+          <h3 lang="bn" className="font-heading text-primary-foreground text-[clamp(22px,3vw,30px)] font-light leading-tight mb-3">
+            পার্টনারশিপ ইনকোয়ারি
+          </h3>
+          <p lang="bn" className="text-primary-foreground/55 text-[13px] md:text-[14px] leading-[1.85]">
+            আমরা প্রতিটি ব্র্যান্ডের সাথে অত্যন্ত নিবিড়ভাবে কাজ করি, তাই আমাদের ক্লায়েন্ট স্লট খুবই সীমিত। আপনার স্কিনকেয়ার ব্র্যান্ডের ভিশন এবং লক্ষ্য আমাদের সাথে শেয়ার করুন।
+          </p>
+        </div>
+      )}
+
       {/* Progress */}
       <div className="mb-8">
         <div className="flex justify-between items-center text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-3">
