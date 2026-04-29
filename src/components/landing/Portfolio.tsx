@@ -210,32 +210,38 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             className="overflow-hidden"
           >
             <div className="mt-4 pt-4 border-t border-border px-1">
-              <div className="mb-3 flex items-center justify-between gap-4 flex-wrap">
+              <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
                 <p className="text-[11px] tracking-[2px] uppercase text-accent font-medium">
                   Case Study
                 </p>
-                {/* Premium micro-toggle — quiet luxury, text-only */}
-                <div className="flex items-center gap-2 text-[11px] tracking-[1px] text-muted-foreground/70 select-none">
-                  <span className="uppercase">Read in:</span>
+                {/* Premium segmented pill toggle — quiet luxury */}
+                <div
+                  role="group"
+                  aria-label="Case study language"
+                  className="inline-flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm shadow-sm select-none"
+                >
                   <button
                     type="button"
                     onClick={() => setCaseStudyLang('en')}
                     aria-pressed={!csIsBn}
-                    className={`transition-colors duration-300 ease-out ${
-                      !csIsBn ? 'text-accent font-semibold' : 'text-muted-foreground/60 hover:text-foreground'
+                    className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${
+                      !csIsBn
+                        ? 'bg-accent/15 text-accent font-semibold'
+                        : 'text-muted-foreground/70 hover:text-foreground'
                     }`}
                   >
                     English
                   </button>
-                  <span className="text-muted-foreground/30">|</span>
                   <button
                     type="button"
                     onClick={() => setCaseStudyLang('bn')}
                     aria-pressed={csIsBn}
                     lang="bn"
                     style={{ fontFamily: "'Noto Serif Bengali', serif" }}
-                    className={`transition-colors duration-300 ease-out ${
-                      csIsBn ? 'text-accent font-semibold' : 'text-muted-foreground/60 hover:text-foreground'
+                    className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${
+                      csIsBn
+                        ? 'bg-accent/15 text-accent font-semibold'
+                        : 'text-muted-foreground/70 hover:text-foreground'
                     }`}
                   >
                     বাংলা
