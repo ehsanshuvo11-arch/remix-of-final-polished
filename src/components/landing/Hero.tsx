@@ -137,7 +137,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <button
           type="button"
           onClick={onPuzzleOpen}
-          className="md:hidden group inline-flex items-center justify-center gap-2 mx-auto mb-14 text-accent/70 hover:text-accent transition-colors duration-500 text-[10px] tracking-[0.25em] uppercase font-normal"
+          className="md:hidden group inline-flex items-center justify-center gap-2 mx-auto mb-2 text-accent/70 hover:text-accent transition-colors duration-500 text-[10px] tracking-[0.25em] uppercase font-normal"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
