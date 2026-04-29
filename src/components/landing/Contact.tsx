@@ -69,14 +69,14 @@ export default function Contact({ contact }: ContactProps) {
 
   return (
     <div id="contact" className="bg-primary">
-      <div className="py-20 md:py-[110px] px-6 sm:px-8 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-start">
+      <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
         <div>
           <MotionReveal>
             <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
               {c.sectionLabelEn ?? 'Get In Touch'}
             </p>
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-6 md:mb-7 text-[clamp(28px,7vw,60px)] leading-[1.15] md:leading-[1.1] [text-wrap:balance]">
+          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
             {isBn ? (
               <>
                 <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?</WordReveal>

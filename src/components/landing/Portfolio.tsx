@@ -27,14 +27,14 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
   const displayProjects = projects.length > 0 ? projects : defaultProjects;
 
   return (
-    <section id="work" className="py-20 md:py-[110px] px-6 sm:px-8 md:px-14 max-w-[1200px] mx-auto">
+    <section id="work" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
           {content?.labelEn ?? 'Selected Work'}
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-6 md:mb-7 text-[clamp(28px,7vw,60px)] leading-[1.15] md:leading-[1.1] [text-wrap:balance]">
+        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
           {isBn ? (
             <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
           ) : (
@@ -48,7 +48,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         </h2>
       </MotionReveal>
 
-      <div className="flex flex-col gap-20 md:gap-24 mt-12 md:mt-14">
+      <div className="flex flex-col gap-16 md:gap-24 mt-14">
         {displayProjects.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
         ))}
