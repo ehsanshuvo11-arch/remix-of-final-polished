@@ -49,7 +49,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-3 py-24 sm:px-8 md:px-14 md:py-20 bg-primary"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-3 py-16 sm:px-8 md:px-14 md:py-20 bg-primary"
     >
       {/* Animated grid */}
       <div
