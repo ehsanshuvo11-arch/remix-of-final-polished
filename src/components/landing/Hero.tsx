@@ -70,7 +70,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <img
           src={logoSvg}
           alt="POLISHED Logo"
-          className="w-10 h-10 md:w-[100px] md:h-[100px] mx-auto mb-4 md:mb-9"
+          className="w-12 h-12 md:w-[100px] md:h-[100px] mx-auto mb-3 md:mb-9"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
             animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
@@ -80,7 +80,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
           lang="en"
-          className="font-sans-eyebrow text-[8px] md:text-[11px] tracking-[0.18em] md:tracking-[4px] uppercase text-accent/70 md:text-accent mb-5 md:mb-5 font-normal"
+          className="font-sans-eyebrow text-[9px] md:text-[11px] tracking-[2px] md:tracking-[4px] uppercase text-accent mb-6 md:mb-5 font-normal"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
