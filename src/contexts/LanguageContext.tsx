@@ -28,6 +28,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   });
   const [showPopup, setShowPopup] = useState(() => !localStorage.getItem('polished_lang'));
   const [transitioning, setTransitioning] = useState(false);
+  // Curtain state: 'idle' | 'covering' | 'covered' | 'lifting'
+  const [curtain, setCurtain] = useState<'idle' | 'covering' | 'covered' | 'lifting'>('idle');
 
   const syncDocumentLanguage = (l: Lang = lang) => {
     document.documentElement.setAttribute('data-lang', l);
@@ -35,16 +37,34 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   const setLang = (l: Lang) => {
-    setLangState(l);
-    localStorage.setItem('polished_lang', l);
-    syncDocumentLanguage(l);
-    // Luxurious transition out
-    setTransitioning(true);
-    setTimeout(() => {
-      setShowPopup(false);
-      setTimeout(() => setTransitioning(false), 600);
-    }, 800);
+    // Initial popup path: keep luxurious choice transition (no curtain race here).
+    if (showPopup) {
+      setLangState(l);
+      localStorage.setItem('polished_lang', l);
+      syncDocumentLanguage(l);
+      setTransitioning(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        setTimeout(() => setTransitioning(false), 600);
+      }, 800);
+      return;
+    }
+
+    // Already-running language switch — ignore double-clicks.
+    if (curtain !== 'idle') return;
+    if (l === lang) return;
+
+    // Step 1+2: drop the curtain FIRST — DOM stays on old language.
+    setCurtain('covering');
+    // pendingLang is captured in closure for the onAnimationComplete handler below.
+    pendingLangRef.current = l;
   };
+
+  // Hold the language we will swap to once the curtain is fully closed.
+  const pendingLangRef = (typeof window !== 'undefined'
+    ? (LanguageProvider as unknown as { _ref?: { current: Lang | null } })._ref ??=
+        { current: null }
+    : { current: null }) as { current: Lang | null };
 
   useEffect(() => {
     syncDocumentLanguage(lang);
