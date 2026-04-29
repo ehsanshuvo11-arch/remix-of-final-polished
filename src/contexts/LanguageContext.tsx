@@ -173,26 +173,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       </div>
 
       {/*
-        SEQUENCED CURTAIN.
-        Two layers working together to guarantee zero-glitch:
-          1. INSTANT BLOCKER — appears the same frame the user clicks. Pure opacity
-             snap (no transform), so there is literally no frame where the screen is
-             not covered. Mounted for the entire 'covering' + 'lifting' duration.
-          2. ANIMATED CURTAIN — slides in/out on top of the blocker for the luxe feel.
-        The state swap only fires after the animated curtain reports 100% coverage.
+        SEQUENCED CURTAIN — drops first, swaps language behind it, then lifts.
       */}
-      {curtain !== 'idle' && (
-        <div
-          aria-hidden
-          className="fixed inset-0 z-[9996] bg-primary pointer-events-auto"
-          style={{
-            opacity: curtain === 'covering' ? 1 : 0,
-            transition: curtain === 'lifting'
-              ? `opacity ${CURTAIN_LIFT_S}s cubic-bezier(0.22,1,0.36,1) ${CURTAIN_LIFT_S * 0.55}s`
-              : 'none',
-          }}
-        />
-      )}
       <AnimatePresence>
         {curtain !== 'idle' && (
           <motion.div
