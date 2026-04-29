@@ -33,7 +33,7 @@ export default function Services({ services, content }: ServicesProps) {
             {content?.labelEn ?? 'What We Do'}
           </p>
         </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary-foreground mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6.2vw,36px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
           {isBn ? (
             <>
               <WordReveal delay={0.1}>স্কিনকেয়ার ব্র্যান্ডের জন্য</WordReveal>
