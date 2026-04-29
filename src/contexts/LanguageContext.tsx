@@ -154,15 +154,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       </AnimatePresence>
 
       {/*
-        Children render with a structural lock during the curtain transition.
-        `whitespace-nowrap` on the wrapper prevents text from re-flowing/squishing
-        while the language string changes underneath the curtain. The curtain itself
-        guarantees no visible glitch can leak through.
+        Children render with a HARD structural lock during the curtain transition.
+        Fixed dimensions + overflow:hidden physically prevents any text reflow / squish
+        underneath the curtain while React commits the new language.
       */}
       <div
         style={
           curtain !== 'idle'
-            ? { contain: 'layout paint', willChange: 'contents' }
+            ? {
+                contain: 'layout paint size style',
+                willChange: 'contents',
+                overflow: 'hidden',
+              }
             : undefined
         }
       >
@@ -170,8 +173,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       </div>
 
       {/*
-        SEQUENCED CURTAIN — drops first, then we swap language behind it, then it lifts.
-        Single element animates `y` from -100% → 0 (covering) and 0 → -100% (lifting).
+        SEQUENCED CURTAIN — drops first, swaps language behind it, then lifts.
       */}
       <AnimatePresence>
         {curtain !== 'idle' && (
