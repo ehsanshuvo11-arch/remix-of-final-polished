@@ -65,7 +65,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
       <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)', animation: 'orbFloat 8s ease-in-out infinite' }} />
       <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
 
-      <div className="max-w-[900px] text-center relative z-10">
+      <div className="max-w-[900px] md:max-w-[1400px] text-center relative z-10">
         {/* Logo badge */}
         <img
           src={logoSvg}
@@ -101,7 +101,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground mb-6 md:mb-6 text-[clamp(36px,9.5vw,120px)] md:text-[clamp(32px,8vw,96px)] leading-[1.02] md:leading-[1.08] whitespace-nowrap text-center -ml-[0.21em] md:ml-0"
+              className="hero-headline font-heading font-light text-primary-foreground mb-6 md:mb-6 text-[clamp(36px,9.5vw,120px)] md:text-[clamp(64px,10vw,160px)] leading-[1.02] md:leading-[1.05] whitespace-nowrap text-center -ml-[0.21em] md:ml-0"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
@@ -121,7 +121,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-4 text-[clamp(48px,13vw,108px)] md:text-[clamp(32px,7vw,84px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block pt-4 text-[clamp(48px,13vw,108px)] md:text-[clamp(56px,9vw,140px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
