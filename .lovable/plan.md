@@ -1,65 +1,43 @@
-## Goal
-In Bengali mode, all Bengali text should render in **Noto Serif Bengali** (currently the CSS overrides are disabled, so Bengali text inherits Cormorant Garamond / DM Sans / Hind Siliguri fallbacks, which don't render Bengali correctly or consistently).
+# Mobile Hero — Proportional Refinement Plan
 
-## Scope
-Re-enable Bengali-only font overrides — but ONLY the font-family. Keep all sizing, weights, line-heights, letter-spacing, italic and DOM behavior identical to English (per existing brand memory).
+Goal: Make the mobile Hero a faithful scaled-down replica of the desktop composition (Image 1). Surgical edits to `src/components/landing/Hero.tsx` only — no desktop (`md:`) classes touched, no global styles changed.
+
+## Diagnosis (Image 2 vs Image 1)
+
+| Element | Current Mobile | Desktop Reference | Fix Needed |
+|---|---|---|---|
+| Logo | `w-14 h-14 mb-6` (~14% width, OK) | Dominant centered badge | Keep size, slightly more bottom margin |
+| Eyebrow | `text-[10px] mb-8` | Subtle kicker above tagline | Keep |
+| Tagline | `text-4xl` (36px) | Dominates ~40% of viewport height | Scale up to `text-[40px]` with tighter leading |
+| Sub paragraph | `hidden md:block` ✅ | Hidden on mobile | Already correct — no change |
+| Play button | `max-w-[280px]` ✅ | Sleek pill | Keep |
+| View Work / Start Project | Inconsistent — fall back to auto width on mobile, stack awkwardly | Unified pill bars | Force `max-w-[280px]` to match Play button |
+| Vertical rhythm | Cramped between tagline → buttons | Generous breathing room | Increase `mb` on tagline accent line |
 
 ## Changes
 
-### 1. `src/index.css`
-Replace the "DISABLED" Bengali typography block with a minimal font-family-only override scoped to `html[data-lang="bn"]`:
+### 1. Tagline scaling (more dominance)
+- Line 1 (`Make Your Collection`): `text-4xl` → `text-[40px]`, add `tracking-[-0.01em]` for tighter premium feel
+- Line 2 (`Unmissable!`): `text-4xl` → `text-[40px]`, increase `mb-12` → `mb-14` for airy gap before buttons
 
-```css
-html[data-lang="bn"] body,
-html[data-lang="bn"] h1,
-html[data-lang="bn"] h2,
-html[data-lang="bn"] h3,
-html[data-lang="bn"] h4,
-html[data-lang="bn"] h5,
-html[data-lang="bn"] h6,
-html[data-lang="bn"] p,
-html[data-lang="bn"] span,
-html[data-lang="bn"] a,
-html[data-lang="bn"] button,
-html[data-lang="bn"] li,
-html[data-lang="bn"] label,
-html[data-lang="bn"] input,
-html[data-lang="bn"] textarea {
-  font-family: 'Noto Serif Bengali', serif !important;
-}
-```
+### 2. Unify button widths (fix the broken stack in Image 2)
+The second button group currently uses `md:flex-row md:max-w-none` but on mobile the inner `MagneticButton`s collapse to content-width because `MagneticButton` wraps children in `<div className="inline-block">`. Fix by ensuring the wrapper enforces `max-w-[280px]` and inner buttons keep `w-full`:
+- Confirm wrapper: `flex flex-col w-full max-w-[280px] mx-auto gap-4 mt-4`
+- Add explicit `w-full` to the inline-block wrapper inside `MagneticButton` on mobile via passing through, OR override at button group level by adding a child selector / explicit `[&>div]:w-full` on the wrapper so the magnetic wrapper expands.
 
-Carve-outs (must remain English serif/sans, NOT Bengali):
-- `.brand-wordmark` (logo) — already locked to Cormorant Garamond, keep as-is.
-- `[lang="en"]` — any element explicitly tagged English (e.g. Hero headline locked to English) keeps its inherited font.
-- Numbers / English-only stat boxes that use `[lang="en"]` are unaffected.
+Cleanest fix: add `[&>div]:w-full md:[&>div]:w-auto` to both button-group wrappers so the magnetic `inline-block` wrapper stretches to the constrained 280px container on mobile, leaving desktop unchanged.
 
-Add:
-```css
-html[data-lang="bn"] [lang="en"] {
-  font-family: 'Cormorant Garamond', 'DM Sans', serif;
-}
-```
+### 3. Spacing rhythm
+- Logo: `mb-6` → `mb-7` (slightly more breathing room)
+- Eyebrow: `mb-8` → `mb-6` (closer to tagline, matches desktop)
+- Tagline accent line: `mb-12` → `mb-14`
+- Gap between Play button and CTA pair: `mt-4` → `mt-5`
 
-### 2. `src/contexts/LanguageContext.tsx` (line 98)
-The language switcher button hardcodes `fontFamily: "'Hind Siliguri', sans-serif"`. Change to `'Noto Serif Bengali', serif` so the switcher itself shows Bengali in the correct font.
+### 4. No-touch list
+- Desktop classes (`md:*`, `lg:*`) — untouched
+- `hidden md:block` paragraph — already hidden on mobile, no change
+- Animations, fonts, colors, RevealText logic — untouched
+- All other components — untouched
 
-### 3. `src/components/landing/Portfolio.tsx` (lines 156, 234)
-Currently uses `'Arial, Helvetica, "Noto Sans Bengali", sans-serif'`. Change Bengali fallback from Noto Sans Bengali → Noto Serif Bengali to match the rule.
-
-### 4. `tailwind.config.ts` (line 19)
-Update `bangla` font family token from `Hind Siliguri` to `Noto Serif Bengali` so any utility-based usage is consistent.
-
-### 5. Memory update
-Update `mem://style/bengali-typography` to reflect: Noto Serif Bengali is enforced via CSS in `[data-lang="bn"]` mode (no longer "disabled"), with English-tagged elements carved out.
-
-## What stays the same
-- All sizing, leading, weights, spacing, layout — unchanged (English parity preserved).
-- Hero headline that's locked to English stays in Cormorant Garamond.
-- Logo wordmark stays in Cormorant Garamond.
-- Italic accent words (`.hero-accent-line`, `em.text-accent`) keep italic styling.
-
-## Out of scope
-- No layout, sizing, or spacing changes.
-- No DOM/structure changes.
-- No new font imports (Noto Serif Bengali is already loaded in `src/index.css` line 1).
+## Verification
+After edit: screenshot mobile viewport (390x844) and compare side-by-side with desktop reference. Confirm all 3 buttons render as identical-width pill bars stacked center.
