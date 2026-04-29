@@ -90,6 +90,18 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
 
   return (
     <div className="relative">
+      {/* Bengali-only premium form heading */}
+      {isBn && (
+        <div className="mb-8" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+          <h3 lang="bn" className="font-heading text-primary-foreground text-[clamp(22px,3vw,30px)] font-light leading-tight mb-3">
+            পার্টনারশিপ ইনকোয়ারি
+          </h3>
+          <p lang="bn" className="text-primary-foreground/55 text-[13px] md:text-[14px] leading-[1.85]">
+            আমরা প্রতিটি ব্র্যান্ডের সাথে অত্যন্ত নিবিড়ভাবে কাজ করি, তাই আমাদের ক্লায়েন্ট স্লট খুবই সীমিত। আপনার স্কিনকেয়ার ব্র্যান্ডের ভিশন এবং লক্ষ্য আমাদের সাথে শেয়ার করুন।
+          </p>
+        </div>
+      )}
+
       {/* Progress */}
       <div className="mb-8">
         <div className="flex justify-between items-center text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-3">
@@ -124,23 +136,23 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             {step === 0 && (
               <>
                 <StepHeading
-                  eyebrow={t('Tell us about you', 'আপনার সম্পর্কে বলুন')}
+                  eyebrow={t('Tell us about you', 'আপনার সম্পর্কে')}
                   title={t('Who are we talking to?', 'কে যোগাযোগ করছেন?')}
                 />
                 <PolishedInput
                   value={data.client_name}
                   onChange={(v) => update('client_name', v)}
-                  placeholder={t('Your full name', 'আপনার পুরো নাম')}
+                  placeholder={t('Your full name', 'যেমন: শাফায়াত হোসেন')}
                 />
                 <PolishedInput
                   value={data.brand_name}
                   onChange={(v) => update('brand_name', v)}
-                  placeholder={t('Brand or store name', 'ব্র্যান্ড বা স্টোরের নাম')}
+                  placeholder={t('Brand or store name', 'আপনার ব্র্যান্ডের নাম')}
                 />
                 <PolishedInput
                   value={data.store_url}
                   onChange={(v) => update('store_url', v)}
-                  placeholder={t('Website / Instagram (optional)', 'ওয়েবসাইট / ইনস্টাগ্রাম (ঐচ্ছিক)')}
+                  placeholder={t('Website / Instagram (optional)', 'ওয়েবসাইট / ইনস্টাগ্রাম লিংক')}
                 />
               </>
             )}
@@ -148,8 +160,8 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             {step === 1 && (
               <>
                 <StepHeading
-                  eyebrow={t('Investment & vision', 'বিনিয়োগ ও ভিশন')}
-                  title={t("What's the scope?", 'প্রজেক্টের পরিধি?')}
+                  eyebrow={t('Investment & vision', 'প্রোজেক্টের লক্ষ্য ও ভিশন')}
+                  title={t("What's the scope?", 'প্রোজেক্টের পরিধি?')}
                 />
                 <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-1">
                   {t('Estimated budget', 'আনুমানিক বাজেট')}
@@ -182,7 +194,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                   onChange={(v) => update('project_details', v)}
                   placeholder={t(
                     'Describe your project — goals, timeline, anything we should know.',
-                    'আপনার প্রজেক্ট বর্ণনা করুন — লক্ষ্য, সময়সীমা, যেকোনো গুরুত্বপূর্ণ তথ্য।',
+                    'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিয়ে যাওয়ার জন্য আপনি কী ভাবছেন, তা সংক্ষেপে লিখুন...',
                   )}
                   rows={5}
                 />
@@ -193,13 +205,13 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
               <>
                 <StepHeading
                   eyebrow={t('Almost done', 'প্রায় শেষ')}
-                  title={t('Where can we reach you?', 'আপনার সাথে কোথায় যোগাযোগ করব?')}
+                  title={t('Where can we reach you?', 'বিজনেস ইমেইল')}
                 />
                 <PolishedInput
                   type="email"
                   value={data.email}
                   onChange={(v) => update('email', v)}
-                  placeholder={t('Email address', 'ইমেইল ঠিকানা')}
+                  placeholder={t('Email address', 'hello@yourbrand.com')}
                 />
                 <p className="text-[12px] text-primary-foreground/40 leading-relaxed mt-1">
                   {t(
@@ -254,14 +266,14 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             disabled
             className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-all duration-500 opacity-30 cursor-not-allowed min-h-[48px]"
           >
-            {submitting ? t('Sending…', 'পাঠানো হচ্ছে…') : t('Request Consultation', 'কনসাল্টেশন রিকোয়েস্ট')}
+            {submitting ? t('Sending…', 'সাবমিট হচ্ছে...') : t('Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
           </button>
         ) : (
           <MagneticButton
             onClick={submit}
             className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-shadow duration-500 hover:shadow-[0_10px_30px_rgba(251,146,60,0.35)] min-h-[48px] inline-flex items-center justify-center"
           >
-            {t('Request Consultation', 'কনসাল্টেশন রিকোয়েস্ট')}
+            {t('Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
           </MagneticButton>
         )}
       </div>
