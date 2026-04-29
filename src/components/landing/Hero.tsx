@@ -101,7 +101,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground mb-8 md:mb-6 text-[clamp(40px,11vw,96px)] md:text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance] text-center"
+              className="hero-headline font-heading font-light text-primary-foreground mb-6 md:mb-6 text-[clamp(34px,8.6vw,96px)] md:text-[clamp(32px,8vw,96px)] leading-[1.08] [text-wrap:balance] text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
