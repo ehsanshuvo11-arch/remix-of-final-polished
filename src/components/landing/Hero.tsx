@@ -70,7 +70,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <img
           src={logoSvg}
           alt="POLISHED Logo"
-          className="w-16 h-16 md:w-[100px] md:h-[100px] mx-auto mb-8 md:mb-9"
+          className="w-10 h-10 md:w-[100px] md:h-[100px] mx-auto mb-4 md:mb-9"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
             animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
@@ -80,7 +80,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
           lang="en"
-          className="font-sans-eyebrow text-[10px] md:text-[11px] tracking-[0.2em] md:tracking-[4px] uppercase text-accent/70 md:text-accent mb-8 md:mb-5 font-normal"
+          className="font-sans-eyebrow text-[8px] md:text-[11px] tracking-[0.18em] md:tracking-[4px] uppercase text-accent/70 md:text-accent mb-5 md:mb-5 font-normal"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
@@ -101,7 +101,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground mb-6 md:mb-6 text-[clamp(32px,8.6vw,140px)] md:text-[clamp(48px,8vw,96px)] leading-[1.02] md:leading-[1.08] whitespace-nowrap text-center -ml-[0.21em] md:ml-0"
+              className="hero-headline font-heading font-light text-primary-foreground mb-5 md:mb-6 text-[clamp(34px,9.2vw,140px)] md:text-[clamp(48px,8vw,96px)] leading-[1.02] md:leading-[1.08] whitespace-nowrap text-center -ml-[0.21em] md:ml-0"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
@@ -121,7 +121,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-4 text-[clamp(28px,7.5vw,123px)] md:text-[clamp(42px,7vw,84px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block pt-2 md:pt-4 text-[clamp(30px,8.05vw,123px)] md:text-[clamp(42px,7vw,84px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
@@ -130,15 +130,15 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           );
         })()}
 
-        <p lang="en" className="font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[340px] md:max-w-[520px] mx-auto mb-8 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
+        <p lang="en" className="hidden md:block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[340px] md:max-w-[520px] mx-auto mb-8 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
           {hero.subEn}
         </p>
 
         {/* Play button — Magnetic */}
-        <div className="mb-10 md:mb-8" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1s forwards', opacity: 0 }}>
+        <div className="mb-6 md:mb-8" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1s forwards', opacity: 0 }}>
           <MagneticButton
             onClick={onPuzzleOpen}
-            className={`play-btn group inline-flex items-center justify-center gap-3 px-5 sm:px-10 py-2 sm:py-4.5 min-w-[240px] sm:min-w-[320px] bg-transparent border-[1.5px] border-accent/50 text-accent ${isBn ? 'text-[14px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[10px] sm:text-[13px] tracking-[2.5px] sm:tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[42px] sm:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`play-btn group inline-flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-10 py-1.5 sm:py-4.5 min-w-[180px] sm:min-w-[320px] bg-transparent border-[1.5px] border-accent/50 text-accent ${isBn ? 'text-[12px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[9px] sm:text-[13px] tracking-[2px] sm:tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[34px] sm:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
             <span className="w-2 h-2 bg-accent rounded-full group-hover:bg-primary-foreground" style={{ animation: 'pulseDot 1.5s infinite' }} />
@@ -161,7 +161,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`inline-flex items-center justify-center px-4 sm:px-11 py-2 sm:py-4 min-w-[140px] sm:min-w-[220px] ${isBn ? 'text-[13px] sm:text-[18px] tracking-[0.5px] normal-case leading-[1.3]' : 'text-[10px] sm:text-[13px] tracking-[2px] sm:tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] h-[40px] sm:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`inline-flex items-center justify-center px-3 sm:px-11 py-1.5 sm:py-4 min-w-[110px] sm:min-w-[220px] ${isBn ? 'text-[11px] sm:text-[18px] tracking-[0.5px] normal-case leading-[1.3]' : 'text-[9px] sm:text-[13px] tracking-[1.5px] sm:tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] h-[34px] sm:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
@@ -180,7 +180,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`inline-flex items-center justify-center px-4 sm:px-11 py-2 sm:py-4 min-w-[140px] sm:min-w-[220px] ${isBn ? 'text-[13px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[10px] sm:text-[13px] tracking-[2px] sm:tracking-[2.5px] uppercase font-normal'} rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[40px] sm:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`inline-flex items-center justify-center px-3 sm:px-11 py-1.5 sm:py-4 min-w-[110px] sm:min-w-[220px] ${isBn ? 'text-[11px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[9px] sm:text-[13px] tracking-[1.5px] sm:tracking-[2.5px] uppercase font-normal'} rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[34px] sm:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
