@@ -70,7 +70,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <img
           src={logoSvg}
           alt="POLISHED Logo"
-          className="w-14 h-14 mb-7 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
+          className="w-14 h-14 mb-14 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
             animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
@@ -80,7 +80,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
           lang="en"
-          className="font-sans-eyebrow text-[10px] tracking-[0.2em] mb-6 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase text-accent font-normal"
+          className="font-sans-eyebrow text-[10px] tracking-[0.2em] mt-4 mb-8 md:mt-0 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase text-accent font-normal"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
@@ -120,7 +120,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-5xl italic mb-14 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] text-accent whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-5xl italic mb-20 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] text-accent whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
@@ -166,7 +166,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         {/* CTA buttons — Magnetic.
             Mobile order: Start a Project (primary, filled) → View Our Work (secondary, outlined).
             Desktop order preserved: View Our Work (primary) → Start a Project (secondary). */}
-        <div className="flex flex-col-reverse w-[70%] max-w-[280px] mx-auto gap-4 mt-5 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
+        <div className="flex flex-col-reverse w-[70%] max-w-[280px] mx-auto gap-4 mt-10 mb-16 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
           <MagneticButton
             as="a"
             href="#work"
