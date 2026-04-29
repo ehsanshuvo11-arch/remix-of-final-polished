@@ -28,13 +28,13 @@ export default function Process({ steps, content }: ProcessProps) {
 
   return (
     <div className="bg-secondary">
-      <section id="process" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+      <section id="process" className="py-20 md:py-[110px] px-6 sm:px-8 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
             {content?.labelEn ?? 'How It Works'}
           </p>
         </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-6 md:mb-7 text-[clamp(28px,7vw,60px)] leading-[1.15] md:leading-[1.1] [text-wrap:balance]">
           {isBn ? (
             <WordReveal delay={0.1}>নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।</WordReveal>
           ) : (
@@ -48,7 +48,7 @@ export default function Process({ steps, content }: ProcessProps) {
           )}
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 sm:gap-8 md:gap-10 mt-12 md:mt-14">
           {displaySteps.map((step, i) => (
             <StepCard key={step.id} step={step} index={i} />
           ))}
