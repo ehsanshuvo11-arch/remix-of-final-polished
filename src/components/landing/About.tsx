@@ -47,9 +47,15 @@ export default function About({ content, stats }: AboutProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div>
           <MotionReveal>
-            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {about.labelEn ?? 'About Polished'}
-            </p>
+            {isBn ? (
+              <p lang="bn" className="text-[10px] tracking-[4px] text-accent mb-4 font-medium" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                ব্র্যান্ড ফিলোসফি
+              </p>
+            ) : (
+              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+                {about.labelEn ?? 'About Polished'}
+              </p>
+            )}
           </MotionReveal>
           <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.2]">
             {isBn ? (
@@ -81,9 +87,15 @@ export default function About({ content, stats }: AboutProps) {
             </p>
           </MotionReveal>
           <MotionReveal delay={0.5}>
-            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary italic">
-              {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
-            </p>
+            {isBn ? (
+              <p lang="bn" className="text-[15px] leading-[1.85] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                — আমাদের সিগনেচার: নিখুঁত ও প্রফেশনাল বাংলা ভিজ্যুয়াল আইডেন্টিটি।
+              </p>
+            ) : (
+              <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary italic">
+                {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
+              </p>
+            )}
           </MotionReveal>
         </div>
 
@@ -96,9 +108,15 @@ export default function About({ content, stats }: AboutProps) {
                 <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
-                <div lang="en" style={enFont} className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
-                  {stat.label_en}
-                </div>
+                {isBn ? (
+                  <div lang="bn" className="text-[11px] tracking-[2px] text-muted-foreground" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                    {(['সফল প্রজেক্ট','ব্র্যান্ড পার্টনার','ইন্ডাস্ট্রি অভিজ্ঞতা','ক্লায়েন্ট সন্তুষ্টি'])[i] ?? stat.label_bn}
+                  </div>
+                ) : (
+                  <div lang="en" style={enFont} className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
+                    {stat.label_en}
+                  </div>
+                )}
               </div>
             </MotionReveal>
           ))}
