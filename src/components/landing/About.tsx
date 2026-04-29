@@ -109,7 +109,7 @@ export default function About({ content, stats }: AboutProps) {
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
                 {isBn ? (
-                  <div lang="bn" className="text-[11px] tracking-[2px] text-muted-foreground" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                  <div lang="bn" className="text-[13px] tracking-[1px] text-muted-foreground leading-[1.15] py-1" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                     {(['সফল প্রজেক্ট','ব্র্যান্ড পার্টনার','ইন্ডাস্ট্রি অভিজ্ঞতা','ক্লায়েন্ট সন্তুষ্টি'])[i] ?? stat.label_bn}
                   </div>
                 ) : (
