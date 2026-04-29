@@ -34,7 +34,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6.2vw,36px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
           {isBn ? (
             <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
           ) : (
