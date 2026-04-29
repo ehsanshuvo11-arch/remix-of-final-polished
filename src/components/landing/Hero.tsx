@@ -121,7 +121,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-4 text-[clamp(32px,7vw,84px)] text-accent italic [word-spacing:normal]"
+                className="hero-accent-line block pt-4 text-[clamp(40px,10vw,84px)] md:text-[clamp(32px,7vw,84px)] text-accent italic [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
@@ -130,7 +130,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           );
         })()}
 
-        <p lang="en" className="font-sans-body text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-10 md:mb-8 text-[14px] md:text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
+        <p lang="en" className="hidden md:block font-sans-body text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-10 md:mb-8 text-[14px] md:text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
           {hero.subEn}
         </p>
 
