@@ -149,7 +149,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         </div>
 
         {/* CTA buttons — Magnetic */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-4 justify-center items-stretch sm:items-center sm:flex-wrap" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
+        <div className="flex flex-row gap-3 sm:gap-4 justify-center items-center flex-wrap" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
           <MagneticButton
             as="a"
             href="#work"
