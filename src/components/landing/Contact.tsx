@@ -96,8 +96,10 @@ export default function Contact({ contact }: ContactProps) {
             )}
           </h2>
           <MotionReveal delay={0.15}>
-            <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary-foreground/50 mb-10">
-              {c.descEn ?? "Have a skincare brand that deserves better visuals? Let's talk."}
+            <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className="text-[15px] leading-[1.85] text-primary-foreground/50 mb-10">
+              {isBn
+                ? 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও এক্সক্লুসিভ ভিজ্যুয়াল ডিজার্ভ করে? আসুন, কথা বলি। প্রতিটি ক্লায়েন্টকে আমাদের সম্পূর্ণ মনোযোগ দিতে আমরা অত্যন্ত সীমিত সংখ্যক প্রোজেক্ট নিয়ে কাজ করি।'
+                : (c.descEn ?? "Have a skincare brand that deserves better visuals? Let's talk.")}
             </p>
           </MotionReveal>
 
