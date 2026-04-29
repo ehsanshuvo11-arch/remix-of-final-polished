@@ -49,7 +49,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 py-24 sm:px-8 md:px-14 md:py-20 bg-primary"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-3 py-24 sm:px-8 md:px-14 md:py-20 bg-primary"
     >
       {/* Animated grid */}
       <div
@@ -101,7 +101,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground mb-6 md:mb-6 text-[clamp(34px,9vw,120px)] md:text-[clamp(32px,8vw,96px)] leading-[1.02] md:leading-[1.08] whitespace-nowrap text-center"
+              className="hero-headline font-heading font-light text-primary-foreground mb-6 md:mb-6 text-[clamp(40px,10.5vw,120px)] md:text-[clamp(32px,8vw,96px)] leading-[1.02] md:leading-[1.08] whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 lineHeight: 1.08,
@@ -121,7 +121,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block pt-4 text-[clamp(40px,11vw,108px)] md:text-[clamp(32px,7vw,84px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block pt-4 text-[clamp(48px,13vw,108px)] md:text-[clamp(32px,7vw,84px)] text-accent italic whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
