@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Portfolio } from 'lucide-react';
+
 
 type Lang = 'en' | 'bn';
 
