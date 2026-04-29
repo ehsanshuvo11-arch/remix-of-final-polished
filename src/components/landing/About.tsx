@@ -108,9 +108,15 @@ export default function About({ content, stats }: AboutProps) {
                 <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
-                <div lang="en" style={enFont} className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
-                  {stat.label_en}
-                </div>
+                {isBn ? (
+                  <div lang="bn" className="text-[11px] tracking-[2px] text-muted-foreground" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                    {(['সফল প্রজেক্ট','ব্র্যান্ড পার্টনার','ইন্ডাস্ট্রি অভিজ্ঞতা','ক্লায়েন্ট সন্তুষ্টি'])[i] ?? stat.label_bn}
+                  </div>
+                ) : (
+                  <div lang="en" style={enFont} className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
+                    {stat.label_en}
+                  </div>
+                )}
               </div>
             </MotionReveal>
           ))}
