@@ -60,10 +60,10 @@ export default function About({ content, stats }: AboutProps) {
           <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.2]">
             {isBn ? (
               <>
-                <RevealText as="span" className="block">
+                <RevealText as="span" className="block" stagger={0} delay={0}>
                   {(about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই')}
                 </RevealText>
-                <RevealText as="span" delay={0.15} className="block italic">
+                <RevealText as="span" className="block italic" stagger={0} delay={0}>
                   {(about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।')}
                 </RevealText>
               </>
