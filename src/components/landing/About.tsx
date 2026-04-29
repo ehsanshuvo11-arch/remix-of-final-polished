@@ -43,8 +43,8 @@ export default function About({ content, stats }: AboutProps) {
   const line2 = about.titleLine2En ?? 'trust at first glance.';
 
   return (
-    <section id="about" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+    <section id="about" className="py-20 md:py-[110px] px-6 sm:px-8 md:px-14 max-w-[1200px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 md:gap-20 items-center">
         <div>
           <MotionReveal>
             {isBn ? (
@@ -57,7 +57,7 @@ export default function About({ content, stats }: AboutProps) {
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.2]">
+          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-6 md:mb-7 text-[clamp(28px,7vw,60px)] leading-[1.15] md:leading-[1.2] [text-wrap:balance]">
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>
@@ -99,13 +99,13 @@ export default function About({ content, stats }: AboutProps) {
           </MotionReveal>
         </div>
 
-        <div className="grid grid-cols-2 gap-px bg-border border border-border">
+        <div className="grid grid-cols-2 gap-px bg-border border border-border mt-2 md:mt-0">
           {displayStats.map((stat, i) => (
             <MotionReveal key={stat.id} delay={0.15 * (i + 1)}>
               <div
-                className="stat-box bg-background p-7 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
+                className="stat-box bg-background p-6 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
               >
-                <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
+                <div className="font-heading text-[40px] md:text-[52px] font-light text-primary leading-none mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
                 {isBn ? (

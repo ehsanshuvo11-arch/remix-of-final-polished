@@ -130,7 +130,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           );
         })()}
 
-        <p lang="en" className="font-sans-body text-primary-foreground/55 leading-[1.7] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
+        <p lang="en" className="font-sans-body text-primary-foreground/55 leading-[1.65] tracking-[0.3px] max-w-[520px] mx-auto mb-8 text-[14px] sm:text-[15px]" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
           {hero.subEn}
         </p>
 
@@ -138,7 +138,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <div className="mb-8" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1s forwards', opacity: 0 }}>
           <MagneticButton
             onClick={onPuzzleOpen}
-            className={`play-btn group inline-flex items-center justify-center gap-3 px-7 sm:px-10 py-4 sm:py-4.5 min-w-[280px] sm:min-w-[320px] bg-transparent border-[1.5px] border-accent/50 text-accent ${isBn ? 'text-[17px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`play-btn group inline-flex items-center justify-center gap-3 w-full sm:w-auto px-7 sm:px-10 py-4 sm:py-4.5 sm:min-w-[320px] bg-transparent border-[1.5px] border-accent/50 text-accent ${isBn ? 'text-[16px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
             <span className="w-2 h-2 bg-accent rounded-full group-hover:bg-primary-foreground" style={{ animation: 'pulseDot 1.5s infinite' }} />
@@ -161,7 +161,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`inline-flex items-center justify-center px-8 sm:px-11 py-4 min-w-[200px] sm:min-w-[220px] ${isBn ? 'text-[17px] sm:text-[18px] tracking-[0.5px] normal-case leading-[1.3]' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-11 py-4 sm:min-w-[220px] ${isBn ? 'text-[16px] sm:text-[18px] tracking-[0.5px] normal-case leading-[1.3]' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase'} font-medium rounded-sm bg-accent text-primary relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
@@ -180,7 +180,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`inline-flex items-center justify-center px-8 sm:px-11 py-4 min-w-[200px] sm:min-w-[220px] ${isBn ? 'text-[17px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal'} rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-11 py-4 sm:min-w-[220px] ${isBn ? 'text-[16px] sm:text-[18px] tracking-[0.5px] normal-case font-medium leading-[1.3]' : 'text-[12px] sm:text-[13px] tracking-[2.5px] uppercase font-normal'} rounded-sm border-[1.5px] border-accent/50 text-accent relative overflow-hidden transition-all duration-700 ease-out hover:text-primary-foreground hover:border-accent hover:-translate-y-1 hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
            
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
