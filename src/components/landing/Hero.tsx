@@ -120,7 +120,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-4xl italic mb-10 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] text-accent whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-5xl italic mb-14 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] text-accent whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
