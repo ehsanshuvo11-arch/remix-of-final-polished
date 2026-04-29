@@ -80,7 +80,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
           lang="en"
-          className="font-sans-eyebrow text-[9px] tracking-[0.25em] mb-8 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase text-accent font-normal"
+          className="font-sans-eyebrow text-[10px] tracking-[0.2em] mb-6 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase text-accent font-normal"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
