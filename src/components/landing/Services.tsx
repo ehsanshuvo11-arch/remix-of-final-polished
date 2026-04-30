@@ -30,7 +30,7 @@ export default function Services({ services, content }: ServicesProps) {
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {content?.labelEn ?? 'What We Do'}
+            {isBn ? 'আমাদের এক্সপার্টিজ' : (content?.labelEn ?? 'What We Do')}
           </p>
         </MotionReveal>
         <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6.2vw,36px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
