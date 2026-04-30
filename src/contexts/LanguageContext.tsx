@@ -160,23 +160,52 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Crossfade between languages — outgoing fades 0.15s, incoming 0.3s */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={lang}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: 1,
-            transition: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
-          }}
-          exit={{
-            opacity: 0,
-            transition: { duration: 0.15, ease: [0.76, 0, 0.24, 1] },
-          }}
-          style={{ willChange: 'opacity' }}
-        >
-          {children}
-        </motion.div>
+      {/* Children stay mounted across language swaps so scroll position,
+          Lenis state, and layout are preserved. We only crossfade the
+          contents in place — never unmount. */}
+      <motion.div
+        key="lang-content"
+        animate={{ opacity: curtain ? 0.999 : 1 }}
+        transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+        style={{ willChange: 'opacity' }}
+      >
+        {children}
+      </motion.div>
+
+      {/* Curtain Drop overlay — drops in, holds while content swaps, lifts away.
+          Scroll position is preserved underneath. */}
+      <AnimatePresence>
+        {curtain && (
+          <motion.div
+            key="curtain-drop"
+            initial={{ y: '-100%' }}
+            animate={{ y: '0%' }}
+            exit={{ y: '-100%' }}
+            transition={{ duration: 0.46, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 z-[9997] bg-primary pointer-events-none flex items-center justify-center"
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(ellipse at 50% 50%, transparent 40%, hsl(var(--primary) / 0.55) 100%)',
+              }}
+            />
+            <div
+              lang="en"
+              className="font-heading uppercase text-primary-foreground relative"
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                letterSpacing: '4px',
+                fontSize: 'clamp(1.5rem, 4vw, 2.75rem)',
+                fontWeight: 600,
+              }}
+            >
+              POLISHED<span className="text-accent">.</span>
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Floating language toggle */}
@@ -185,15 +214,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}
-          onClick={() => {
-            setLangState(prev => {
-              const next = prev === 'en' ? 'bn' : 'en';
-              localStorage.setItem('polished_lang', next);
-              syncDocumentLanguage(next);
-              return next;
-            });
-          }}
-          className="fixed bottom-7 right-7 z-[500] bg-primary text-primary-foreground border border-primary-foreground/15 rounded-full px-5 py-2.5 text-xs tracking-[2px] flex items-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5"
+          onClick={toggleLanguageWithCurtain}
+          disabled={curtain}
+          className="fixed bottom-7 right-7 z-[500] bg-primary text-primary-foreground border border-primary-foreground/15 rounded-full px-5 py-2.5 text-xs tracking-[2px] flex items-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-wait"
         >
           <span className="text-base">🌎</span>
           <span>{lang === 'en' ? 'বাংলা' : 'English'}</span>
