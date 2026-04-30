@@ -53,7 +53,7 @@ export default function Index() {
     <div className="font-body">
       <PageLoader onComplete={() => setHeroReady(true)} />
       <SectionTheme />
-      <CustomCursor />
+      
       <Navbar onPuzzleOpen={() => setPuzzleOpen(true)} content={navContent ?? null} />
       <motion.div
         initial={false}
