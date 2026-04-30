@@ -129,8 +129,18 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           );
         })()}
 
-        <p lang="en" className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards', opacity: 0, fontFamily: "'DM Sans', sans-serif" }}>
-          {hero.subEn}
+        <p
+          lang={isBn ? 'bn' : 'en'}
+          className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0"
+          style={{
+            animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.9s forwards',
+            opacity: 0,
+            fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
+          }}
+        >
+          {isBn
+            ? 'আমরা সেইসব স্কিনকেয়ার ব্র্যান্ডের জন্য অত্যন্ত পরিশীলিত এবং আস্থাশীল ভিজ্যুয়াল আইডেন্টিটি তৈরি করি, যারা আলাদাভাবে নজর কাড়ার এবং মানুষের মনে গেঁথে থাকার যোগ্যতা রাখে।'
+            : hero.subEn}
         </p>
 
         {/* Desktop-only: Play button — Magnetic (preserve original desktop hierarchy) */}
