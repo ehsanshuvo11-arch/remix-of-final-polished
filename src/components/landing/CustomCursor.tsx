@@ -19,6 +19,7 @@ export default function CustomCursor() {
   useEffect(() => {
     if ('ontouchstart' in window) return;
 
+    document.body.setAttribute('data-custom-cursor', 'ready');
     document.body.style.cursor = 'none';
 
     const onMouseMove = (e: MouseEvent) => {
@@ -53,6 +54,7 @@ export default function CustomCursor() {
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      document.body.removeAttribute('data-custom-cursor');
       document.body.style.cursor = '';
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeaveWindow);
@@ -68,9 +70,9 @@ export default function CustomCursor() {
   if (typeof window === 'undefined' || 'ontouchstart' in window || window.innerWidth < 768) return null;
 
   return createPortal(
-    <div className="hidden md:block">
+    <div className="hidden md:block pointer-events-none z-[99999]">
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[2147483647]"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[99999]"
         style={{
           x: dotX,
           y: dotY,
@@ -86,7 +88,7 @@ export default function CustomCursor() {
         transition={{ type: 'spring', stiffness: 200, damping: 20, mass: 0.3 }}
       />
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[2147483646]"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[99998]"
         style={{
           x: ringX,
           y: ringY,

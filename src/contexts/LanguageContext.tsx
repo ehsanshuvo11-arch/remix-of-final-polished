@@ -62,6 +62,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            data-language-overlay="true"
             className="fixed inset-0 bg-[rgba(15,30,74,0.97)] z-[10000] flex items-center justify-center flex-col gap-12"
           >
             <motion.div
