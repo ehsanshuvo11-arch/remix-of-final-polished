@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
@@ -64,13 +65,12 @@ export default function CustomCursor() {
     };
   }, [cursorX, cursorY]);
 
-  if (typeof window !== 'undefined' && ('ontouchstart' in window || window.innerWidth < 768)) return null;
+  if (typeof window === 'undefined' || 'ontouchstart' in window || window.innerWidth < 768) return null;
 
-  return (
+  return createPortal(
     <div className="hidden md:block">
-      {/* Dot */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[99999]"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[2147483647]"
         style={{
           x: dotX,
           y: dotY,
@@ -85,9 +85,8 @@ export default function CustomCursor() {
         }}
         transition={{ type: 'spring', stiffness: 200, damping: 20, mass: 0.3 }}
       />
-      {/* Ring */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[99998]"
+        className="fixed top-0 left-0 rounded-full pointer-events-none z-[2147483646]"
         style={{
           x: ringX,
           y: ringY,
@@ -102,6 +101,7 @@ export default function CustomCursor() {
         }}
         transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 0.4 }}
       />
-    </div>
+    </div>,
+    document.body,
   );
 }
