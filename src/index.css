@@ -340,11 +340,22 @@ html[data-lang="bn"] .brand-wordmark {
 
 /* Custom cursor — hide default cursor on frontend only (non-touch devices) */
 @media (hover: hover) and (pointer: fine) {
-  body.public-site *,
-  body.public-site *::before,
-  body.public-site *::after,
-  body.public-site {
+  body.public-site[data-custom-cursor='ready'][data-custom-cursor-visible] *,
+  body.public-site[data-custom-cursor='ready'][data-custom-cursor-visible] *::before,
+  body.public-site[data-custom-cursor='ready'][data-custom-cursor-visible] *::after,
+  body.public-site[data-custom-cursor='ready'][data-custom-cursor-visible] {
     cursor: none !important;
+  }
+
+  body.public-site:not([data-custom-cursor='ready']) [data-language-overlay='true'],
+  body.public-site:not([data-custom-cursor='ready']) [data-language-overlay='true'] *,
+  body.public-site:not([data-custom-cursor='ready']) [data-language-overlay='true'] *::before,
+  body.public-site:not([data-custom-cursor='ready']) [data-language-overlay='true'] *::after,
+  body.public-site[data-custom-cursor='ready']:not([data-custom-cursor-visible]) [data-language-overlay='true'],
+  body.public-site[data-custom-cursor='ready']:not([data-custom-cursor-visible]) [data-language-overlay='true'] *,
+  body.public-site[data-custom-cursor='ready']:not([data-custom-cursor-visible]) [data-language-overlay='true'] *::before,
+  body.public-site[data-custom-cursor='ready']:not([data-custom-cursor-visible]) [data-language-overlay='true'] *::after {
+    cursor: auto !important;
   }
 }
 
