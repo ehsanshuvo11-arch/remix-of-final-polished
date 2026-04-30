@@ -13,10 +13,10 @@ export default function Process({ steps, content }: ProcessProps) {
   const isBn = lang === 'bn';
 
   const defaultSteps: ProcessStep[] = [
-    { id: '1', sort_order: 1, title_en: 'Discovery', title_bn: 'অনুসন্ধান', desc_en: 'We learn your brand, your product, and your audience. No generic templates — everything starts with understanding.', desc_bn: 'আপনার ব্র্যান্ড, আপনার পণ্য, আপনার দর্শক — সব আগে বুঝে নিই।' },
-    { id: '2', sort_order: 2, title_en: 'Strategy', title_bn: 'কৌশল', desc_en: 'We decide the visual direction — tone, reference, aesthetic system — before a single pixel is placed.', desc_bn: 'একটি পিক্সেল বসানোর আগেই ঠিক হয় ভিজ্যুয়াল দিকনির্দেশনা।' },
-    { id: '3', sort_order: 3, title_en: 'Design', title_bn: 'ডিজাইন', desc_en: 'Execution with precision. Clean, structured, intentional — every element earns its place in the composition.', desc_bn: 'নির্ভুলভাবে বাস্তবায়ন। পরিচ্ছন্ন, কাঠামোবদ্ধ, উদ্দেশ্যমূলক।' },
-    { id: '4', sort_order: 4, title_en: 'Delivery', title_bn: 'ডেলিভারি', desc_en: 'Final files, ready to use. Organized, properly sized, and formatted for every platform you need.', desc_bn: 'চূড়ান্ত ফাইল, ব্যবহারের জন্য প্রস্তুত।' },
+    { id: '1', sort_order: 1, title_en: 'Discovery', title_bn: 'ডিসকভারি', desc_en: 'We learn your brand, your product, and your audience. No generic templates — everything starts with understanding.', desc_bn: 'আমরা আপনার ব্র্যান্ড, প্রোডাক্ট এবং অডিয়েন্সকে গভীরভাবে স্টাডি করি। কোনো জেনেরিক টেমপ্লেট নয়—আমাদের সবকিছুর শুরু হয় ব্র্যান্ডকে পুরোপুরি বোঝার মাধ্যমে।' },
+    { id: '2', sort_order: 2, title_en: 'Strategy', title_bn: 'স্ট্র্যাটেজি', desc_en: 'We decide the visual direction — tone, reference, aesthetic system — before a single pixel is placed.', desc_bn: 'ক্যানভাসে একটি পিক্সেল বসানোর আগেও আমরা ভিজ্যুয়াল ডিরেকশন—ব্র্যান্ড টোন, রেফারেন্স এবং ওভারঅল অ্যাসথেটিক্স (Aesthetics) চূড়ান্ত করি।' },
+    { id: '3', sort_order: 3, title_en: 'Design', title_bn: 'ডিজাইন', desc_en: 'Execution with precision. Clean, structured, intentional — every element earns its place in the composition.', desc_bn: 'নিখুঁত এক্সিকিউশন। ক্লিন, গোছানো এবং অর্থবহ—ডিজাইনের প্রতিটি এলিমেন্ট খুব ভেবেচিন্তে তার নির্দিষ্ট জায়গায় বসানো হয়।' },
+    { id: '4', sort_order: 4, title_en: 'Delivery', title_bn: 'ডেলিভারি', desc_en: 'Final files, ready to use. Organized, properly sized, and formatted for every platform you need.', desc_bn: 'রেডি-টু-ইউজ ফাইনাল ফাইল। আপনার প্রয়োজনীয় সব প্ল্যাটফর্মের জন্য একদম পারফেক্ট সাইজ, ফরম্যাট এবং ওয়েল-অর্গানাইজড অবস্থায় আমরা প্রোজেক্ট বুঝিয়ে দিই।' },
   ];
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
@@ -31,7 +31,7 @@ export default function Process({ steps, content }: ProcessProps) {
       <section id="process" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {content?.labelEn ?? 'How It Works'}
+            {isBn ? 'আমাদের কাজের প্রসেস' : (content?.labelEn ?? 'How It Works')}
           </p>
         </MotionReveal>
         <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6.2vw,36px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
@@ -59,8 +59,10 @@ export default function Process({ steps, content }: ProcessProps) {
 }
 
 function StepCard({ step, index }: { step: ProcessStep; index: number }) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
+  const title = isBn ? (step.title_bn?.trim() || step.title_en) : step.title_en;
+  const desc = isBn ? (step.desc_bn?.trim() || step.desc_en) : step.desc_en;
 
   return (
     <MotionReveal delay={0.12 * (index + 1)}>
@@ -70,11 +72,11 @@ function StepCard({ step, index }: { step: ProcessStep; index: number }) {
         <div className="font-heading text-[40px] font-light text-primary/20 mb-4">
           {String(index + 1).padStart(2, '0')}
         </div>
-        <div lang="en" className="font-heading text-xl font-medium text-primary mb-2.5">
-          {step.title_en}
+        <div lang={isBn ? 'bn' : 'en'} className={`font-heading text-xl font-medium text-primary mb-2.5 ${isBn ? 'leading-snug' : ''}`}>
+          {title}
         </div>
-        <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[13px] leading-[1.75] text-muted-foreground">
-          {step.desc_en}
+        <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }} className={`text-[13px] leading-[1.75] text-muted-foreground ${isBn ? 'leading-[1.85]' : ''}`}>
+          {desc}
         </p>
       </div>
     </MotionReveal>
