@@ -26,7 +26,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (saved === 'en') return 'en';
     return 'en';
   });
-  const [showPopup, setShowPopup] = useState(() => !localStorage.getItem('polished_lang'));
+  const [showPopup, setShowPopup] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
   const syncDocumentLanguage = (l: Lang = lang) => {
