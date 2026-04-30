@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 import FilmGrain from "./components/FilmGrain";
+import CustomCursor from "./components/landing/CustomCursor";
 
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
