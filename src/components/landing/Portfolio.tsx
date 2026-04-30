@@ -177,7 +177,9 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       <div className="mt-3 px-1 flex flex-wrap items-center gap-4">
         <button
           onClick={toggleImageExpand}
-          className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
+          lang={isBn ? 'bn' : 'en'}
+          className={`text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
         >
           {imageExpanded
             ? (isBn ? 'সংকুচিত করতে ক্লিক করুন' : 'Click to collapse')
@@ -186,7 +188,9 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
 
         <button
           onClick={toggleCaseStudy}
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100"
+          lang={isBn ? 'bn' : 'en'}
+          className={`inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground text-[11px] font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
         >
           <span className="relative z-10 text-primary-foreground">
             {caseStudyOpen
@@ -198,7 +202,9 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
         {hasMockups && (
           <button
             onClick={openLightbox}
-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97]"
+            lang={isBn ? 'bn' : 'en'}
+            className={`inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
           >
             <span>{isBn ? 'প্রোজেক্ট মকআপ দেখুন' : 'View project mockups'}</span>
           </button>

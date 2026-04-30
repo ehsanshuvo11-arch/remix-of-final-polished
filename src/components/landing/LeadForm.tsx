@@ -284,9 +284,16 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
 // ───────── building blocks ─────────
 
 function StepHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+  const isBn = /[\u0980-\u09FF]/.test(eyebrow);
   return (
     <div className="mb-3">
-      <p className="text-[10px] tracking-[3px] uppercase text-accent mb-2">{eyebrow}</p>
+      <p
+        lang={isBn ? 'bn' : 'en'}
+        className={`text-[10px] text-accent mb-2 ${isBn ? 'tracking-normal' : 'tracking-[3px] uppercase'}`}
+        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
+      >
+        {eyebrow}
+      </p>
       <h3 className="font-heading italic text-primary-foreground text-[clamp(22px,2.5vw,28px)] font-light leading-tight">
         {title}
       </h3>
