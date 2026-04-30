@@ -142,7 +142,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                 <PolishedInput
                   value={data.client_name}
                   onChange={(v) => update('client_name', v)}
-                  placeholder={t('Your full name', 'যেমন: শাফায়াত হোসেন')}
+                  placeholder={t('Your full name', 'আপনার নাম')}
                 />
                 <PolishedInput
                   value={data.brand_name}
