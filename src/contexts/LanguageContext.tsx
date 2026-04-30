@@ -34,10 +34,22 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute('lang', l);
   };
 
+  const preserveScroll = (mutate: () => void) => {
+    const y = window.scrollY;
+    mutate();
+    // Restore on next frames in case any layout shift / re-render nudges scroll.
+    requestAnimationFrame(() => {
+      window.scrollTo(0, y);
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    });
+  };
+
   const setLang = (l: Lang) => {
-    setLangState(l);
-    localStorage.setItem('polished_lang', l);
-    syncDocumentLanguage(l);
+    preserveScroll(() => {
+      setLangState(l);
+      localStorage.setItem('polished_lang', l);
+      syncDocumentLanguage(l);
+    });
     // Luxurious transition out
     setTransitioning(true);
     setTimeout(() => {
