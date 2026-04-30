@@ -245,7 +245,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
           type="button"
           onClick={back}
           disabled={step === 0}
-          className="text-[11px] tracking-[3px] uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors disabled:opacity-20 disabled:cursor-not-allowed min-h-[44px] px-2 -ml-2"
+          className={`text-[11px] uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors disabled:opacity-20 disabled:cursor-not-allowed min-h-[44px] px-2 -ml-2 ${isBn ? 'tracking-[1px]' : 'tracking-[3px]'}`}
         >
           ← {t('Back', 'পিছনে')}
         </button>
