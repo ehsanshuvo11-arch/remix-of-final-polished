@@ -11,7 +11,7 @@ import Contact from '@/components/landing/Contact';
 import Footer from '@/components/landing/Footer';
 import PuzzleGame from '@/components/landing/PuzzleGame';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
-import CustomCursor from '@/components/landing/CustomCursor';
+
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
 import Transformations from '@/components/landing/Transformations';
