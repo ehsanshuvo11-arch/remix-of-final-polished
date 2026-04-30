@@ -144,14 +144,6 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
             className="md:hidden fixed inset-0 z-[105] bg-primary"
             onClick={() => setOpen(false)}
           >
-            {/* Subtle depth gradient — diagonal orange wash */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  'radial-gradient(ellipse 90% 70% at 100% 0%, hsl(var(--accent) / 0.18) 0%, hsl(var(--accent) / 0.08) 35%, transparent 65%), radial-gradient(ellipse 80% 60% at 0% 100%, hsl(var(--accent) / 0.12) 0%, hsl(var(--accent) / 0.05) 40%, transparent 70%)',
-              }}
-            />
             {/* Soft orange studio glow — top-right accent */}
             <div
               className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none bg-accent"
