@@ -20,7 +20,8 @@ export default function CustomCursor() {
     if ('ontouchstart' in window) return;
 
     document.body.setAttribute('data-custom-cursor', 'ready');
-    document.body.style.cursor = 'none';
+    document.body.toggleAttribute('data-custom-cursor-visible', visible);
+    document.body.style.cursor = visible ? 'none' : '';
 
     const onMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -55,6 +56,7 @@ export default function CustomCursor() {
 
     return () => {
       document.body.removeAttribute('data-custom-cursor');
+      document.body.removeAttribute('data-custom-cursor-visible');
       document.body.style.cursor = '';
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeaveWindow);
@@ -65,7 +67,7 @@ export default function CustomCursor() {
       });
       observer.disconnect();
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, visible]);
 
   if (typeof window === 'undefined' || 'ontouchstart' in window || window.innerWidth < 768) return null;
 
