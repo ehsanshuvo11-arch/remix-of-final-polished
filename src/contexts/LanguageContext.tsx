@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Globe } from 'lucide-react';
 
 type Lang = 'en' | 'bn';
 
@@ -218,7 +219,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           disabled={curtain}
           className="fixed bottom-7 right-7 z-[500] bg-primary text-primary-foreground border border-primary-foreground/15 rounded-full px-5 py-2.5 text-xs tracking-[2px] flex items-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-wait"
         >
-          <span className="text-base">🌎</span>
+          <Globe className="w-4 h-4" strokeWidth={1.5} />
           <span>{lang === 'en' ? 'বাংলা' : 'English'}</span>
         </motion.button>
       )}
