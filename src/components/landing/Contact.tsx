@@ -73,7 +73,7 @@ export default function Contact({ contact }: ContactProps) {
         <div>
           <MotionReveal>
             <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {c.sectionLabelEn ?? 'Get In Touch'}
+              {isBn ? 'যোগাযোগ করুন' : (c.sectionLabelEn ?? 'Get In Touch')}
             </p>
           </MotionReveal>
           <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(28px,7.2vw,40px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>

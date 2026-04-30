@@ -30,7 +30,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
     <section id="work" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-          {content?.labelEn ?? 'Selected Work'}
+          {isBn ? 'আমাদের সিগনেচার কাজ' : (content?.labelEn ?? 'Selected Work')}
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
@@ -174,8 +174,8 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
           className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
         >
           {imageExpanded
-            ? 'Click to collapse'
-            : 'Click image for full view'}
+            ? (isBn ? 'সংকুচিত করতে ক্লিক করুন' : 'Click to collapse')
+            : (isBn ? 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন' : 'Click image for full view')}
         </button>
 
         <button
@@ -184,8 +184,8 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
         >
           <span className="relative z-10 text-primary-foreground">
             {caseStudyOpen
-              ? 'Hide case study'
-              : 'View full case study'}
+              ? (isBn ? 'কেস স্টাডি লুকান' : 'Hide case study')
+              : (isBn ? 'সম্পূর্ণ কেস স্টাডি দেখুন' : 'View full case study')}
           </span>
         </button>
 
@@ -194,7 +194,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             onClick={openLightbox}
             className="inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97]"
           >
-            <span>View project mockups</span>
+            <span>{isBn ? 'প্রোজেক্ট মকআপ দেখুন' : 'View project mockups'}</span>
           </button>
         )}
       </div>
