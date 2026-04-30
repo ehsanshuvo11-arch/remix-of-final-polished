@@ -72,9 +72,15 @@ export default function Contact({ contact }: ContactProps) {
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
         <div>
           <MotionReveal>
-            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {isBn ? 'যোগাযোগ করুন' : (c.sectionLabelEn ?? 'Get In Touch')}
-            </p>
+            {isBn ? (
+              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                যোগাযোগ করুন
+              </p>
+            ) : (
+              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+                {c.sectionLabelEn ?? 'Get In Touch'}
+              </p>
+            )}
           </MotionReveal>
           <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(28px,7.2vw,40px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
             {isBn ? (

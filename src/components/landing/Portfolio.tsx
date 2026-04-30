@@ -29,9 +29,15 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
   return (
     <section id="work" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
-        <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-          {isBn ? 'আমাদের সিগনেচার কাজ' : (content?.labelEn ?? 'Selected Work')}
-        </p>
+        {isBn ? (
+          <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+            আমাদের সিগনেচার কাজ
+          </p>
+        ) : (
+          <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+            {content?.labelEn ?? 'Selected Work'}
+          </p>
+        )}
       </MotionReveal>
       <MotionReveal delay={0.1}>
         <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6.2vw,36px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
