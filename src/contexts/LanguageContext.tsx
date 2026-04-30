@@ -34,10 +34,22 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute('lang', l);
   };
 
+  const preserveScroll = (mutate: () => void) => {
+    const y = window.scrollY;
+    mutate();
+    // Restore on next frames in case any layout shift / re-render nudges scroll.
+    requestAnimationFrame(() => {
+      window.scrollTo(0, y);
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    });
+  };
+
   const setLang = (l: Lang) => {
-    setLangState(l);
-    localStorage.setItem('polished_lang', l);
-    syncDocumentLanguage(l);
+    preserveScroll(() => {
+      setLangState(l);
+      localStorage.setItem('polished_lang', l);
+      syncDocumentLanguage(l);
+    });
     // Luxurious transition out
     setTransitioning(true);
     setTimeout(() => {
@@ -117,24 +129,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Crossfade between languages — outgoing fades 0.15s, incoming 0.3s */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={lang}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: 1,
-            transition: { duration: 0.3, ease: [0.33, 1, 0.68, 1] },
-          }}
-          exit={{
-            opacity: 0,
-            transition: { duration: 0.15, ease: [0.76, 0, 0.24, 1] },
-          }}
-          style={{ willChange: 'opacity' }}
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
+      {/* Render children once — language swap happens via context, no remount, no scroll reset */}
+      <div key="app-root" style={{ willChange: 'opacity' }}>
+        {children}
+      </div>
 
       {/* Floating language toggle */}
       {!showPopup && !transitioning && (
@@ -143,11 +141,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}
           onClick={() => {
-            setLangState(prev => {
-              const next = prev === 'en' ? 'bn' : 'en';
-              localStorage.setItem('polished_lang', next);
-              syncDocumentLanguage(next);
-              return next;
+            preserveScroll(() => {
+              setLangState(prev => {
+                const next = prev === 'en' ? 'bn' : 'en';
+                localStorage.setItem('polished_lang', next);
+                syncDocumentLanguage(next);
+                return next;
+              });
             });
           }}
           className="fixed bottom-7 right-7 z-[500] bg-primary text-primary-foreground border border-primary-foreground/15 rounded-full px-5 py-2.5 text-xs tracking-[2px] flex items-center gap-2 transition-all duration-300 shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5"
