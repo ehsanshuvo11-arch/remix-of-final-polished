@@ -28,22 +28,65 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   });
   const [showPopup, setShowPopup] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [curtain, setCurtain] = useState(false);
 
   const syncDocumentLanguage = (l: Lang = lang) => {
     document.documentElement.setAttribute('data-lang', l);
     document.documentElement.setAttribute('lang', l);
   };
 
-  const setLang = (l: Lang) => {
+  const swapLanguagePreservingScroll = (l: Lang) => {
+    // Snapshot scroll position from every plausible source.
+    const scrollY =
+      window.scrollY ||
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+
     setLangState(l);
     localStorage.setItem('polished_lang', l);
     syncDocumentLanguage(l);
-    // Luxurious transition out
+
+    // Restore scroll across the next several frames to defeat any layout
+    // reflow, Lenis re-init, or AnimatePresence remount that would otherwise
+    // jump the page to the top.
+    const restore = () => {
+      window.scrollTo(0, scrollY);
+      document.documentElement.scrollTop = scrollY;
+      document.body.scrollTop = scrollY;
+      const lenis = (window as unknown as { lenis?: { scrollTo?: (y: number, opts?: unknown) => void } }).lenis;
+      lenis?.scrollTo?.(scrollY, { immediate: true, force: true });
+    };
+    restore();
+    requestAnimationFrame(restore);
+    requestAnimationFrame(() => requestAnimationFrame(restore));
+    setTimeout(restore, 80);
+    setTimeout(restore, 200);
+  };
+
+  const setLang = (l: Lang) => {
+    // Used by the (now hidden) initial popup. Keep behaviour but preserve scroll.
+    swapLanguagePreservingScroll(l);
     setTransitioning(true);
     setTimeout(() => {
       setShowPopup(false);
       setTimeout(() => setTransitioning(false), 600);
     }, 800);
+  };
+
+  // Curtain-drop language toggle used by the floating button.
+  const toggleLanguageWithCurtain = () => {
+    if (curtain) return;
+    const next: Lang = lang === 'en' ? 'bn' : 'en';
+    setCurtain(true);
+    // Wait until the curtain fully covers the screen, then swap content.
+    // 420ms matches the curtain's drop duration below.
+    window.setTimeout(() => {
+      swapLanguagePreservingScroll(next);
+      // Hold briefly so the swap is invisible, then reveal.
+      window.setTimeout(() => setCurtain(false), 180);
+    }, 460);
   };
 
   useEffect(() => {
