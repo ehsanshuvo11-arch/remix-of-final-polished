@@ -40,7 +40,7 @@ export default function Process({ steps, content }: ProcessProps) {
             </p>
           )}
         </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6.2vw,36px)] md:text-[clamp(36px,5vw,60px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
+        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
           {isBn ? (
             <WordReveal delay={0.1}>নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।</WordReveal>
           ) : (
