@@ -49,7 +49,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 pt-16 pb-24 sm:px-8 md:px-14 md:py-20 bg-primary"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 pt-16 pb-32 sm:px-8 md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
       {/* Animated grid */}
       <div
@@ -216,7 +216,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-primary-foreground/30 text-[10px] tracking-[3px] uppercase" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
+      <div className="absolute bottom-6 md:bottom-9 left-1/2 -translate-x-1/2 hidden [@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/30 text-[10px] tracking-[3px] uppercase" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
         {hero.scrollEn ?? 'Scroll'}
         <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }} />
       </div>
