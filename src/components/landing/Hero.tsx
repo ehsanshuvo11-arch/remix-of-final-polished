@@ -101,20 +101,18 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(24px,7.6vw,38px)] tracking-[-0.015em] leading-[1.1] mb-2 max-w-[88vw] mx-auto [text-wrap:balance] md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center break-words px-2 md:px-0"
+              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(28px,10.2vw,44px)] tracking-[-0.015em] leading-[1.05] mb-2 md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '0',
                 wordSpacing: 'normal',
                 fontWeight: 400,
-                WebkitTextSizeAdjust: '100%',
-                textSizeAdjust: '100%',
               }}
             >
               <RevealText
                 as="span"
                 delay={BASE}
-                className="block md:whitespace-nowrap"
+                className="block whitespace-nowrap"
                 stagger={STAGGER}
               >
                 {line1}
@@ -122,7 +120,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[clamp(22px,7.4vw,34px)] leading-[1.1] italic mt-2 mb-6 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[clamp(24px,8.9vw,38px)] leading-[1.1] italic mt-2 mb-6 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] text-accent whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
