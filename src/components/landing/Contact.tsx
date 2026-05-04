@@ -73,7 +73,7 @@ export default function Contact({ contact }: ContactProps) {
         <div>
           <MotionReveal>
             {isBn ? (
-              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              <p lang="bn" className="text-[14px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                 যোগাযোগ করুন
               </p>
             ) : (
