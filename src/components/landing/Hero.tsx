@@ -49,7 +49,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-3 pt-16 pb-32 sm:px-8 md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 pt-16 pb-32 sm:px-8 md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
       {/* Animated grid */}
       <div
@@ -101,7 +101,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(20px,6.4vw,32px)] tracking-[-0.02em] leading-[1.1] mb-2 whitespace-nowrap md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center md:break-words px-1 md:px-0"
+              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(26px,8.6vw,40px)] tracking-[-0.015em] leading-[1.1] mb-2 md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center break-words px-2 md:px-0"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '0',
@@ -112,7 +112,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={BASE}
-                className="block whitespace-nowrap md:whitespace-nowrap"
+                className="block md:whitespace-nowrap"
                 stagger={STAGGER}
               >
                 {line1}
@@ -120,7 +120,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[clamp(18px,5.8vw,28px)] leading-[1.1] italic mt-2 mb-6 whitespace-nowrap md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[clamp(22px,7.4vw,34px)] leading-[1.1] italic mt-2 mb-6 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] text-accent md:whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
