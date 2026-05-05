@@ -125,10 +125,6 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               >
                 {line2}
               </RevealText>
-                stagger={STAGGER}
-              >
-                {line2}
-              </RevealText>
             </h1>
           );
         })()}
