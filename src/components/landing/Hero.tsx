@@ -97,7 +97,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground text-[32px] tracking-tight leading-[1.15] mx-auto mb-2 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
+              className="hero-headline font-heading font-light text-primary-foreground text-[36px] tracking-tight leading-[1.15] mx-auto mb-2 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '0',
@@ -124,7 +124,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[28px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[32px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 Unmissable!
