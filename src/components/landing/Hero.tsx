@@ -70,7 +70,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
         <img
           src={logoSvg}
           alt="POLISHED Logo"
-          className="w-14 h-14 mb-14 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
+          className="w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
             animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
@@ -101,7 +101,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(22px,8.5vw,44px)] tracking-[-0.015em] mb-2 md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
+              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(20px,7vw,40px)] tracking-[-0.02em] leading-[1.05] max-w-[92vw] mx-auto mb-2 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '0',
@@ -120,7 +120,7 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[7.5vw] mt-2 mb-6 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[clamp(18px,6.2vw,36px)] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 {line2}
