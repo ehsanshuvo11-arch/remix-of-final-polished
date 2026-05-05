@@ -93,15 +93,11 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
           const STAGGER = 0.15;
           // Headline is locked to English in both locales to guarantee zero layout shift
           // and identical typography (font, weight, size, spacing) across language toggles.
-          const line1 = 'Make Your Collection';
-          const line2 = 'Unmissable!';
-          // Fixed delay for line 2 — independent of locale/word count to guarantee
-          // identical animation choreography across languages.
           const line2Delay = BASE + 3 * STAGGER;
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground text-[clamp(20px,7vw,40px)] tracking-[-0.02em] leading-[1.05] max-w-[92vw] mx-auto mb-2 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
+              className="hero-headline font-heading font-light text-primary-foreground text-[32px] tracking-tight leading-[1.15] mx-auto mb-2 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '0',
@@ -112,18 +108,26 @@ export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
               <RevealText
                 as="span"
                 delay={BASE}
-                className="block whitespace-nowrap"
+                className="block md:inline whitespace-nowrap"
                 stagger={STAGGER}
               >
-                {line1}
+                Make
+              </RevealText>
+              <RevealText
+                as="span"
+                delay={BASE + STAGGER}
+                className="block md:inline whitespace-nowrap"
+                stagger={STAGGER}
+              >
+                Your Collection
               </RevealText>
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[clamp(18px,6.2vw,36px)] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[28px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
-                {line2}
+                Unmissable!
               </RevealText>
             </h1>
           );
