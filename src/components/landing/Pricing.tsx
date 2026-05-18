@@ -1,44 +1,103 @@
 import MotionReveal from '@/components/landing/MotionReveal';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Tier {
-  title: string;
-  subtitle: string;
-  price: string;
+  titleEn: string;
+  titleBn: string;
+  subtitleEn: string;
+  subtitleBn: string;
+  priceEn: string;
+  priceBn: string;
   highlight?: boolean;
 }
 
 const tiers: Tier[] = [
-  { title: 'The Conversion Starter', subtitle: 'Foot-in-the-door', price: '$2,000' },
-  { title: 'The Visual Retainer', subtitle: 'Monthly Core Service', price: '$5,000', highlight: true },
-  { title: 'The Storefront Upgrade', subtitle: 'High-Ticket', price: '$8,000' },
+  {
+    titleEn: 'The Conversion Starter',
+    titleBn: 'দ্য কনভার্সন স্টার্টার',
+    subtitleEn: 'Foot-in-the-door',
+    subtitleBn: 'ফুট-ইন-দ্য-ডোর',
+    priceEn: '$2,000',
+    priceBn: '$২,০০০',
+  },
+  {
+    titleEn: 'The Visual Retainer',
+    titleBn: 'দ্য ভিজ্যুয়াল রিটেইনার',
+    subtitleEn: 'Monthly Core Service',
+    subtitleBn: 'মান্থলি কোর সার্ভিস',
+    priceEn: '$5,000',
+    priceBn: '$৫,০০০',
+    highlight: true,
+  },
+  {
+    titleEn: 'The Storefront Upgrade',
+    titleBn: 'দ্য স্টোরফ্রন্ট আপগ্রেড',
+    subtitleEn: 'High-Ticket',
+    subtitleBn: 'হাই-টিকেট',
+    priceEn: '$8,000',
+    priceBn: '$৮,০০০',
+  },
 ];
 
 export default function Pricing() {
+  const { lang, t } = useLanguage();
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+  const bnFont = { fontFamily: "'Noto Serif Bengali', serif" } as const;
 
   return (
-    <section id="pricing" className="bg-background">
-      <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="pricing" className="bg-primary text-primary-foreground relative overflow-hidden">
+      {/* subtle ambient accents */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          background:
+            'radial-gradient(ellipse at 20% 0%, hsl(var(--accent)) 0%, transparent 45%), radial-gradient(ellipse at 80% 100%, hsl(var(--accent)) 0%, transparent 45%)',
+        }}
+      />
+      <div className="relative py-[120px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
-          <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium text-center">
-            Investment
+          <p
+            style={lang === 'bn' ? bnFont : enFont}
+            className="text-[10px] tracking-[5px] uppercase text-accent mb-5 font-medium text-center"
+          >
+            {t('Investment', 'বিনিয়োগ')}
           </p>
         </MotionReveal>
         <MotionReveal delay={0.1}>
-          <h2 lang="en" className="font-heading font-normal text-foreground mb-4 leading-[1.1] text-center text-[clamp(32px,5vw,56px)]">
-            Pricing built for <em className="italic text-accent">serious brands.</em>
+          <h2
+            className="font-heading font-light mb-5 leading-[1.1] text-center text-[clamp(34px,5vw,60px)] text-primary-foreground"
+            style={lang === 'bn' ? bnFont : undefined}
+          >
+            {lang === 'bn' ? (
+              <>
+                সিরিয়াস ব্র্যান্ডের জন্য{' '}
+                <em className="italic text-accent font-normal">প্রাইসিং।</em>
+              </>
+            ) : (
+              <>
+                Pricing built for{' '}
+                <em className="italic text-accent font-normal">serious brands.</em>
+              </>
+            )}
           </h2>
         </MotionReveal>
         <MotionReveal delay={0.15}>
-          <p style={enFont} className="text-[13px] md:text-[14px] text-foreground/60 leading-[1.75] text-center max-w-[560px] mx-auto mb-16">
-            Three transparent tiers. Built to scale with your brand — from first impression to full storefront overhaul.
+          <p
+            style={lang === 'bn' ? bnFont : enFont}
+            className="text-[13px] md:text-[14px] text-primary-foreground/55 leading-[1.8] text-center max-w-[560px] mx-auto mb-20"
+          >
+            {t(
+              'Three transparent tiers. Built to scale with your brand — from first impression to full storefront overhaul.',
+              'তিনটি স্বচ্ছ স্তর। আপনার ব্র্যান্ডের সাথে স্কেল করার জন্য তৈরি — প্রথম ইম্প্রেশন থেকে সম্পূর্ণ স্টোরফ্রন্ট পুনর্গঠন পর্যন্ত।'
+            )}
           </p>
         </MotionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-7 max-w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 max-w-full">
           {tiers.map((tier, i) => (
-            <MotionReveal key={tier.title} delay={0.1 * (i + 1)}>
-              <PricingCard tier={tier} />
+            <MotionReveal key={tier.titleEn} delay={0.1 * (i + 1)}>
+              <PricingCard tier={tier} lang={lang} />
             </MotionReveal>
           ))}
         </div>
@@ -47,60 +106,89 @@ export default function Pricing() {
   );
 }
 
-function PricingCard({ tier }: { tier: Tier }) {
+function PricingCard({ tier, lang }: { tier: Tier; lang: 'en' | 'bn' }) {
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+  const bnFont = { fontFamily: "'Noto Serif Bengali', serif" } as const;
+  const labelFont = lang === 'bn' ? bnFont : enFont;
   const highlight = tier.highlight;
+
+  const title = lang === 'bn' ? tier.titleBn : tier.titleEn;
+  const subtitle = lang === 'bn' ? tier.subtitleBn : tier.subtitleEn;
+  const price = lang === 'bn' ? tier.priceBn : tier.priceEn;
+  const buttonLabel = lang === 'bn' ? 'প্রজেক্ট শুরু করুন' : 'Start A Project';
+  const oneTime = lang === 'bn' ? 'এককালীন এনগেজমেন্ট' : 'One-time engagement';
+  const mostChosen = lang === 'bn' ? 'সর্বাধিক নির্বাচিত' : 'Most Chosen';
 
   return (
     <div
-      className={`relative flex flex-col items-center text-center p-8 md:p-10 h-full min-h-[380px] transition-all duration-700 ease-out ${
+      className={`relative flex flex-col items-center text-center px-8 py-12 md:px-10 md:py-14 h-full min-h-[440px] transition-all duration-[900ms] ease-out backdrop-blur-[1px] ${
         highlight
-          ? 'bg-primary text-primary-foreground border border-accent/40 shadow-[0_20px_60px_-20px_rgba(30,58,138,0.45)] md:-translate-y-2'
-          : 'bg-background text-foreground border border-foreground/10 hover:-translate-y-1 hover:shadow-[0_16px_48px_-16px_rgba(0,0,0,0.12)]'
+          ? 'bg-[hsl(var(--primary))] border border-accent/45 md:-translate-y-3'
+          : 'bg-[hsl(var(--primary))]/40 border border-primary-foreground/10 hover:-translate-y-1 hover:border-primary-foreground/25'
       }`}
-      style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s ease-out' }}
+      style={{
+        transition: 'transform 0.9s cubic-bezier(0.22,1,0.36,1), border-color 0.6s ease',
+        boxShadow: highlight
+          ? '0 0 0 1px hsl(var(--accent) / 0.15), 0 30px 80px -40px hsl(var(--accent) / 0.45)'
+          : 'none',
+      }}
     >
+      {/* corner ornaments */}
+      <span aria-hidden className={`absolute top-0 left-0 w-px h-8 ${highlight ? 'bg-accent/60' : 'bg-primary-foreground/20'}`} />
+      <span aria-hidden className={`absolute top-0 left-0 h-px w-8 ${highlight ? 'bg-accent/60' : 'bg-primary-foreground/20'}`} />
+      <span aria-hidden className={`absolute bottom-0 right-0 w-px h-8 ${highlight ? 'bg-accent/60' : 'bg-primary-foreground/20'}`} />
+      <span aria-hidden className={`absolute bottom-0 right-0 h-px w-8 ${highlight ? 'bg-accent/60' : 'bg-primary-foreground/20'}`} />
+
       {highlight && (
         <span
-          style={enFont}
-          className="absolute top-4 right-4 text-[9px] tracking-[2.5px] uppercase text-accent font-medium"
+          style={labelFont}
+          className="absolute -top-[11px] left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-primary text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap"
         >
-          Most Chosen
+          {mostChosen}
         </span>
       )}
 
       <p
-        style={enFont}
-        className={`text-[10px] tracking-[3.5px] uppercase font-medium mb-5 ${highlight ? 'text-accent' : 'text-accent'}`}
+        style={labelFont}
+        className="text-[10px] tracking-[3.5px] uppercase font-medium mb-7 text-accent"
       >
-        {tier.subtitle}
+        {subtitle}
       </p>
 
-      <h3 className={`font-heading font-normal leading-[1.15] text-[26px] md:text-[28px] mb-6 break-words max-w-full ${highlight ? 'text-primary-foreground' : 'text-foreground'}`}>
-        {tier.title}
+      <h3
+        className="font-heading font-light leading-[1.2] text-[26px] md:text-[30px] mb-7 break-words max-w-full text-primary-foreground"
+        style={lang === 'bn' ? bnFont : undefined}
+      >
+        {title}
       </h3>
 
-      <div className={`h-px w-10 mb-6 ${highlight ? 'bg-accent/50' : 'bg-foreground/15'}`} />
+      <div className={`h-px w-12 mb-8 ${highlight ? 'bg-accent/60' : 'bg-primary-foreground/20'}`} />
 
-      <div className="flex-1 flex flex-col items-center justify-center mb-8">
-        <span className={`font-heading font-normal text-[clamp(40px,7vw,56px)] leading-none ${highlight ? 'text-primary-foreground' : 'text-foreground'}`}>
-          {tier.price}
+      <div className="flex-1 flex flex-col items-center justify-center mb-10">
+        <span
+          className="font-heading font-light text-[clamp(44px,7vw,62px)] leading-none text-primary-foreground tracking-tight"
+          style={lang === 'bn' ? bnFont : undefined}
+        >
+          {price}
         </span>
-        <span style={enFont} className={`mt-3 text-[11px] tracking-[1.5px] uppercase ${highlight ? 'text-primary-foreground/55' : 'text-foreground/45'}`}>
-          One-time engagement
+        <span
+          style={labelFont}
+          className="mt-4 text-[10px] tracking-[2.5px] uppercase text-primary-foreground/45"
+        >
+          {oneTime}
         </span>
       </div>
 
       <a
         href="#contact"
-        style={enFont}
-        className={`inline-flex items-center justify-center w-full px-6 py-3.5 text-[11px] tracking-[2.5px] uppercase font-medium transition-all duration-500 ${
+        style={labelFont}
+        className={`inline-flex items-center justify-center w-full px-6 py-4 text-[10px] tracking-[3px] uppercase font-medium transition-all duration-500 border ${
           highlight
-            ? 'bg-accent text-primary hover:bg-accent/90'
-            : 'bg-primary text-primary-foreground hover:bg-primary/90'
+            ? 'bg-accent text-primary border-accent hover:bg-transparent hover:text-accent'
+            : 'bg-transparent text-primary-foreground border-primary-foreground/25 hover:bg-accent hover:text-primary hover:border-accent'
         }`}
       >
-        Start A Project
+        {buttonLabel}
       </a>
     </div>
   );
