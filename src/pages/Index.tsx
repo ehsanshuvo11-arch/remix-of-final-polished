@@ -78,6 +78,7 @@ export default function Index() {
       <Portfolio projects={projects} content={portfolioMeta ?? null} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
       <Process steps={processSteps} content={processMeta ?? null} />
+      <Pricing />
       <Contact contact={contactContent ?? null} />
       <Footer footer={footerContent ?? null} />
 
