@@ -140,7 +140,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 1.1, delay: 0.12 * index, ease: LUXURY_EASE as any }}
       whileHover={{ y: highlight ? -16 : -8 }}
-      className={`group relative flex flex-col items-center text-center px-8 py-12 md:px-10 md:py-14 h-full min-h-[460px] backdrop-blur-[1px] overflow-hidden ${
+      className={`group relative flex flex-col items-center text-center px-8 py-12 md:px-10 md:py-14 h-full min-h-[460px] backdrop-blur-[1px] ${
         highlight
           ? 'bg-[hsl(var(--primary))] border border-accent/45 md:-translate-y-3'
           : 'bg-[hsl(var(--primary))]/40 border border-primary-foreground/10 hover:border-primary-foreground/30'
