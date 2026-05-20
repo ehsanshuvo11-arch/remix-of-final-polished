@@ -150,7 +150,7 @@ function PricingCard({ tier, lang }: { tier: Tier; lang: 'en' | 'bn' }) {
 
       <p
         style={labelFont}
-        className="text-[10px] tracking-[3.5px] uppercase font-medium mb-7 text-accent"
+        className={`text-[10px] font-medium mb-7 text-accent ${lang === 'bn' ? 'tracking-[1px]' : 'tracking-[3.5px] uppercase'}`}
       >
         {subtitle}
       </p>
