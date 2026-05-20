@@ -153,14 +153,16 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
       }}
     >
       {/* Sheen sweep on hover */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
-        style={{
-          background:
-            'linear-gradient(115deg, transparent 35%, hsl(var(--accent) / 0.08) 50%, transparent 65%)',
-        }}
-      />
+      <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          aria-hidden
+          className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
+          style={{
+            background:
+              'linear-gradient(115deg, transparent 35%, hsl(var(--accent) / 0.08) 50%, transparent 65%)',
+          }}
+        />
+      </span>
 
       {/* Highlight pulsing aura */}
       {highlight && (
