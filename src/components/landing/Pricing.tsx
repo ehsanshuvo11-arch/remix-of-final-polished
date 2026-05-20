@@ -140,7 +140,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 1.1, delay: 0.12 * index, ease: LUXURY_EASE as any }}
       whileHover={{ y: highlight ? -16 : -8 }}
-      className={`group relative flex flex-col items-center text-center px-8 py-12 md:px-10 md:py-14 h-full min-h-[460px] backdrop-blur-[1px] overflow-hidden ${
+      className={`group relative flex flex-col items-center text-center px-8 py-12 md:px-10 md:py-14 h-full min-h-[460px] backdrop-blur-[1px] ${
         highlight
           ? 'bg-[hsl(var(--primary))] border border-accent/45 md:-translate-y-3'
           : 'bg-[hsl(var(--primary))]/40 border border-primary-foreground/10 hover:border-primary-foreground/30'
@@ -153,14 +153,16 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
       }}
     >
       {/* Sheen sweep on hover */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
-        style={{
-          background:
-            'linear-gradient(115deg, transparent 35%, hsl(var(--accent) / 0.08) 50%, transparent 65%)',
-        }}
-      />
+      <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span
+          aria-hidden
+          className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1400ms] ease-out"
+          style={{
+            background:
+              'linear-gradient(115deg, transparent 35%, hsl(var(--accent) / 0.08) 50%, transparent 65%)',
+          }}
+        />
+      </span>
 
       {/* Highlight pulsing aura */}
       {highlight && (
@@ -201,7 +203,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5, ease: LUXURY_EASE as any }}
           style={labelFont}
-          className="absolute -top-[11px] left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-primary text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap z-10"
+          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-primary text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap z-20 shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.6)]"
         >
           {mostChosen}
         </motion.span>
