@@ -110,7 +110,7 @@ export default function Pricing() {
           </p>
         </MotionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 max-w-full">
+        <div className="md:grid md:grid-cols-3 md:gap-5 max-w-4xl mx-auto flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-6 -mx-6 px-6 md:mx-auto md:px-0 md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
           {tiers.map((tier, i) => (
             <PricingCard key={tier.titleEn} tier={tier} lang={lang} index={i} />
           ))}
@@ -139,8 +139,8 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 1.1, delay: 0.12 * index, ease: LUXURY_EASE as any }}
-      whileHover={{ y: highlight ? -16 : -8 }}
-      className={`group relative flex flex-col items-center text-center px-8 py-12 md:px-10 md:py-14 h-full min-h-[460px] backdrop-blur-[1px] ${
+      whileHover={{ y: highlight ? -14 : -6 }}
+      className={`group relative flex flex-col items-center text-center px-6 py-9 md:px-7 md:py-10 h-full min-h-[380px] min-w-[78vw] sm:min-w-[300px] md:min-w-0 flex-shrink-0 snap-center md:flex-shrink md:snap-align-none backdrop-blur-[1px] ${
         highlight
           ? 'bg-[hsl(var(--primary))] border border-accent/45 md:-translate-y-3'
           : 'bg-[hsl(var(--primary))]/40 border border-primary-foreground/10 hover:border-primary-foreground/30'
@@ -212,13 +212,13 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
       <div className="relative z-[1] flex flex-col items-center w-full h-full">
         <p
           style={labelFont}
-          className={`text-[10px] font-medium mb-7 text-accent ${lang === 'bn' ? 'tracking-[1px]' : 'tracking-[3.5px] uppercase'}`}
+          className={`text-[9px] font-medium mb-5 text-accent ${lang === 'bn' ? 'tracking-[1px]' : 'tracking-[3px] uppercase'}`}
         >
           {subtitle}
         </p>
 
         <h3
-          className="font-heading font-light leading-[1.2] text-[26px] md:text-[30px] mb-7 break-words max-w-full text-primary-foreground"
+          className="font-heading font-light leading-[1.2] text-[22px] md:text-[24px] mb-5 break-words max-w-full text-primary-foreground"
           style={lang === 'bn' ? bnFont : undefined}
         >
           {title}
@@ -229,23 +229,23 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.3 + 0.1 * index, ease: LUXURY_EASE as any }}
-          className={`h-px w-12 mb-8 origin-center ${highlight ? 'bg-accent/70' : 'bg-primary-foreground/25'}`}
+          className={`h-px w-10 mb-6 origin-center ${highlight ? 'bg-accent/70' : 'bg-primary-foreground/25'}`}
         />
 
-        <div className="flex-1 flex flex-col items-center justify-center mb-10">
+        <div className="flex-1 flex flex-col items-center justify-center mb-7">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1.1, delay: 0.35 + 0.1 * index, ease: LUXURY_EASE as any }}
-            className="font-heading font-light text-[clamp(44px,7vw,62px)] leading-none text-primary-foreground tracking-tight"
+            className="font-heading font-light text-[clamp(36px,5.2vw,48px)] leading-none text-primary-foreground tracking-tight"
             style={lang === 'bn' ? bnFont : undefined}
           >
             {price}
           </motion.span>
           <span
             style={labelFont}
-            className="mt-4 text-[10px] tracking-[2.5px] uppercase text-primary-foreground/45"
+            className="mt-3 text-[9px] tracking-[2.5px] uppercase text-primary-foreground/45"
           >
             {oneTime}
           </span>
@@ -254,7 +254,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
         <a
           href="#contact"
           style={labelFont}
-          className={`relative inline-flex items-center justify-center w-full px-6 py-4 text-[10px] tracking-[3px] uppercase font-medium transition-all duration-500 border overflow-hidden ${
+          className={`relative inline-flex items-center justify-center w-full px-5 py-3 text-[10px] tracking-[3px] uppercase font-medium transition-all duration-500 border overflow-hidden ${
             highlight
               ? 'bg-accent text-white border-accent hover:bg-transparent hover:text-accent'
               : 'bg-transparent text-primary-foreground border-primary-foreground/25 hover:bg-accent hover:text-white hover:border-accent'
