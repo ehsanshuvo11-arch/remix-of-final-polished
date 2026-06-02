@@ -120,6 +120,8 @@ export interface NavContent {
   aboutBn?: string;
   servicesEn?: string;
   servicesBn?: string;
+  pricingEn?: string;
+  pricingBn?: string;
   workEn?: string;
   workBn?: string;
   contactEn?: string;
