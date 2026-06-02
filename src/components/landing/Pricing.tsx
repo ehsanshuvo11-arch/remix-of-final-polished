@@ -256,8 +256,8 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
           style={labelFont}
           className={`relative inline-flex items-center justify-center w-full px-6 py-4 text-[10px] tracking-[3px] uppercase font-medium transition-all duration-500 border overflow-hidden ${
             highlight
-              ? 'bg-accent text-primary border-accent hover:bg-transparent hover:text-accent'
-              : 'bg-transparent text-primary-foreground border-primary-foreground/25 hover:bg-accent hover:text-primary hover:border-accent'
+              ? 'bg-accent text-white border-accent hover:bg-transparent hover:text-accent'
+              : 'bg-transparent text-primary-foreground border-primary-foreground/25 hover:bg-accent hover:text-white hover:border-accent'
           }`}
         >
           <span className="relative z-[1]">{buttonLabel}</span>
