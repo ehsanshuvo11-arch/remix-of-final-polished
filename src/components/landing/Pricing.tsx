@@ -203,7 +203,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5, ease: LUXURY_EASE as any }}
           style={labelFont}
-          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-primary text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap z-20 shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.6)]"
+          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-white text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap z-20 shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.6)]"
         >
           {mostChosen}
         </motion.span>
@@ -256,8 +256,8 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
           style={labelFont}
           className={`relative inline-flex items-center justify-center w-full px-6 py-4 text-[10px] tracking-[3px] uppercase font-medium transition-all duration-500 border overflow-hidden ${
             highlight
-              ? 'bg-accent text-primary border-accent hover:bg-transparent hover:text-accent'
-              : 'bg-transparent text-primary-foreground border-primary-foreground/25 hover:bg-accent hover:text-primary hover:border-accent'
+              ? 'bg-accent text-white border-accent hover:bg-transparent hover:text-accent'
+              : 'bg-transparent text-primary-foreground border-primary-foreground/25 hover:bg-accent hover:text-white hover:border-accent'
           }`}
         >
           <span className="relative z-[1]">{buttonLabel}</span>
