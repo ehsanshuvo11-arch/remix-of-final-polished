@@ -203,7 +203,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5, ease: LUXURY_EASE as any }}
           style={labelFont}
-          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-primary text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap z-20 shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.6)]"
+          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-accent text-white text-[9px] tracking-[3px] uppercase font-semibold whitespace-nowrap z-20 shadow-[0_6px_20px_-6px_hsl(var(--accent)/0.6)]"
         >
           {mostChosen}
         </motion.span>
