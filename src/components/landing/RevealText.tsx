@@ -37,6 +37,10 @@ export default function RevealText({
   const Wrapper = Tag as any;
   const isMobile = useIsMobileDevice();
 
+  if (isMobile) {
+    return <Wrapper className={className}>{text}</Wrapper>;
+  }
+
   return (
     <Wrapper className={className}>
       {parts.map((part, i) => (
@@ -54,7 +58,7 @@ export default function RevealText({
         >
           <motion.span
             className="inline-block will-change-transform"
-            initial={isMobile ? { y: '0%' } : { y: '100%' }}
+            initial={{ y: '100%' }}
             whileInView={{ y: '0%' }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{

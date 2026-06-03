@@ -6,7 +6,11 @@ import { useEffect, useState } from 'react';
  * SSR-safe: defaults to false on the server, resolves on mount.
  */
 export function useIsMobileDevice(breakpoint = 768): boolean {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    return touch || window.innerWidth < breakpoint;
+  });
 
   useEffect(() => {
     const check = () => {
