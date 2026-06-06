@@ -212,6 +212,19 @@ export interface TransformationsMetaContent {
   afterLabelBn?: string;
 }
 
+export interface EvolutionContent {
+  before_image_url?: string;
+  after_image_url?: string;
+  title_en?: string;
+  title_bn?: string;
+  subtitle_en?: string;
+  subtitle_bn?: string;
+  before_label_en?: string;
+  before_label_bn?: string;
+  after_label_en?: string;
+  after_label_bn?: string;
+}
+
 export interface Inquiry {
   id: string;
   created_at?: string;
