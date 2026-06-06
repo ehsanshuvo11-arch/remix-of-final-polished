@@ -221,6 +221,7 @@ function LegacyContentDashboard() {
         <StatsEditor />
         <PortfolioMetaEditor />
         <PortfolioEditor />
+        <EvolutionEditor />
         <TransformationsEditor />
         <ProcessMetaEditor />
         <ProcessEditor />
