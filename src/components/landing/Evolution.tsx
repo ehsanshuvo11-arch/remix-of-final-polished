@@ -3,20 +3,32 @@ import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSiteSetting } from '@/hooks/use-site-content';
+import type { EvolutionContent } from '@/types/database';
 import beforeImg from '@/assets/evolution-before.jpg';
 import afterImg from '@/assets/evolution-after.jpg';
 
 export default function Evolution() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
+  const { data } = useSiteSetting<EvolutionContent>('evolution');
 
-  const title = isBn ? 'দ্য ইভোলিউশন' : 'The Evolution';
+  const title = isBn
+    ? (data?.title_bn || 'দ্য ইভোলিউশন')
+    : (data?.title_en || 'The Evolution');
   const subtitle = isBn
-    ? 'একটি প্রিমিয়াম আইডেন্টিটি কীভাবে ব্র্যান্ডের রূপ বদলে দেয়, তা নিজেই দেখুন।'
-    : 'See the impact of a premium visual identity.';
+    ? (data?.subtitle_bn || 'একটি প্রিমিয়াম আইডেন্টিটি কীভাবে ব্র্যান্ডের রূপ বদলে দেয়, তা নিজেই দেখুন।')
+    : (data?.subtitle_en || 'See the impact of a premium visual identity.');
   const label = isBn ? 'বিবর্তন' : 'Evolution';
-  const beforeLabel = isBn ? 'পুরনো ধারণা' : 'Old Concept';
-  const afterLabel = isBn ? 'POLISHED মান' : 'POLISHED Standard';
+  const beforeLabel = isBn
+    ? (data?.before_label_bn || 'পুরনো ধারণা')
+    : (data?.before_label_en || 'Old Concept');
+  const afterLabel = isBn
+    ? (data?.after_label_bn || 'POLISHED মান')
+    : (data?.after_label_en || 'POLISHED Standard');
+
+  const beforeSrc = data?.before_image_url || beforeImg;
+  const afterSrc = data?.after_image_url || afterImg;
 
   return (
     <section id="evolution" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -37,12 +49,14 @@ export default function Evolution() {
       </MotionReveal>
 
       <MotionReveal delay={0.15}>
-        <EvolutionSlider
-          before={beforeImg}
-          after={afterImg}
-          beforeLabel={beforeLabel}
-          afterLabel={afterLabel}
-        />
+        <div className="mx-auto w-full max-w-[640px]">
+          <EvolutionSlider
+            before={beforeSrc}
+            after={afterSrc}
+            beforeLabel={beforeLabel}
+            afterLabel={afterLabel}
+          />
+        </div>
       </MotionReveal>
     </section>
   );
@@ -106,7 +120,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel }: SliderProps
       ref={containerRef}
       onMouseDown={(e) => startDrag(e.clientX)}
       onTouchStart={(e) => startDrag(e.touches[0].clientX)}
-      className="relative w-full overflow-hidden select-none aspect-[16/10] cursor-ew-resize bg-primary/5 rounded-sm"
+      className="relative w-full overflow-hidden select-none aspect-square cursor-ew-resize bg-primary/5 rounded-sm"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-10%' }}
@@ -116,20 +130,16 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel }: SliderProps
         src={after}
         alt={afterLabel}
         loading="lazy"
-        width={1280}
-        height={800}
         draggable={false}
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
       />
       <motion.div style={{ clipPath }} className="absolute inset-0">
         <img
           src={before}
           alt={beforeLabel}
           loading="lazy"
-          width={1280}
-          height={800}
           draggable={false}
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
       </motion.div>
 
