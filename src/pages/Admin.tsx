@@ -1462,6 +1462,92 @@ function ContactEditor() {
 }
 
 // ── MARQUEE EDITOR ──
+// ── EVOLUTION EDITOR ──
+function EvolutionEditor() {
+  const [data, setData] = useState<EvolutionContent>({
+    before_image_url: '',
+    after_image_url: '',
+    title_en: 'The Evolution',
+    title_bn: 'দ্য ইভোলিউশন',
+    subtitle_en: 'See the impact of a premium visual identity.',
+    subtitle_bn: 'একটি প্রিমিয়াম আইডেন্টিটি কীভাবে ব্র্যান্ডের রূপ বদলে দেয়, তা নিজেই দেখুন।',
+    before_label_en: 'Old Concept',
+    before_label_bn: 'পুরনো ধারণা',
+    after_label_en: 'POLISHED Standard',
+    after_label_bn: 'POLISHED মান',
+  });
+  const beforeRef = useRef<HTMLInputElement>(null);
+  const afterRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    supabase.from('site_settings').select('value').eq('key', 'evolution').maybeSingle().then(({ data: row }) => {
+      const next = { ...data, ...(row?.value ?? {}) } as EvolutionContent;
+      setData(next);
+      markLoaded(next);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const upload = async (file: File, kind: 'before' | 'after') => {
+    const session = await ensureAuthenticatedSession();
+    if (!session) return;
+    const ext = file.name.split('.').pop() || 'jpg';
+    const path = `evolution/${kind}-${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from('polished-assets').upload(path, file, {
+      upsert: true,
+      cacheControl: '3600',
+      contentType: file.type || undefined,
+    });
+    if (error) { alert('Upload error: ' + error.message); return; }
+    const url = getPublicAssetUrl(path);
+    setData((prev) => ({ ...prev, [kind === 'before' ? 'before_image_url' : 'after_image_url']: url }));
+  };
+
+  const save = async (): Promise<boolean> => upsertSetting('evolution', data);
+  const { markLoaded } = useDirtySection({ key: 'evolution', label: 'Evolution Section', data, save });
+
+  return (
+    <AdminSection title="Evolution (Before / After)">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">Before image (Old Concept)</p>
+          <div
+            className="border-2 border-dashed border-primary-foreground/15 rounded p-4 text-center cursor-pointer hover:border-accent hover:bg-accent/5 transition-all"
+            onClick={() => beforeRef.current?.click()}
+          >
+            <input ref={beforeRef} type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f, 'before'); }} />
+            <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">📸 Upload before</span>
+            {data.before_image_url && <img src={data.before_image_url} alt="Before" className="w-full aspect-square object-cover rounded mt-3" />}
+          </div>
+          <AdminInput value={data.before_image_url ?? ''} onChange={(v) => setData({ ...data, before_image_url: v })} placeholder="Or paste URL" />
+        </div>
+        <div>
+          <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">After image (POLISHED Standard)</p>
+          <div
+            className="border-2 border-dashed border-primary-foreground/15 rounded p-4 text-center cursor-pointer hover:border-accent hover:bg-accent/5 transition-all"
+            onClick={() => afterRef.current?.click()}
+          >
+            <input ref={afterRef} type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f, 'after'); }} />
+            <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">📸 Upload after</span>
+            {data.after_image_url && <img src={data.after_image_url} alt="After" className="w-full aspect-square object-cover rounded mt-3" />}
+          </div>
+          <AdminInput value={data.after_image_url ?? ''} onChange={(v) => setData({ ...data, after_image_url: v })} placeholder="Or paste URL" />
+        </div>
+      </div>
+      <AdminField label="Title (EN)"><AdminInput value={data.title_en ?? ''} onChange={(v) => setData({ ...data, title_en: v })} /></AdminField>
+      <AdminField label="Title (বাংলা)"><AdminInput value={data.title_bn ?? ''} onChange={(v) => setData({ ...data, title_bn: v })} /></AdminField>
+      <AdminField label="Subtitle (EN)"><AdminTextarea value={data.subtitle_en ?? ''} onChange={(v) => setData({ ...data, subtitle_en: v })} /></AdminField>
+      <AdminField label="Subtitle (বাংলা)"><AdminTextarea value={data.subtitle_bn ?? ''} onChange={(v) => setData({ ...data, subtitle_bn: v })} /></AdminField>
+      <div className="grid grid-cols-2 gap-3">
+        <AdminField label="Before label (EN)"><AdminInput value={data.before_label_en ?? ''} onChange={(v) => setData({ ...data, before_label_en: v })} /></AdminField>
+        <AdminField label="Before label (বাংলা)"><AdminInput value={data.before_label_bn ?? ''} onChange={(v) => setData({ ...data, before_label_bn: v })} /></AdminField>
+        <AdminField label="After label (EN)"><AdminInput value={data.after_label_en ?? ''} onChange={(v) => setData({ ...data, after_label_en: v })} /></AdminField>
+        <AdminField label="After label (বাংলা)"><AdminInput value={data.after_label_bn ?? ''} onChange={(v) => setData({ ...data, after_label_bn: v })} /></AdminField>
+      </div>
+    </AdminSection>
+  );
+}
+
 function MarqueeEditor() {
   const [text, setText] = useState('');
 
