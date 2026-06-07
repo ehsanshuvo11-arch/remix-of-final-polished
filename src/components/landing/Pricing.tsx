@@ -138,7 +138,7 @@ export default function Pricing() {
         </MotionReveal>
 
         <div className="md:grid md:grid-cols-3 md:gap-5 max-w-4xl mx-auto flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-6 -mx-6 px-6 md:mx-auto md:px-0 md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
-          {tiers.map((tier, i) => (
+          {dbTiers.map((tier, i) => (
             <PricingCard key={tier.titleEn} tier={tier} lang={lang} index={i} />
           ))}
         </div>
