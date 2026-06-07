@@ -70,6 +70,9 @@ export default function Pricing() {
   const { lang, t } = useLanguage();
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
   const bnFont = { fontFamily: "'Noto Serif Bengali', serif" } as const;
+  const { data: pricing } = useSiteSetting<PricingContent>('pricing');
+  const dbTiers = pricing?.tiers?.length ? pricing.tiers.slice(0, 3).map(fromDb) : fallbackTiers;
+
 
   return (
     <section id="pricing" className="bg-primary text-primary-foreground relative overflow-hidden">
