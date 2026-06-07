@@ -120,8 +120,6 @@ export interface NavContent {
   aboutBn?: string;
   servicesEn?: string;
   servicesBn?: string;
-  pricingEn?: string;
-  pricingBn?: string;
   workEn?: string;
   workBn?: string;
   contactEn?: string;
@@ -223,23 +221,6 @@ export interface EvolutionContent {
   before_label_bn?: string;
   after_label_en?: string;
   after_label_bn?: string;
-}
-
-export interface PricingTier {
-  id: string;
-  title_en: string;
-  title_bn: string;
-  subtitle_en: string;
-  subtitle_bn: string;
-  price_en: string;
-  price_bn: string;
-  cta_text_en: string;
-  cta_text_bn: string;
-  is_featured?: boolean;
-}
-
-export interface PricingContent {
-  tiers: PricingTier[];
 }
 
 export interface Inquiry {
