@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import MotionReveal from '@/components/landing/MotionReveal';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSiteSetting } from '@/hooks/use-site-content';
+import type { PricingContent, PricingTier } from '@/types/database';
 
 interface Tier {
   titleEn: string;
@@ -9,10 +11,12 @@ interface Tier {
   subtitleBn: string;
   priceEn: string;
   priceBn: string;
+  ctaEn: string;
+  ctaBn: string;
   highlight?: boolean;
 }
 
-const tiers: Tier[] = [
+const fallbackTiers: Tier[] = [
   {
     titleEn: 'The Conversion Starter',
     titleBn: 'দ্য কনভার্সন স্টার্টার',
@@ -20,6 +24,8 @@ const tiers: Tier[] = [
     subtitleBn: 'ফুট-ইন-দ্য-ডোর',
     priceEn: '$2,000',
     priceBn: '$২,০০০',
+    ctaEn: 'Start A Project',
+    ctaBn: 'প্রজেক্ট শুরু করুন',
   },
   {
     titleEn: 'The Visual Retainer',
@@ -28,6 +34,8 @@ const tiers: Tier[] = [
     subtitleBn: 'মান্থলি কোর সার্ভিস',
     priceEn: '$5,000',
     priceBn: '$৫,০০০',
+    ctaEn: 'Start A Project',
+    ctaBn: 'প্রজেক্ট শুরু করুন',
     highlight: true,
   },
   {
@@ -37,8 +45,24 @@ const tiers: Tier[] = [
     subtitleBn: 'হাই-টিকেট',
     priceEn: '$8,000',
     priceBn: '$৮,০০০',
+    ctaEn: 'Start A Project',
+    ctaBn: 'প্রজেক্ট শুরু করুন',
   },
 ];
+
+function fromDb(t: PricingTier): Tier {
+  return {
+    titleEn: t.title_en,
+    titleBn: t.title_bn,
+    subtitleEn: t.subtitle_en,
+    subtitleBn: t.subtitle_bn,
+    priceEn: t.price_en,
+    priceBn: t.price_bn,
+    ctaEn: t.cta_text_en,
+    ctaBn: t.cta_text_bn,
+    highlight: !!t.is_featured,
+  };
+}
 
 const LUXURY_EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -46,6 +70,9 @@ export default function Pricing() {
   const { lang, t } = useLanguage();
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
   const bnFont = { fontFamily: "'Noto Serif Bengali', serif" } as const;
+  const { data: pricing } = useSiteSetting<PricingContent>('pricing');
+  const dbTiers = pricing?.tiers?.length ? pricing.tiers.slice(0, 3).map(fromDb) : fallbackTiers;
+
 
   return (
     <section id="pricing" className="bg-primary text-primary-foreground relative overflow-hidden">
@@ -111,7 +138,7 @@ export default function Pricing() {
         </MotionReveal>
 
         <div className="md:grid md:grid-cols-3 md:gap-5 max-w-4xl mx-auto flex flex-row overflow-x-auto snap-x snap-mandatory gap-4 pb-6 -mx-6 px-6 md:mx-auto md:px-0 md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
-          {tiers.map((tier, i) => (
+          {dbTiers.map((tier, i) => (
             <PricingCard key={tier.titleEn} tier={tier} lang={lang} index={i} />
           ))}
         </div>
@@ -129,7 +156,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
   const title = lang === 'bn' ? tier.titleBn : tier.titleEn;
   const subtitle = lang === 'bn' ? tier.subtitleBn : tier.subtitleEn;
   const price = lang === 'bn' ? tier.priceBn : tier.priceEn;
-  const buttonLabel = lang === 'bn' ? 'প্রজেক্ট শুরু করুন' : 'Start A Project';
+  const buttonLabel = lang === 'bn' ? tier.ctaBn : tier.ctaEn;
   const oneTime = lang === 'bn' ? 'এককালীন এনগেজমেন্ট' : 'One-time engagement';
   const mostChosen = lang === 'bn' ? 'সর্বাধিক নির্বাচিত' : 'Most Chosen';
 
