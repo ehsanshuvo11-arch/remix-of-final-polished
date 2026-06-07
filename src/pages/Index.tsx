@@ -10,7 +10,6 @@ import Process from '@/components/landing/Process';
 import Contact from '@/components/landing/Contact';
 import Footer from '@/components/landing/Footer';
 import PuzzleGame from '@/components/landing/PuzzleGame';
-import Pricing from '@/components/landing/Pricing';
 import Evolution from '@/components/landing/Evolution';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 
@@ -80,7 +79,6 @@ export default function Index() {
       <Portfolio projects={projects} content={portfolioMeta ?? null} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
       <Process steps={processSteps} content={processMeta ?? null} />
-      <Pricing />
       <Contact contact={contactContent ?? null} />
       <Footer footer={footerContent ?? null} />
 

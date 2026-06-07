@@ -27,8 +27,6 @@ import type {
   ServicesMetaContent,
   Stat,
   EvolutionContent,
-  PricingContent,
-  PricingTier,
 } from '@/types/database';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import TransformationsEditor from '@/components/admin/TransformationsEditor';
@@ -225,11 +223,10 @@ function LegacyContentDashboard() {
         <PortfolioEditor />
         <EvolutionEditor />
         <TransformationsEditor />
-        <ProcessMetaEditor />
-        <ProcessEditor />
-        <PricingEditor />
-        <ContactEditor />
-        <MarqueeEditor />
+      <ProcessMetaEditor />
+      <ProcessEditor />
+      <ContactEditor />
+      <MarqueeEditor />
         <LogoEditor />
         <PuzzleImageEditor />
         <PuzzleTextEditor />
@@ -1551,78 +1548,6 @@ function EvolutionEditor() {
   );
 }
 
-function PricingEditor() {
-  const emptyTier = (): PricingTier => ({
-    id: crypto.randomUUID(),
-    title_en: '',
-    title_bn: '',
-    subtitle_en: '',
-    subtitle_bn: '',
-    price_en: '',
-    price_bn: '',
-    cta_text_en: 'Start A Project',
-    cta_text_bn: 'প্রজেক্ট শুরু করুন',
-    is_featured: false,
-  });
-
-  const defaultTiers: PricingTier[] = [
-    { id: 't1', title_en: 'The Conversion Starter', title_bn: 'দ্য কনভার্সন স্টার্টার', subtitle_en: 'Foot-in-the-door', subtitle_bn: 'ফুট-ইন-দ্য-ডোর', price_en: '$2,000', price_bn: '$২,০০০', cta_text_en: 'Start A Project', cta_text_bn: 'প্রজেক্ট শুরু করুন', is_featured: false },
-    { id: 't2', title_en: 'The Visual Retainer', title_bn: 'দ্য ভিজ্যুয়াল রিটেইনার', subtitle_en: 'Monthly Core Service', subtitle_bn: 'মান্থলি কোর সার্ভিস', price_en: '$5,000', price_bn: '$৫,০০০', cta_text_en: 'Start A Project', cta_text_bn: 'প্রজেক্ট শুরু করুন', is_featured: true },
-    { id: 't3', title_en: 'The Storefront Upgrade', title_bn: 'দ্য স্টোরফ্রন্ট আপগ্রেড', subtitle_en: 'High-Ticket', subtitle_bn: 'হাই-টিকেট', price_en: '$8,000', price_bn: '$৮,০০০', cta_text_en: 'Start A Project', cta_text_bn: 'প্রজেক্ট শুরু করুন', is_featured: false },
-  ];
-
-  const [data, setData] = useState<PricingContent>({ tiers: defaultTiers });
-
-  useEffect(() => {
-    supabase.from('site_settings').select('value').eq('key', 'pricing').maybeSingle().then(({ data: row }) => {
-      const value = row?.value as PricingContent | null;
-      const next: PricingContent = value?.tiers?.length ? { tiers: value.tiers } : { tiers: defaultTiers };
-      setData(next);
-      markLoaded(next);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const save = async (): Promise<boolean> => upsertSetting('pricing', data as unknown as Record<string, any>);
-  const { markLoaded } = useDirtySection({ key: 'pricing', label: 'Pricing Section', data, save });
-
-  const updateTier = (idx: number, patch: Partial<PricingTier>) => {
-    setData((prev) => ({ tiers: prev.tiers.map((t, i) => (i === idx ? { ...t, ...patch } : i !== idx && patch.is_featured ? { ...t, is_featured: false } : t)) }));
-  };
-
-  return (
-    <AdminSection title="Pricing Section">
-      <p className="text-[11px] text-primary-foreground/40 mb-4">Exactly 3 tiers render on the site. Toggle "Featured" to highlight the premium card.</p>
-      <div className="space-y-6">
-        {data.tiers.slice(0, 3).map((tier, idx) => (
-          <div key={tier.id} className="border border-primary-foreground/10 rounded p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] tracking-[3px] uppercase text-accent">Tier {idx + 1}</p>
-              <label className="flex items-center gap-2 text-[11px] text-primary-foreground/60 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={!!tier.is_featured}
-                  onChange={(e) => updateTier(idx, { is_featured: e.target.checked })}
-                />
-                Featured (highlighted)
-              </label>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <AdminField label="Title (EN)"><AdminInput value={tier.title_en} onChange={(v) => updateTier(idx, { title_en: v })} /></AdminField>
-              <AdminField label="Title (বাংলা)"><AdminInput value={tier.title_bn} onChange={(v) => updateTier(idx, { title_bn: v })} /></AdminField>
-              <AdminField label="Subtitle (EN)"><AdminInput value={tier.subtitle_en} onChange={(v) => updateTier(idx, { subtitle_en: v })} /></AdminField>
-              <AdminField label="Subtitle (বাংলা)"><AdminInput value={tier.subtitle_bn} onChange={(v) => updateTier(idx, { subtitle_bn: v })} /></AdminField>
-              <AdminField label="Price (EN)"><AdminInput value={tier.price_en} onChange={(v) => updateTier(idx, { price_en: v })} placeholder="$5,000" /></AdminField>
-              <AdminField label="Price (বাংলা)"><AdminInput value={tier.price_bn} onChange={(v) => updateTier(idx, { price_bn: v })} placeholder="$৫,০০০" /></AdminField>
-              <AdminField label="CTA text (EN)"><AdminInput value={tier.cta_text_en} onChange={(v) => updateTier(idx, { cta_text_en: v })} /></AdminField>
-              <AdminField label="CTA text (বাংলা)"><AdminInput value={tier.cta_text_bn} onChange={(v) => updateTier(idx, { cta_text_bn: v })} /></AdminField>
-            </div>
-          </div>
-        ))}
-      </div>
-    </AdminSection>
-  );
-}
 
 
 function MarqueeEditor() {

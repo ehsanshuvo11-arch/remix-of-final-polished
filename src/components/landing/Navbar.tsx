@@ -41,14 +41,12 @@ export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
     ? [
         { label: 'পরিচিতি', href: '#about' },
         { label: 'এক্সপার্টিজ', href: '#services' },
-        { label: 'প্রাইসিং', href: '#pricing' },
         { label: 'সিগনেচার প্রজেক্ট', href: '#work' },
         { label: 'যোগাযোগ', href: '#contact' },
       ]
     : [
         { label: content?.aboutEn ?? 'About', href: '#about' },
         { label: content?.servicesEn ?? 'Services', href: '#services' },
-        { label: content?.pricingEn ?? 'Pricing', href: '#pricing' },
         { label: content?.workEn ?? 'Work', href: '#work' },
         { label: content?.contactEn ?? 'Contact', href: '#contact' },
       ];
