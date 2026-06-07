@@ -27,6 +27,8 @@ import type {
   ServicesMetaContent,
   Stat,
   EvolutionContent,
+  PricingContent,
+  PricingTier,
 } from '@/types/database';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import TransformationsEditor from '@/components/admin/TransformationsEditor';
