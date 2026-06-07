@@ -156,7 +156,7 @@ function PricingCard({ tier, lang, index }: { tier: Tier; lang: 'en' | 'bn'; ind
   const title = lang === 'bn' ? tier.titleBn : tier.titleEn;
   const subtitle = lang === 'bn' ? tier.subtitleBn : tier.subtitleEn;
   const price = lang === 'bn' ? tier.priceBn : tier.priceEn;
-  const buttonLabel = lang === 'bn' ? 'প্রজেক্ট শুরু করুন' : 'Start A Project';
+  const buttonLabel = lang === 'bn' ? tier.ctaBn : tier.ctaEn;
   const oneTime = lang === 'bn' ? 'এককালীন এনগেজমেন্ট' : 'One-time engagement';
   const mostChosen = lang === 'bn' ? 'সর্বাধিক নির্বাচিত' : 'Most Chosen';
 
