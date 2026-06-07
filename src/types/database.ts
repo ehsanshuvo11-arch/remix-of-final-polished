@@ -225,6 +225,23 @@ export interface EvolutionContent {
   after_label_bn?: string;
 }
 
+export interface PricingTier {
+  id: string;
+  title_en: string;
+  title_bn: string;
+  subtitle_en: string;
+  subtitle_bn: string;
+  price_en: string;
+  price_bn: string;
+  cta_text_en: string;
+  cta_text_bn: string;
+  is_featured?: boolean;
+}
+
+export interface PricingContent {
+  tiers: PricingTier[];
+}
+
 export interface Inquiry {
   id: string;
   created_at?: string;
