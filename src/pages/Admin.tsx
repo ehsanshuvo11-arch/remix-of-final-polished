@@ -227,6 +227,7 @@ function LegacyContentDashboard() {
         <TransformationsEditor />
         <ProcessMetaEditor />
         <ProcessEditor />
+        <PricingEditor />
         <ContactEditor />
         <MarqueeEditor />
         <LogoEditor />
