@@ -196,11 +196,38 @@ export default function Admin() {
 // on Phase 1: secure shell + Inquiries dashboard).
 // ────────────────────────────────────────────────
 
+type ContentTabId =
+  | 'hero'
+  | 'brand'
+  | 'about'
+  | 'services'
+  | 'portfolio'
+  | 'evolution'
+  | 'process'
+  | 'contact'
+  | 'puzzle'
+  | 'footer';
+
+const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] = [
+  { id: 'hero', label: 'Hero', description: 'Headline, eyebrow & CTAs' },
+  { id: 'brand', label: 'Brand', description: 'Meta, colors, logo, nav' },
+  { id: 'about', label: 'About', description: 'Studio story & quote' },
+  { id: 'services', label: 'Services', description: 'Services list & stats' },
+  { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
+  { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
+  { id: 'process', label: 'Process', description: 'How we work' },
+  { id: 'contact', label: 'Contact', description: 'Form copy & discount' },
+  { id: 'puzzle', label: 'Puzzle', description: 'Game assets & copy' },
+  { id: 'footer', label: 'Footer', description: 'Footer copy' },
+];
+
 function LegacyContentDashboard() {
+  const [activeTab, setActiveTab] = useState<ContentTabId>('hero');
+
   return (
     <SaveAllProvider>
       <div className="pb-32">
-        <div className="mb-10">
+        <div className="mb-8">
           <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
             Module
           </p>
@@ -208,36 +235,93 @@ function LegacyContentDashboard() {
             Content
           </h2>
           <p className="text-[12px] text-primary-foreground/40 mt-2">
-            Edit any section, then click <span className="text-accent">Save All Changes</span> in the bottom-right to commit everything at once.
+            Pick a section, edit, then hit <span className="text-accent">Save All Changes</span> bottom-right.
           </p>
         </div>
 
-        <MetaEditor />
-        <ColorsEditor />
-        <HeroEditor />
-        <NavigationEditor />
-        <AboutEditor />
-        <ServicesMetaEditor />
-        <ServicesEditor />
-        <StatsEditor />
-        <PortfolioMetaEditor />
-        <PortfolioEditor />
-        <EvolutionEditor />
-        <TransformationsEditor />
-      <ProcessMetaEditor />
-      <ProcessEditor />
-      <ContactEditor />
-      <MarqueeEditor />
-        <LogoEditor />
-        <PuzzleImageEditor />
-        <PuzzleTextEditor />
-        <DiscountEditor />
-        <FooterEditor />
+        {/* Tab Navigation */}
+        <div className="mb-8 -mx-1 overflow-x-auto">
+          <div className="inline-flex gap-1 p-1 rounded-md bg-primary-foreground/[0.04] border border-primary-foreground/[0.08]">
+            {CONTENT_TABS.map((t) => {
+              const isActive = t.id === activeTab;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setActiveTab(t.id)}
+                  title={t.description}
+                  className={[
+                    'px-4 py-2 rounded-sm text-[11px] tracking-[2px] uppercase font-medium transition-all duration-200 whitespace-nowrap',
+                    isActive
+                      ? 'bg-accent text-accent-foreground shadow-[0_4px_14px_rgba(251,146,60,0.35)]'
+                      : 'text-primary-foreground/55 hover:text-primary-foreground hover:bg-primary-foreground/[0.05]',
+                  ].join(' ')}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="space-y-2">
+          {activeTab === 'hero' && <HeroEditor />}
+          {activeTab === 'brand' && (
+            <>
+              <MetaEditor />
+              <ColorsEditor />
+              <LogoEditor />
+              <NavigationEditor />
+              <MarqueeEditor />
+            </>
+          )}
+          {activeTab === 'about' && <AboutEditor />}
+          {activeTab === 'services' && (
+            <>
+              <ServicesMetaEditor />
+              <ServicesEditor />
+              <StatsEditor />
+            </>
+          )}
+          {activeTab === 'portfolio' && (
+            <>
+              <PortfolioMetaEditor />
+              <PortfolioEditor />
+            </>
+          )}
+          {activeTab === 'evolution' && (
+            <>
+              <EvolutionEditor />
+              <TransformationsEditor />
+            </>
+          )}
+          {activeTab === 'process' && (
+            <>
+              <ProcessMetaEditor />
+              <ProcessEditor />
+            </>
+          )}
+          {activeTab === 'contact' && (
+            <>
+              <ContactEditor />
+              <DiscountEditor />
+            </>
+          )}
+          {activeTab === 'puzzle' && (
+            <>
+              <PuzzleImageEditor />
+              <PuzzleTextEditor />
+            </>
+          )}
+          {activeTab === 'footer' && <FooterEditor />}
+        </div>
       </div>
       <SaveAllBar />
     </SaveAllProvider>
   );
 }
+
 
 // ── Reusable Admin Section ──
 
