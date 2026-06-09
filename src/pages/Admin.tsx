@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { SaveAllProvider, SaveAllBar, useSaveRegistration } from '@/components/admin/SaveAllContext';
@@ -71,7 +72,7 @@ async function ensureAuthenticatedSession() {
   const { data, error } = await supabase.auth.getSession();
 
   if (error) {
-    alert(`Authentication error: ${error.message}`);
+    toast.error(`Authentication error: ${error.message}`);
     return null;
   }
 
@@ -81,7 +82,7 @@ async function ensureAuthenticatedSession() {
     const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
     if (refreshError) {
-      alert(`Session refresh failed: ${refreshError.message}`);
+      toast.error(`Session refresh failed: ${refreshError.message}`);
       return null;
     }
 
@@ -89,7 +90,7 @@ async function ensureAuthenticatedSession() {
   }
 
   if (!session) {
-    alert('Your admin session expired. Please sign in again.');
+    toast.error('Your admin session expired. Please sign in again.');
     return null;
   }
 
@@ -195,11 +196,38 @@ export default function Admin() {
 // on Phase 1: secure shell + Inquiries dashboard).
 // ────────────────────────────────────────────────
 
+type ContentTabId =
+  | 'hero'
+  | 'brand'
+  | 'about'
+  | 'services'
+  | 'portfolio'
+  | 'evolution'
+  | 'process'
+  | 'contact'
+  | 'puzzle'
+  | 'footer';
+
+const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] = [
+  { id: 'hero', label: 'Hero', description: 'Headline, eyebrow & CTAs' },
+  { id: 'brand', label: 'Brand', description: 'Meta, colors, logo, nav' },
+  { id: 'about', label: 'About', description: 'Studio story & quote' },
+  { id: 'services', label: 'Services', description: 'Services list & stats' },
+  { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
+  { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
+  { id: 'process', label: 'Process', description: 'How we work' },
+  { id: 'contact', label: 'Contact', description: 'Form copy & discount' },
+  { id: 'puzzle', label: 'Puzzle', description: 'Game assets & copy' },
+  { id: 'footer', label: 'Footer', description: 'Footer copy' },
+];
+
 function LegacyContentDashboard() {
+  const [activeTab, setActiveTab] = useState<ContentTabId>('hero');
+
   return (
     <SaveAllProvider>
       <div className="pb-32">
-        <div className="mb-10">
+        <div className="mb-8">
           <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-2">
             Module
           </p>
@@ -207,36 +235,93 @@ function LegacyContentDashboard() {
             Content
           </h2>
           <p className="text-[12px] text-primary-foreground/40 mt-2">
-            Edit any section, then click <span className="text-accent">Save All Changes</span> in the bottom-right to commit everything at once.
+            Pick a section, edit, then hit <span className="text-accent">Save All Changes</span> bottom-right.
           </p>
         </div>
 
-        <MetaEditor />
-        <ColorsEditor />
-        <HeroEditor />
-        <NavigationEditor />
-        <AboutEditor />
-        <ServicesMetaEditor />
-        <ServicesEditor />
-        <StatsEditor />
-        <PortfolioMetaEditor />
-        <PortfolioEditor />
-        <EvolutionEditor />
-        <TransformationsEditor />
-      <ProcessMetaEditor />
-      <ProcessEditor />
-      <ContactEditor />
-      <MarqueeEditor />
-        <LogoEditor />
-        <PuzzleImageEditor />
-        <PuzzleTextEditor />
-        <DiscountEditor />
-        <FooterEditor />
+        {/* Tab Navigation */}
+        <div className="mb-8 -mx-1 overflow-x-auto">
+          <div className="inline-flex gap-1 p-1 rounded-md bg-primary-foreground/[0.04] border border-primary-foreground/[0.08]">
+            {CONTENT_TABS.map((t) => {
+              const isActive = t.id === activeTab;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setActiveTab(t.id)}
+                  title={t.description}
+                  className={[
+                    'px-4 py-2 rounded-sm text-[11px] tracking-[2px] uppercase font-medium transition-all duration-200 whitespace-nowrap',
+                    isActive
+                      ? 'bg-accent text-accent-foreground shadow-[0_4px_14px_rgba(251,146,60,0.35)]'
+                      : 'text-primary-foreground/55 hover:text-primary-foreground hover:bg-primary-foreground/[0.05]',
+                  ].join(' ')}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="space-y-2">
+          {activeTab === 'hero' && <HeroEditor />}
+          {activeTab === 'brand' && (
+            <>
+              <MetaEditor />
+              <ColorsEditor />
+              <LogoEditor />
+              <NavigationEditor />
+              <MarqueeEditor />
+            </>
+          )}
+          {activeTab === 'about' && <AboutEditor />}
+          {activeTab === 'services' && (
+            <>
+              <ServicesMetaEditor />
+              <ServicesEditor />
+              <StatsEditor />
+            </>
+          )}
+          {activeTab === 'portfolio' && (
+            <>
+              <PortfolioMetaEditor />
+              <PortfolioEditor />
+            </>
+          )}
+          {activeTab === 'evolution' && (
+            <>
+              <EvolutionEditor />
+              <TransformationsEditor />
+            </>
+          )}
+          {activeTab === 'process' && (
+            <>
+              <ProcessMetaEditor />
+              <ProcessEditor />
+            </>
+          )}
+          {activeTab === 'contact' && (
+            <>
+              <ContactEditor />
+              <DiscountEditor />
+            </>
+          )}
+          {activeTab === 'puzzle' && (
+            <>
+              <PuzzleImageEditor />
+              <PuzzleTextEditor />
+            </>
+          )}
+          {activeTab === 'footer' && <FooterEditor />}
+        </div>
       </div>
       <SaveAllBar />
     </SaveAllProvider>
   );
 }
+
 
 // ── Reusable Admin Section ──
 
@@ -354,7 +439,7 @@ async function upsertSetting(key: string, value: Record<string, any>) {
     .upsert({ key, value }, { onConflict: 'key' });
 
   if (mutationError) {
-    alert('Error saving: ' + mutationError.message);
+    toast.error('Error saving: ' + mutationError.message);
     return false;
   }
 
@@ -365,12 +450,12 @@ async function upsertSetting(key: string, value: Record<string, any>) {
     .maybeSingle();
 
   if (verifyError) {
-    alert('Saved, but refresh check failed: ' + verifyError.message);
+    toast.error('Saved, but refresh check failed: ' + verifyError.message);
     return false;
   }
 
   if (!verifiedRow || !isSameJson(verifiedRow.value, value)) {
-    alert(SETTINGS_SAVE_ERROR);
+    toast.error(SETTINGS_SAVE_ERROR);
     return false;
   }
 
@@ -401,7 +486,7 @@ async function saveCollection<T extends { id: string }>(
     }
 
     if (error) {
-      alert('Error saving: ' + error.message);
+      toast.error('Error saving: ' + error.message);
       return false;
     }
   }
@@ -412,7 +497,7 @@ async function saveCollection<T extends { id: string }>(
       const payload = buildCollectionPayload(table, row as unknown as Record<string, unknown>, 'legacy');
       const { error } = await supabase.from(table).update(payload).eq('id', row.id);
       if (error) {
-        alert('Error saving: ' + error.message);
+        toast.error('Error saving: ' + error.message);
         return false;
       }
     }
@@ -425,13 +510,13 @@ async function saveCollection<T extends { id: string }>(
     .in('id', ids);
 
   if (verifyError || !verifiedRows || verifiedRows.length !== ids.length) {
-    alert(verifyError ? `Save failed: ${verifyError.message}` : COLLECTION_SAVE_ERROR);
+    toast.error(verifyError ? `Save failed: ${verifyError.message}` : COLLECTION_SAVE_ERROR);
     return false;
   }
 
   await refreshCollectionQueries(queryKey);
 
-  if (successMessage) alert(successMessage);
+  if (successMessage) toast.success(successMessage);
   return true;
 }
 
@@ -753,7 +838,7 @@ function ServicesEditor() {
     }
 
     if (error) {
-      alert('Error adding service: ' + error.message);
+      toast.error('Error adding service: ' + error.message);
       return;
     }
 
@@ -771,7 +856,7 @@ function ServicesEditor() {
     const svc = services[idx];
     if (!confirm(`Remove "${svc.name_en}"?`)) return;
     const { error } = await supabase.from('services').delete().eq('id', svc.id);
-    if (error) { alert('Error removing: ' + error.message); return; }
+    if (error) { toast.error('Error removing: ' + error.message); return; }
     const next = services.filter((_, i) => i !== idx);
     setServices(next);
     markLoaded(next);
@@ -843,7 +928,7 @@ function StatsEditor() {
       payload = { sort_order: stats.length + 1, num: '0', suffix: '+', label: 'New Stat' };
       ({ data, error } = await supabase.from('stats').insert(payload).select().single());
     }
-    if (error) { alert('Error adding stat: ' + error.message); return; }
+    if (error) { toast.error('Error adding stat: ' + error.message); return; }
     if (data) {
       const next = [...stats, normalizeStatRow(data as Record<string, unknown>)];
       setStats(next); markLoaded(next);
@@ -857,7 +942,7 @@ function StatsEditor() {
     const stat = stats[idx];
     if (!confirm(`Remove "${stat.label_en}"?`)) return;
     const { error } = await supabase.from('stats').delete().eq('id', stat.id);
-    if (error) { alert('Error removing: ' + error.message); return; }
+    if (error) { toast.error('Error removing: ' + error.message); return; }
     const next = stats.filter((_, i) => i !== idx);
     setStats(next); markLoaded(next);
     await refreshCollectionQueries('stats');
@@ -923,7 +1008,7 @@ function PortfolioEditor() {
     const path = `portfolio/${Date.now()}_${idx}.${ext}`;
     const { error } = await supabase.storage.from('polished-assets').upload(path, file);
     if (error) {
-      alert('Upload error: ' + error.message);
+      toast.error('Upload error: ' + error.message);
       return;
     }
     const { data } = supabase.storage.from('polished-assets').getPublicUrl(path);
@@ -937,7 +1022,7 @@ function PortfolioEditor() {
     const path = `portfolio-pdfs/${Date.now()}_${idx}_${lang}.pdf`;
     const { error } = await supabase.storage.from('polished-assets').upload(path, file, { contentType: 'application/pdf' });
     if (error) {
-      alert('PDF upload error: ' + error.message);
+      toast.error('PDF upload error: ' + error.message);
       return;
     }
     const { data } = supabase.storage.from('polished-assets').getPublicUrl(path);
@@ -952,7 +1037,7 @@ function PortfolioEditor() {
     const path = `portfolio-mockups/${Date.now()}_${idx}.${ext}`;
     const { error } = await supabase.storage.from('polished-assets').upload(path, file);
     if (error) {
-      alert('Mockup upload error: ' + error.message);
+      toast.error('Mockup upload error: ' + error.message);
       return;
     }
     const { data } = supabase.storage.from('polished-assets').getPublicUrl(path);
@@ -981,7 +1066,7 @@ function PortfolioEditor() {
       .select()
       .single();
     if (error) {
-      alert('Error adding project: ' + error.message);
+      toast.error('Error adding project: ' + error.message);
       return;
     }
 
@@ -1000,7 +1085,7 @@ function PortfolioEditor() {
     if (!confirm(`Remove "${proj.title_en}"?`)) return;
     const { error } = await supabase.from('portfolio_projects').delete().eq('id', proj.id);
     if (error) {
-      alert('Error removing project: ' + error.message);
+      toast.error('Error removing project: ' + error.message);
       return;
     }
 
@@ -1247,7 +1332,7 @@ function ProcessEditor() {
       payload = { sort_order: steps.length + 1, title: 'New Step', description: '' };
       ({ data, error } = await supabase.from('process_steps').insert(payload).select().single());
     }
-    if (error) { alert('Error adding step: ' + error.message); return; }
+    if (error) { toast.error('Error adding step: ' + error.message); return; }
     if (data) {
       const next = [...steps, normalizeProcessStepRow(data as Record<string, unknown>)];
       setSteps(next); markLoaded(next);
@@ -1261,7 +1346,7 @@ function ProcessEditor() {
     const step = steps[idx];
     if (!confirm(`Remove "${step.title_en}"?`)) return;
     const { error } = await supabase.from('process_steps').delete().eq('id', step.id);
-    if (error) { alert('Error removing: ' + error.message); return; }
+    if (error) { toast.error('Error removing: ' + error.message); return; }
     const next = steps.filter((_, i) => i !== idx);
     setSteps(next); markLoaded(next);
     await refreshCollectionQueries('process-steps');
@@ -1498,7 +1583,7 @@ function EvolutionEditor() {
       cacheControl: '3600',
       contentType: file.type || undefined,
     });
-    if (error) { alert('Upload error: ' + error.message); return; }
+    if (error) { toast.error('Upload error: ' + error.message); return; }
     const url = getPublicAssetUrl(path);
     setData((prev) => ({ ...prev, [kind === 'before' ? 'before_image_url' : 'after_image_url']: url }));
   };
@@ -1601,7 +1686,7 @@ function LogoEditor() {
       cacheControl: '0',
       contentType: file.type || undefined,
     });
-    if (error) { alert('Upload error: ' + error.message); return; }
+    if (error) { toast.error('Upload error: ' + error.message); return; }
     setUrl(withCacheBust(getPublicAssetUrl(LOGO_STORAGE_PATH)));
   };
 
@@ -1665,7 +1750,7 @@ function PuzzleImageEditor() {
       cacheControl: '0',
       contentType: file.type || undefined,
     });
-    if (error) { alert('Upload error: ' + error.message); return; }
+    if (error) { toast.error('Upload error: ' + error.message); return; }
     setData((prev) => ({ ...prev, imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)) }));
   };
 
@@ -1681,7 +1766,7 @@ function PuzzleImageEditor() {
       contentType: file.type || undefined,
     });
     if (error) {
-      alert('Upload error: ' + error.message);
+      toast.error('Upload error: ' + error.message);
       return;
     }
 
