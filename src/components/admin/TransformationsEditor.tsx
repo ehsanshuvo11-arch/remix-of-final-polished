@@ -247,7 +247,8 @@ export default function TransformationsEditor() {
                   <div className="w-full aspect-[16/10] border border-dashed border-primary-foreground/15 rounded-sm mb-2 flex items-center justify-center text-primary-foreground/30 text-xs">No image</div>
                 )}
                 <input ref={(el) => (afterRefs.current[i] = el)} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadImage(i, e.target.files[0], 'after')} />
-                <button onClick={() => afterRefs.current[i]?.click()} className="w-full px-4 py-2 border border-primary-foreground/20 text-primary-foreground/70 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition">Upload after</button>
+                <input value={it.after_image_url ?? ''} onChange={(e) => updateField(i, 'after_image_url', e.target.value)} placeholder="https://… after image URL" className="w-full bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-3 py-2 text-xs outline-none rounded-sm focus:border-accent transition-colors mb-2" />
+                <button onClick={() => afterRefs.current[i]?.click()} className="w-full px-4 py-2 border border-primary-foreground/20 text-primary-foreground/70 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition">Upload After (POLISHED) Image</button>
               </div>
             </div>
 
