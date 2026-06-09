@@ -229,17 +229,18 @@ export default function TransformationsEditor() {
 
             <div className="grid grid-cols-2 gap-3 mt-2">
               <div>
-                <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">Before image</p>
+                <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">Before Image</p>
                 {it.before_image_url ? (
                   <img src={it.before_image_url} alt="Before" className="w-full aspect-[16/10] object-cover rounded-sm mb-2 border border-primary-foreground/10" />
                 ) : (
                   <div className="w-full aspect-[16/10] border border-dashed border-primary-foreground/15 rounded-sm mb-2 flex items-center justify-center text-primary-foreground/30 text-xs">No image</div>
                 )}
                 <input ref={(el) => (beforeRefs.current[i] = el)} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && uploadImage(i, e.target.files[0], 'before')} />
-                <button onClick={() => beforeRefs.current[i]?.click()} className="w-full px-4 py-2 border border-primary-foreground/20 text-primary-foreground/70 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition">Upload before</button>
+                <input value={it.before_image_url ?? ''} onChange={(e) => updateField(i, 'before_image_url', e.target.value)} placeholder="https://… before image URL" className="w-full bg-primary-foreground/5 border border-primary-foreground/10 text-primary-foreground px-3 py-2 text-xs outline-none rounded-sm focus:border-accent transition-colors mb-2" />
+                <button onClick={() => beforeRefs.current[i]?.click()} className="w-full px-4 py-2 border border-primary-foreground/20 text-primary-foreground/70 text-xs tracking-[2px] uppercase rounded-sm hover:border-accent hover:text-accent transition">Upload Before Image</button>
               </div>
               <div>
-                <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">After image</p>
+                <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">After (POLISHED) Image</p>
                 {it.after_image_url ? (
                   <img src={it.after_image_url} alt="After" className="w-full aspect-[16/10] object-cover rounded-sm mb-2 border border-primary-foreground/10" />
                 ) : (
