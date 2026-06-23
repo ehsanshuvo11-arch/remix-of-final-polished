@@ -145,7 +145,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       {/* AFTER (base) */}
       <img
         src={after}
-        alt={afterLabel}
+        alt={`${afterLabel} — POLISHED premium brand transformation (after)`}
         loading="lazy"
         decoding="async"
         draggable={false}
@@ -158,7 +158,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       >
         <img
           src={before}
-          alt={beforeLabel}
+          alt={`${beforeLabel} — original brand visual before POLISHED transformation`}
           loading="lazy"
           decoding="async"
           draggable={false}
