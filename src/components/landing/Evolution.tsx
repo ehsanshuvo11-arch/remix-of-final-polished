@@ -128,7 +128,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel }: SliderProps
     >
       <img
         src={after}
-        alt={afterLabel}
+        alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
         loading="lazy"
         draggable={false}
         className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
@@ -136,7 +136,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel }: SliderProps
       <motion.div style={{ clipPath }} className="absolute inset-0">
         <img
           src={before}
-          alt={beforeLabel}
+          alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
           loading="lazy"
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
