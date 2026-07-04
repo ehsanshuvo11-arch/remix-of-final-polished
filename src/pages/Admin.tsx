@@ -14,7 +14,7 @@ import type {
   AboutContent,
   ColorsContent,
   ContactContent,
-  DiscountContent,
+  
   FooterContent,
   HeroContent,
   MetaContent,
@@ -23,7 +23,7 @@ import type {
   PortfolioProject,
   ProcessMetaContent,
   ProcessStep,
-  PuzzleContent,
+  
   Service,
   ServicesMetaContent,
   Stat,
@@ -205,7 +205,7 @@ type ContentTabId =
   | 'evolution'
   | 'process'
   | 'contact'
-  | 'puzzle'
+  
   | 'footer';
 
 const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] = [
@@ -216,8 +216,7 @@ const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] =
   { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
   { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
   { id: 'process', label: 'Process', description: 'How we work' },
-  { id: 'contact', label: 'Contact', description: 'Form copy & discount' },
-  { id: 'puzzle', label: 'Puzzle', description: 'Game assets & copy' },
+  { id: 'contact', label: 'Contact', description: 'Form copy' },
   { id: 'footer', label: 'Footer', description: 'Footer copy' },
 ];
 
@@ -302,18 +301,7 @@ function LegacyContentDashboard() {
               <ProcessEditor />
             </>
           )}
-          {activeTab === 'contact' && (
-            <>
-              <ContactEditor />
-              <DiscountEditor />
-            </>
-          )}
-          {activeTab === 'puzzle' && (
-            <>
-              <PuzzleImageEditor />
-              <PuzzleTextEditor />
-            </>
-          )}
+          {activeTab === 'contact' && <ContactEditor />}
           {activeTab === 'footer' && <FooterEditor />}
         </div>
       </div>
@@ -531,8 +519,6 @@ function HeroEditor() {
     eyebrowBn: '',
     subEn: '',
     subBn: '',
-    playCtaEn: 'Play & Unlock a Bonus',
-    playCtaBn: 'খেলুন ও বোনাস পান',
     viewWorkEn: 'View Our Work',
     viewWorkBn: 'আমাদের কাজ দেখুন',
     startProjectEn: 'Start a Project',
@@ -581,12 +567,6 @@ function HeroEditor() {
         <AdminTextarea value={data.subBn} onChange={(v) => setData({ ...data, subBn: v })} />
       </AdminField>
       <div className="grid grid-cols-2 gap-4">
-        <AdminField label="Play Button (EN)">
-          <AdminInput value={data.playCtaEn ?? ''} onChange={(v) => setData({ ...data, playCtaEn: v })} />
-        </AdminField>
-        <AdminField label="Play Button (বাংলা)">
-          <AdminInput value={data.playCtaBn ?? ''} onChange={(v) => setData({ ...data, playCtaBn: v })} />
-        </AdminField>
         <AdminField label="View Work Button (EN)">
           <AdminInput value={data.viewWorkEn ?? ''} onChange={(v) => setData({ ...data, viewWorkEn: v })} />
         </AdminField>
