@@ -14,7 +14,7 @@ import type {
   AboutContent,
   ColorsContent,
   ContactContent,
-  DiscountContent,
+  
   FooterContent,
   HeroContent,
   MetaContent,
@@ -23,7 +23,7 @@ import type {
   PortfolioProject,
   ProcessMetaContent,
   ProcessStep,
-  PuzzleContent,
+  
   Service,
   ServicesMetaContent,
   Stat,
@@ -36,9 +36,6 @@ import AdminLayout, { type AdminModuleId } from '@/components/admin/AdminLayout'
 import InquiriesTable from '@/components/admin/InquiriesTable';
 
 const LOGO_STORAGE_PATH = 'logo/current';
-const PUZZLE_STORAGE_PATH = 'puzzle/current';
-const PUZZLE_PIECE_COUNT = 8;
-const PUZZLE_PIECE_STORAGE_PREFIX = 'puzzle/pieces';
 
 const SETTINGS_SAVE_ERROR = 'Save failed: your database did not allow this change. The row may be missing, or your INSERT/UPDATE RLS policies are blocking admin edits.';
 const COLLECTION_SAVE_ERROR = 'Save failed: your database blocked this update for one or more rows.';
@@ -54,18 +51,6 @@ function withCacheBust(url: string) {
 
 function stripCacheBust(url: string) {
   return url.split('?')[0];
-}
-
-function createEmptyPieceImages() {
-  return Array.from({ length: PUZZLE_PIECE_COUNT }, () => '');
-}
-
-function buildPuzzleImagePayload(data: PuzzleContent): PuzzleContent {
-  return {
-    ...data,
-    imageUrl: stripCacheBust(data.imageUrl),
-    pieceImages: (data.pieceImages ?? createEmptyPieceImages()).map((item) => (item ? stripCacheBust(item) : '')),
-  };
 }
 
 async function ensureAuthenticatedSession() {
@@ -205,7 +190,7 @@ type ContentTabId =
   | 'evolution'
   | 'process'
   | 'contact'
-  | 'puzzle'
+  
   | 'footer';
 
 const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] = [
@@ -216,8 +201,7 @@ const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] =
   { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
   { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
   { id: 'process', label: 'Process', description: 'How we work' },
-  { id: 'contact', label: 'Contact', description: 'Form copy & discount' },
-  { id: 'puzzle', label: 'Puzzle', description: 'Game assets & copy' },
+  { id: 'contact', label: 'Contact', description: 'Form copy' },
   { id: 'footer', label: 'Footer', description: 'Footer copy' },
 ];
 
@@ -302,18 +286,7 @@ function LegacyContentDashboard() {
               <ProcessEditor />
             </>
           )}
-          {activeTab === 'contact' && (
-            <>
-              <ContactEditor />
-              <DiscountEditor />
-            </>
-          )}
-          {activeTab === 'puzzle' && (
-            <>
-              <PuzzleImageEditor />
-              <PuzzleTextEditor />
-            </>
-          )}
+          {activeTab === 'contact' && <ContactEditor />}
           {activeTab === 'footer' && <FooterEditor />}
         </div>
       </div>
@@ -531,8 +504,6 @@ function HeroEditor() {
     eyebrowBn: '',
     subEn: '',
     subBn: '',
-    playCtaEn: 'Play & Unlock a Bonus',
-    playCtaBn: 'খেলুন ও বোনাস পান',
     viewWorkEn: 'View Our Work',
     viewWorkBn: 'আমাদের কাজ দেখুন',
     startProjectEn: 'Start a Project',
@@ -581,12 +552,6 @@ function HeroEditor() {
         <AdminTextarea value={data.subBn} onChange={(v) => setData({ ...data, subBn: v })} />
       </AdminField>
       <div className="grid grid-cols-2 gap-4">
-        <AdminField label="Play Button (EN)">
-          <AdminInput value={data.playCtaEn ?? ''} onChange={(v) => setData({ ...data, playCtaEn: v })} />
-        </AdminField>
-        <AdminField label="Play Button (বাংলা)">
-          <AdminInput value={data.playCtaBn ?? ''} onChange={(v) => setData({ ...data, playCtaBn: v })} />
-        </AdminField>
         <AdminField label="View Work Button (EN)">
           <AdminInput value={data.viewWorkEn ?? ''} onChange={(v) => setData({ ...data, viewWorkEn: v })} />
         </AdminField>
@@ -1711,153 +1676,7 @@ function LogoEditor() {
   );
 }
 
-// ── PUZZLE IMAGE EDITOR ──
-function PuzzleImageEditor() {
-  const [data, setData] = useState<PuzzleContent>({
-    imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)),
-    pieceImages: createEmptyPieceImages(),
-  });
-  const fileRef = useRef<HTMLInputElement>(null);
-  const pieceFileRefs = useRef<Record<number, HTMLInputElement | null>>({});
 
-  useEffect(() => {
-    supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle().then(({ data: row }) => {
-      let next: PuzzleContent;
-      if (row?.value) {
-        next = {
-          ...row.value,
-          imageUrl: row.value.imageUrl ? withCacheBust(row.value.imageUrl) : withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)),
-          pieceImages: Array.from({ length: PUZZLE_PIECE_COUNT }, (_, index) => {
-            const url = row.value?.pieceImages?.[index];
-            return url ? withCacheBust(url) : '';
-          }),
-        };
-      } else {
-        next = { imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)), pieceImages: createEmptyPieceImages() };
-      }
-      setData(next);
-      markLoaded(buildPuzzleImagePayload(next));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleUpload = async (file: File) => {
-    const session = await ensureAuthenticatedSession();
-    if (!session) return;
-
-    const { error } = await supabase.storage.from('polished-assets').upload(PUZZLE_STORAGE_PATH, file, {
-      upsert: true,
-      cacheControl: '0',
-      contentType: file.type || undefined,
-    });
-    if (error) { toast.error('Upload error: ' + error.message); return; }
-    setData((prev) => ({ ...prev, imageUrl: withCacheBust(getPublicAssetUrl(PUZZLE_STORAGE_PATH)) }));
-  };
-
-  const handlePieceUpload = async (index: number, file: File) => {
-    const session = await ensureAuthenticatedSession();
-    if (!session) return;
-
-    const ext = file.name.split('.').pop() || 'png';
-    const path = `${PUZZLE_PIECE_STORAGE_PREFIX}/piece-${index + 1}.${ext}`;
-    const { error } = await supabase.storage.from('polished-assets').upload(path, file, {
-      upsert: true,
-      cacheControl: '0',
-      contentType: file.type || undefined,
-    });
-    if (error) {
-      toast.error('Upload error: ' + error.message);
-      return;
-    }
-
-    const publicUrl = withCacheBust(getPublicAssetUrl(path));
-    setData((prev) => ({
-      ...prev,
-      pieceImages: prev.pieceImages?.map((item, itemIndex) => itemIndex === index ? publicUrl : item) ?? createEmptyPieceImages().map((item, itemIndex) => itemIndex === index ? publicUrl : item),
-    }));
-  };
-
-  const payload = useMemo(() => buildPuzzleImagePayload(data), [data]);
-  const save = async (): Promise<boolean> => {
-    return await upsertSetting('puzzle', payload);
-  };
-
-  const { markLoaded } = useDirtySection({ key: 'puzzle-image', label: 'Puzzle Game Image', data: payload, save });
-
-  return (
-    <AdminSection title="Puzzle Game Image">
-      <div
-        className="border-2 border-dashed border-primary-foreground/15 rounded p-6 text-center cursor-pointer transition-all hover:border-accent hover:bg-accent/5 mb-4"
-        onClick={() => fileRef.current?.click()}
-      >
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); }} />
-        <span className="text-xs tracking-wider text-primary-foreground/50 uppercase">📸 Click to upload puzzle image</span>
-        {data.imageUrl && <img src={data.imageUrl} alt="Puzzle" className="max-w-[120px] max-h-[120px] mx-auto mt-3 rounded" />}
-      </div>
-      <AdminField label="Or paste image URL directly">
-        <AdminInput value={data.imageUrl} onChange={(v) => setData((prev) => ({ ...prev, imageUrl: v }))} placeholder="https://example.com/image.jpg" />
-      </AdminField>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        {(data.pieceImages ?? createEmptyPieceImages()).map((pieceUrl, index) => (
-          <div key={index} className="border border-primary-foreground/[0.07] rounded p-3">
-            <div className="text-[10px] tracking-[2px] uppercase text-primary-foreground/40 mb-2">Piece {index + 1}</div>
-            <div
-              className="border-2 border-dashed border-primary-foreground/15 rounded p-3 text-center cursor-pointer transition-all hover:border-accent hover:bg-accent/5"
-              onClick={() => pieceFileRefs.current[index]?.click()}
-            >
-              <input
-                ref={(el) => { pieceFileRefs.current[index] = el; }}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handlePieceUpload(index, file);
-                }}
-              />
-              <span className="text-[10px] tracking-wider text-primary-foreground/50 uppercase">Upload</span>
-              {pieceUrl ? <img src={pieceUrl} alt={`Puzzle piece ${index + 1}`} className="w-full aspect-square object-cover rounded mt-2" /> : null}
-            </div>
-          </div>
-        ))}
-      </div>
-    </AdminSection>
-  );
-}
-
-// ── DISCOUNT EDITOR ──
-function DiscountEditor() {
-  const [data, setData] = useState({ code: 'POLISHED100', amount: '100' });
-
-  useEffect(() => {
-    supabase.from('site_settings').select('value').eq('key', 'discount').maybeSingle().then(({ data: row }) => {
-      if (row?.value) setData((prev) => ({ ...prev, ...row.value }));
-      _setLoaded(true);
-    });
-  }, []);
-
-  const save = async (): Promise<boolean> => {
-    return await upsertSetting('discount', data);
-  };
-
-  const { markLoaded } = useDirtySection({ key: 'discount', label: 'Discount', data, save });
-
-  const [_loaded, _setLoaded] = useState(false);
-  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
-
-  return (
-    <AdminSection title="Discount / Puzzle Reward">
-      <div className="grid grid-cols-2 gap-4">
-        <AdminField label="Discount Code">
-          <AdminInput value={data.code} onChange={(v) => setData({ ...data, code: v })} />
-        </AdminField>
-        <AdminField label="Amount (BDT)">
-          <AdminInput value={data.amount} onChange={(v) => setData({ ...data, amount: v })} />
-        </AdminField>
-      </div>
-    </AdminSection>
-  );
-}
 
 // ── FOOTER EDITOR ──
 function FooterEditor() {
@@ -1991,110 +1810,4 @@ function ColorsEditor() {
   );
 }
 
-// ── PUZZLE TEXT EDITOR ──
-function PuzzleTextEditor() {
-  const [data, setData] = useState<Partial<PuzzleContent>>({});
-
-  useEffect(() => {
-    supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle().then(({ data: row }) => {
-      if (row?.value) {
-        setData(row.value);
-        markLoaded(row.value);
-      } else {
-        markLoaded({});
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const save = async (): Promise<boolean> => {
-    // Merge with existing puzzle data (images) rather than overwriting
-    const { data: existing } = await supabase.from('site_settings').select('value').eq('key', 'puzzle').maybeSingle();
-    const merged = { ...(existing?.value ?? {}), ...data };
-    return await upsertSetting('puzzle', merged);
-  };
-
-  const { markLoaded } = useDirtySection({ key: 'puzzle-text', label: 'Puzzle Game Text', data, save });
-
-  return (
-    <AdminSection title="Puzzle Game Text">
-      <div className="grid grid-cols-2 gap-4">
-        <AdminField label="Title (EN)">
-          <AdminInput value={data.titleEn ?? ''} onChange={(v) => setData({ ...data, titleEn: v })} />
-        </AdminField>
-        <AdminField label="Title (বাংলা)">
-          <AdminInput value={data.titleBn ?? ''} onChange={(v) => setData({ ...data, titleBn: v })} />
-        </AdminField>
-        <AdminField label="Intro Prefix (EN)">
-          <AdminInput value={data.introPrefixEn ?? ''} onChange={(v) => setData({ ...data, introPrefixEn: v })} />
-        </AdminField>
-        <AdminField label="Intro Prefix (বাংলা)">
-          <AdminInput value={data.introPrefixBn ?? ''} onChange={(v) => setData({ ...data, introPrefixBn: v })} />
-        </AdminField>
-        <AdminField label="Intro Suffix (EN)">
-          <AdminInput value={data.introSuffixEn ?? ''} onChange={(v) => setData({ ...data, introSuffixEn: v })} />
-        </AdminField>
-        <AdminField label="Intro Suffix (বাংলা)">
-          <AdminInput value={data.introSuffixBn ?? ''} onChange={(v) => setData({ ...data, introSuffixBn: v })} />
-        </AdminField>
-        <AdminField label="Pieces Label (EN)">
-          <AdminInput value={data.piecesLabelEn ?? ''} onChange={(v) => setData({ ...data, piecesLabelEn: v })} />
-        </AdminField>
-        <AdminField label="Pieces Label (বাংলা)">
-          <AdminInput value={data.piecesLabelBn ?? ''} onChange={(v) => setData({ ...data, piecesLabelBn: v })} />
-        </AdminField>
-        <AdminField label="Board Label (EN)">
-          <AdminInput value={data.boardLabelEn ?? ''} onChange={(v) => setData({ ...data, boardLabelEn: v })} />
-        </AdminField>
-        <AdminField label="Board Label (বাংলা)">
-          <AdminInput value={data.boardLabelBn ?? ''} onChange={(v) => setData({ ...data, boardLabelBn: v })} />
-        </AdminField>
-        <AdminField label="How To Play (EN)">
-          <AdminInput value={data.howToPlayLabelEn ?? ''} onChange={(v) => setData({ ...data, howToPlayLabelEn: v })} />
-        </AdminField>
-        <AdminField label="How To Play (বাংলা)">
-          <AdminInput value={data.howToPlayLabelBn ?? ''} onChange={(v) => setData({ ...data, howToPlayLabelBn: v })} />
-        </AdminField>
-      </div>
-      <AdminField label="Instructions (EN)">
-        <AdminTextarea value={data.instructionsEn ?? ''} onChange={(v) => setData({ ...data, instructionsEn: v })} rows={2} />
-      </AdminField>
-      <AdminField label="Instructions (বাংলা)">
-        <AdminTextarea value={data.instructionsBn ?? ''} onChange={(v) => setData({ ...data, instructionsBn: v })} rows={2} />
-      </AdminField>
-      <div className="grid grid-cols-2 gap-4">
-        <AdminField label="Attempts Label (EN)">
-          <AdminInput value={data.attemptsLabelEn ?? ''} onChange={(v) => setData({ ...data, attemptsLabelEn: v })} />
-        </AdminField>
-        <AdminField label="Attempts Label (বাংলা)">
-          <AdminInput value={data.attemptsLabelBn ?? ''} onChange={(v) => setData({ ...data, attemptsLabelBn: v })} />
-        </AdminField>
-        <AdminField label="Shuffle Label (EN)">
-          <AdminInput value={data.shuffleLabelEn ?? ''} onChange={(v) => setData({ ...data, shuffleLabelEn: v })} />
-        </AdminField>
-        <AdminField label="Shuffle Label (বাংলা)">
-          <AdminInput value={data.shuffleLabelBn ?? ''} onChange={(v) => setData({ ...data, shuffleLabelBn: v })} />
-        </AdminField>
-        <AdminField label="Solved Title (EN)">
-          <AdminInput value={data.solvedTitleEn ?? ''} onChange={(v) => setData({ ...data, solvedTitleEn: v })} />
-        </AdminField>
-        <AdminField label="Solved Title (বাংলা)">
-          <AdminInput value={data.solvedTitleBn ?? ''} onChange={(v) => setData({ ...data, solvedTitleBn: v })} />
-        </AdminField>
-        <AdminField label="Solved Description (EN)">
-          <AdminInput value={data.solvedDescEn ?? ''} onChange={(v) => setData({ ...data, solvedDescEn: v })} />
-        </AdminField>
-        <AdminField label="Solved Description (বাংলা)">
-          <AdminInput value={data.solvedDescBn ?? ''} onChange={(v) => setData({ ...data, solvedDescBn: v })} />
-        </AdminField>
-        <AdminField label="Copied Text (EN)">
-          <AdminInput value={data.copiedEn ?? ''} onChange={(v) => setData({ ...data, copiedEn: v })} />
-        </AdminField>
-        <AdminField label="Copied Text (বাংলা)">
-          <AdminInput value={data.copiedBn ?? ''} onChange={(v) => setData({ ...data, copiedBn: v })} />
-        </AdminField>
-      </div>
-    </AdminSection>
-  );
-}
 

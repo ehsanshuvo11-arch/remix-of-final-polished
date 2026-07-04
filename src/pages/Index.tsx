@@ -9,7 +9,6 @@ import Portfolio from '@/components/landing/Portfolio';
 import Process from '@/components/landing/Process';
 import Contact from '@/components/landing/Contact';
 import Footer from '@/components/landing/Footer';
-import PuzzleGame from '@/components/landing/PuzzleGame';
 import Evolution from '@/components/landing/Evolution';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 
@@ -18,29 +17,25 @@ import SectionTheme from '@/components/landing/SectionTheme';
 import Transformations from '@/components/landing/Transformations';
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
-import type { HeroContent, AboutContent, ContactContent, FooterContent, DiscountContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, PuzzleContent, TransformationsMetaContent } from '@/types/database';
+import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent } from '@/types/database';
 
 export default function Index() {
-  const [puzzleOpen, setPuzzleOpen] = useState(false);
   // If the loader is going to show, hold the hero in its pre-entrance state.
   // SSR-safe: defaults to "ready" on the server so prerendered HTML is visible.
   const [heroReady, setHeroReady] = useState(() => !shouldShowLoader());
 
   const fallbackLogoUrl = supabase.storage.from('polished-assets').getPublicUrl('logo/current').data.publicUrl;
-  const fallbackPuzzleImageUrl = supabase.storage.from('polished-assets').getPublicUrl('puzzle/current').data.publicUrl;
 
   const { data: heroContent } = useSiteSetting<HeroContent>('hero');
   const { data: navContent } = useSiteSetting<NavContent>('nav');
   const { data: aboutContent } = useSiteSetting<AboutContent>('about');
   const { data: contactContent } = useSiteSetting<ContactContent>('contact');
   const { data: footerContent } = useSiteSetting<FooterContent>('footer');
-  const { data: discountContent } = useSiteSetting<DiscountContent>('discount');
   const { data: servicesMeta } = useSiteSetting<ServicesMetaContent>('services-meta');
   const { data: portfolioMeta } = useSiteSetting<PortfolioMetaContent>('portfolio-meta');
   const { data: processMeta } = useSiteSetting<ProcessMetaContent>('process-meta');
   const { data: marqueeData } = useSiteSetting<{ items: string[] }>('marquee');
   const { data: logoData } = useSiteSetting<{ url: string }>('logo');
-  const { data: puzzleData } = useSiteSetting<PuzzleContent>('puzzle');
 
   const { data: services = [] } = useServices();
   const { data: projects = [] } = usePortfolio();
@@ -55,7 +50,7 @@ export default function Index() {
       <PageLoader onComplete={() => setHeroReady(true)} />
       <SectionTheme />
       
-      <Navbar onPuzzleOpen={() => setPuzzleOpen(true)} content={navContent ?? null} />
+      <Navbar content={navContent ?? null} />
       <motion.div
         initial={false}
         animate={
@@ -69,7 +64,6 @@ export default function Index() {
         <Hero
           content={heroContent ?? null}
           logoUrl={logoData?.url ?? fallbackLogoUrl}
-          onPuzzleOpen={() => setPuzzleOpen(true)}
         />
       </motion.div>
       <Marquee items={marqueeData?.items ?? []} />
@@ -81,16 +75,6 @@ export default function Index() {
       <Process steps={processSteps} content={processMeta ?? null} />
       <Contact contact={contactContent ?? null} />
       <Footer footer={footerContent ?? null} />
-
-      <PuzzleGame
-        isOpen={puzzleOpen}
-        onClose={() => setPuzzleOpen(false)}
-        imageUrl={puzzleData?.imageUrl ?? fallbackPuzzleImageUrl}
-        pieceImages={puzzleData?.pieceImages ?? []}
-        discountCode={discountContent?.code ?? 'POLISHED100'}
-        discountAmount={discountContent?.amount ?? '100'}
-        content={puzzleData ?? null}
-      />
     </div>
     </SmoothScroll>
   );

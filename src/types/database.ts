@@ -60,8 +60,6 @@ export interface HeroContent {
   eyebrowBn: string;
   subEn: string;
   subBn: string;
-  playCtaEn?: string;
-  playCtaBn?: string;
   viewWorkEn?: string;
   viewWorkBn?: string;
   startProjectEn?: string;
@@ -126,11 +124,6 @@ export interface NavContent {
   contactBn?: string;
 }
 
-export interface DiscountContent {
-  code: string;
-  amount: string;
-}
-
 export interface ServicesMetaContent {
   labelEn?: string;
   labelBn?: string;
@@ -156,35 +149,6 @@ export interface ProcessMetaContent {
   titleLine1Bn?: string;
   titleLine2En?: string;
   titleLine2Bn?: string;
-}
-
-export interface PuzzleContent {
-  imageUrl: string;
-  pieceImages?: string[];
-  titleEn?: string;
-  titleBn?: string;
-  introPrefixEn?: string;
-  introPrefixBn?: string;
-  introSuffixEn?: string;
-  introSuffixBn?: string;
-  piecesLabelEn?: string;
-  piecesLabelBn?: string;
-  boardLabelEn?: string;
-  boardLabelBn?: string;
-  howToPlayLabelEn?: string;
-  howToPlayLabelBn?: string;
-  instructionsEn?: string;
-  instructionsBn?: string;
-  attemptsLabelEn?: string;
-  attemptsLabelBn?: string;
-  shuffleLabelEn?: string;
-  shuffleLabelBn?: string;
-  solvedTitleEn?: string;
-  solvedTitleBn?: string;
-  solvedDescEn?: string;
-  solvedDescBn?: string;
-  copiedEn?: string;
-  copiedBn?: string;
 }
 
 export interface Transformation {
