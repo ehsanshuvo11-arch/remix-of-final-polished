@@ -5,13 +5,13 @@ import { getLenis } from '@/components/landing/SmoothScroll';
 import type { NavContent } from '@/types/database';
 
 interface NavbarProps {
-  onPuzzleOpen: () => void;
   content?: NavContent | null;
 }
 
+
 const LUXE = [0.22, 1, 0.36, 1] as const;
 
-export default function Navbar({ onPuzzleOpen, content }: NavbarProps) {
+export default function Navbar({ content }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { t, lang } = useLanguage();

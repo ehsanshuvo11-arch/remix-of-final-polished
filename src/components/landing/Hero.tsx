@@ -9,8 +9,8 @@ import RevealText from '@/components/landing/RevealText';
 interface HeroProps {
   content: HeroContent | null;
   logoUrl: string;
-  onPuzzleOpen: () => void;
 }
+
 
 function parseItalic(text: string) {
   const parts = text.split(/\*([^*]+)\*/);
@@ -19,7 +19,7 @@ function parseItalic(text: string) {
   );
 }
 
-export default function Hero({ content, logoUrl, onPuzzleOpen }: HeroProps) {
+export default function Hero({ content, logoUrl }: HeroProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
   const orb1Ref = useRef<HTMLDivElement>(null);
