@@ -189,22 +189,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           </MagneticButton>
         </div>
 
-        {/* Mobile-only: Play link as subtle ghost CTA below the main button pair */}
-        <button
-          type="button"
-          onClick={onPuzzleOpen}
-          className="md:hidden group inline-flex items-center justify-center gap-2 mx-auto mt-2 text-accent/70 hover:text-accent transition-colors duration-500 text-[10px] tracking-[0.25em] uppercase font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.2s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" />
-            <polygon points="10 8 16 12 10 16 10 8" />
-          </svg>
-          <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-            {isBn ? 'এক্সক্লুসিভ বোনাস আনলক করুন' : (hero.playCtaEn ?? 'Play & Unlock a Bonus')}
-          </span>
-          <span className="ml-1 inline-block w-6 h-px bg-accent/40 group-hover:w-10 group-hover:bg-accent transition-all duration-500" />
-        </button>
       </div>
 
       {/* Scroll indicator */}
