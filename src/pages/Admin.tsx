@@ -36,9 +36,6 @@ import AdminLayout, { type AdminModuleId } from '@/components/admin/AdminLayout'
 import InquiriesTable from '@/components/admin/InquiriesTable';
 
 const LOGO_STORAGE_PATH = 'logo/current';
-const PUZZLE_STORAGE_PATH = 'puzzle/current';
-const PUZZLE_PIECE_COUNT = 8;
-const PUZZLE_PIECE_STORAGE_PREFIX = 'puzzle/pieces';
 
 const SETTINGS_SAVE_ERROR = 'Save failed: your database did not allow this change. The row may be missing, or your INSERT/UPDATE RLS policies are blocking admin edits.';
 const COLLECTION_SAVE_ERROR = 'Save failed: your database blocked this update for one or more rows.';
@@ -54,18 +51,6 @@ function withCacheBust(url: string) {
 
 function stripCacheBust(url: string) {
   return url.split('?')[0];
-}
-
-function createEmptyPieceImages() {
-  return Array.from({ length: PUZZLE_PIECE_COUNT }, () => '');
-}
-
-function buildPuzzleImagePayload(data: PuzzleContent): PuzzleContent {
-  return {
-    ...data,
-    imageUrl: stripCacheBust(data.imageUrl),
-    pieceImages: (data.pieceImages ?? createEmptyPieceImages()).map((item) => (item ? stripCacheBust(item) : '')),
-  };
 }
 
 async function ensureAuthenticatedSession() {
