@@ -93,9 +93,10 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     const p = ((clientX - rect.left) / rect.width) * 100;
     const clamped = Math.max(0, Math.min(100, p));
     if (animateTo) {
-      animate(x, clamped, { duration: 0.5, ease: [0.16, 1, 0.3, 1] });
+      animate(x, clamped, { type: 'spring', stiffness: 120, damping: 20, mass: 0.8 });
     } else {
-      x.set(clamped);
+      // Smooth drag with tiny spring for tactile feel
+      animate(x, clamped, { type: 'spring', stiffness: 500, damping: 40, mass: 0.4 });
     }
   }, [x]);
 
@@ -109,6 +110,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     setHasInteracted(true);
     setFromClientX(clientX, true);
   }, [setFromClientX]);
+
 
   useEffect(() => {
     if (!dragging) return;
