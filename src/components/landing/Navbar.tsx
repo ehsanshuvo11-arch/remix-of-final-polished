@@ -48,7 +48,7 @@ export default function Navbar({ content }: NavbarProps) {
     : [
         { label: content?.aboutEn ?? 'About', href: '#about' },
         { label: content?.servicesEn ?? 'Services', href: '#services' },
-        { label: content?.evolutionEn ?? 'The Evolution', href: '#evolution' },
+        { label: 'The Evolution', href: '#evolution' },
         { label: content?.workEn ?? 'Work', href: '#work' },
         { label: content?.contactEn ?? 'Contact', href: '#contact' },
       ];
