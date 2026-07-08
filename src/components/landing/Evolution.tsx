@@ -131,32 +131,36 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     };
   }, [dragging, setFromClientX]);
 
-  // Entrance teaser: sweep from 65 -> 50 to hint interactivity
+  // Entrance teaser: sweep from 65 -> 50 with soft spring settle
   useEffect(() => {
     x.set(65);
-    const controls = animate(x, 50, { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.3 });
+    const controls = animate(x, 50, { type: 'spring', stiffness: 60, damping: 18, mass: 1, delay: 0.3 });
     return controls.stop;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const springTo = useCallback((target: number) => {
+    setHasInteracted(true);
+    animate(x, target, { type: 'spring', stiffness: 120, damping: 20, mass: 0.8 });
+  }, [x]);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     const step = e.shiftKey ? 10 : 2;
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      setHasInteracted(true);
-      animate(x, Math.max(0, x.get() - step), { duration: 0.15 });
+      springTo(Math.max(0, x.get() - step));
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
-      setHasInteracted(true);
-      animate(x, Math.min(100, x.get() + step), { duration: 0.15 });
+      springTo(Math.min(100, x.get() + step));
     } else if (e.key === 'Home') {
       e.preventDefault();
-      animate(x, 0, { duration: 0.3 });
+      springTo(0);
     } else if (e.key === 'End') {
       e.preventDefault();
-      animate(x, 100, { duration: 0.3 });
+      springTo(100);
     }
   };
+
 
   return (
     <div className="space-y-4">
