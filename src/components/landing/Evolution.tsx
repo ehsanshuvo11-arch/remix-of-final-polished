@@ -26,6 +26,7 @@ export default function Evolution() {
   const afterLabel = isBn
     ? (data?.after_label_bn || 'POLISHED মান')
     : (data?.after_label_en || 'POLISHED Standard');
+  const hint = isBn ? 'তুলনা করতে টানুন' : 'Drag or tap to compare';
 
   const beforeSrc = data?.before_image_url || beforeImg;
   const afterSrc = data?.after_image_url || afterImg;
@@ -55,6 +56,7 @@ export default function Evolution() {
             after={afterSrc}
             beforeLabel={beforeLabel}
             afterLabel={afterLabel}
+            hint={hint}
           />
         </div>
       </MotionReveal>
@@ -67,26 +69,45 @@ interface SliderProps {
   after: string;
   beforeLabel: string;
   afterLabel: string;
+  hint: string;
 }
 
-function EvolutionSlider({ before, after, beforeLabel, afterLabel }: SliderProps) {
+function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: SliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(50);
   const clipPath = useTransform(x, (v) => `inset(0 ${100 - v}% 0 0)`);
   const handleLeft = useTransform(x, (v) => `${v}%`);
   const [dragging, setDragging] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [pct, setPct] = useState(50);
 
-  const setFromClientX = useCallback((clientX: number) => {
+  useEffect(() => {
+    const unsub = x.on('change', (v) => setPct(Math.round(v)));
+    return unsub;
+  }, [x]);
+
+  const setFromClientX = useCallback((clientX: number, animateTo = false) => {
     const el = containerRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const pct = ((clientX - rect.left) / rect.width) * 100;
-    x.set(Math.max(0, Math.min(100, pct)));
+    const p = ((clientX - rect.left) / rect.width) * 100;
+    const clamped = Math.max(0, Math.min(100, p));
+    if (animateTo) {
+      animate(x, clamped, { duration: 0.5, ease: [0.16, 1, 0.3, 1] });
+    } else {
+      x.set(clamped);
+    }
   }, [x]);
 
   const startDrag = useCallback((clientX: number) => {
     setDragging(true);
+    setHasInteracted(true);
     setFromClientX(clientX);
+  }, [setFromClientX]);
+
+  const handleClick = useCallback((clientX: number) => {
+    setHasInteracted(true);
+    setFromClientX(clientX, true);
   }, [setFromClientX]);
 
   useEffect(() => {
@@ -108,64 +129,137 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel }: SliderProps
     };
   }, [dragging, setFromClientX]);
 
+  // Entrance teaser: sweep from 65 -> 50 to hint interactivity
   useEffect(() => {
-    const controls = animate(x, 50, { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.3 });
     x.set(65);
+    const controls = animate(x, 50, { duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.3 });
     return controls.stop;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.shiftKey ? 10 : 2;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setHasInteracted(true);
+      animate(x, Math.max(0, x.get() - step), { duration: 0.15 });
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setHasInteracted(true);
+      animate(x, Math.min(100, x.get() + step), { duration: 0.15 });
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      animate(x, 0, { duration: 0.3 });
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      animate(x, 100, { duration: 0.3 });
+    }
+  };
+
   return (
-    <motion.div
-      ref={containerRef}
-      onMouseDown={(e) => startDrag(e.clientX)}
-      onTouchStart={(e) => startDrag(e.touches[0].clientX)}
-      className="relative w-full overflow-hidden select-none aspect-square cursor-ew-resize bg-primary/5 rounded-sm"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10%' }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <img
-        src={after}
-        alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
-        loading="lazy"
-        draggable={false}
-        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
-      />
-      <motion.div style={{ clipPath }} className="absolute inset-0">
+    <div className="space-y-4">
+      <motion.div
+        ref={containerRef}
+        role="slider"
+        tabIndex={0}
+        aria-label={`${beforeLabel} vs ${afterLabel} comparison`}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={pct}
+        onKeyDown={onKeyDown}
+        onMouseDown={(e) => startDrag(e.clientX)}
+        onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+        onClick={(e) => {
+          // Only treat as click when not dragging (mousedown already positioned it)
+          if (!dragging) handleClick(e.clientX);
+        }}
+        className="group relative w-full overflow-hidden select-none aspect-square cursor-ew-resize bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-10%' }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
         <img
-          src={before}
-          alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
+          src={after}
+          alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
           loading="lazy"
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
-      </motion.div>
+        <motion.div style={{ clipPath }} className="absolute inset-0">
+          <img
+            src={before}
+            alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
+            loading="lazy"
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          />
+        </motion.div>
 
-      {/* Floating labels */}
-      <span className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground/95 bg-primary/40 backdrop-blur-md border border-primary-foreground/15 rounded-sm">
-        {beforeLabel}
-      </span>
-      <span className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground/95 bg-primary/40 backdrop-blur-md border border-accent/40 rounded-sm">
-        {afterLabel}
-      </span>
+        {/* Floating labels */}
+        <span className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/60 backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
+          {beforeLabel}
+        </span>
+        <span className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/85 backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
+          {afterLabel}
+        </span>
 
-      {/* Elegant thin divider with orange handle */}
-      <motion.div
-        style={{ left: handleLeft }}
-        className="absolute top-0 bottom-0 w-px bg-primary-foreground/80 pointer-events-none -translate-x-1/2"
-      >
-        <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-accent shadow-[0_8px_30px_rgba(251,146,60,0.45)] flex items-center justify-center transition-transform duration-300 ${
-            dragging ? 'scale-110' : 'scale-100'
-          }`}
+        {/* First-time hint pill */}
+        {!hasInteracted && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.6 }}
+            className="absolute bottom-5 left-1/2 -translate-x-1/2 px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/60 backdrop-blur-md rounded-full border border-primary-foreground/15 pointer-events-none flex items-center gap-2"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+            </svg>
+            {hint}
+          </motion.div>
+        )}
+
+        {/* Divider + handle */}
+        <motion.div
+          style={{ left: handleLeft }}
+          className="absolute top-0 bottom-0 w-px bg-primary-foreground/90 pointer-events-none -translate-x-1/2 shadow-[0_0_20px_rgba(255,255,255,0.5)]"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary-foreground">
-            <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
-          </svg>
-        </div>
+          <div
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-accent shadow-[0_8px_30px_rgba(251,146,60,0.5)] flex items-center justify-center transition-transform duration-300 ${
+              dragging ? 'scale-110' : 'scale-100 group-hover:scale-105'
+            }`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
+              <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+            </svg>
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+
+      {/* Quick presets */}
+      <div className="flex items-center justify-center gap-2 text-[10px] tracking-[2px] uppercase">
+        <button
+          type="button"
+          onClick={() => { setHasInteracted(true); animate(x, 0, { duration: 0.5, ease: [0.16, 1, 0.3, 1] }); }}
+          className="px-3 py-1.5 rounded-full border border-primary/15 text-primary/70 hover:text-primary hover:border-primary/40 transition-colors"
+        >
+          {beforeLabel}
+        </button>
+        <button
+          type="button"
+          onClick={() => { setHasInteracted(true); animate(x, 50, { duration: 0.5, ease: [0.16, 1, 0.3, 1] }); }}
+          className="px-3 py-1.5 rounded-full border border-primary/15 text-primary/70 hover:text-primary hover:border-primary/40 transition-colors"
+        >
+          50/50
+        </button>
+        <button
+          type="button"
+          onClick={() => { setHasInteracted(true); animate(x, 100, { duration: 0.5, ease: [0.16, 1, 0.3, 1] }); }}
+          className="px-3 py-1.5 rounded-full border border-accent/40 text-accent hover:bg-accent/10 transition-colors"
+        >
+          {afterLabel}
+        </button>
+      </div>
+    </div>
   );
 }
