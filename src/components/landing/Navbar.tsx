@@ -41,12 +41,14 @@ export default function Navbar({ content }: NavbarProps) {
     ? [
         { label: 'পরিচিতি', href: '#about' },
         { label: 'এক্সপার্টিজ', href: '#services' },
+        { label: 'বিবর্তন', href: '#evolution' },
         { label: 'সিগনেচার প্রজেক্ট', href: '#work' },
         { label: 'যোগাযোগ', href: '#contact' },
       ]
     : [
         { label: content?.aboutEn ?? 'About', href: '#about' },
         { label: content?.servicesEn ?? 'Services', href: '#services' },
+        { label: content?.evolutionEn ?? 'The Evolution', href: '#evolution' },
         { label: content?.workEn ?? 'Work', href: '#work' },
         { label: content?.contactEn ?? 'Contact', href: '#contact' },
       ];
