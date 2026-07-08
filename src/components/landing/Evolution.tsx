@@ -211,29 +211,41 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
           {afterLabel}
         </span>
 
-        {/* First-time hint pill */}
-        {!hasInteracted && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
-            className="absolute bottom-5 left-1/2 -translate-x-1/2 px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/60 backdrop-blur-md rounded-full border border-primary-foreground/15 pointer-events-none flex items-center gap-2"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
-            </svg>
-            {hint}
-          </motion.div>
-        )}
+        {/* First-time hint pill — gentle pulse, fades out on first interaction */}
+        <AnimatePresence>
+          {!hasInteracted && (
+            <motion.div
+              key="hint"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6, transition: { duration: 0.5, ease: 'easeOut' } }}
+              transition={{ delay: 1.4, duration: 0.6 }}
+              className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
+            >
+              <motion.div
+                animate={{ opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
+                transition={{ duration: 2.8, ease: 'easeInOut', repeat: Infinity }}
+                className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/60 backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+                </svg>
+                {hint}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Divider + handle */}
+        {/* Divider + handle — crisp 1px off-white with blurred edge */}
         <motion.div
           style={{ left: handleLeft }}
-          className="absolute top-0 bottom-0 w-px bg-primary-foreground/90 pointer-events-none -translate-x-1/2 shadow-[0_0_20px_rgba(255,255,255,0.5)]"
+          className="absolute top-0 bottom-0 w-px bg-[#f9fafb] pointer-events-none -translate-x-1/2 backdrop-blur-[2px] shadow-[0_0_24px_rgba(249,250,251,0.55)]"
         >
           <div
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-accent shadow-[0_8px_30px_rgba(251,146,60,0.5)] flex items-center justify-center transition-transform duration-300 ${
-              dragging ? 'scale-110' : 'scale-100 group-hover:scale-105'
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-accent flex items-center justify-center transition-all duration-300 ease-out ${
+              dragging
+                ? 'scale-110 shadow-[0_0_32px_rgba(251,146,60,0.75),0_10px_30px_rgba(251,146,60,0.35)]'
+                : 'scale-100 shadow-[0_8px_24px_rgba(251,146,60,0.45)] group-hover:scale-110 group-hover:shadow-[0_0_28px_rgba(251,146,60,0.65),0_10px_28px_rgba(251,146,60,0.35)]'
             }`}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
@@ -243,25 +255,25 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         </motion.div>
       </motion.div>
 
-      {/* Quick presets */}
+      {/* Quick presets — glide with spring physics */}
       <div className="flex items-center justify-center gap-2 text-[10px] tracking-[2px] uppercase">
         <button
           type="button"
-          onClick={() => { setHasInteracted(true); animate(x, 0, { duration: 0.5, ease: [0.16, 1, 0.3, 1] }); }}
+          onClick={() => springTo(0)}
           className="px-3 py-1.5 rounded-full border border-primary/15 text-primary/70 hover:text-primary hover:border-primary/40 transition-colors"
         >
           {beforeLabel}
         </button>
         <button
           type="button"
-          onClick={() => { setHasInteracted(true); animate(x, 50, { duration: 0.5, ease: [0.16, 1, 0.3, 1] }); }}
+          onClick={() => springTo(50)}
           className="px-3 py-1.5 rounded-full border border-primary/15 text-primary/70 hover:text-primary hover:border-primary/40 transition-colors"
         >
           50/50
         </button>
         <button
           type="button"
-          onClick={() => { setHasInteracted(true); animate(x, 100, { duration: 0.5, ease: [0.16, 1, 0.3, 1] }); }}
+          onClick={() => springTo(100)}
           className="px-3 py-1.5 rounded-full border border-accent/40 text-accent hover:bg-accent/10 transition-colors"
         >
           {afterLabel}
