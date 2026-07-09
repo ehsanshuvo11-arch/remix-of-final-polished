@@ -117,16 +117,16 @@ export default function Testimonials() {
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-8 mt-10">
+        <div className="flex items-center justify-center gap-8 mt-12">
           <button
             type="button"
             onClick={prev}
             aria-label="Previous testimonial"
-            className="group w-11 h-11 rounded-full border border-primary-foreground/20 flex items-center justify-center text-primary-foreground/70 hover:text-primary-foreground hover:border-accent hover:bg-accent/10 transition-all duration-300"
+            className="group w-12 h-12 rounded-full border border-primary-foreground/40 bg-primary-foreground/5 flex items-center justify-center text-primary-foreground hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300"
             style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
             <ChevronLeft
-              size={18}
+              size={20}
               className="group-hover:-translate-x-0.5 transition-transform duration-300"
             />
           </button>
@@ -138,10 +138,10 @@ export default function Testimonials() {
                 type="button"
                 onClick={() => setActive(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
-                className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                className={`h-2.5 rounded-full transition-all duration-500 ${
                   i === active
-                    ? 'bg-accent w-6'
-                    : 'bg-primary-foreground/25 hover:bg-primary-foreground/50'
+                    ? 'bg-accent w-8'
+                    : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
                 }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
               />
@@ -152,11 +152,11 @@ export default function Testimonials() {
             type="button"
             onClick={next}
             aria-label="Next testimonial"
-            className="group w-11 h-11 rounded-full border border-primary-foreground/20 flex items-center justify-center text-primary-foreground/70 hover:text-primary-foreground hover:border-accent hover:bg-accent/10 transition-all duration-300"
+            className="group w-12 h-12 rounded-full border border-primary-foreground/40 bg-primary-foreground/5 flex items-center justify-center text-primary-foreground hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300"
             style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
             <ChevronRight
-              size={18}
+              size={20}
               className="group-hover:translate-x-0.5 transition-transform duration-300"
             />
           </button>
