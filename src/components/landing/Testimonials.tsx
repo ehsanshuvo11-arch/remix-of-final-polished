@@ -174,19 +174,19 @@ function TestimonialCard({
   dimmed?: boolean;
 }) {
   return (
-    <div
-      className={`relative h-full flex flex-col justify-between p-8 md:p-10 rounded-sm border backdrop-blur-md transition-shadow duration-500 ${
+      <div
+      className={`relative h-full flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md transition-shadow duration-500 ${
         dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
           : 'bg-primary-foreground/[0.06] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
       }`}
     >
       {/* Stars */}
-      <div className="flex items-center gap-1 mb-6">
+      <div className="flex items-center gap-1 mb-5">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star
             key={i}
-            size={14}
+            size={13}
             className="text-accent fill-accent"
           />
         ))}
@@ -194,16 +194,16 @@ function TestimonialCard({
 
       <blockquote
         lang="en"
-        className="font-heading italic text-primary-foreground text-[clamp(17px,1.7vw,22px)] leading-[1.55] mb-8"
+        className="font-heading italic text-primary-foreground text-[clamp(16px,1.5vw,20px)] leading-[1.5] mb-6"
       >
         “{testimonial.quote}”
       </blockquote>
 
       <div className="mt-auto">
-        <p lang="en" className="font-heading text-primary-foreground text-[15px] tracking-wide">
+        <p lang="en" className="font-heading text-primary-foreground text-[14px] tracking-wide">
           {testimonial.name}
         </p>
-        <p lang="en" className="text-accent text-[12px] tracking-[1.5px] uppercase mt-1">
+        <p lang="en" className="text-accent text-[11px] tracking-[1.5px] uppercase mt-1">
           {testimonial.role}
         </p>
       </div>
