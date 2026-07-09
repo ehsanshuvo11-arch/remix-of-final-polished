@@ -255,19 +255,16 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         </motion.div>
       </motion.div>
 
-      {/* Quick preset — center comparison */}
+      {/* Status indicator — center comparison */}
       <div className="flex items-center justify-center">
         <motion.button
           type="button"
           onClick={() => springTo(50)}
-          whileHover={{ y: -2, scale: 1.03 }}
-          whileTap={{ scale: 0.96 }}
+          whileTap={{ scale: 0.98 }}
           transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-[10px] tracking-[2px] uppercase font-medium shadow-[0_6px_18px_rgba(30,58,138,0.28)] hover:bg-accent hover:shadow-[0_10px_26px_rgba(251,146,60,0.42)] active:bg-accent/90 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background border border-primary/15 text-primary/70 text-[10px] tracking-[2px] uppercase font-medium cursor-pointer hover:border-primary/25 hover:text-primary transition-colors"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 3v18M3 12h18" />
-          </svg>
+          <span className="w-1 h-1 rounded-full bg-accent" />
           50/50
         </motion.button>
       </div>
