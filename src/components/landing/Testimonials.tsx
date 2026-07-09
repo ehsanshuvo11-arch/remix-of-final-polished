@@ -76,7 +76,7 @@ export default function Testimonials() {
         </MotionReveal>
 
         {/* Carousel */}
-        <div className="relative h-[360px] md:h-[320px] flex items-center justify-center">
+        <div className="relative h-[460px] md:h-[400px] flex items-center justify-center">
           <AnimatePresence mode="popLayout" initial={false}>
             {/* Previous card */}
             <motion.div
