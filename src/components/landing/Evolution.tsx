@@ -255,28 +255,14 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         </motion.div>
       </motion.div>
 
-      {/* Quick presets — glide with spring physics */}
-      <div className="flex items-center justify-center gap-2 text-[10px] tracking-[2px] uppercase">
-        <button
-          type="button"
-          onClick={() => springTo(0)}
-          className="px-3 py-1.5 rounded-full border border-primary/15 text-primary/70 hover:text-primary hover:border-primary/40 transition-colors"
-        >
-          {beforeLabel}
-        </button>
+      {/* Quick preset — center comparison */}
+      <div className="flex items-center justify-center text-[10px] tracking-[2px] uppercase">
         <button
           type="button"
           onClick={() => springTo(50)}
           className="px-3 py-1.5 rounded-full border border-primary/15 text-primary/70 hover:text-primary hover:border-primary/40 transition-colors"
         >
           50/50
-        </button>
-        <button
-          type="button"
-          onClick={() => springTo(100)}
-          className="px-3 py-1.5 rounded-full border border-accent/40 text-accent hover:bg-accent/10 transition-colors"
-        >
-          {afterLabel}
         </button>
       </div>
     </div>
