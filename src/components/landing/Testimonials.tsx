@@ -81,9 +81,9 @@ export default function Testimonials() {
             {/* Previous card */}
             <motion.div
               key={`prev-${prevIndex}`}
-              initial={{ x: '-130%', y: '-50%', scale: 0.85, opacity: 0 }}
-              animate={{ x: '-112%', y: '-50%', scale: 0.9, opacity: 0.5 }}
-              exit={{ x: '-160%', y: '-50%', scale: 0.85, opacity: 0 }}
+              initial={{ x: '-145%', y: '-50%', scale: 0.82, opacity: 0 }}
+              animate={{ x: '-118%', y: '-50%', scale: 0.88, opacity: 0.45 }}
+              exit={{ x: '-170%', y: '-50%', scale: 0.82, opacity: 0 }}
               transition={{ duration: 0.7, ease: LUXE }}
               className="hidden md:flex absolute top-1/2 left-1/2 w-full max-w-[420px] min-h-[240px] pointer-events-none z-0"
             >
@@ -93,9 +93,9 @@ export default function Testimonials() {
             {/* Active card */}
             <motion.div
               key={`active-${active}`}
-              initial={{ x: '60%', y: '-50%', scale: 0.92, opacity: 0 }}
+              initial={{ x: '80%', y: '-50%', scale: 0.92, opacity: 0 }}
               animate={{ x: '-50%', y: '-50%', scale: 1, opacity: 1 }}
-              exit={{ x: '-60%', y: '-50%', scale: 0.92, opacity: 0 }}
+              exit={{ x: '-80%', y: '-50%', scale: 0.92, opacity: 0 }}
               transition={{ duration: 0.7, ease: LUXE }}
               className="absolute top-1/2 left-1/2 w-full max-w-[520px] min-h-[260px] z-10"
             >
@@ -105,9 +105,9 @@ export default function Testimonials() {
             {/* Next card */}
             <motion.div
               key={`next-${nextIndex}`}
-              initial={{ x: '70%', y: '-50%', scale: 0.85, opacity: 0 }}
-              animate={{ x: '12%', y: '-50%', scale: 0.9, opacity: 0.5 }}
-              exit={{ x: '60%', y: '-50%', scale: 0.85, opacity: 0 }}
+              initial={{ x: '95%', y: '-50%', scale: 0.82, opacity: 0 }}
+              animate={{ x: '118%', y: '-50%', scale: 0.88, opacity: 0.45 }}
+              exit={{ x: '170%', y: '-50%', scale: 0.82, opacity: 0 }}
               transition={{ duration: 0.7, ease: LUXE }}
               className="hidden md:flex absolute top-1/2 left-1/2 w-full max-w-[420px] min-h-[240px] pointer-events-none z-0"
             >
