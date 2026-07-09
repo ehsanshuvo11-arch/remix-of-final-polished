@@ -94,10 +94,10 @@ export default function Testimonials() {
             <motion.div
               key={`active-${active}`}
               initial={{ x: '60%', scale: 0.92, opacity: 0 }}
-              animate={{ x: '-50%', scale: 1, opacity: 1 }}
+              animate={{ x: '0%', scale: 1, opacity: 1 }}
               exit={{ x: '-60%', scale: 0.92, opacity: 0 }}
               transition={{ duration: 0.7, ease: LUXE }}
-              className="absolute top-1/2 left-1/2 -translate-y-1/2 w-full max-w-[520px] min-h-[280px] z-10"
+              className="relative w-full max-w-[520px] min-h-[280px] z-10"
             >
               <TestimonialCard testimonial={testimonials[active]} />
             </motion.div>
