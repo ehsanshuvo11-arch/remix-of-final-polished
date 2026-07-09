@@ -10,6 +10,7 @@ import Process from '@/components/landing/Process';
 import Contact from '@/components/landing/Contact';
 import Footer from '@/components/landing/Footer';
 import Evolution from '@/components/landing/Evolution';
+import Testimonials from '@/components/landing/Testimonials';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 
 import SmoothScroll from '@/components/landing/SmoothScroll';
