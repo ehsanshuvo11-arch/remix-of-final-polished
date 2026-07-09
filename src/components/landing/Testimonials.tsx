@@ -53,12 +53,6 @@ export default function Testimonials() {
       data-theme="navy"
       className="relative bg-primary text-primary-foreground overflow-hidden py-[110px] px-6 md:px-14"
     >
-      {/* Soft ambient glow */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none bg-accent"
-        style={{ filter: 'blur(140px)', opacity: 0.06 }}
-      />
-
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
           <p
