@@ -109,7 +109,7 @@ export default function Testimonials() {
               animate={{ x: '12%', scale: 0.9, opacity: 0.5 }}
               exit={{ x: '60%', scale: 0.85, opacity: 0 }}
               transition={{ duration: 0.7, ease: LUXE }}
-              className="hidden md:flex absolute top-1/2 left-1/2 -translate-y-1/2 w-full max-w-[420px] min-h-[260px] pointer-events-none"
+              className="hidden md:flex absolute top-1/2 left-1/2 -translate-y-1/2 w-full max-w-[420px] min-h-[260px] pointer-events-none z-0"
             >
               <TestimonialCard testimonial={testimonials[nextIndex]} dimmed />
             </motion.div>
