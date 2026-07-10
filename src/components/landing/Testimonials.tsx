@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
@@ -44,14 +44,18 @@ export default function Testimonials() {
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
 
-  const prevIndex = (active - 1 + count) % count;
-  const nextIndex = (active + 1) % count;
+  // Position offset relative to active index, wrapping to shortest path.
+  const getOffset = (i: number) => {
+    let diff = i - active;
+    if (diff > count / 2) diff -= count;
+    if (diff < -count / 2) diff += count;
+    return diff;
+  };
 
   return (
     <section
       id="testimonials"
-      data-theme="navy"
-      className="relative bg-primary text-primary-foreground overflow-hidden py-[110px] px-6 md:px-14"
+      className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -76,44 +80,31 @@ export default function Testimonials() {
         </MotionReveal>
 
         {/* Carousel */}
-        <div className="relative h-[360px] md:h-[320px] flex items-center justify-center">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {/* Previous card */}
-            <motion.div
-              key={`prev-${prevIndex}`}
-              initial={{ x: '-145%', y: '-50%', scale: 0.82, opacity: 0 }}
-              animate={{ x: '-118%', y: '-50%', scale: 0.88, opacity: 0.45 }}
-              exit={{ x: '-170%', y: '-50%', scale: 0.82, opacity: 0 }}
-              transition={{ duration: 0.7, ease: LUXE }}
-              className="hidden md:flex absolute top-1/2 left-1/2 w-full max-w-[420px] min-h-[240px] pointer-events-none z-0"
-            >
-              <TestimonialCard testimonial={testimonials[prevIndex]} dimmed />
-            </motion.div>
-
-            {/* Active card */}
-            <motion.div
-              key={`active-${active}`}
-              initial={{ x: '80%', y: '-50%', scale: 0.92, opacity: 0 }}
-              animate={{ x: '-50%', y: '-50%', scale: 1, opacity: 1 }}
-              exit={{ x: '-80%', y: '-50%', scale: 0.92, opacity: 0 }}
-              transition={{ duration: 0.7, ease: LUXE }}
-              className="absolute top-1/2 left-1/2 w-full max-w-[520px] min-h-[260px] z-10"
-            >
-              <TestimonialCard testimonial={testimonials[active]} />
-            </motion.div>
-
-            {/* Next card */}
-            <motion.div
-              key={`next-${nextIndex}`}
-              initial={{ x: '95%', y: '-50%', scale: 0.82, opacity: 0 }}
-              animate={{ x: '118%', y: '-50%', scale: 0.88, opacity: 0.45 }}
-              exit={{ x: '170%', y: '-50%', scale: 0.82, opacity: 0 }}
-              transition={{ duration: 0.7, ease: LUXE }}
-              className="hidden md:flex absolute top-1/2 left-1/2 w-full max-w-[420px] min-h-[240px] pointer-events-none z-0"
-            >
-              <TestimonialCard testimonial={testimonials[nextIndex]} dimmed />
-            </motion.div>
-          </AnimatePresence>
+        <div className="relative h-[380px] md:h-[340px] flex items-center justify-center">
+          {testimonials.map((t, i) => {
+            const offset = getOffset(i);
+            const isActive = offset === 0;
+            const isVisible = Math.abs(offset) <= 1;
+            return (
+              <motion.div
+                key={t.id}
+                initial={false}
+                animate={{
+                  x: `calc(-50% + ${offset * 62}%)`,
+                  scale: isActive ? 1 : 0.85,
+                  opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
+                  zIndex: isActive ? 10 : 1,
+                }}
+                transition={{ duration: 0.8, ease: LUXE }}
+                style={{ top: '50%', translateY: '-50%' }}
+                className={`absolute left-1/2 w-full max-w-[520px] ${
+                  isActive ? '' : 'pointer-events-none hidden md:block'
+                }`}
+              >
+                <TestimonialCard testimonial={t} dimmed={!isActive} />
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Controls */}
@@ -125,10 +116,7 @@ export default function Testimonials() {
             className="group w-12 h-12 rounded-full border border-primary-foreground/40 bg-primary-foreground/5 flex items-center justify-center text-primary-foreground hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300"
             style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
-            <ChevronLeft
-              size={20}
-              className="group-hover:-translate-x-0.5 transition-transform duration-300"
-            />
+            <ChevronLeft size={20} className="group-hover:-translate-x-0.5 transition-transform duration-300" />
           </button>
 
           <div className="flex items-center gap-3">
@@ -139,9 +127,7 @@ export default function Testimonials() {
                 onClick={() => setActive(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-500 ${
-                  i === active
-                    ? 'bg-accent w-8'
-                    : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
+                  i === active ? 'bg-accent w-8' : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
                 }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
               />
@@ -155,10 +141,7 @@ export default function Testimonials() {
             className="group w-12 h-12 rounded-full border border-primary-foreground/40 bg-primary-foreground/5 flex items-center justify-center text-primary-foreground hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300"
             style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
-            <ChevronRight
-              size={20}
-              className="group-hover:translate-x-0.5 transition-transform duration-300"
-            />
+            <ChevronRight size={20} className="group-hover:translate-x-0.5 transition-transform duration-300" />
           </button>
         </div>
       </div>
@@ -174,21 +157,16 @@ function TestimonialCard({
   dimmed?: boolean;
 }) {
   return (
-      <div
-      className={`relative h-full flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md transition-shadow duration-500 ${
+    <div
+      className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md min-h-[260px] ${
         dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
           : 'bg-primary-foreground/[0.06] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
       }`}
     >
-      {/* Stars */}
       <div className="flex items-center gap-1 mb-5">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            size={13}
-            className="text-accent fill-accent"
-          />
+          <Star key={i} size={13} className="text-accent fill-accent" />
         ))}
       </div>
 
