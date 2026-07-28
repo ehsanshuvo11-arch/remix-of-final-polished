@@ -16,6 +16,7 @@ import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
+import SectionDivider from '@/components/landing/SectionDivider';
 import Transformations from '@/components/landing/Transformations';
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
@@ -70,13 +71,17 @@ export default function Index() {
       </motion.div>
       <Marquee items={marqueeData?.items ?? []} />
       <About content={aboutContent ?? null} stats={stats} />
+      <SectionDivider className="py-4" />
       <Services services={services} content={servicesMeta ?? null} />
-      <Pricing />
+      <SectionDivider className="py-4" />
       <Evolution />
       <Portfolio projects={projects} content={portfolioMeta ?? null} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
       <Process steps={processSteps} content={processMeta ?? null} />
+      <SectionDivider className="py-4" />
       <Testimonials />
+      <SectionDivider className="py-4" />
+      <Pricing />
       <Contact contact={contactContent ?? null} />
       <Footer footer={footerContent ?? null} />
     </div>
