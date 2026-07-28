@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
   id: number;
@@ -39,10 +40,24 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const isMobile = useIsMobile();
   const count = testimonials.length;
 
-  const next = () => setActive((prev) => (prev + 1) % count);
-  const prev = () => setActive((prev) => (prev - 1 + count) % count);
+  const next = () => {
+    setDirection(1);
+    setActive((prev) => (prev + 1) % count);
+  };
+
+  const prev = () => {
+    setDirection(-1);
+    setActive((prev) => (prev - 1 + count) % count);
+  };
+
+  const goTo = (i: number) => {
+    setDirection(i > active ? 1 : -1);
+    setActive(i);
+  };
 
   // Position offset relative to active index, wrapping to shortest path.
   const getOffset = (i: number) => {
@@ -52,10 +67,13 @@ export default function Testimonials() {
     return diff;
   };
 
+  // Responsive center-to-center spacing: tighter on mobile so side cards peek in.
+  const spacing = isMobile ? 55 : 62;
+
   return (
     <section
       id="testimonials"
-      className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
+      className="relative bg-[#0f1e4a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -80,31 +98,38 @@ export default function Testimonials() {
         </MotionReveal>
 
         {/* Carousel */}
-        <div className="relative h-[380px] md:h-[340px] flex items-center justify-center">
-          {testimonials.map((t, i) => {
-            const offset = getOffset(i);
-            const isActive = offset === 0;
-            const isVisible = Math.abs(offset) <= 1;
-            return (
-              <motion.div
-                key={t.id}
-                initial={false}
-                animate={{
-                  x: `calc(-50% + ${offset * 62}%)`,
-                  scale: isActive ? 1 : 0.85,
-                  opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
-                  zIndex: isActive ? 10 : 1,
-                }}
-                transition={{ duration: 0.8, ease: LUXE }}
-                style={{ top: '50%', translateY: '-50%' }}
-                className={`absolute left-1/2 w-full max-w-[520px] ${
-                  isActive ? '' : 'pointer-events-none hidden md:block'
-                }`}
-              >
-                <TestimonialCard testimonial={t} dimmed={!isActive} />
-              </motion.div>
-            );
-          })}
+        <div className="relative h-[380px] md:h-[340px] flex items-center justify-center overflow-visible">
+          <AnimatePresence initial={false} mode="popLayout">
+            {testimonials.map((t, i) => {
+              const offset = getOffset(i);
+              const isActive = offset === 0;
+              const isVisible = Math.abs(offset) <= 1;
+
+              return (
+                <motion.div
+                  key={t.id}
+                  layout
+                  initial={false}
+                  animate={{
+                    x: `calc(${offset * spacing}%)`,
+                    scale: isActive ? 1 : 0.85,
+                    opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
+                    zIndex: isActive ? 10 : 1,
+                  }}
+                  transition={{
+                    x: { duration: 0.8, ease: LUXE },
+                    scale: { duration: 0.8, ease: LUXE },
+                    opacity: { duration: 0.6, ease: LUXE },
+                    layout: { duration: 0.8, ease: LUXE },
+                  }}
+                  style={{ willChange: 'transform, opacity' }}
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[520px]"
+                >
+                  <TestimonialCard testimonial={t} dimmed={!isActive} />
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
 
         {/* Controls */}
@@ -124,7 +149,7 @@ export default function Testimonials() {
               <button
                 key={i}
                 type="button"
-                onClick={() => setActive(i)}
+                onClick={() => goTo(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-500 ${
                   i === active ? 'bg-accent w-8' : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
