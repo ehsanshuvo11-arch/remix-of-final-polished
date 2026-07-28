@@ -1,20 +1,36 @@
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useNavigate } from 'react-router-dom';
+
+// Temporary dummy auth for local testing (no backend call).
+const DUMMY_EMAIL = 'admin@polished.com';
+const DUMMY_PASSWORD = 'admin';
+export const DUMMY_AUTH_KEY = 'polished_dummy_admin';
 
 export default function AdminLogin() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [loginSuccess, setLoginSuccess] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleLogin = async () => {
     if (submitting) return;
     setLoginError('');
+    setLoginSuccess('');
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setLoginError(error.message);
+
+    if (email.trim().toLowerCase() === DUMMY_EMAIL && password === DUMMY_PASSWORD) {
+      localStorage.setItem(DUMMY_AUTH_KEY, 'true');
+      setLoginSuccess('Login successful — redirecting…');
+      setTimeout(() => navigate('/admin/dashboard'), 700);
+      return;
+    }
+
+    setLoginError('Invalid credentials');
     setSubmitting(false);
   };
+
 
   return (
     <div className="min-h-screen bg-polished-dark-blue flex items-center justify-center p-6 relative overflow-hidden">
@@ -72,6 +88,11 @@ export default function AdminLogin() {
           {loginError && (
             <p className="text-accent/90 text-xs mt-3 mb-1 tracking-wide">{loginError}</p>
           )}
+
+          {loginSuccess && (
+            <p className="text-emerald-400/90 text-xs mt-3 mb-1 tracking-wide">{loginSuccess}</p>
+          )}
+
 
           <button
             onClick={handleLogin}
