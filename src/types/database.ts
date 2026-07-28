@@ -211,3 +211,112 @@ export interface MetaContent {
   desc: string;
   gaId: string;
 }
+
+export interface TestimonialItem {
+  id: string;
+  quote_en: string;
+  quote_bn: string;
+  name: string;
+  role_en: string;
+  role_bn: string;
+}
+
+export interface TestimonialsContent {
+  labelEn?: string;
+  labelBn?: string;
+  headingEn?: string;
+  headingBn?: string;
+  subEn?: string;
+  subBn?: string;
+  items?: TestimonialItem[];
+}
+
+export interface UILabelsContent {
+  // Portfolio buttons
+  portfolioClickExpandEn?: string;
+  portfolioClickExpandBn?: string;
+  portfolioClickCollapseEn?: string;
+  portfolioClickCollapseBn?: string;
+  portfolioViewCaseStudyEn?: string;
+  portfolioViewCaseStudyBn?: string;
+  portfolioHideCaseStudyEn?: string;
+  portfolioHideCaseStudyBn?: string;
+  portfolioViewMockupsEn?: string;
+  portfolioViewMockupsBn?: string;
+
+  // Navbar (BN labels are currently hardcoded)
+  navAboutBn?: string;
+  navServicesBn?: string;
+  navEvolutionEn?: string;
+  navEvolutionBn?: string;
+  navWorkBn?: string;
+  navContactBn?: string;
+
+  // LeadForm — Bengali intro
+  leadFormIntroTitleBn?: string;
+  leadFormIntroDescBn?: string;
+
+  // LeadForm — progress
+  leadFormStepOfEn?: string; // supports {n} and {total}
+  leadFormStepOfBn?: string;
+  leadFormStepBrandEn?: string;
+  leadFormStepBrandBn?: string;
+  leadFormStepVisionEn?: string;
+  leadFormStepVisionBn?: string;
+  leadFormStepContactEn?: string;
+  leadFormStepContactBn?: string;
+
+  // LeadForm — Step 1
+  leadFormStep1EyebrowEn?: string;
+  leadFormStep1EyebrowBn?: string;
+  leadFormStep1TitleEn?: string;
+  leadFormStep1TitleBn?: string;
+  leadFormNameEn?: string;
+  leadFormNameBn?: string;
+  leadFormBrandNameEn?: string;
+  leadFormBrandNameBn?: string;
+  leadFormStoreUrlEn?: string;
+  leadFormStoreUrlBn?: string;
+
+  // LeadForm — Step 2
+  leadFormStep2EyebrowEn?: string;
+  leadFormStep2EyebrowBn?: string;
+  leadFormStep2TitleEn?: string;
+  leadFormStep2TitleBn?: string;
+  leadFormBudgetLabelEn?: string;
+  leadFormBudgetLabelBn?: string;
+  leadFormProjectPlaceholderEn?: string;
+  leadFormProjectPlaceholderBn?: string;
+  budget1En?: string; budget1Bn?: string;
+  budget2En?: string; budget2Bn?: string;
+  budget3En?: string; budget3Bn?: string;
+  budget4En?: string; budget4Bn?: string;
+
+  // LeadForm — Step 3
+  leadFormStep3EyebrowEn?: string;
+  leadFormStep3EyebrowBn?: string;
+  leadFormStep3TitleEn?: string;
+  leadFormStep3TitleBn?: string;
+  leadFormEmailPlaceholderEn?: string;
+  leadFormEmailPlaceholderBn?: string;
+  leadFormReassuranceEn?: string;
+  leadFormReassuranceBn?: string;
+
+  // LeadForm — buttons + thank you
+  leadFormBackEn?: string;
+  leadFormBackBn?: string;
+  leadFormContinueEn?: string;
+  leadFormContinueBn?: string;
+  leadFormSubmitEn?: string;
+  leadFormSubmitBn?: string;
+  leadFormSendingEn?: string;
+  leadFormSendingBn?: string;
+  leadFormReceivedEn?: string;
+  leadFormReceivedBn?: string;
+  leadFormThankTitleEn?: string;
+  leadFormThankTitleBn?: string;
+  leadFormThankSubEn?: string;
+  leadFormThankSubBn?: string;
+  leadFormResetEn?: string;
+  leadFormResetBn?: string;
+}

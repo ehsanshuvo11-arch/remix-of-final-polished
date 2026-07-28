@@ -3,13 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { sendInquiryEmail } from '@/lib/email';
 import MagneticButton from '@/components/landing/MagneticButton';
-
-const BUDGETS = [
-  { value: 'below-20k', labelEn: 'Below 20,000 BDT', labelBn: '২০,০০০ টাকার নিচে' },
-  { value: '20k-50k',   labelEn: '20,000 – 50,000 BDT', labelBn: '২০,০০০ – ৫০,০০০ টাকা' },
-  { value: '50k-plus',  labelEn: '50,000 BDT and above', labelBn: '৫০,০০০ টাকা ও তার বেশি' },
-  { value: 'not-sure',  labelEn: "I'm not sure yet", labelBn: 'এখনো নিশ্চিত নই' },
-];
+import { useUILabels } from '@/hooks/use-site-content';
+import type { UILabelsContent } from '@/types/database';
 
 const easing = [0.16, 1, 0.3, 1] as const;
 
@@ -31,7 +26,11 @@ const initialState: FormState = {
   email: '',
 };
 
+const pick = (labels: UILabelsContent | null | undefined, key: keyof UILabelsContent, fallback: string) =>
+  (labels?.[key] as string | undefined)?.trim() || fallback;
+
 export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
+  const { data: labels } = useUILabels();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormState>(initialState);
   const [submitting, setSubmitting] = useState(false);
@@ -39,6 +38,16 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
   const [error, setError] = useState<string | null>(null);
 
   const TOTAL = 3;
+  const t = (en: string, bn: string) => (isBn ? bn : en);
+  const L = (keyEn: keyof UILabelsContent, keyBn: keyof UILabelsContent, en: string, bn: string) =>
+    isBn ? pick(labels, keyBn, bn) : pick(labels, keyEn, en);
+
+  const BUDGETS = [
+    { value: 'below-20k', label: L('budget1En', 'budget1Bn', 'Below 20,000 BDT', '২০,০০০ টাকার নিচে') },
+    { value: '20k-50k',   label: L('budget2En', 'budget2Bn', '20,000 – 50,000 BDT', '২০,০০০ – ৫০,০০০ টাকা') },
+    { value: '50k-plus',  label: L('budget3En', 'budget3Bn', '50,000 BDT and above', '৫০,০০০ টাকা ও তার বেশি') },
+    { value: 'not-sure',  label: L('budget4En', 'budget4Bn', "I'm not sure yet", 'এখনো নিশ্চিত নই') },
+  ];
 
   const update = (field: keyof FormState, value: string) =>
     setData((prev) => ({ ...prev, [field]: value }));
@@ -78,15 +87,23 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
       );
       return;
     }
-    // Background email notification — never blocks the success state.
     void sendInquiryEmail(payload);
     setDone(true);
   };
 
-  if (done) return <ThankYou isBn={isBn} onReset={() => { setDone(false); setStep(0); setData(initialState); }} />;
+  if (done) return <ThankYou isBn={isBn} labels={labels ?? null} onReset={() => { setDone(false); setStep(0); setData(initialState); }} />;
 
-  const t = (en: string, bn: string) => (isBn ? bn : en);
   const progressPct = ((step + 1) / TOTAL) * 100;
+
+  const stepOfTemplate = L(
+    'leadFormStepOfEn',
+    'leadFormStepOfBn',
+    'Step {n} of {total}',
+    'ধাপ {n} / {total}',
+  );
+  const stepOfText = stepOfTemplate
+    .replace('{n}', String(step + 1))
+    .replace('{total}', String(TOTAL));
 
   return (
     <div className="relative">
@@ -94,10 +111,10 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
       {isBn && (
         <div className="mb-8" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
           <h3 lang="bn" className="font-heading text-primary-foreground text-[clamp(22px,3vw,30px)] font-light leading-tight mb-3">
-            পার্টনারশিপ ইনকোয়ারি
+            {pick(labels, 'leadFormIntroTitleBn', 'পার্টনারশিপ ইনকোয়ারি')}
           </h3>
           <p lang="bn" className="text-primary-foreground/55 text-[13px] md:text-[14px] leading-[1.85]">
-            আমরা প্রতিটি ব্র্যান্ডের সাথে অত্যন্ত নিবিড়ভাবে কাজ করি, তাই আমাদের ক্লায়েন্ট স্লট খুবই সীমিত। আপনার স্কিনকেয়ার ব্র্যান্ডের ভিশন এবং লক্ষ্য আমাদের সাথে শেয়ার করুন।
+            {pick(labels, 'leadFormIntroDescBn', 'আমরা প্রতিটি ব্র্যান্ডের সাথে অত্যন্ত নিবিড়ভাবে কাজ করি, তাই আমাদের ক্লায়েন্ট স্লট খুবই সীমিত। আপনার স্কিনকেয়ার ব্র্যান্ডের ভিশন এবং লক্ষ্য আমাদের সাথে শেয়ার করুন।')}
           </p>
         </div>
       )}
@@ -105,11 +122,11 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
       {/* Progress */}
       <div className="mb-8">
         <div className="flex justify-between items-center text-[10px] tracking-[3px] uppercase text-primary-foreground/40 mb-3">
-          <span>{t(`Step ${step + 1} of ${TOTAL}`, `ধাপ ${step + 1} / ${TOTAL}`)}</span>
+          <span>{stepOfText}</span>
           <span className="font-heading italic text-primary-foreground/60">
-            {step === 0 && t('Brand', 'ব্র্যান্ড')}
-            {step === 1 && t('Vision', 'ভিশন')}
-            {step === 2 && t('Contact', 'যোগাযোগ')}
+            {step === 0 && L('leadFormStepBrandEn', 'leadFormStepBrandBn', 'Brand', 'ব্র্যান্ড')}
+            {step === 1 && L('leadFormStepVisionEn', 'leadFormStepVisionBn', 'Vision', 'ভিশন')}
+            {step === 2 && L('leadFormStepContactEn', 'leadFormStepContactBn', 'Contact', 'যোগাযোগ')}
           </span>
         </div>
         <div className="h-px w-full bg-primary-foreground/10 overflow-hidden rounded-full">
@@ -136,23 +153,23 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             {step === 0 && (
               <>
                 <StepHeading
-                  eyebrow={t('Tell us about you', 'আপনার সম্পর্কে')}
-                  title={t('Who are we talking to?', 'কে যোগাযোগ করছেন?')}
+                  eyebrow={L('leadFormStep1EyebrowEn', 'leadFormStep1EyebrowBn', 'Tell us about you', 'আপনার সম্পর্কে')}
+                  title={L('leadFormStep1TitleEn', 'leadFormStep1TitleBn', 'Who are we talking to?', 'কে যোগাযোগ করছেন?')}
                 />
                 <PolishedInput
                   value={data.client_name}
                   onChange={(v) => update('client_name', v)}
-                  placeholder={t('Your full name', 'আপনার নাম')}
+                  placeholder={L('leadFormNameEn', 'leadFormNameBn', 'Your full name', 'আপনার নাম')}
                 />
                 <PolishedInput
                   value={data.brand_name}
                   onChange={(v) => update('brand_name', v)}
-                  placeholder={t('Brand or store name', 'আপনার ব্র্যান্ডের নাম')}
+                  placeholder={L('leadFormBrandNameEn', 'leadFormBrandNameBn', 'Brand or store name', 'আপনার ব্র্যান্ডের নাম')}
                 />
                 <PolishedInput
                   value={data.store_url}
                   onChange={(v) => update('store_url', v)}
-                  placeholder={t('Website / Instagram (optional)', 'ওয়েবসাইট / ইনস্টাগ্রাম লিংক')}
+                  placeholder={L('leadFormStoreUrlEn', 'leadFormStoreUrlBn', 'Website / Instagram (optional)', 'ওয়েবসাইট / ইনস্টাগ্রাম লিংক')}
                 />
               </>
             )}
@@ -160,11 +177,11 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             {step === 1 && (
               <>
                 <StepHeading
-                  eyebrow={t('Investment & vision', 'প্রোজেক্টের লক্ষ্য ও ভিশন')}
-                  title={t("What's the scope?", 'প্রোজেক্টের পরিধি?')}
+                  eyebrow={L('leadFormStep2EyebrowEn', 'leadFormStep2EyebrowBn', 'Investment & vision', 'প্রোজেক্টের লক্ষ্য ও ভিশন')}
+                  title={L('leadFormStep2TitleEn', 'leadFormStep2TitleBn', "What's the scope?", 'প্রোজেক্টের পরিধি?')}
                 />
                 <p className="text-[11px] tracking-[2px] uppercase text-primary-foreground/40 mb-1">
-                  {t('Estimated budget', 'আনুমানিক বাজেট')}
+                  {L('leadFormBudgetLabelEn', 'leadFormBudgetLabelBn', 'Estimated budget', 'আনুমানিক বাজেট')}
                 </p>
                 <div className="grid gap-2">
                   {BUDGETS.map((b) => {
@@ -183,7 +200,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                       >
                         <span className="flex items-center gap-3">
                           <span className={`w-3.5 h-3.5 rounded-full border ${active ? 'border-accent bg-accent' : 'border-primary-foreground/30'}`} />
-                          {t(b.labelEn, b.labelBn)}
+                          {b.label}
                         </span>
                       </button>
                     );
@@ -192,7 +209,9 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                 <PolishedTextarea
                   value={data.project_details}
                   onChange={(v) => update('project_details', v)}
-                  placeholder={t(
+                  placeholder={L(
+                    'leadFormProjectPlaceholderEn',
+                    'leadFormProjectPlaceholderBn',
                     'Describe your project — goals, timeline, anything we should know.',
                     'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিয়ে যাওয়ার জন্য আপনি কী ভাবছেন, তা সংক্ষেপে লিখুন...',
                   )}
@@ -204,17 +223,19 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             {step === 2 && (
               <>
                 <StepHeading
-                  eyebrow={t('Almost done', 'প্রায় শেষ')}
-                  title={t('Where can we reach you?', 'বিজনেস ইমেইল')}
+                  eyebrow={L('leadFormStep3EyebrowEn', 'leadFormStep3EyebrowBn', 'Almost done', 'প্রায় শেষ')}
+                  title={L('leadFormStep3TitleEn', 'leadFormStep3TitleBn', 'Where can we reach you?', 'বিজনেস ইমেইল')}
                 />
                 <PolishedInput
                   type="email"
                   value={data.email}
                   onChange={(v) => update('email', v)}
-                  placeholder={t('Email address', 'hello@yourbrand.com')}
+                  placeholder={L('leadFormEmailPlaceholderEn', 'leadFormEmailPlaceholderBn', 'Email address', 'hello@yourbrand.com')}
                 />
                 <p className="text-[12px] text-primary-foreground/40 leading-relaxed mt-1">
-                  {t(
+                  {L(
+                    'leadFormReassuranceEn',
+                    'leadFormReassuranceBn',
                     'We respond personally within 24 hours. Your details stay private.',
                     'আমরা ২৪ ঘণ্টার মধ্যে ব্যক্তিগতভাবে উত্তর দিই। আপনার তথ্য গোপন থাকে।',
                   )}
@@ -247,7 +268,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
           disabled={step === 0}
           className={`text-[11px] uppercase text-primary-foreground/50 hover:text-primary-foreground transition-colors disabled:opacity-20 disabled:cursor-not-allowed min-h-[44px] px-2 -ml-2 ${isBn ? 'tracking-[1px]' : 'tracking-[3px]'}`}
         >
-          ← {t('Back', 'পিছনে')}
+          ← {L('leadFormBackEn', 'leadFormBackBn', 'Back', 'পিছনে')}
         </button>
 
         {step < TOTAL - 1 ? (
@@ -258,7 +279,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             className={`px-8 py-3.5 bg-accent text-accent-foreground text-[11px] uppercase rounded-sm transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(251,146,60,0.35)] disabled:opacity-30 disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:cursor-not-allowed ${isBn ? 'tracking-[1px]' : 'tracking-[3px]'}`}
             style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
           >
-            {t('Continue', 'এগিয়ে যান')}
+            {L('leadFormContinueEn', 'leadFormContinueBn', 'Continue', 'এগিয়ে যান')}
           </button>
         ) : !stepValid || submitting ? (
           <button
@@ -266,14 +287,16 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             disabled
             className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-all duration-500 opacity-30 cursor-not-allowed min-h-[48px]"
           >
-            {submitting ? t('Sending…', 'সাবমিট হচ্ছে...') : t('Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
+            {submitting
+              ? L('leadFormSendingEn', 'leadFormSendingBn', 'Sending…', 'সাবমিট হচ্ছে...')
+              : L('leadFormSubmitEn', 'leadFormSubmitBn', 'Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
           </button>
         ) : (
           <MagneticButton
             onClick={submit}
             className="px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[3px] uppercase rounded-sm transition-shadow duration-500 hover:shadow-[0_10px_30px_rgba(251,146,60,0.35)] min-h-[48px] inline-flex items-center justify-center"
           >
-            {t('Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
+            {L('leadFormSubmitEn', 'leadFormSubmitBn', 'Request Consultation', 'রিকোয়েস্ট সাবমিট করুন')}
           </MagneticButton>
         )}
       </div>
@@ -336,8 +359,9 @@ function PolishedTextarea({
   );
 }
 
-function ThankYou({ isBn, onReset }: { isBn: boolean; onReset: () => void }) {
-  const t = (en: string, bn: string) => (isBn ? bn : en);
+function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsContent | null; onReset: () => void }) {
+  const L = (keyEn: keyof UILabelsContent, keyBn: keyof UILabelsContent, en: string, bn: string) =>
+    isBn ? pick(labels, keyBn, bn) : pick(labels, keyEn, en);
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -355,12 +379,16 @@ function ThankYou({ isBn, onReset }: { isBn: boolean; onReset: () => void }) {
           <path d="M5 12l5 5L20 7" />
         </svg>
       </motion.div>
-      <p className="text-[10px] tracking-[4px] uppercase text-accent mb-3">{t('Received', 'প্রাপ্ত')}</p>
+      <p className="text-[10px] tracking-[4px] uppercase text-accent mb-3">
+        {L('leadFormReceivedEn', 'leadFormReceivedBn', 'Received', 'প্রাপ্ত')}
+      </p>
       <h3 className="font-heading italic text-primary-foreground text-[clamp(28px,3.5vw,40px)] font-light leading-tight mb-4">
-        {t('Thank you. We\u2019ll be in touch.', 'ধন্যবাদ। আমরা শীঘ্রই যোগাযোগ করব।')}
+        {L('leadFormThankTitleEn', 'leadFormThankTitleBn', 'Thank you. We\u2019ll be in touch.', 'ধন্যবাদ। আমরা শীঘ্রই যোগাযোগ করব।')}
       </h3>
       <p className="text-primary-foreground/50 text-sm leading-relaxed max-w-md mx-auto mb-8">
-        {t(
+        {L(
+          'leadFormThankSubEn',
+          'leadFormThankSubBn',
           'Your inquiry just landed in our studio. Expect a personal reply within 24 hours.',
           'আপনার বার্তা আমাদের স্টুডিওতে পৌঁছেছে। ২৪ ঘণ্টার মধ্যে ব্যক্তিগত উত্তর পাবেন।',
         )}
@@ -369,7 +397,7 @@ function ThankYou({ isBn, onReset }: { isBn: boolean; onReset: () => void }) {
         onClick={onReset}
         className="text-[11px] tracking-[3px] uppercase text-accent border border-accent px-6 py-3 min-h-[44px] rounded-sm shadow-[0_0_0_rgba(251,146,60,0)] hover:shadow-[0_0_18px_rgba(251,146,60,0.45)] hover:border-accent transition-all duration-300 ease-in-out"
       >
-        {t('Submit another inquiry', 'আরেকটি বার্তা পাঠান')}
+        {L('leadFormResetEn', 'leadFormResetBn', 'Submit another inquiry', 'আরেকটি বার্তা পাঠান')}
       </button>
     </motion.div>
   );

@@ -5,87 +5,66 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSiteSetting } from '@/hooks/use-site-content';
+import type { TestimonialItem, TestimonialsContent } from '@/types/database';
 
-interface Testimonial {
-  id: number;
+interface DisplayTestimonial {
+  id: string;
   quote: string;
   name: string;
   role: string;
 }
 
-const testimonialsEn: Testimonial[] = [
+const DEFAULT_ITEMS: TestimonialItem[] = [
   {
-    id: 1,
-    quote:
+    id: '1',
+    quote_en:
       'POLISHED transformed our entire visual identity. The packaging now feels like a luxury object before anyone even opens the box. Our repeat purchase rate climbed within weeks.',
-    name: 'Aisha Rahman',
-    role: 'Founder, Organic Skincare',
-  },
-  {
-    id: 2,
-    quote:
-      'They understood the soul of our brand instantly. Every touchpoint — from the site to the unboxing — now whispers premium. It is the best investment we have made.',
-    name: 'Leila Noor',
-    role: 'Founder, Glow Essentials',
-  },
-  {
-    id: 3,
-    quote:
-      'The new identity commands attention on shelf and screen. Customers constantly tell us our brand looks expensive, trustworthy, and unforgettable.',
-    name: 'Sarah Hossain',
-    role: 'Founder, Pure Radiance Co.',
-  },
-  {
-    id: 4,
-    quote:
-      "POLISHED didn't just design our visuals; they engineered our brand's trust. Their 'Premium Bengali' approach dropped our Customer Acquisition Cost (CAC) significantly within the first month.",
-    name: 'Zara Islam',
-    role: 'Founder, Botanica Blends',
-  },
-  {
-    id: 5,
-    quote:
-      'Their understanding of the local D2C skincare market is unmatched. The aesthetic is purely international, yet deeply relatable to our core demographic. A flawless execution.',
-    name: 'Fahim Rahman',
-    role: 'CMO, Luxe Derma BD',
-  },
-];
-
-const testimonialsBn: Testimonial[] = [
-  {
-    id: 1,
-    quote:
+    quote_bn:
       'POLISHED আমাদের পুরো ভিজ্যুয়াল আইডেন্টিটি বদলে দিয়েছে। প্যাকেজিংটা এখন বক্স খোলার আগেই একটা লাক্সারি অবজেক্টের মতো ফিল দেয়। কয়েক সপ্তাহের মধ্যেই আমাদের রিপিট পারচেস রেট চোখে পড়ার মতো বেড়েছে।',
     name: 'Aisha Rahman',
-    role: 'Founder, Organic Skincare',
+    role_en: 'Founder, Organic Skincare',
+    role_bn: 'ফাউন্ডার, অর্গানিক স্কিনকেয়ার',
   },
   {
-    id: 2,
-    quote:
+    id: '2',
+    quote_en:
+      'They understood the soul of our brand instantly. Every touchpoint — from the site to the unboxing — now whispers premium. It is the best investment we have made.',
+    quote_bn:
       'তারা মুহূর্তেই আমাদের ব্র্যান্ডের মূল সত্তা বুঝতে পেরেছিল। সাইট থেকে শুরু করে আনবক্সিং—প্রতিটি টাচপয়েন্ট এখন প্রিমিয়াম ফিল দেয়। এটি আমাদের করা অন্যতম সেরা ইনভেস্টমেন্ট।',
     name: 'Leila Noor',
-    role: 'Founder, Glow Essentials',
+    role_en: 'Founder, Glow Essentials',
+    role_bn: 'ফাউন্ডার, গ্লো এসেনশিয়ালস',
   },
   {
-    id: 3,
-    quote:
+    id: '3',
+    quote_en:
+      'The new identity commands attention on shelf and screen. Customers constantly tell us our brand looks expensive, trustworthy, and unforgettable.',
+    quote_bn:
       'নতুন ভিজ্যুয়াল আইডেন্টিটি শেলফ এবং স্ক্রিন—সব জায়গায় নজর কাড়ে। কাস্টমাররা প্রতিনিয়ত আমাদের জানায় যে ব্র্যান্ডটিকে এখন অনেক এক্সপেন্সিভ, বিশ্বস্ত এবং আইকনিক মনে হয়।',
     name: 'Sarah Hossain',
-    role: 'Founder, Pure Radiance Co.',
+    role_en: 'Founder, Pure Radiance Co.',
+    role_bn: 'ফাউন্ডার, পিওর রেডিয়ান্স কোং',
   },
   {
-    id: 4,
-    quote:
+    id: '4',
+    quote_en:
+      "POLISHED didn't just design our visuals; they engineered our brand's trust. Their 'Premium Bengali' approach dropped our Customer Acquisition Cost (CAC) significantly within the first month.",
+    quote_bn:
       "POLISHED শুধু আমাদের ভিজ্যুয়াল ডিজাইন করেনি; তারা আমাদের ব্র্যান্ডের ট্রাস্ট ইঞ্জিনিয়ারিং করেছে। তাদের 'প্রিমিয়াম বাংলা' অ্যাপ্রোচ প্রথম মাসেই আমাদের কাস্টমার একুইজিশন কস্ট (CAC) অনেক কমিয়ে দিয়েছে।",
     name: 'Zara Islam',
-    role: 'Founder, Botanica Blends',
+    role_en: 'Founder, Botanica Blends',
+    role_bn: 'ফাউন্ডার, বোটানিকা ব্লেন্ডস',
   },
   {
-    id: 5,
-    quote:
+    id: '5',
+    quote_en:
+      'Their understanding of the local D2C skincare market is unmatched. The aesthetic is purely international, yet deeply relatable to our core demographic. A flawless execution.',
+    quote_bn:
       'লোকাল D2C মার্কেটের ওপর তাদের বোঝাপড়া সত্যিই অতুলনীয়। তাদের ডিজাইন সম্পূর্ণ ইন্টারন্যাশনাল, কিন্তু আমাদের লোকাল কাস্টমারদের সাথে দারুণভাবে কানেক্ট করে। এককথায় নিখুঁত এক্সিকিউশন।',
     name: 'Fahim Rahman',
-    role: 'CMO, Luxe Derma BD',
+    role_en: 'CMO, Luxe Derma BD',
+    role_bn: 'সিএমও, লাক্স ডার্মা বিডি',
   },
 ];
 
@@ -94,7 +73,26 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 export default function Testimonials() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
-  const testimonials = isBn ? testimonialsBn : testimonialsEn;
+  const { data: content } = useSiteSetting<TestimonialsContent>('testimonials');
+
+  const sourceItems = content?.items?.length ? content.items : DEFAULT_ITEMS;
+  const testimonials: DisplayTestimonial[] = sourceItems.map((it) => ({
+    id: it.id,
+    quote: isBn ? (it.quote_bn?.trim() || it.quote_en) : it.quote_en,
+    name: it.name,
+    role: isBn ? (it.role_bn?.trim() || it.role_en) : it.role_en,
+  }));
+
+  const label = isBn
+    ? (content?.labelBn ?? 'প্রশংসাপত্র')
+    : (content?.labelEn ?? 'Testimonials');
+  const heading = isBn
+    ? (content?.headingBn ?? 'ফাউন্ডারদের অভিমত।')
+    : (content?.headingEn ?? 'What founders say.');
+  const sub = isBn
+    ? (content?.subBn ?? 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।')
+    : (content?.subEn ?? 'Words from the visionaries behind premium e-commerce skincare brands.');
+
   const [active, setActive] = useState(0);
   const isMobile = useIsMobile();
   const count = testimonials.length;
@@ -103,7 +101,6 @@ export default function Testimonials() {
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
   const goTo = (i: number) => setActive(i);
 
-  // Position offset relative to active index, wrapping to shortest path.
   const getOffset = (i: number) => {
     let diff = i - active;
     if (diff > count / 2) diff -= count;
@@ -111,8 +108,9 @@ export default function Testimonials() {
     return diff;
   };
 
-  // Responsive center-to-center spacing: peek side cards without overlapping the center card.
   const spacing = isMobile ? 90 : 95;
+
+  if (count === 0) return null;
 
   return (
     <section
@@ -121,29 +119,23 @@ export default function Testimonials() {
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
-          <p
-            lang={isBn ? 'bn' : 'en'}
-            className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium"
-          >
-            {isBn ? 'প্রশংসাপত্র' : 'Testimonials'}
+          <p lang={isBn ? 'bn' : 'en'} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+            {label}
           </p>
         </MotionReveal>
 
         <MotionReveal delay={0.1}>
           <h2 className="font-heading font-normal text-primary-foreground mb-5 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            <WordReveal delay={0.1}>{isBn ? 'ফাউন্ডারদের অভিমত।' : 'What founders say.'}</WordReveal>
+            <WordReveal delay={0.1}>{heading}</WordReveal>
           </h2>
         </MotionReveal>
 
         <MotionReveal delay={0.2}>
           <p className="font-heading italic text-primary-foreground/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-16">
-            {isBn
-              ? 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।'
-              : 'Words from the visionaries behind premium e-commerce skincare brands.'}
+            {sub}
           </p>
         </MotionReveal>
 
-        {/* Carousel */}
         <div className="relative h-[380px] md:h-[340px] flex items-center justify-center overflow-visible">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
@@ -175,7 +167,6 @@ export default function Testimonials() {
           })}
         </div>
 
-        {/* Controls */}
         <div className="flex items-center justify-center gap-8 mt-12">
           <button
             type="button"
@@ -222,7 +213,7 @@ function TestimonialCard({
   dimmed = false,
   isBn = false,
 }: {
-  testimonial: Testimonial;
+  testimonial: DisplayTestimonial;
   dimmed?: boolean;
   isBn?: boolean;
 }) {
@@ -248,14 +239,13 @@ function TestimonialCard({
       </blockquote>
 
       <div className="mt-auto">
-        <p lang="en" className="font-heading text-primary-foreground text-[14px] tracking-wide">
+        <p className="font-heading text-primary-foreground text-[14px] tracking-wide">
           {testimonial.name}
         </p>
-        <p lang="en" className="text-accent text-[11px] tracking-[1.5px] uppercase mt-1">
+        <p lang={isBn ? 'bn' : 'en'} className="text-accent text-[11px] tracking-[1.5px] uppercase mt-1">
           {testimonial.role}
         </p>
       </div>
     </div>
   );
 }
-

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { NavContent } from '@/types/database';
+import { useUILabels } from '@/hooks/use-site-content';
 
 interface NavbarProps {
   content?: NavContent | null;
@@ -36,19 +37,21 @@ export default function Navbar({ content }: NavbarProps) {
     ? 'text-muted-foreground hover:text-accent'
     : 'text-primary-foreground/70 hover:text-accent';
 
+  const { data: labels } = useUILabels();
+
   // EN: keep English wordmark feel. BN: localized labels per request.
   const navItems = isBn
     ? [
-        { label: 'পরিচিতি', href: '#about' },
-        { label: 'এক্সপার্টিজ', href: '#services' },
-        { label: 'বিবর্তন', href: '#evolution' },
-        { label: 'সিগনেচার প্রজেক্ট', href: '#work' },
-        { label: 'যোগাযোগ', href: '#contact' },
+        { label: labels?.navAboutBn ?? 'পরিচিতি', href: '#about' },
+        { label: labels?.navServicesBn ?? 'এক্সপার্টিজ', href: '#services' },
+        { label: labels?.navEvolutionBn ?? 'বিবর্তন', href: '#evolution' },
+        { label: labels?.navWorkBn ?? 'সিগনেচার প্রজেক্ট', href: '#work' },
+        { label: labels?.navContactBn ?? 'যোগাযোগ', href: '#contact' },
       ]
     : [
         { label: content?.aboutEn ?? 'About', href: '#about' },
         { label: content?.servicesEn ?? 'Services', href: '#services' },
-        { label: 'The Evolution', href: '#evolution' },
+        { label: labels?.navEvolutionEn ?? 'The Evolution', href: '#evolution' },
         { label: content?.workEn ?? 'Work', href: '#work' },
         { label: content?.contactEn ?? 'Contact', href: '#contact' },
       ];

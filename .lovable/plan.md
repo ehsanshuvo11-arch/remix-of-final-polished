@@ -1,43 +1,46 @@
-# Mobile Hero — Proportional Refinement Plan
+## Goal
+Every user-visible letter on the public site — English and Bengali — is editable from the `/admin` panel. No developer needed to change copy.
 
-Goal: Make the mobile Hero a faithful scaled-down replica of the desktop composition (Image 1). Surgical edits to `src/components/landing/Hero.tsx` only — no desktop (`md:`) classes touched, no global styles changed.
+## What's already editable (no work needed)
+Hero, Nav, About, Services (list + heading), Stats, Portfolio (list + heading), Evolution, Transformations (list + heading), Process (list + heading), Contact, Footer, Brand meta, Colors, Logo, Marquee. All EN + BN.
 
-## Diagnosis (Image 2 vs Image 1)
+## What's missing today
+1. **Testimonials section** — quotes, names, roles, companies, plus section label/heading/subheading. Fully hardcoded.
+2. **Micro-copy hardcoded inside components** — buttons, form step labels, validation messages, loader text, "View case study", scroll hints, etc.
+3. **`index.html` `<title>` / `<meta description>`** already covered by MetaEditor.
 
-| Element | Current Mobile | Desktop Reference | Fix Needed |
-|---|---|---|---|
-| Logo | `w-14 h-14 mb-6` (~14% width, OK) | Dominant centered badge | Keep size, slightly more bottom margin |
-| Eyebrow | `text-[10px] mb-8` | Subtle kicker above tagline | Keep |
-| Tagline | `text-4xl` (36px) | Dominates ~40% of viewport height | Scale up to `text-[40px]` with tighter leading |
-| Sub paragraph | `hidden md:block` ✅ | Hidden on mobile | Already correct — no change |
-| Play button | `max-w-[280px]` ✅ | Sleek pill | Keep |
-| View Work / Start Project | Inconsistent — fall back to auto width on mobile, stack awkwardly | Unified pill bars | Force `max-w-[280px]` to match Play button |
-| Vertical rhythm | Cramped between tagline → buttons | Generous breathing room | Increase `mb` on tagline accent line |
+## Delivery plan (3 phases, shipped in order)
 
-## Changes
+### Phase 1 — Testimonials CMS (biggest visible gap)
+- Add a **Testimonials** tab to the admin Content page.
+- Store data in `site_settings` under key `testimonials` (per your "in admin panel page" choice — no new table, edit everything in one JSON-backed editor on the page).
+- Fields per entry (repeatable, reorderable, add/delete): quote_en, quote_bn, name, role_en, role_bn, company_en, company_bn.
+- Also editable: section label (EN/BN), heading (EN/BN), subheading (EN/BN).
+- Wire `Testimonials.tsx` to read from the setting, with the current hardcoded array as fallback so nothing breaks before first save.
 
-### 1. Tagline scaling (more dominance)
-- Line 1 (`Make Your Collection`): `text-4xl` → `text-[40px]`, add `tracking-[-0.01em]` for tighter premium feel
-- Line 2 (`Unmissable!`): `text-4xl` → `text-[40px]`, increase `mb-12` → `mb-14` for airy gap before buttons
+### Phase 2 — UI Labels editor (all remaining inline micro-copy)
+Add a new **UI Labels** tab grouping every remaining hardcoded EN/BN string:
+- **LeadForm**: step titles, field labels, placeholders, validation errors, Back/Continue/Submit buttons, success state copy (~21 strings each language).
+- **Portfolio**: "View case study", "Download PDF", "Close" labels.
+- **PageLoader**: loading tagline.
+- **Hero**: scroll hint, any inline labels not already in HeroContent.
+- **Contact**: any inline labels not already in ContactContent.
+- **Navbar / mobile menu**: any labels not in NavContent.
+- Stored in `site_settings` under key `ui_labels` as one structured object; components read via a new `useUiLabels()` hook with typed defaults so missing keys always fall back to current text.
 
-### 2. Unify button widths (fix the broken stack in Image 2)
-The second button group currently uses `md:flex-row md:max-w-none` but on mobile the inner `MagneticButton`s collapse to content-width because `MagneticButton` wraps children in `<div className="inline-block">`. Fix by ensuring the wrapper enforces `max-w-[280px]` and inner buttons keep `w-full`:
-- Confirm wrapper: `flex flex-col w-full max-w-[280px] mx-auto gap-4 mt-4`
-- Add explicit `w-full` to the inline-block wrapper inside `MagneticButton` on mobile via passing through, OR override at button group level by adding a child selector / explicit `[&>div]:w-full` on the wrapper so the magnetic wrapper expands.
+### Phase 3 — Sweep + verification
+- Grep the codebase for any remaining string literals rendered to users, move them into `ui_labels`.
+- Manual walkthrough of every section in both languages to confirm nothing is left hardcoded.
+- Add a short note at the top of the admin Content page listing which tab controls which section.
 
-Cleanest fix: add `[&>div]:w-full md:[&>div]:w-auto` to both button-group wrappers so the magnetic `inline-block` wrapper stretches to the constrained 280px container on mobile, leaving desktop unchanged.
+## Technical notes
+- No new database tables; both new keys (`testimonials`, `ui_labels`) live in the existing `site_settings` table, matching how Hero/About/Contact/etc. are already stored.
+- Editors reuse `useSaveRegistration` + the existing Save All bar so you keep the unified save UX.
+- Every field has a Bengali twin; the language toggle keeps working unchanged.
+- Fallback defaults live in code, so if a setting is empty the site still renders today's copy.
 
-### 3. Spacing rhythm
-- Logo: `mb-6` → `mb-7` (slightly more breathing room)
-- Eyebrow: `mb-8` → `mb-6` (closer to tagline, matches desktop)
-- Tagline accent line: `mb-12` → `mb-14`
-- Gap between Play button and CTA pair: `mt-4` → `mt-5`
+## Out of scope
+- Changing visual design, layouts, animations, or slider mechanics.
+- Restructuring existing editors that already work.
 
-### 4. No-touch list
-- Desktop classes (`md:*`, `lg:*`) — untouched
-- `hidden md:block` paragraph — already hidden on mobile, no change
-- Animations, fonts, colors, RevealText logic — untouched
-- All other components — untouched
-
-## Verification
-After edit: screenshot mobile viewport (390x844) and compare side-by-side with desktop reference. Confirm all 3 buttons render as identical-width pill bars stacked center.
+I'll ship Phase 1 first, then Phase 2, then Phase 3, in separate turns so you can review each.
