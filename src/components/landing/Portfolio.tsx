@@ -9,6 +9,7 @@ import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useUILabels } from '@/hooks/use-site-content';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
