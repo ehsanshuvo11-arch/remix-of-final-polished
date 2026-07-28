@@ -5,6 +5,7 @@ import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
+import Portfolio from '@/components/landing/Portfolio';
 import Pricing from '@/components/landing/Pricing';
 import Process from '@/components/landing/Process';
 import Contact from '@/components/landing/Contact';
