@@ -91,7 +91,7 @@ export default function Testimonials() {
     : (content?.headingEn ?? 'What founders say.');
   const sub = isBn
     ? (content?.subBn ?? 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।')
-    : (content?.subEn ?? 'Words from the visionaries behind premium e-commerce skincare brands.');
+    : (content?.subEn ?? 'Words from the visionaries behind premium e-commerce brands and marketing agencies.');
 
   const [active, setActive] = useState(0);
   const isMobile = useIsMobile();

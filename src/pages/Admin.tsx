@@ -1824,7 +1824,7 @@ const DEFAULT_TESTIMONIALS: TestimonialsContent = {
   labelBn: 'প্রশংসাপত্র',
   headingEn: 'What founders say.',
   headingBn: 'ফাউন্ডারদের অভিমত।',
-  subEn: 'Words from the visionaries behind premium e-commerce skincare brands.',
+  subEn: 'Words from the visionaries behind premium e-commerce brands and marketing agencies.',
   subBn: 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।',
   items: [],
 };
