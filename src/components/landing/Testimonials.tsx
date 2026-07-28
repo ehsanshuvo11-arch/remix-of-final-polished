@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Testimonial {
   id: number;
@@ -39,10 +40,12 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
+  const isMobile = useIsMobile();
   const count = testimonials.length;
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
+  const goTo = (i: number) => setActive(i);
 
   // Position offset relative to active index, wrapping to shortest path.
   const getOffset = (i: number) => {
@@ -52,10 +55,13 @@ export default function Testimonials() {
     return diff;
   };
 
+  // Responsive center-to-center spacing: peek side cards without overlapping the center card.
+  const spacing = isMobile ? 90 : 95;
+
   return (
     <section
       id="testimonials"
-      className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
+      className="relative bg-[#0f1e4a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -80,26 +86,30 @@ export default function Testimonials() {
         </MotionReveal>
 
         {/* Carousel */}
-        <div className="relative h-[380px] md:h-[340px] flex items-center justify-center">
+        <div className="relative h-[380px] md:h-[340px] flex items-center justify-center overflow-visible">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
             const isActive = offset === 0;
             const isVisible = Math.abs(offset) <= 1;
+
             return (
               <motion.div
                 key={t.id}
                 initial={false}
                 animate={{
-                  x: `calc(-50% + ${offset * 62}%)`,
+                  x: `calc(-50% + ${offset * spacing}%)`,
+                  y: '-50%',
                   scale: isActive ? 1 : 0.85,
                   opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
-                  zIndex: isActive ? 10 : 1,
                 }}
-                transition={{ duration: 0.8, ease: LUXE }}
-                style={{ top: '50%', translateY: '-50%' }}
-                className={`absolute left-1/2 w-full max-w-[520px] ${
-                  isActive ? '' : 'pointer-events-none hidden md:block'
-                }`}
+                transition={{
+                  x: { duration: 0.8, ease: LUXE },
+                  y: { duration: 0 },
+                  scale: { duration: 0.8, ease: LUXE },
+                  opacity: { duration: 0.6, ease: LUXE },
+                }}
+                style={{ willChange: 'transform, opacity', top: '50%', left: '50%' }}
+                className={`absolute w-full max-w-[520px] ${isActive ? 'z-10' : 'z-0'}`}
               >
                 <TestimonialCard testimonial={t} dimmed={!isActive} />
               </motion.div>
@@ -124,7 +134,7 @@ export default function Testimonials() {
               <button
                 key={i}
                 type="button"
-                onClick={() => setActive(i)}
+                onClick={() => goTo(i)}
                 aria-label={`Go to testimonial ${i + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-500 ${
                   i === active ? 'bg-accent w-8' : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
@@ -161,7 +171,7 @@ function TestimonialCard({
       className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md min-h-[260px] ${
         dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
-          : 'bg-primary-foreground/[0.06] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
+          : 'bg-[#0f1e4a] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
       }`}
     >
       <div className="flex items-center gap-1 mb-5">
