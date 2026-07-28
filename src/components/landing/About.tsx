@@ -21,7 +21,7 @@ export default function About({ content, stats }: AboutProps) {
     titleLine2En: 'trust at first glance.',
     titleLine2Bn: 'বিশ্বাস জন্মায়।',
     p1En: 'POLISHED is a premium visual identity partner for D2C skincare & self-care brands, and a white-label creative engine for e-commerce marketing agencies.',
-    p1Bn: 'POLISHED তৈরি হয়েছে ই-কমার্স স্কিনকেয়ার ব্র্যান্ডগুলোর জন্য, যারা প্রিমিয়াম এবং বিশ্বাসযোগ্য একটি পরিচয় দাঁড় করাতে চায়। আমাদের লক্ষ্য একটাই—আপনার ব্র্যান্ডকে সাধারণের ভিড় থেকে আলাদা করে একটি এক্সক্লুসিভ অবস্থানে নিয়ে যাওয়া।',
+    p1Bn: 'POLISHED হলো D2C স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডগুলোর জন্য একটি প্রিমিয়াম ভিজ্যুয়াল আইডেন্টিটি পার্টনার, এবং ই-কমার্স মার্কেটিং এজেন্সিগুলোর জন্য একটি হোয়াইট-লেবেল ক্রিয়েটিভ ইঞ্জিন।',
     p2En: 'We specialize in clean, structured visuals that position your brand above the noise of generic Canva-level design. From Instagram posts to full visual identities — everything is built with precision and purpose.',
     p2Bn: 'আমরা পরিচ্ছন্ন, কাঠামোবদ্ধ ভিজ্যুয়ালে বিশেষজ্ঞ যা আপনার ব্র্যান্ডকে জেনেরিক ক্যানভা-লেভেল ডিজাইনের উপরে তুলে ধরে।',
     quoteEn: '— Identifying a gap: professional Bangla visual design done right.',
