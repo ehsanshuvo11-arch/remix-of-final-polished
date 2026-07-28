@@ -101,17 +101,15 @@ export default function Testimonials() {
                   y: '-50%',
                   scale: isActive ? 1 : 0.85,
                   opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
-                  zIndex: isActive ? 10 : 1,
                 }}
                 transition={{
                   x: { duration: 0.8, ease: LUXE },
                   y: { duration: 0 },
                   scale: { duration: 0.8, ease: LUXE },
                   opacity: { duration: 0.6, ease: LUXE },
-                  zIndex: { duration: 0 },
                 }}
                 style={{ willChange: 'transform, opacity', top: '50%', left: '50%' }}
-                className="absolute w-full max-w-[520px]"
+                className={`absolute w-full max-w-[520px] ${isActive ? 'z-10' : 'z-0'}`}
               >
                 <TestimonialCard testimonial={t} dimmed={!isActive} />
               </motion.div>
