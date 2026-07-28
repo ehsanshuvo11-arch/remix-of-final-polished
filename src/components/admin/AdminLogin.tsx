@@ -89,6 +89,11 @@ export default function AdminLogin() {
             <p className="text-accent/90 text-xs mt-3 mb-1 tracking-wide">{loginError}</p>
           )}
 
+          {loginSuccess && (
+            <p className="text-emerald-400/90 text-xs mt-3 mb-1 tracking-wide">{loginSuccess}</p>
+          )}
+
+
           <button
             onClick={handleLogin}
             disabled={submitting}
