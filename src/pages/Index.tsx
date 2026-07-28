@@ -71,6 +71,7 @@ export default function Index() {
       <Marquee items={marqueeData?.items ?? []} />
       <About content={aboutContent ?? null} stats={stats} />
       <Services services={services} content={servicesMeta ?? null} />
+      <Pricing />
       <Evolution />
       <Portfolio projects={projects} content={portfolioMeta ?? null} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
