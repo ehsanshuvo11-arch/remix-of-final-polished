@@ -55,8 +55,8 @@ export default function Testimonials() {
     return diff;
   };
 
-  // Responsive center-to-center spacing: tighter on mobile so side cards peek in.
-  const spacing = isMobile ? 55 : 62;
+  // Responsive center-to-center spacing: keep side cards visible but not overlapping the center card.
+  const spacing = isMobile ? 70 : 75;
 
   return (
     <section
