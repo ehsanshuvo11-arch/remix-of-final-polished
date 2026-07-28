@@ -6,6 +6,7 @@ import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
 import Portfolio from '@/components/landing/Portfolio';
+import Pricing from '@/components/landing/Pricing';
 import Process from '@/components/landing/Process';
 import Contact from '@/components/landing/Contact';
 import Footer from '@/components/landing/Footer';
@@ -70,6 +71,7 @@ export default function Index() {
       <Marquee items={marqueeData?.items ?? []} />
       <About content={aboutContent ?? null} stats={stats} />
       <Services services={services} content={servicesMeta ?? null} />
+      <Pricing />
       <Evolution />
       <Portfolio projects={projects} content={portfolioMeta ?? null} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
