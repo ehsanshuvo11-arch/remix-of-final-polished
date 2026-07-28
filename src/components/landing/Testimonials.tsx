@@ -40,24 +40,12 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState(0);
   const isMobile = useIsMobile();
   const count = testimonials.length;
 
-  const next = () => {
-    setDirection(1);
-    setActive((prev) => (prev + 1) % count);
-  };
-
-  const prev = () => {
-    setDirection(-1);
-    setActive((prev) => (prev - 1 + count) % count);
-  };
-
-  const goTo = (i: number) => {
-    setDirection(i > active ? 1 : -1);
-    setActive(i);
-  };
+  const next = () => setActive((prev) => (prev + 1) % count);
+  const prev = () => setActive((prev) => (prev - 1 + count) % count);
+  const goTo = (i: number) => setActive(i);
 
   // Position offset relative to active index, wrapping to shortest path.
   const getOffset = (i: number) => {
