@@ -4,6 +4,7 @@ import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Testimonial {
   id: number;
@@ -12,7 +13,7 @@ interface Testimonial {
   role: string;
 }
 
-const testimonials: Testimonial[] = [
+const testimonialsEn: Testimonial[] = [
   {
     id: 1,
     quote:
@@ -50,9 +51,50 @@ const testimonials: Testimonial[] = [
   },
 ];
 
+const testimonialsBn: Testimonial[] = [
+  {
+    id: 1,
+    quote:
+      'POLISHED আমাদের পুরো ভিজ্যুয়াল আইডেন্টিটি বদলে দিয়েছে। প্যাকেজিংটা এখন বক্স খোলার আগেই একটা লাক্সারি অবজেক্টের মতো ফিল দেয়। কয়েক সপ্তাহের মধ্যেই আমাদের রিপিট পারচেস রেট চোখে পড়ার মতো বেড়েছে।',
+    name: 'Aisha Rahman',
+    role: 'Founder, Organic Skincare',
+  },
+  {
+    id: 2,
+    quote:
+      'তারা মুহূর্তেই আমাদের ব্র্যান্ডের মূল সত্তা বুঝতে পেরেছিল। সাইট থেকে শুরু করে আনবক্সিং—প্রতিটি টাচপয়েন্ট এখন প্রিমিয়াম ফিল দেয়। এটি আমাদের করা অন্যতম সেরা ইনভেস্টমেন্ট।',
+    name: 'Leila Noor',
+    role: 'Founder, Glow Essentials',
+  },
+  {
+    id: 3,
+    quote:
+      'নতুন ভিজ্যুয়াল আইডেন্টিটি শেলফ এবং স্ক্রিন—সব জায়গায় নজর কাড়ে। কাস্টমাররা প্রতিনিয়ত আমাদের জানায় যে ব্র্যান্ডটিকে এখন অনেক এক্সপেন্সিভ, বিশ্বস্ত এবং আইকনিক মনে হয়।',
+    name: 'Sarah Hossain',
+    role: 'Founder, Pure Radiance Co.',
+  },
+  {
+    id: 4,
+    quote:
+      "POLISHED শুধু আমাদের ভিজ্যুয়াল ডিজাইন করেনি; তারা আমাদের ব্র্যান্ডের ট্রাস্ট ইঞ্জিনিয়ারিং করেছে। তাদের 'প্রিমিয়াম বাংলা' অ্যাপ্রোচ প্রথম মাসেই আমাদের কাস্টমার একুইজিশন কস্ট (CAC) অনেক কমিয়ে দিয়েছে।",
+    name: 'Zara Islam',
+    role: 'Founder, Botanica Blends',
+  },
+  {
+    id: 5,
+    quote:
+      'লোকাল D2C মার্কেটের ওপর তাদের বোঝাপড়া সত্যিই অতুলনীয়। তাদের ডিজাইন সম্পূর্ণ ইন্টারন্যাশনাল, কিন্তু আমাদের লোকাল কাস্টমারদের সাথে দারুণভাবে কানেক্ট করে। এককথায় নিখুঁত এক্সিকিউশন।',
+    name: 'Fahim Rahman',
+    role: 'CMO, Luxe Derma BD',
+  },
+];
+
 const LUXE = [0.22, 1, 0.36, 1] as const;
 
 export default function Testimonials() {
+  const { lang } = useLanguage();
+  const isBn = lang === 'bn';
+  const testimonials = isBn ? testimonialsBn : testimonialsEn;
   const [active, setActive] = useState(0);
   const isMobile = useIsMobile();
   const count = testimonials.length;
@@ -80,22 +122,24 @@ export default function Testimonials() {
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
           <p
-            lang="en"
+            lang={isBn ? 'bn' : 'en'}
             className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium"
           >
-            Testimonials
+            {isBn ? 'প্রশংসাপত্র' : 'Testimonials'}
           </p>
         </MotionReveal>
 
         <MotionReveal delay={0.1}>
           <h2 className="font-heading font-normal text-primary-foreground mb-5 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            <WordReveal delay={0.1}>What founders say.</WordReveal>
+            <WordReveal delay={0.1}>{isBn ? 'ফাউন্ডারদের অভিমত।' : 'What founders say.'}</WordReveal>
           </h2>
         </MotionReveal>
 
         <MotionReveal delay={0.2}>
           <p className="font-heading italic text-primary-foreground/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-16">
-            Words from the visionaries behind premium e-commerce skincare brands.
+            {isBn
+              ? 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।'
+              : 'Words from the visionaries behind premium e-commerce skincare brands.'}
           </p>
         </MotionReveal>
 
@@ -125,7 +169,7 @@ export default function Testimonials() {
                 style={{ willChange: 'transform, opacity', top: '50%', left: '50%' }}
                 className={`absolute w-full max-w-[520px] ${isActive ? 'z-10' : 'z-0'}`}
               >
-                <TestimonialCard testimonial={t} dimmed={!isActive} />
+                <TestimonialCard testimonial={t} dimmed={!isActive} isBn={isBn} />
               </motion.div>
             );
           })}
@@ -136,7 +180,7 @@ export default function Testimonials() {
           <button
             type="button"
             onClick={prev}
-            aria-label="Previous testimonial"
+            aria-label={isBn ? 'পূর্ববর্তী প্রশংসাপত্র' : 'Previous testimonial'}
             className="group w-12 h-12 rounded-full border border-primary-foreground/40 bg-primary-foreground/5 flex items-center justify-center text-primary-foreground hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300"
             style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
@@ -149,7 +193,7 @@ export default function Testimonials() {
                 key={i}
                 type="button"
                 onClick={() => goTo(i)}
-                aria-label={`Go to testimonial ${i + 1}`}
+                aria-label={isBn ? `প্রশংসাপত্র ${i + 1}-এ যান` : `Go to testimonial ${i + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-500 ${
                   i === active ? 'bg-accent w-8' : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
                 }`}
@@ -161,7 +205,7 @@ export default function Testimonials() {
           <button
             type="button"
             onClick={next}
-            aria-label="Next testimonial"
+            aria-label={isBn ? 'পরবর্তী প্রশংসাপত্র' : 'Next testimonial'}
             className="group w-12 h-12 rounded-full border border-primary-foreground/40 bg-primary-foreground/5 flex items-center justify-center text-primary-foreground hover:text-accent hover:border-accent hover:bg-accent/10 transition-all duration-300"
             style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
@@ -176,9 +220,11 @@ export default function Testimonials() {
 function TestimonialCard({
   testimonial,
   dimmed = false,
+  isBn = false,
 }: {
   testimonial: Testimonial;
   dimmed?: boolean;
+  isBn?: boolean;
 }) {
   return (
     <div
@@ -195,7 +241,7 @@ function TestimonialCard({
       </div>
 
       <blockquote
-        lang="en"
+        lang={isBn ? 'bn' : 'en'}
         className="font-heading italic text-primary-foreground text-[clamp(16px,1.5vw,20px)] leading-[1.5] mb-6"
       >
         “{testimonial.quote}”
@@ -212,3 +258,4 @@ function TestimonialCard({
     </div>
   );
 }
+
