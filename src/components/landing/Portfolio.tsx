@@ -67,6 +67,7 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
 }
 
 function ProjectCard({ project, index, isBn }: { project: PortfolioProject; index: number; isBn: boolean }) {
+  const { data: labels } = useUILabels();
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
 
@@ -185,8 +186,8 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
         >
           {imageExpanded
-            ? (isBn ? 'সংকুচিত করতে ক্লিক করুন' : 'Click to collapse')
-            : (isBn ? 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন' : 'Click image for full view')}
+            ? (isBn ? (labels?.portfolioClickCollapseBn ?? 'সংকুচিত করতে ক্লিক করুন') : (labels?.portfolioClickCollapseEn ?? 'Click to collapse'))
+            : (isBn ? (labels?.portfolioClickExpandBn ?? 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন') : (labels?.portfolioClickExpandEn ?? 'Click image for full view'))}
         </button>
 
         <button
@@ -197,8 +198,8 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
         >
           <span className="relative z-10 text-primary-foreground">
             {caseStudyOpen
-              ? (isBn ? 'কেস স্টাডি লুকান' : 'Hide case study')
-              : (isBn ? 'সম্পূর্ণ কেস স্টাডি দেখুন' : 'View full case study')}
+              ? (isBn ? (labels?.portfolioHideCaseStudyBn ?? 'কেস স্টাডি লুকান') : (labels?.portfolioHideCaseStudyEn ?? 'Hide case study'))
+              : (isBn ? (labels?.portfolioViewCaseStudyBn ?? 'সম্পূর্ণ কেস স্টাডি দেখুন') : (labels?.portfolioViewCaseStudyEn ?? 'View full case study'))}
           </span>
         </button>
 
@@ -209,7 +210,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             className={`inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
           >
-            <span>{isBn ? 'প্রোজেক্ট মকআপ দেখুন' : 'View project mockups'}</span>
+            <span>{isBn ? (labels?.portfolioViewMockupsBn ?? 'প্রোজেক্ট মকআপ দেখুন') : (labels?.portfolioViewMockupsEn ?? 'View project mockups')}</span>
           </button>
         )}
       </div>
