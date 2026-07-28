@@ -7,12 +7,14 @@ type Lang = 'en' | 'bn';
 interface LanguageContextValue {
   lang: Lang;
   setLang: (lang: Lang) => void;
+  toggleLanguage: () => void;
   t: (en: string, bn: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
   lang: 'en',
   setLang: () => {},
+  toggleLanguage: () => {},
   t: (en) => en,
 });
 
