@@ -34,6 +34,20 @@ const testimonials: Testimonial[] = [
     name: 'Sarah Hossain',
     role: 'Founder, Pure Radiance Co.',
   },
+  {
+    id: 4,
+    quote:
+      "POLISHED didn't just design our visuals; they engineered our brand's trust. Their 'Premium Bengali' approach dropped our Customer Acquisition Cost (CAC) significantly within the first month.",
+    name: 'Zara Islam',
+    role: 'Founder, Botanica Blends',
+  },
+  {
+    id: 5,
+    quote:
+      'Their understanding of the local D2C skincare market is unmatched. The aesthetic is purely international, yet deeply relatable to our core demographic. A flawless execution.',
+    name: 'Fahim Rahman',
+    role: 'CMO, Luxe Derma BD',
+  },
 ];
 
 const LUXE = [0.22, 1, 0.36, 1] as const;
