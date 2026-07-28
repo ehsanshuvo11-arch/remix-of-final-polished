@@ -28,6 +28,9 @@ import type {
   ServicesMetaContent,
   Stat,
   EvolutionContent,
+  TestimonialsContent,
+  TestimonialItem,
+  UILabelsContent,
 } from '@/types/database';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import TransformationsEditor from '@/components/admin/TransformationsEditor';
@@ -189,8 +192,9 @@ type ContentTabId =
   | 'portfolio'
   | 'evolution'
   | 'process'
+  | 'testimonials'
   | 'contact'
-  
+  | 'labels'
   | 'footer';
 
 const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] = [
@@ -201,7 +205,9 @@ const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] =
   { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
   { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
   { id: 'process', label: 'Process', description: 'How we work' },
+  { id: 'testimonials', label: 'Testimonials', description: 'Founder quotes & carousel copy' },
   { id: 'contact', label: 'Contact', description: 'Form copy' },
+  { id: 'labels', label: 'UI Labels', description: 'Buttons, nav, form micro-copy (EN + বাংলা)' },
   { id: 'footer', label: 'Footer', description: 'Footer copy' },
 ];
 
@@ -286,7 +292,9 @@ function LegacyContentDashboard() {
               <ProcessEditor />
             </>
           )}
+          {activeTab === 'testimonials' && <TestimonialsEditor />}
           {activeTab === 'contact' && <ContactEditor />}
+          {activeTab === 'labels' && <UILabelsEditor />}
           {activeTab === 'footer' && <FooterEditor />}
         </div>
       </div>
