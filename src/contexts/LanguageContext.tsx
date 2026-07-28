@@ -99,7 +99,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const t = (en: string, bn: string) => (lang === 'bn' ? bn : en);
 
   return (
-    <LanguageContext.Provider value={{ lang: lang || 'en', setLang, t }}>
+    <LanguageContext.Provider value={{ lang: lang || 'en', setLang, toggleLanguage: toggleLanguageWithCurtain, t }}>
       {/* Language selection popup with slide-in animations */}
       <AnimatePresence>
         {showPopup && (
