@@ -119,6 +119,14 @@ export default function Admin() {
 
   // Check existing session with timeout fallback
   useEffect(() => {
+    // Temporary dummy login bypass for local testing
+    if (localStorage.getItem('polished_dummy_admin') === 'true') {
+      setAuthed(true);
+      setUserEmail('admin@polished.com');
+      setLoading(false);
+      return;
+    }
+
     const timeout = setTimeout(() => {
       setLoading(false);
     }, 4000);
@@ -146,9 +154,11 @@ export default function Admin() {
   }, []);
 
   const handleLogout = async () => {
+    localStorage.removeItem('polished_dummy_admin');
     await supabase.auth.signOut();
     setAuthed(false);
   };
+
 
   if (loading) {
     return (
