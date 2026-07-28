@@ -13,7 +13,7 @@ export default function Footer({ footer }: FooterProps) {
   const rightsTextBn = footer?.rightsTextBn ?? 'সর্বস্বত্ব সংরক্ষিত।';
 
   return (
-    <footer className="bg-polished-dark-blue py-8 px-6 md:px-14 flex flex-col md:flex-row justify-between items-center gap-3">
+    <footer className="bg-[#1e3a8a] py-8 px-6 md:px-14 flex flex-col md:flex-row justify-between items-center gap-3">
       <span className="font-heading text-base tracking-[4px] text-primary-foreground/40">
         {brand}<span className="text-accent">.</span>
       </span>

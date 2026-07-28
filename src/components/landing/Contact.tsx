@@ -68,9 +68,9 @@ export default function Contact({ contact }: ContactProps) {
   const line2 = c.titleLine2En ?? 'worth noticing.';
 
   return (
-    <div id="contact" className="bg-polished-dark-blue">
+    <div id="contact" className="bg-[#1e3a8a]">
       <div className="py-20 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
-        <hr className="border-t border-primary-foreground/10" />
+        <hr className="border-t border-white/10" />
       </div>
       <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
         <div>
