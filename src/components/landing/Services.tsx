@@ -16,14 +16,15 @@ export default function Services({ services, content }: ServicesProps) {
   const defaultServices: Service[] = [
     { id: '1', sort_order: 1, name_en: 'Social Media Design', name_bn: 'সোশ্যাল মিডিয়া ডিজাইন', desc_en: 'Feed posts, stories, reels covers, and carousels — all crafted with visual consistency and scroll-stopping clarity. Built for Instagram skincare brands that want to look premium, not templated.', desc_bn: 'ফিড পোস্ট, স্টোরি, রিলস কভার এবং ক্যারোসেল — সবকিছু তৈরি হয় ভিজ্যুয়াল সামঞ্জস্য রেখে।' },
     { id: '2', sort_order: 2, name_en: 'Bangla Visual Design', name_bn: 'বাংলা ভিজ্যুয়াল ডিজাইন', desc_en: 'Professional, aesthetically refined Bangla typography and layout — a rare skill. If your brand speaks to Bangladesh, your visuals should feel premium in Bangla too.', desc_bn: 'পেশাদার ও নান্দনিক বাংলা টাইপোগ্রাফি — যা বাংলাদেশে বিরল।' },
+    { id: '3', sort_order: 3, name_en: 'White-Label Agency Partnership', name_bn: 'হোয়াইট-লেবেল এজেন্সি পার্টনারশিপ', desc_en: "Acting as the creative backend for marketting agencies, delivering high-converting 'Premium Bengali' visuals to lower CAC and maximize ROAS for your clients.", desc_bn: "মার্কেটিং এজেন্সিগুলোর ক্রিয়েটিভ ব্যাকএন্ড হিসেবে কাজ করি — হাই-কনভার্টিং 'প্রিমিয়াম বাংলা' ভিজ্যুয়াল দিয়ে আপনার ক্লায়েন্টদের CAC কমাই এবং ROAS বাড়াই।" },
   ];
 
   const displayServices = services.length > 0 ? services : defaultServices;
 
   // Services headings/labels locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = content?.titleLine1En ?? 'Services built for';
-  const line2 = content?.titleLine2En ?? 'ecommerce-based skincare brands.';
+  const line1 = content?.titleLine1En ?? 'Services built for premium brands';
+  const line2 = content?.titleLine2En ?? 'and marketing agencies.';
 
   return (
     <div id="services" className="bg-primary">

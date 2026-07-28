@@ -51,7 +51,7 @@ export default function Contact({ contact }: ContactProps) {
     titleLine1Bn: 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?',
     titleLine2En: 'worth noticing.',
     titleLine2Bn: 'আসুন কথা বলি।',
-    descEn: "Have a skincare brand that deserves better visuals? Let's talk. We take on a limited number of projects to ensure every client gets full attention.",
+    descEn: "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.",
     descBn: 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও ভালো ভিজ্যুয়াল পাওয়ার যোগ্য? যোগাযোগ করুন। আমরা সীমিত সংখ্যক প্রজেক্ট নিই।',
   } as ContactContent;
 
@@ -108,7 +108,7 @@ export default function Contact({ contact }: ContactProps) {
             <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.85] text-primary-foreground/50 mb-10`}>
               {isBn
                 ? 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও এক্সক্লুসিভ ভিজ্যুয়াল ডিজার্ভ করে? আসুন, কথা বলি। প্রতিটি ক্লায়েন্টকে আমাদের সম্পূর্ণ মনোযোগ দিতে আমরা অত্যন্ত সীমিত সংখ্যক প্রোজেক্ট নিয়ে কাজ করি।'
-                : (c.descEn ?? "Have a skincare brand that deserves better visuals? Let's talk.")}
+                : (c.descEn ?? "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.")}
             </p>
           </MotionReveal>
 
