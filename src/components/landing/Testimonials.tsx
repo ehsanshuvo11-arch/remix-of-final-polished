@@ -99,16 +99,17 @@ export default function Testimonials() {
 
         {/* Carousel */}
         <div className="relative h-[380px] md:h-[340px] flex items-center justify-center overflow-visible">
-          <AnimatePresence initial={false} mode="popLayout">
-            {testimonials.map((t, i) => {
-              const offset = getOffset(i);
-              const isActive = offset === 0;
-              const isVisible = Math.abs(offset) <= 1;
+          {testimonials.map((t, i) => {
+            const offset = getOffset(i);
+            const isActive = offset === 0;
+            const isVisible = Math.abs(offset) <= 1;
 
-              return (
+            return (
+              <div
+                key={t.id}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[520px]"
+              >
                 <motion.div
-                  key={t.id}
-                  layout
                   initial={false}
                   animate={{
                     x: `calc(${offset * spacing}%)`,
@@ -120,16 +121,15 @@ export default function Testimonials() {
                     x: { duration: 0.8, ease: LUXE },
                     scale: { duration: 0.8, ease: LUXE },
                     opacity: { duration: 0.6, ease: LUXE },
-                    layout: { duration: 0.8, ease: LUXE },
                   }}
                   style={{ willChange: 'transform, opacity' }}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[520px]"
+                  className="w-full"
                 >
                   <TestimonialCard testimonial={t} dimmed={!isActive} />
                 </motion.div>
-              );
-            })}
-          </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
 
         {/* Controls */}
