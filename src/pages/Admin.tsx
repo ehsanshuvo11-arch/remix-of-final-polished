@@ -1818,4 +1818,293 @@ function ColorsEditor() {
   );
 }
 
+// ── TESTIMONIALS EDITOR ──
+const DEFAULT_TESTIMONIALS: TestimonialsContent = {
+  labelEn: 'Testimonials',
+  labelBn: 'প্রশংসাপত্র',
+  headingEn: 'What founders say.',
+  headingBn: 'ফাউন্ডারদের অভিমত।',
+  subEn: 'Words from the visionaries behind premium e-commerce skincare brands.',
+  subBn: 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।',
+  items: [],
+};
+
+function makeTestimonialId() {
+  return `t_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+}
+
+function TestimonialsEditor() {
+  const [data, setData] = useState<TestimonialsContent>(DEFAULT_TESTIMONIALS);
+
+  useEffect(() => {
+    supabase.from('site_settings').select('value').eq('key', 'testimonials').maybeSingle().then(({ data: row }) => {
+      if (row?.value) {
+        const v = row.value as TestimonialsContent;
+        setData({
+          ...DEFAULT_TESTIMONIALS,
+          ...v,
+          items: (v.items ?? []).map((it) => ({
+            id: it.id || makeTestimonialId(),
+            quote_en: it.quote_en ?? '',
+            quote_bn: it.quote_bn ?? '',
+            name: it.name ?? '',
+            role_en: it.role_en ?? '',
+            role_bn: it.role_bn ?? '',
+          })),
+        });
+      }
+      _setLoaded(true);
+    });
+  }, []);
+
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('testimonials', data as unknown as Record<string, any>);
+  };
+
+  const { markLoaded } = useDirtySection({ key: 'testimonials', label: 'Testimonials', data, save });
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
+
+  const items = data.items ?? [];
+
+  const updateItem = (idx: number, patch: Partial<TestimonialItem>) => {
+    const nextItems = items.map((it, i) => (i === idx ? { ...it, ...patch } : it));
+    setData({ ...data, items: nextItems });
+  };
+  const removeItem = (idx: number) => setData({ ...data, items: items.filter((_, i) => i !== idx) });
+  const moveItem = (idx: number, dir: -1 | 1) => {
+    const nextIdx = idx + dir;
+    if (nextIdx < 0 || nextIdx >= items.length) return;
+    const next = [...items];
+    [next[idx], next[nextIdx]] = [next[nextIdx], next[idx]];
+    setData({ ...data, items: next });
+  };
+  const addItem = () => {
+    setData({
+      ...data,
+      items: [
+        ...items,
+        { id: makeTestimonialId(), quote_en: '', quote_bn: '', name: '', role_en: '', role_bn: '' },
+      ],
+    });
+  };
+
+  return (
+    <>
+      <AdminSection title="Testimonials — Section copy">
+        <div className="grid grid-cols-2 gap-4">
+          <AdminField label="Eyebrow (EN)">
+            <AdminInput value={data.labelEn ?? ''} onChange={(v) => setData({ ...data, labelEn: v })} />
+          </AdminField>
+          <AdminField label="Eyebrow (বাংলা)">
+            <AdminInput value={data.labelBn ?? ''} onChange={(v) => setData({ ...data, labelBn: v })} />
+          </AdminField>
+          <AdminField label="Heading (EN)">
+            <AdminInput value={data.headingEn ?? ''} onChange={(v) => setData({ ...data, headingEn: v })} />
+          </AdminField>
+          <AdminField label="Heading (বাংলা)">
+            <AdminInput value={data.headingBn ?? ''} onChange={(v) => setData({ ...data, headingBn: v })} />
+          </AdminField>
+          <AdminField label="Subheading (EN)">
+            <AdminTextarea value={data.subEn ?? ''} onChange={(v) => setData({ ...data, subEn: v })} rows={2} />
+          </AdminField>
+          <AdminField label="Subheading (বাংলা)">
+            <AdminTextarea value={data.subBn ?? ''} onChange={(v) => setData({ ...data, subBn: v })} rows={2} />
+          </AdminField>
+        </div>
+      </AdminSection>
+
+      <AdminSection title={`Testimonial quotes (${items.length})`}>
+        <div className="space-y-6">
+          {items.map((it, i) => (
+            <div key={it.id} className="border border-primary-foreground/10 rounded p-5 bg-primary-foreground/[0.02]">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40">#{i + 1}</p>
+                <div className="flex items-center gap-2">
+                  <button type="button" onClick={() => moveItem(i, -1)} disabled={i === 0} className="text-[11px] tracking-[2px] uppercase px-2 py-1 text-primary-foreground/60 hover:text-accent disabled:opacity-20">↑</button>
+                  <button type="button" onClick={() => moveItem(i, 1)} disabled={i === items.length - 1} className="text-[11px] tracking-[2px] uppercase px-2 py-1 text-primary-foreground/60 hover:text-accent disabled:opacity-20">↓</button>
+                  <button type="button" onClick={() => removeItem(i)} className="text-[11px] tracking-[2px] uppercase px-2 py-1 text-red-400/80 hover:text-red-300">Remove</button>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <AdminField label="Name">
+                  <AdminInput value={it.name} onChange={(v) => updateItem(i, { name: v })} />
+                </AdminField>
+                <div />
+                <AdminField label="Role (EN)">
+                  <AdminInput value={it.role_en} onChange={(v) => updateItem(i, { role_en: v })} placeholder="Founder, Brand Co." />
+                </AdminField>
+                <AdminField label="Role (বাংলা)">
+                  <AdminInput value={it.role_bn} onChange={(v) => updateItem(i, { role_bn: v })} placeholder="ফাউন্ডার, ব্র্যান্ড কোং" />
+                </AdminField>
+                <AdminField label="Quote (EN)">
+                  <AdminTextarea value={it.quote_en} onChange={(v) => updateItem(i, { quote_en: v })} rows={4} />
+                </AdminField>
+                <AdminField label="Quote (বাংলা)">
+                  <AdminTextarea value={it.quote_bn} onChange={(v) => updateItem(i, { quote_bn: v })} rows={4} />
+                </AdminField>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={addItem}
+          className="mt-6 px-4 py-2 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase rounded-sm hover:-translate-y-0.5 transition-transform duration-300"
+        >
+          + Add testimonial
+        </button>
+        <p className="text-[11px] text-primary-foreground/40 mt-3">
+          When empty, the site falls back to built-in sample testimonials.
+        </p>
+      </AdminSection>
+    </>
+  );
+}
+
+// ── UI LABELS EDITOR ──
+const UI_LABEL_GROUPS: {
+  title: string;
+  fields: { keyEn: keyof UILabelsContent; keyBn: keyof UILabelsContent; label: string; placeholderEn: string; placeholderBn: string; textarea?: boolean }[];
+}[] = [
+  {
+    title: 'Navigation (বাংলা labels are used when the site is switched to Bengali)',
+    fields: [
+      { keyEn: 'navEvolutionEn', keyBn: 'navEvolutionBn', label: 'Evolution', placeholderEn: 'The Evolution', placeholderBn: 'বিবর্তন' },
+      { keyEn: 'navEvolutionEn', keyBn: 'navAboutBn', label: 'About (বাংলা only)', placeholderEn: '—', placeholderBn: 'পরিচিতি' },
+      { keyEn: 'navEvolutionEn', keyBn: 'navServicesBn', label: 'Services (বাংলা only)', placeholderEn: '—', placeholderBn: 'এক্সপার্টিজ' },
+      { keyEn: 'navEvolutionEn', keyBn: 'navWorkBn', label: 'Work (বাংলা only)', placeholderEn: '—', placeholderBn: 'সিগনেচার প্রজেক্ট' },
+      { keyEn: 'navEvolutionEn', keyBn: 'navContactBn', label: 'Contact (বাংলা only)', placeholderEn: '—', placeholderBn: 'যোগাযোগ' },
+    ],
+  },
+  {
+    title: 'Portfolio buttons',
+    fields: [
+      { keyEn: 'portfolioClickExpandEn', keyBn: 'portfolioClickExpandBn', label: 'Click to expand image', placeholderEn: 'Click image for full view', placeholderBn: 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন' },
+      { keyEn: 'portfolioClickCollapseEn', keyBn: 'portfolioClickCollapseBn', label: 'Click to collapse image', placeholderEn: 'Click to collapse', placeholderBn: 'সংকুচিত করতে ক্লিক করুন' },
+      { keyEn: 'portfolioViewCaseStudyEn', keyBn: 'portfolioViewCaseStudyBn', label: 'View case study button', placeholderEn: 'View full case study', placeholderBn: 'সম্পূর্ণ কেস স্টাডি দেখুন' },
+      { keyEn: 'portfolioHideCaseStudyEn', keyBn: 'portfolioHideCaseStudyBn', label: 'Hide case study button', placeholderEn: 'Hide case study', placeholderBn: 'কেস স্টাডি লুকান' },
+      { keyEn: 'portfolioViewMockupsEn', keyBn: 'portfolioViewMockupsBn', label: 'View mockups button', placeholderEn: 'View project mockups', placeholderBn: 'প্রোজেক্ট মকআপ দেখুন' },
+    ],
+  },
+  {
+    title: 'Lead form — Bengali intro block',
+    fields: [
+      { keyEn: 'navEvolutionEn', keyBn: 'leadFormIntroTitleBn', label: 'Intro title (বাংলা only)', placeholderEn: '—', placeholderBn: 'পার্টনারশিপ ইনকোয়ারি' },
+      { keyEn: 'navEvolutionEn', keyBn: 'leadFormIntroDescBn', label: 'Intro description (বাংলা only)', placeholderEn: '—', placeholderBn: 'আমরা প্রতিটি ব্র্যান্ডের সাথে…', textarea: true },
+    ],
+  },
+  {
+    title: 'Lead form — progress',
+    fields: [
+      { keyEn: 'leadFormStepOfEn', keyBn: 'leadFormStepOfBn', label: 'Step counter (use {n} and {total})', placeholderEn: 'Step {n} of {total}', placeholderBn: 'ধাপ {n} / {total}' },
+      { keyEn: 'leadFormStepBrandEn', keyBn: 'leadFormStepBrandBn', label: 'Step 1 name', placeholderEn: 'Brand', placeholderBn: 'ব্র্যান্ড' },
+      { keyEn: 'leadFormStepVisionEn', keyBn: 'leadFormStepVisionBn', label: 'Step 2 name', placeholderEn: 'Vision', placeholderBn: 'ভিশন' },
+      { keyEn: 'leadFormStepContactEn', keyBn: 'leadFormStepContactBn', label: 'Step 3 name', placeholderEn: 'Contact', placeholderBn: 'যোগাযোগ' },
+    ],
+  },
+  {
+    title: 'Lead form — Step 1',
+    fields: [
+      { keyEn: 'leadFormStep1EyebrowEn', keyBn: 'leadFormStep1EyebrowBn', label: 'Step 1 eyebrow', placeholderEn: 'Tell us about you', placeholderBn: 'আপনার সম্পর্কে' },
+      { keyEn: 'leadFormStep1TitleEn', keyBn: 'leadFormStep1TitleBn', label: 'Step 1 title', placeholderEn: 'Who are we talking to?', placeholderBn: 'কে যোগাযোগ করছেন?' },
+      { keyEn: 'leadFormNameEn', keyBn: 'leadFormNameBn', label: 'Name placeholder', placeholderEn: 'Your full name', placeholderBn: 'আপনার নাম' },
+      { keyEn: 'leadFormBrandNameEn', keyBn: 'leadFormBrandNameBn', label: 'Brand placeholder', placeholderEn: 'Brand or store name', placeholderBn: 'আপনার ব্র্যান্ডের নাম' },
+      { keyEn: 'leadFormStoreUrlEn', keyBn: 'leadFormStoreUrlBn', label: 'Store URL placeholder', placeholderEn: 'Website / Instagram (optional)', placeholderBn: 'ওয়েবসাইট / ইনস্টাগ্রাম লিংক' },
+    ],
+  },
+  {
+    title: 'Lead form — Step 2',
+    fields: [
+      { keyEn: 'leadFormStep2EyebrowEn', keyBn: 'leadFormStep2EyebrowBn', label: 'Step 2 eyebrow', placeholderEn: 'Investment & vision', placeholderBn: 'প্রোজেক্টের লক্ষ্য ও ভিশন' },
+      { keyEn: 'leadFormStep2TitleEn', keyBn: 'leadFormStep2TitleBn', label: 'Step 2 title', placeholderEn: "What's the scope?", placeholderBn: 'প্রোজেক্টের পরিধি?' },
+      { keyEn: 'leadFormBudgetLabelEn', keyBn: 'leadFormBudgetLabelBn', label: 'Budget label', placeholderEn: 'Estimated budget', placeholderBn: 'আনুমানিক বাজেট' },
+      { keyEn: 'budget1En', keyBn: 'budget1Bn', label: 'Budget option 1', placeholderEn: 'Below 20,000 BDT', placeholderBn: '২০,০০০ টাকার নিচে' },
+      { keyEn: 'budget2En', keyBn: 'budget2Bn', label: 'Budget option 2', placeholderEn: '20,000 – 50,000 BDT', placeholderBn: '২০,০০০ – ৫০,০০০ টাকা' },
+      { keyEn: 'budget3En', keyBn: 'budget3Bn', label: 'Budget option 3', placeholderEn: '50,000 BDT and above', placeholderBn: '৫০,০০০ টাকা ও তার বেশি' },
+      { keyEn: 'budget4En', keyBn: 'budget4Bn', label: 'Budget option 4', placeholderEn: "I'm not sure yet", placeholderBn: 'এখনো নিশ্চিত নই' },
+      { keyEn: 'leadFormProjectPlaceholderEn', keyBn: 'leadFormProjectPlaceholderBn', label: 'Project details placeholder', placeholderEn: 'Describe your project — goals, timeline…', placeholderBn: 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে…', textarea: true },
+    ],
+  },
+  {
+    title: 'Lead form — Step 3',
+    fields: [
+      { keyEn: 'leadFormStep3EyebrowEn', keyBn: 'leadFormStep3EyebrowBn', label: 'Step 3 eyebrow', placeholderEn: 'Almost done', placeholderBn: 'প্রায় শেষ' },
+      { keyEn: 'leadFormStep3TitleEn', keyBn: 'leadFormStep3TitleBn', label: 'Step 3 title', placeholderEn: 'Where can we reach you?', placeholderBn: 'বিজনেস ইমেইল' },
+      { keyEn: 'leadFormEmailPlaceholderEn', keyBn: 'leadFormEmailPlaceholderBn', label: 'Email placeholder', placeholderEn: 'Email address', placeholderBn: 'hello@yourbrand.com' },
+      { keyEn: 'leadFormReassuranceEn', keyBn: 'leadFormReassuranceBn', label: 'Reassurance copy', placeholderEn: 'We respond personally within 24 hours…', placeholderBn: 'আমরা ২৪ ঘণ্টার মধ্যে…', textarea: true },
+    ],
+  },
+  {
+    title: 'Lead form — buttons & thank you',
+    fields: [
+      { keyEn: 'leadFormBackEn', keyBn: 'leadFormBackBn', label: 'Back button', placeholderEn: 'Back', placeholderBn: 'পিছনে' },
+      { keyEn: 'leadFormContinueEn', keyBn: 'leadFormContinueBn', label: 'Continue button', placeholderEn: 'Continue', placeholderBn: 'এগিয়ে যান' },
+      { keyEn: 'leadFormSubmitEn', keyBn: 'leadFormSubmitBn', label: 'Submit button', placeholderEn: 'Request Consultation', placeholderBn: 'রিকোয়েস্ট সাবমিট করুন' },
+      { keyEn: 'leadFormSendingEn', keyBn: 'leadFormSendingBn', label: 'Sending state', placeholderEn: 'Sending…', placeholderBn: 'সাবমিট হচ্ছে...' },
+      { keyEn: 'leadFormReceivedEn', keyBn: 'leadFormReceivedBn', label: 'Received eyebrow', placeholderEn: 'Received', placeholderBn: 'প্রাপ্ত' },
+      { keyEn: 'leadFormThankTitleEn', keyBn: 'leadFormThankTitleBn', label: 'Thank-you title', placeholderEn: 'Thank you. We\u2019ll be in touch.', placeholderBn: 'ধন্যবাদ। আমরা শীঘ্রই যোগাযোগ করব।' },
+      { keyEn: 'leadFormThankSubEn', keyBn: 'leadFormThankSubBn', label: 'Thank-you subtitle', placeholderEn: 'Your inquiry just landed…', placeholderBn: 'আপনার বার্তা আমাদের স্টুডিওতে…', textarea: true },
+      { keyEn: 'leadFormResetEn', keyBn: 'leadFormResetBn', label: 'Reset button', placeholderEn: 'Submit another inquiry', placeholderBn: 'আরেকটি বার্তা পাঠান' },
+    ],
+  },
+];
+
+function UILabelsEditor() {
+  const [data, setData] = useState<UILabelsContent>({});
+
+  useEffect(() => {
+    supabase.from('site_settings').select('value').eq('key', 'ui_labels').maybeSingle().then(({ data: row }) => {
+      if (row?.value) setData(row.value as UILabelsContent);
+      _setLoaded(true);
+    });
+  }, []);
+
+  const save = async (): Promise<boolean> => {
+    return await upsertSetting('ui_labels', data as unknown as Record<string, any>);
+  };
+
+  const { markLoaded } = useDirtySection({ key: 'ui_labels', label: 'UI Labels', data, save });
+  const [_loaded, _setLoaded] = useState(false);
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
+
+  const set = (key: keyof UILabelsContent, v: string) => setData({ ...data, [key]: v });
+
+  return (
+    <>
+      {UI_LABEL_GROUPS.map((group) => (
+        <AdminSection key={group.title} title={group.title}>
+          <div className="space-y-4">
+            {group.fields.map((f, idx) => {
+              const showEn = f.placeholderEn !== '—';
+              const Field = f.textarea ? AdminTextarea : AdminInput;
+              return (
+                <div key={`${f.keyBn}-${idx}`} className="grid grid-cols-2 gap-4">
+                  {showEn ? (
+                    <AdminField label={`${f.label} (EN)`}>
+                      <Field
+                        value={(data[f.keyEn] as string | undefined) ?? ''}
+                        onChange={(v: string) => set(f.keyEn, v)}
+                        placeholder={f.placeholderEn}
+                      />
+                    </AdminField>
+                  ) : <div />}
+                  <AdminField label={`${f.label} (বাংলা)`}>
+                    <Field
+                      value={(data[f.keyBn] as string | undefined) ?? ''}
+                      onChange={(v: string) => set(f.keyBn, v)}
+                      placeholder={f.placeholderBn}
+                    />
+                  </AdminField>
+                </div>
+              );
+            })}
+          </div>
+        </AdminSection>
+      ))}
+    </>
+  );
+}
+
+
 
