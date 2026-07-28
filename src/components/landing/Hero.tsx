@@ -32,8 +32,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     title2Bn: '*অনবদ্য!*',
     eyebrowEn: 'Graphics Design Agency · Bangladesh',
     eyebrowBn: 'গ্রাফিক্স ডিজাইন এজেন্সি · বাংলাদেশ',
-    subEn: 'We craft refined, trust-driven visual identities for skincare brands that deserve to be seen — and remembered.',
-    subBn: 'আমরা স্কিনকেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা দেখা এবং মনে রাখার যোগ্য।',
+    subEn: 'We craft refined, trust-driven visual identities for skincare & self-care brands that deserve to be seen — and remembered.',
+    subBn: 'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা দেখা এবং মনে রাখার যোগ্য।',
   };
 
   // Parallax on orbs
