@@ -6,11 +6,8 @@ interface MarqueeProps {
 
 // Bengali transcreations keyed by the canonical English source string (lowercased).
 const bnMap: Record<string, string> = {
-  'precision aesthetics': 'নিখুঁত এস্থেটিক্স',
-  'skincare visual systems': 'স্কিনকেয়ার ভিজ্যুয়াল সিস্টেম',
-  'bangla typography': 'সিগনেচার বাংলা টাইপোগ্রাফি',
-  'premium positioning': 'এক্সক্লুসিভ পজিশনিং',
-  'social media design': 'কনভার্শন-ফোকাসড ডিজাইন',
+  'e-commerce visual systems': 'ই-কমার্স ভিজ্যুয়াল সিস্টেম',
+  'brand identity systems': 'ব্র্যান্ড আইডেন্টিটি সিস্টেম',
 };
 
 export default function Marquee({ items }: MarqueeProps) {
@@ -18,11 +15,8 @@ export default function Marquee({ items }: MarqueeProps) {
   const isBn = lang === 'bn';
 
   const defaultItems = [
-    'Precision Aesthetics',
-    'Skincare Visual Systems',
-    'Bangla Typography',
-    'Premium Positioning',
-    'Social Media Design',
+    'E-Commerce Visual Systems',
+    'Brand Identity Systems',
   ];
   const sourceItems = items.length > 0 ? items : defaultItems;
 
