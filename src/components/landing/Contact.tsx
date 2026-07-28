@@ -107,7 +107,7 @@ export default function Contact({ contact }: ContactProps) {
           <MotionReveal delay={0.15}>
             <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.85] text-primary-foreground/50 mb-10`}>
               {isBn
-                ? 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও এক্সক্লুসিভ ভিজ্যুয়াল ডিজার্ভ করে? আসুন, কথা বলি। প্রতিটি ক্লায়েন্টকে আমাদের সম্পূর্ণ মনোযোগ দিতে আমরা অত্যন্ত সীমিত সংখ্যক প্রোজেক্ট নিয়ে কাজ করি।'
+                ? 'আপনার D2C ব্র্যান্ডকে স্কেল করতে অথবা মার্কেটিং এজেন্সিকে প্রিমিয়াম ভিজ্যুয়াল দিয়ে আরও শক্তিশালী করতে প্রস্তুত? চলুন কথা বলি। প্রতিটি প্রজেক্টে সর্বোচ্চ মনোযোগ নিশ্চিত করতে আমরা লিমিটেড সংখ্যক ক্লায়েন্ট নিয়ে কাজ করি।'
                 : (c.descEn ?? "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.")}
             </p>
           </MotionReveal>
