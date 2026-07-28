@@ -61,7 +61,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative bg-[#0f1e4a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
+      className="relative bg-primary text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -171,7 +171,7 @@ function TestimonialCard({
       className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md min-h-[260px] ${
         dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
-          : 'bg-[#0f1e4a] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
+          : 'bg-primary border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
       }`}
     >
       <div className="flex items-center gap-1 mb-5">
