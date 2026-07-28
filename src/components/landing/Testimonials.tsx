@@ -174,7 +174,7 @@ function TestimonialCard({
       className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md min-h-[260px] ${
         dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
-          : 'bg-primary-foreground/[0.06] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
+          : 'bg-[#0f1e4a] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
       }`}
     >
       <div className="flex items-center gap-1 mb-5">
