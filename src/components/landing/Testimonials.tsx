@@ -93,29 +93,28 @@ export default function Testimonials() {
             const isVisible = Math.abs(offset) <= 1;
 
             return (
-              <div
+              <motion.div
                 key={t.id}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[520px]"
+                initial={false}
+                animate={{
+                  x: `calc(-50% + ${offset * spacing}%)`,
+                  y: '-50%',
+                  scale: isActive ? 1 : 0.85,
+                  opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
+                  zIndex: isActive ? 10 : 1,
+                }}
+                transition={{
+                  x: { duration: 0.8, ease: LUXE },
+                  y: { duration: 0 },
+                  scale: { duration: 0.8, ease: LUXE },
+                  opacity: { duration: 0.6, ease: LUXE },
+                  zIndex: { duration: 0 },
+                }}
+                style={{ willChange: 'transform, opacity', top: '50%', left: '50%' }}
+                className="absolute w-full max-w-[520px]"
               >
-                <motion.div
-                  initial={false}
-                  animate={{
-                    x: `calc(${offset * spacing}%)`,
-                    scale: isActive ? 1 : 0.85,
-                    opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
-                    zIndex: isActive ? 10 : 1,
-                  }}
-                  transition={{
-                    x: { duration: 0.8, ease: LUXE },
-                    scale: { duration: 0.8, ease: LUXE },
-                    opacity: { duration: 0.6, ease: LUXE },
-                  }}
-                  style={{ willChange: 'transform, opacity' }}
-                  className="w-full"
-                >
-                  <TestimonialCard testimonial={t} dimmed={!isActive} />
-                </motion.div>
-              </div>
+                <TestimonialCard testimonial={t} dimmed={!isActive} />
+              </motion.div>
             );
           })}
         </div>
