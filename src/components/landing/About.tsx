@@ -77,7 +77,7 @@ export default function About({ content, stats }: AboutProps) {
           <MotionReveal delay={0.3}>
             <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
               {isBn ? (
-                <><span lang="en">POLISHED</span>{' তৈরি হয়েছে ই-কমার্স স্কিনকেয়ার ব্র্যান্ডগুলোর জন্য, যারা প্রিমিয়াম এবং বিশ্বাসযোগ্য একটি পরিচয় দাঁড় করাতে চায়। আমাদের লক্ষ্য একটাই—আপনার ব্র্যান্ডকে সাধারণের ভিড় থেকে আলাদা করে একটি এক্সক্লুসিভ অবস্থানে নিয়ে যাওয়া।'}</>
+                <><span lang="en">POLISHED</span>{' একটি প্রিমিয়াম ভিজ্যুয়াল আইডেন্টিটি পার্টনার যা D2C স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ড এবং ই-কমার্স মার্কেটিং এজেন্সিগুলোর জন্য হোয়াইট-লেবেল ক্রিয়েটিভ ইঞ্জিন হিসেবে কাজ করে।'}</>
               ) : about.p1En}
             </p>
           </MotionReveal>
