@@ -1,5 +1,7 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import SectionHeader from '@/components/landing/SectionHeader';
+
 import WordReveal from '@/components/landing/WordReveal';
 import LeadForm from '@/components/landing/LeadForm';
 import type { ContactContent } from '@/types/database';
