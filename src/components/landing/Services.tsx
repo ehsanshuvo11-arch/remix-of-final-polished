@@ -30,36 +30,14 @@ export default function Services({ services, content }: ServicesProps) {
   return (
     <div id="services" className="bg-primary">
       <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
-        <MotionReveal>
-          {isBn ? (
-            <p lang="bn" className="text-[14.6px] tracking-[1px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-              আমাদের এক্সপার্টিজ
-            </p>
-          ) : (
-            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {content?.labelEn ?? 'What We Do'}
-            </p>
-          )}
-        </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
-          {isBn ? (
-            <>
-              <WordReveal delay={0.1}>প্রিমিয়াম ব্র্যান্ড এবং মার্কেটিং এজেন্সিগুলোর</WordReveal>
-              <br />
-              <em className="italic text-accent">
-                <WordReveal delay={0.25}>জন্য তৈরি আমাদের সার্ভিসসমূহ।</WordReveal>
-              </em>
-            </>
-          ) : (
-            <>
-              <WordReveal delay={0.1}>{line1}</WordReveal>
-              <br />
-              <em className="italic">
-                <WordReveal delay={0.25}>{line2}</WordReveal>
-              </em>
-            </>
-          )}
-        </h2>
+        <SectionHeader
+          isBn={isBn}
+          isDarkBackground
+          subHeading={isBn ? 'আমাদের এক্সপার্টিজ' : (content?.labelEn ?? 'What We Do')}
+          heading={isBn ? 'প্রিমিয়াম ব্র্যান্ড এবং মার্কেটিং এজেন্সিগুলোর' : line1}
+          headingEm={isBn ? 'জন্য তৈরি আমাদের সার্ভিসসমূহ।' : line2}
+        />
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-14">
           {displayServices.map((service, i) => (
