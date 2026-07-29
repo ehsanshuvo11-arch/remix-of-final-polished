@@ -1,5 +1,7 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import SectionHeader from '@/components/landing/SectionHeader';
+
 import WordReveal from '@/components/landing/WordReveal';
 import RevealText from '@/components/landing/RevealText';
 import type { AboutContent, Stat } from '@/types/database';
