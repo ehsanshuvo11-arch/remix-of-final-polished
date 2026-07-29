@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { m, useMotionValue, useTransform, animate } from 'framer-motion';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import type { Transformation, TransformationsMetaContent } from '@/types/database';
@@ -132,7 +132,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
   }, []);
 
   return (
-    <motion.div
+    <m.div
       ref={containerRef}
       onMouseDown={(e) => startDrag(e.clientX)}
       onTouchStart={(e) => startDrag(e.touches[0].clientX)}
@@ -152,7 +152,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
       {/* BEFORE (clipped overlay) */}
-      <motion.div
+      <m.div
         style={{ clipPath }}
         className="absolute inset-0"
       >
@@ -164,7 +164,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
-      </motion.div>
+      </m.div>
 
       {/* Labels */}
       <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-primary/80 text-primary-foreground backdrop-blur-sm rounded-sm">
@@ -175,7 +175,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       </span>
 
       {/* Drag handle */}
-      <motion.div
+      <m.div
         style={{ left: handleLeft }}
         className="absolute top-0 bottom-0 w-px bg-primary-foreground/90 pointer-events-none -translate-x-1/2 shadow-[0_0_20px_rgba(255,255,255,0.6)]"
       >
@@ -188,7 +188,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
             <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
           </svg>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 }

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 type Direction = 'up' | 'left' | 'right';
@@ -43,7 +43,7 @@ export default function MotionReveal({
       };
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       // Hardcode the pre-animation state inline so the element never flashes
       // in its final position before Framer Motion hydrates (FOUC/jank fix).
@@ -62,6 +62,6 @@ export default function MotionReveal({
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

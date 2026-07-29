@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from 'framer-motion';
+import { m, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
@@ -66,7 +66,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 
       <AnimatePresence mode="wait" initial={false}>
         {isLoading ? (
-          <motion.div
+          <m.div
             key="portfolio-skeleton"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,9 +74,9 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <PortfolioSkeleton />
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key={`portfolio-list-${isBn ? 'bn' : 'en'}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             {displayProjects.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
             ))}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -253,7 +253,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       {/* Case study content */}
       <AnimatePresence>
         {caseStudyOpen && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -351,7 +351,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 </button>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -420,7 +420,7 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
       {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
 
-      <motion.div
+      <m.div
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
@@ -443,7 +443,7 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
           onLoad={() => setImageLoaded(true)}
           imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
         />
-      </motion.div>
+      </m.div>
     </div>
   );
 }
@@ -496,7 +496,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -568,16 +568,16 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           lightbox never resizes while a heavy mockup downloads. */}
       <div className="relative flex items-center justify-center">
         <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
-          <motion.div
+          <m.div
             className="absolute inset-0 z-0 pointer-events-none"
             initial={false}
             animate={{ opacity: loadedIndex === current ? 0 : 1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >
             <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
-          </motion.div>
+          </m.div>
           <AnimatePresence mode="wait">
-            <motion.img
+            <m.img
               key={current}
               initial={{ opacity: 0 }}
               animate={{ opacity: loadedIndex === current ? 1 : 0 }}
@@ -626,6 +626,6 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           ))}
         </div>
       )}
-    </motion.div>
+    </m.div>
   );
 }// Clean UI deployed

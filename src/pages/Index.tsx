@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
@@ -55,7 +55,7 @@ export default function Index() {
       <SectionTheme />
       
       <Navbar content={navContent ?? null} />
-      <motion.div
+      <m.div
         initial={false}
         animate={
           heroReady
@@ -69,7 +69,7 @@ export default function Index() {
           content={heroContent ?? null}
           logoUrl={logoData?.url ?? fallbackLogoUrl}
         />
-      </motion.div>
+      </m.div>
       <Marquee items={marqueeData?.items ?? []} />
       <About content={aboutContent ?? null} stats={stats} />
       <SectionDivider className="py-4" />

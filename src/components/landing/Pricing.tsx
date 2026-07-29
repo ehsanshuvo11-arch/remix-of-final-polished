@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
@@ -139,7 +139,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
         <AnimatePresence mode="wait" initial={false}>
           {isLoading ? (
-            <motion.div
+            <m.div
               key="pricing-skeleton"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -147,9 +147,9 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <PricingSkeleton />
-            </motion.div>
+            </m.div>
           ) : (
-            <motion.div
+            <m.div
               key={`pricing-tiers-${isBn ? 'bn' : 'en'}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -166,7 +166,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
                   onCtaClick={scrollToContact}
                 />
               ))}
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
 

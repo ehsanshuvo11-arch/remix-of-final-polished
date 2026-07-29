@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
@@ -143,7 +143,7 @@ export default function Testimonials() {
             const isVisible = Math.abs(offset) <= 1;
 
             return (
-              <motion.div
+              <m.div
                 key={t.id}
                 initial={false}
                 animate={{
@@ -162,7 +162,7 @@ export default function Testimonials() {
                 className={`absolute w-full max-w-[520px] ${isActive ? 'z-10' : 'z-0'}`}
               >
                 <TestimonialCard testimonial={t} dimmed={!isActive} isBn={isBn} />
-              </motion.div>
+              </m.div>
             );
           })}
         </div>

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { m, useMotionValue, useSpring } from 'framer-motion';
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -93,7 +93,7 @@ export default function MagneticButton({
     textY.set(0);
   };
 
-  const Tag = as === 'a' ? motion.a : motion.button;
+  const Tag = as === 'a' ? m.a : m.button;
 
   // On non-desktop pointers, render a plain element — zero motion handlers,
   // no transform style, no listeners. Prevents touch-screen glitches.
@@ -127,12 +127,12 @@ export default function MagneticButton({
         style={{ x: sx, y: sy }}
         className={className}
       >
-        <motion.span
+        <m.span
           style={{ x: stx, y: sty, display: 'inline-block' }}
           className="relative z-10 text-primary-foreground"
         >
           {children}
-        </motion.span>
+        </m.span>
       </Tag>
     </div>
   );

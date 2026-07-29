@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { m, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
   const [hovered, setHovered] = useState(false);
@@ -73,7 +73,7 @@ export default function CustomCursor() {
 
   return createPortal(
     <div className="hidden md:block pointer-events-none z-[99999]">
-      <motion.div
+      <m.div
         className="fixed top-0 left-0 rounded-full pointer-events-none z-[99999]"
         style={{
           x: dotX,
@@ -89,7 +89,7 @@ export default function CustomCursor() {
         }}
         transition={{ type: 'spring', stiffness: 200, damping: 20, mass: 0.3 }}
       />
-      <motion.div
+      <m.div
         className="fixed top-0 left-0 rounded-full pointer-events-none z-[99998]"
         style={{
           x: ringX,

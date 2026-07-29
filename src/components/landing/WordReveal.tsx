@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { m, useInView } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface WordRevealProps {
@@ -28,7 +28,7 @@ export default function WordReveal({
     <Tag ref={ref as any} className={className}>
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
-          <motion.span
+          <m.span
             className="inline-block"
             initial={isMobile ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
             animate={isMobile ? { y: '0%', opacity: 1 } : (isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 })}
@@ -39,7 +39,7 @@ export default function WordReveal({
             }}
           >
             {word}
-          </motion.span>
+          </m.span>
         </span>
       ))}
     </Tag>
