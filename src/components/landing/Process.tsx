@@ -29,30 +29,13 @@ export default function Process({ steps, content }: ProcessProps) {
   return (
     <div className="bg-secondary">
       <section id="process" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
-        <MotionReveal>
-          {isBn ? (
-            <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-              আমাদের কাজের প্রসেস
-            </p>
-          ) : (
-            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {content?.labelEn ?? 'How It Works'}
-            </p>
-          )}
-        </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
-          {isBn ? (
-            <WordReveal delay={0.1}>নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।</WordReveal>
-          ) : (
-            <>
-              <WordReveal delay={0.1}>{line1}</WordReveal>
-              <br />
-              <em className="italic">
-                <WordReveal delay={0.25}>{line2}</WordReveal>
-              </em>
-            </>
-          )}
-        </h2>
+        <SectionHeader
+          isBn={isBn}
+          subHeading={isBn ? 'আমাদের কাজের প্রসেস' : (content?.labelEn ?? 'How It Works')}
+          heading={isBn ? 'নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।' : line1}
+          headingEm={isBn ? undefined : line2}
+        />
+
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-14">
           {displaySteps.map((step, i) => (
