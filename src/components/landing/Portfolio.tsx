@@ -364,11 +364,18 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
 }
 
 /* ── Tilt Image (matches Services "What We Do" card animation) ── */
+/*
+  ASSET HINT: portfolio mockups should be exported as .webp (or .avif with a
+  .webp fallback) at ~1600px on the long edge and quality ~78. These PNG/JPG
+  mockups are the heaviest payload on the page — converting them typically cuts
+  60-80% of the bytes with no visible quality loss on retina screens.
+*/
 
-function TiltImage({ src, alt }: { src: string; alt: string }) {
+function TiltImage({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const isMobile = useIsMobileDevice();
+
 
   // ── Velocity-based subtle scale (desktop only) ──
   // Map page scroll velocity → tiny scaleY 1.0 → 1.015 max.
