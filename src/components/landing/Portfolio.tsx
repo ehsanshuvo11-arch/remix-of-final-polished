@@ -171,6 +171,8 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
                 className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 fadeDuration={0.8}
+                loading="eager"
+                fetchPriority="high"
                 imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
               />
 
@@ -179,8 +181,12 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             <TiltImage
               src={project.image_url}
               alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
+              /* Only the first two cards sit near the fold — eager + high priority.
+                 Everything below stays lazy to protect first-load bandwidth. */
+              priority={index < 2}
             />
           )
+
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
