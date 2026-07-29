@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import SectionHeader from '@/components/landing/SectionHeader';
+
 import WordReveal from '@/components/landing/WordReveal';
 import type { Service, ServicesMetaContent } from '@/types/database';
 
