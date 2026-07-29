@@ -424,9 +424,11 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
           alt={alt}
           containerClassName="w-full h-full"
           className="object-cover object-center cursor-pointer will-change-[opacity,transform]"
-          loading="lazy"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
           fadeDuration={0.8}
+
           onLoad={() => setImageLoaded(true)}
           imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
         />
