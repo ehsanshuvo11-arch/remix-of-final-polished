@@ -118,23 +118,14 @@ export default function Testimonials() {
       className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
-        <MotionReveal>
-          <p lang={isBn ? 'bn' : 'en'} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {label}
-          </p>
-        </MotionReveal>
+        <SectionHeader
+          isBn={isBn}
+          isDarkBackground
+          subHeading={label}
+          heading={heading}
+          description={sub}
+        />
 
-        <MotionReveal delay={0.1}>
-          <h2 className="font-heading font-normal text-primary-foreground mb-5 text-[clamp(36px,5vw,60px)] leading-[1.1]">
-            <WordReveal delay={0.1}>{heading}</WordReveal>
-          </h2>
-        </MotionReveal>
-
-        <MotionReveal delay={0.2}>
-          <p className="font-heading italic text-primary-foreground/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-16">
-            {sub}
-          </p>
-        </MotionReveal>
 
         <div className="relative h-[380px] md:h-[340px] flex items-center justify-center overflow-visible">
           {testimonials.map((t, i) => {
