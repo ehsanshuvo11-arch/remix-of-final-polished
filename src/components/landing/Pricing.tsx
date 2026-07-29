@@ -1,8 +1,6 @@
 import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
-import SectionHeader from '@/components/landing/SectionHeader';
-
 import WordReveal from '@/components/landing/WordReveal';
 import { PricingSkeleton } from '@/components/landing/Skeleton';
 import { ArrowRight } from 'lucide-react';
@@ -92,14 +90,52 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
   return (
     <section id="investment" className="bg-primary">
       <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
-        <SectionHeader
-          isBn={isBn}
-          isDarkBackground
-          subHeading={isBn ? sectionHeader.label_bn : sectionHeader.label_en}
-          heading={isBn ? sectionHeader.title_bn : sectionHeader.title_en}
-          headingEm={isBn ? sectionHeader.title_em_bn : sectionHeader.title_em_en}
-        />
+        <MotionReveal>
+          {isBn ? (
+            <p
+              lang="bn"
+              className="text-[14.6px] tracking-[1px] text-accent mb-4 font-medium leading-[1]"
+              style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+            >
+              {sectionHeader.label_bn}
+            </p>
+          ) : (
+            <p
+              lang="en"
+              style={enFont}
+              className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium"
+            >
+              {sectionHeader.label_en}
+            </p>
+          )}
+        </MotionReveal>
 
+        <h2
+          lang={isBn ? 'bn' : 'en'}
+          className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${
+            isBn
+              ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]'
+              : 'text-[clamp(36px,5vw,60px)]'
+          }`}
+        >
+          {isBn ? (
+            <>
+              <WordReveal delay={0.1}>{sectionHeader.title_bn}</WordReveal>
+              <br />
+              <em className="italic text-accent">
+                <WordReveal delay={0.25}>{sectionHeader.title_em_bn}</WordReveal>
+              </em>
+            </>
+          ) : (
+            <>
+              <WordReveal delay={0.1}>{sectionHeader.title_en}</WordReveal>
+              <br />
+              <em className="italic">
+                <WordReveal delay={0.25}>{sectionHeader.title_em_en}</WordReveal>
+              </em>
+            </>
+          )}
+        </h2>
 
         <AnimatePresence mode="wait" initial={false}>
           {isLoading ? (
