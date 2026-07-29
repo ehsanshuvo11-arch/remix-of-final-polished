@@ -143,11 +143,14 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       data-project-card={isFirst ? '' : undefined}
       className={imageExpanded ? 'relative overflow-visible' : 'relative'}
     >
+      {/* Aspect-ratio lock: the collapsed card reserves its exact box before the
+          mockup arrives, so the grid never shifts or jumps while loading. */}
       <div
         ref={cardRef}
         className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-          imageExpanded ? 'h-auto' : 'h-[110px] sm:h-[260px] md:h-[260px]'
+          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] h-[110px] sm:h-[260px] md:h-[260px]'
         }`}
+
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
