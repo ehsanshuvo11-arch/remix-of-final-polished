@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
+import SectionHeader from '@/components/landing/SectionHeader';
+
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import PremiumImage from '@/components/landing/PremiumImage';
