@@ -137,18 +137,15 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
-                <motion.img
-                  src={project.image_url}
-                  alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative z-10 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
-                  draggable={false}
-                />
-              </div>
+              <PremiumImage
+                src={project.image_url}
+                alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
+                containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
+                className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                fadeDuration={0.8}
+                imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
+              />
+
             </div>
           ) : (
             <TiltImage
