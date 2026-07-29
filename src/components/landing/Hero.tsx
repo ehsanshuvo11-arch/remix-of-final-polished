@@ -3,7 +3,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { HeroContent } from '@/types/database';
-import logoSvg from '@/assets/logo.svg';
 import RevealText from '@/components/landing/RevealText';
 
 interface HeroProps {
