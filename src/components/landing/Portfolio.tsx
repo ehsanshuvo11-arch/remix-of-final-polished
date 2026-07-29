@@ -7,6 +7,8 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
+import PremiumImage from '@/components/landing/PremiumImage';
+
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useUILabels } from '@/hooks/use-site-content';
