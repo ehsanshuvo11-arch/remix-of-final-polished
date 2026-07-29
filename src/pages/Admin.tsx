@@ -1830,10 +1830,10 @@ function ColorsEditor() {
 
 // ── TESTIMONIALS EDITOR ──
 const DEFAULT_TESTIMONIALS: TestimonialsContent = {
-  labelEn: 'Testimonials',
-  labelBn: 'প্রশংসাপত্র',
-  headingEn: 'What founders say.',
-  headingBn: 'ফাউন্ডারদের অভিমত।',
+  labelEn: 'Partnerships',
+  labelBn: 'পার্টনারশিপ',
+  headingEn: 'Trusted by Visionaries.',
+  headingBn: 'যাদের আস্থায় আমরা।',
   subEn: 'Words from the visionaries behind premium e-commerce brands and marketing agencies.',
   subBn: 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।',
   items: [],
