@@ -54,7 +54,11 @@ export default function PremiumImage({
       <motion.img
         src={src}
         alt={alt}
-        onLoad={() => setLoaded(true)}
+        onLoad={(e) => {
+          setLoaded(true);
+          onLoad?.(e);
+        }}
+
         onError={() => setLoaded(true)}
         initial={false}
         animate={{ opacity: loaded ? 1 : 0 }}
