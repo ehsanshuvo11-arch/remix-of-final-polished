@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { m } from 'framer-motion';
 
 interface SectionDividerProps {
@@ -8,7 +9,7 @@ interface SectionDividerProps {
  * Quiet-luxury partition: a 1px line that fades from 0% at the edges
  * to a soft off-white in the centre, revealed gently on scroll.
  */
-export default function SectionDivider({ className = '' }: SectionDividerProps) {
+function SectionDivider({ className = '' }: SectionDividerProps) {
   return (
     <div className={`bg-primary ${className}`} aria-hidden>
       <div className="max-w-[1200px] mx-auto px-6 md:px-14">
@@ -23,3 +24,6 @@ export default function SectionDivider({ className = '' }: SectionDividerProps) 
     </div>
   );
 }
+
+// Static/decorative — memoized so scroll & state churn never re-renders it.
+export default memo(SectionDivider);
