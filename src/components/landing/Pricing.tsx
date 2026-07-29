@@ -1,7 +1,10 @@
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import { PricingSkeleton } from '@/components/landing/Skeleton';
 import { ArrowRight } from 'lucide-react';
+
 
 interface PricingTier {
   id: string;
