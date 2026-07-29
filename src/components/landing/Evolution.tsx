@@ -189,7 +189,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         <img
           src={after}
           alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
-          loading="lazy"
+          loading="lazy" decoding="async"
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
@@ -197,7 +197,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
           <img
             src={before}
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
-            loading="lazy"
+            loading="lazy" decoding="async"
             draggable={false}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           />

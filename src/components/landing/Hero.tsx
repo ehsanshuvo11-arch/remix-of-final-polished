@@ -3,7 +3,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { HeroContent } from '@/types/database';
-import logoSvg from '@/assets/logo.svg';
 import RevealText from '@/components/landing/RevealText';
 
 interface HeroProps {
@@ -68,8 +67,13 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       <div className="max-w-[900px] text-center relative z-10">
         {/* Logo badge */}
         <img
-          src={logoSvg}
+          src="/logo.svg"
           alt="POLISHED Logo"
+          width={100}
+          height={100}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
           className="w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',

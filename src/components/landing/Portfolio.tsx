@@ -392,7 +392,7 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
           src={src}
           alt={alt}
           className="relative z-10 block w-full h-full object-cover object-center cursor-pointer will-change-transform"
-          loading="lazy"
+          loading="lazy" decoding="async"
           draggable={false}
           initial={false}
           animate={{ scale: imageLoaded ? 1.0 : 1.03 }}
