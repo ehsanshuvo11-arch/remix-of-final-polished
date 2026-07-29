@@ -23,7 +23,7 @@ export default function AdminLogin() {
     if (email.trim().toLowerCase() === DUMMY_EMAIL && password === DUMMY_PASSWORD) {
       localStorage.setItem(DUMMY_AUTH_KEY, 'true');
       setLoginSuccess('Login successful — redirecting…');
-      setTimeout(() => navigate('/admin/dashboard'), 700);
+      setTimeout(() => navigate('/admin'), 700);
       return;
     }
 
