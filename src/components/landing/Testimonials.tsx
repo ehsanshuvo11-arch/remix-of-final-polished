@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { m } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
+import SectionHeader from '@/components/landing/SectionHeader';
+
 import WordReveal from '@/components/landing/WordReveal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLanguage } from '@/contexts/LanguageContext';
