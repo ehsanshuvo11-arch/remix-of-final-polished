@@ -76,7 +76,7 @@ export default function Index() {
       <Services services={services} content={servicesMeta ?? null} />
       <SectionDivider className="py-4" />
       <Evolution />
-      <Portfolio projects={projects} content={portfolioMeta ?? null} />
+      <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
       <Process steps={processSteps} content={processMeta ?? null} />
       <SectionDivider className="py-4" />
