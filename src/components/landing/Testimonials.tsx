@@ -84,11 +84,11 @@ export default function Testimonials() {
   }));
 
   const label = isBn
-    ? (content?.labelBn ?? 'প্রশংসাপত্র')
-    : (content?.labelEn ?? 'Testimonials');
+    ? (content?.labelBn ?? 'পার্টনারশিপ')
+    : (content?.labelEn ?? 'Partnerships');
   const heading = isBn
-    ? (content?.headingBn ?? 'ফাউন্ডারদের অভিমত।')
-    : (content?.headingEn ?? 'What founders say.');
+    ? (content?.headingBn ?? 'যাদের আস্থায় আমরা।')
+    : (content?.headingEn ?? 'Trusted by Visionaries.');
   const sub = isBn
     ? (content?.subBn ?? 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।')
     : (content?.subEn ?? 'Words from the visionaries behind premium e-commerce brands and marketing agencies.');
