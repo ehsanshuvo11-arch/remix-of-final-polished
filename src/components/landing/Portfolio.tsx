@@ -456,6 +456,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   onClose: () => void;
 }) {
   const [current, setCurrent] = useState(initialIndex);
+  const [loadedIndex, setLoadedIndex] = useState(-1);
+
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
   const total = urls.length;
