@@ -38,31 +38,13 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 
   return (
     <section id="work" className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
-      <MotionReveal>
-        {isBn ? (
-          <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-            আমাদের সিগনেচার কাজ
-          </p>
-        ) : (
-          <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {content?.labelEn ?? 'Selected Work'}
-          </p>
-        )}
-      </MotionReveal>
-      <MotionReveal delay={0.1}>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
-          {isBn ? (
-            <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
-          ) : (
-            <>
-              <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
-              <em className="italic">
-                <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
-              </em>
-            </>
-          )}
-        </h2>
-      </MotionReveal>
+      <SectionHeader
+        isBn={isBn}
+        subHeading={isBn ? 'আমাদের সিগনেচার কাজ' : (content?.labelEn ?? 'Selected Work')}
+        heading={isBn ? 'আমাদের সিগনেচার প্রজেক্টসমূহ।' : (content?.titleLine1En ?? 'Recent')}
+        headingEm={isBn ? undefined : (content?.titleLine2En ?? 'projects.')}
+      />
+
 
       <AnimatePresence mode="wait" initial={false}>
         {isLoading ? (
