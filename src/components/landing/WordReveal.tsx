@@ -29,10 +29,16 @@ export default function WordReveal({
       {words.map((word, i) => (
         // The mask needs overflow:hidden for the slide-up, which would otherwise
         // clip descenders (g, y, p) and italic tails. Pad the mask and pull the
-        // extra space back with a negative margin so layout is unchanged.
+        // extra space back with negative margins so layout stays identical.
         <span
           key={i}
-          className="inline-block overflow-hidden mr-[0.3em] align-bottom pb-[0.18em] -mb-[0.18em] pr-[0.12em] -mr-[0.12em]"
+          className="inline-block overflow-hidden align-bottom"
+          style={{
+            paddingBottom: '0.18em',
+            marginBottom: '-0.18em',
+            paddingRight: '0.12em',
+            marginRight: '0.18em',
+          }}
         >
           <m.span
             className="inline-block"
