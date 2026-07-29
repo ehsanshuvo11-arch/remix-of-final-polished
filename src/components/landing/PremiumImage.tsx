@@ -33,9 +33,11 @@ export default function PremiumImage({
   tone = 'navy',
   imgStyle,
   fadeDuration = 0.8,
+  onLoad,
   ...imgProps
 }: PremiumImageProps) {
   const [loaded, setLoaded] = useState(false);
+
 
   return (
     <div className={cn('relative overflow-hidden isolate', containerClassName)}>
