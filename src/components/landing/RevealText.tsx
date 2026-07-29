@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface RevealTextProps {
@@ -56,7 +56,7 @@ export default function RevealText({
             paddingBottom: '0.15em',
           }}
         >
-          <motion.span
+          <m.span
             className="inline-block will-change-transform"
             style={{ transform: 'translateY(100%)' }}
             initial={{ y: '100%' }}
@@ -69,7 +69,7 @@ export default function RevealText({
             }}
           >
             {part}
-          </motion.span>
+          </m.span>
         </span>
       ))}
     </Wrapper>

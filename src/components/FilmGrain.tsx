@@ -1,3 +1,4 @@
+import { memo } from 'react';
 // Film grain overlay — no mix-blend, neutral opacity (deploy trigger)
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -5,7 +6,7 @@ import { useLocation } from "react-router-dom";
 const SVG = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='1'/></svg>`;
 const DATA_URL = `url("data:image/svg+xml;utf8,${SVG}")`;
 
-export default function FilmGrain() {
+function FilmGrain() {
   const location = useLocation();
   const [mounted, setMounted] = useState(false);
 
@@ -29,3 +30,6 @@ export default function FilmGrain() {
     />
   );
 }
+
+// Static/decorative — memoized so scroll & state churn never re-renders it.
+export default memo(FilmGrain);

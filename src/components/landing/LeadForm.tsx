@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { sendInquiryEmail } from '@/lib/email';
 import MagneticButton from '@/components/landing/MagneticButton';
@@ -130,7 +130,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
           </span>
         </div>
         <div className="h-px w-full bg-primary-foreground/10 overflow-hidden rounded-full">
-          <motion.div
+          <m.div
             className="h-full bg-accent"
             initial={false}
             animate={{ width: `${progressPct}%` }}
@@ -142,7 +142,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
       {/* Steps */}
       <div className="min-h-[360px]">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div
+          <m.div
             key={step}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -242,21 +242,21 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                 </p>
               </>
             )}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
 
       {/* Error */}
       <AnimatePresence>
         {error && (
-          <motion.p
+          <m.p
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             className="text-accent/90 text-xs mt-3"
           >
             {error}
-          </motion.p>
+          </m.p>
         )}
       </AnimatePresence>
 
@@ -363,13 +363,13 @@ function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsCo
   const L = (keyEn: keyof UILabelsContent, keyBn: keyof UILabelsContent, en: string, bn: string) =>
     isBn ? pick(labels, keyBn, bn) : pick(labels, keyEn, en);
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: easing }}
       className="text-center py-10"
     >
-      <motion.div
+      <m.div
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.15, duration: 0.7, ease: easing }}
@@ -378,7 +378,7 @@ function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsCo
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-accent">
           <path d="M5 12l5 5L20 7" />
         </svg>
-      </motion.div>
+      </m.div>
       <p className="text-[10px] tracking-[4px] uppercase text-accent mb-3">
         {L('leadFormReceivedEn', 'leadFormReceivedBn', 'Received', 'প্রাপ্ত')}
       </p>
@@ -399,6 +399,6 @@ function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsCo
       >
         {L('leadFormResetEn', 'leadFormResetBn', 'Submit another inquiry', 'আরেকটি বার্তা পাঠান')}
       </button>
-    </motion.div>
+    </m.div>
   );
 }

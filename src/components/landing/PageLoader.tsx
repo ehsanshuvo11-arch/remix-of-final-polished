@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 interface PageLoaderProps {
   onComplete?: () => void;
@@ -52,7 +52,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
   return (
     <AnimatePresence>
       {show && (
-        <motion.div
+        <m.div
           key="cinematic-loader"
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
           initial={{ y: 0 }}
@@ -110,7 +110,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                   className="relative inline-block overflow-hidden"
                   style={{ paddingBottom: '0.12em' }}
                 >
-                  <motion.span
+                  <m.span
                     className="inline-block"
                     initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
                     animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
@@ -121,14 +121,14 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                     }}
                   >
                     {letter}
-                  </motion.span>
+                  </m.span>
                 </span>
               ))}
               <span
                 className="relative inline-block overflow-hidden"
                 style={{ paddingBottom: '0.12em' }}
               >
-                <motion.span
+                <m.span
                   className="inline-block text-accent"
                   initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
                   animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
@@ -139,18 +139,18 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                   }}
                 >
                   .
-                </motion.span>
+                </m.span>
               </span>
             </div>
 
-            <motion.div
+            <m.div
               className="absolute bottom-0 left-0 h-px w-full bg-primary-foreground/30"
               initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             />
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

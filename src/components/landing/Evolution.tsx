@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
+import { m, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
 
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
@@ -165,7 +165,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
 
   return (
     <div className="space-y-4">
-      <motion.div
+      <m.div
         ref={containerRef}
         role="slider"
         tabIndex={0}
@@ -193,7 +193,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
-        <motion.div style={{ clipPath }} className="absolute inset-0">
+        <m.div style={{ clipPath }} className="absolute inset-0">
           <img
             src={before}
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
@@ -201,7 +201,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
             draggable={false}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           />
-        </motion.div>
+        </m.div>
 
         {/* Floating labels */}
         <span className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/60 backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
@@ -214,7 +214,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         {/* First-time hint pill — gentle pulse, fades out on first interaction */}
         <AnimatePresence>
           {!hasInteracted && (
-            <motion.div
+            <m.div
               key="hint"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -222,7 +222,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
               transition={{ delay: 1.4, duration: 0.6 }}
               className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
             >
-              <motion.div
+              <m.div
                 animate={{ opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
                 transition={{ duration: 2.8, ease: 'easeInOut', repeat: Infinity }}
                 className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/60 backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
@@ -231,13 +231,13 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
                   <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
                 </svg>
                 {hint}
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
           )}
         </AnimatePresence>
 
         {/* Divider + handle — crisp 1px off-white with blurred edge */}
-        <motion.div
+        <m.div
           style={{ left: handleLeft }}
           className="absolute top-0 bottom-0 w-px bg-[#f9fafb] pointer-events-none -translate-x-1/2 backdrop-blur-[2px] shadow-[0_0_24px_rgba(249,250,251,0.55)]"
         >
@@ -252,12 +252,12 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
               <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
             </svg>
           </div>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
       {/* Status indicator — center comparison */}
       <div className="flex items-center justify-center">
-        <motion.button
+        <m.button
           type="button"
           onClick={() => springTo(50)}
           whileTap={{ scale: 0.98 }}
@@ -266,7 +266,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         >
           <span className="w-1 h-1 rounded-full bg-accent" />
           50/50
-        </motion.button>
+        </m.button>
       </div>
     </div>
   );

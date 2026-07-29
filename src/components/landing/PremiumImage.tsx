@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import PremiumSkeleton from '@/components/landing/Skeleton';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +41,7 @@ export default function PremiumImage({
 
   return (
     <div className={cn('relative overflow-hidden isolate', containerClassName)}>
-      <motion.div
+      <m.div
         className="absolute inset-0 z-0"
         initial={false}
         animate={{ opacity: loaded ? 0 : 1 }}
@@ -49,9 +49,9 @@ export default function PremiumImage({
         style={{ pointerEvents: 'none' }}
       >
         <PremiumSkeleton tone={tone} className="w-full h-full" rounded="rounded-none" />
-      </motion.div>
+      </m.div>
 
-      <motion.img
+      <m.img
         src={src}
         alt={alt}
         onLoad={(e) => {

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface RevealImageProps {
@@ -29,14 +29,14 @@ export default function RevealImage({
   const isMobile = useIsMobileDevice();
 
   return (
-    <motion.div
+    <m.div
       className={`relative overflow-hidden ${containerClassName}`}
       initial={isMobile ? { clipPath: 'inset(0% 0% 0% 0%)' } : { clipPath: 'inset(100% 0% 0% 0%)' }}
       whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: isMobile ? 0 : 1.2, delay: isMobile ? 0 : delay, ease: LUXURY_EASE as any }}
     >
-      <motion.img
+      <m.img
         src={src}
         alt={alt}
         className={`block w-full h-full will-change-transform ${className}`}
@@ -47,6 +47,6 @@ export default function RevealImage({
         draggable={false}
         loading={loading}
       />
-    </motion.div>
+    </m.div>
   );
 }

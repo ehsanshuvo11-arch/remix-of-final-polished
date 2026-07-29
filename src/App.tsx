@@ -1,4 +1,5 @@
 import { lazy, Suspense, useLayoutEffect } from "react";
+import { LazyMotion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -12,6 +13,10 @@ import CustomCursor from "./components/landing/CustomCursor";
 
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Framer Motion features are loaded asynchronously AFTER first paint, keeping
+// the initial JS payload lean. `domMax` is required because Portfolio uses drag.
+const loadMotionFeatures = () => import("framer-motion").then((mod) => mod.domMax);
 
 const queryClient = new QueryClient();
 
@@ -50,6 +55,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <LanguageProvider>
+        <LazyMotion features={loadMotionFeatures}>
         <BrowserRouter>
           <RouteCursorScope />
           <FilmGrain />
@@ -64,6 +70,7 @@ const App = () => (
             </Routes>
           </Suspense>
         </BrowserRouter>
+        </LazyMotion>
       </LanguageProvider>
     </TooltipProvider>
     <Analytics />

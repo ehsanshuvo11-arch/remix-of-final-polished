@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { NavContent } from '@/types/database';
@@ -141,7 +141,7 @@ export default function Navbar({ content }: NavbarProps) {
       {/* Mobile full-screen overlay menu */}
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -161,7 +161,7 @@ export default function Navbar({ content }: NavbarProps) {
                 onClick={(e) => e.stopPropagation()}
               >
                 {navItems.map((item, i) => (
-                  <motion.li
+                  <m.li
                     key={item.href}
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -187,11 +187,11 @@ export default function Navbar({ content }: NavbarProps) {
                     >
                       {item.label}
                     </a>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
 
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
@@ -201,9 +201,9 @@ export default function Navbar({ content }: NavbarProps) {
                 <p lang="en" className="brand-wordmark text-[10px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
                   POLISHED<span className="text-accent">.</span> Studio
                 </p>
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

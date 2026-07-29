@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MarqueeProps {
@@ -10,7 +11,7 @@ const bnMap: Record<string, string> = {
   'brand identity systems': 'ব্র্যান্ড আইডেন্টিটি সিস্টেম',
 };
 
-export default function Marquee({ items }: MarqueeProps) {
+function Marquee({ items }: MarqueeProps) {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
@@ -45,3 +46,6 @@ export default function Marquee({ items }: MarqueeProps) {
     </div>
   );
 }
+
+// Static/decorative — memoized so scroll & state churn never re-renders it.
+export default memo(Marquee);
