@@ -1,26 +1,31 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { m } from 'framer-motion';
 import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
-import Portfolio from '@/components/landing/Portfolio';
-import Pricing from '@/components/landing/Pricing';
-import Process from '@/components/landing/Process';
-import Contact from '@/components/landing/Contact';
-import Footer from '@/components/landing/Footer';
-import Evolution from '@/components/landing/Evolution';
-import Testimonials from '@/components/landing/Testimonials';
+const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
+const Pricing = lazy(() => import('@/components/landing/Pricing'));
+const Process = lazy(() => import('@/components/landing/Process'));
+const Contact = lazy(() => import('@/components/landing/Contact'));
+const Footer = lazy(() => import('@/components/landing/Footer'));
+const Evolution = lazy(() => import('@/components/landing/Evolution'));
+const Testimonials = lazy(() => import('@/components/landing/Testimonials'));
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
 import SectionDivider from '@/components/landing/SectionDivider';
-import Transformations from '@/components/landing/Transformations';
+const Transformations = lazy(() => import('@/components/landing/Transformations'));
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
 import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent } from '@/types/database';
+
+/** Reserves vertical space so lazy sections never cause layout shift. */
+const SectionFallback = ({ minHeight = '60vh' }: { minHeight?: string }) => (
+  <div className="bg-primary w-full" style={{ minHeight }} aria-hidden />
+);
 
 export default function Index() {
   // If the loader is going to show, hold the hero in its pre-entrance state.
@@ -75,16 +80,18 @@ export default function Index() {
       <SectionDivider className="py-4" />
       <Services services={services} content={servicesMeta ?? null} />
       <SectionDivider className="py-4" />
-      <Evolution />
-      <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
-      <Transformations items={transformations} content={transformationsMeta ?? null} />
-      <Process steps={processSteps} content={processMeta ?? null} />
-      <SectionDivider className="py-4" />
-      <Testimonials />
-      <SectionDivider className="py-4" />
-      <Pricing />
-      <Contact contact={contactContent ?? null} />
-      <Footer footer={footerContent ?? null} />
+      <Suspense fallback={<SectionFallback />}>
+        <Evolution />
+        <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
+        <Transformations items={transformations} content={transformationsMeta ?? null} />
+        <Process steps={processSteps} content={processMeta ?? null} />
+        <SectionDivider className="py-4" />
+        <Testimonials />
+        <SectionDivider className="py-4" />
+        <Pricing />
+        <Contact contact={contactContent ?? null} />
+        <Footer footer={footerContent ?? null} />
+      </Suspense>
     </div>
     </SmoothScroll>
   );
