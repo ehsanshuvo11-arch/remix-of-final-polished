@@ -45,6 +45,13 @@ export default function MotionReveal({
   return (
     <motion.div
       ref={ref}
+      // Hardcode the pre-animation state inline so the element never flashes
+      // in its final position before Framer Motion hydrates (FOUC/jank fix).
+      style={{
+        opacity: initial.opacity,
+        transform: `translate3d(${initial.x ?? 0}px, ${initial.y ?? 0}px, 0)`,
+        willChange: 'transform, opacity',
+      }}
       initial={initial}
       animate={isMobile ? { opacity: 1, x: 0, y: 0 } : (isInView ? { opacity: 1, x: 0, y: 0 } : initial)}
       transition={{
