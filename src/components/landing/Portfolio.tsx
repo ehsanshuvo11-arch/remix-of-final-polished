@@ -8,6 +8,8 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import PremiumImage from '@/components/landing/PremiumImage';
+import PremiumSkeleton from '@/components/landing/Skeleton';
+
 
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -143,11 +145,14 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       data-project-card={isFirst ? '' : undefined}
       className={imageExpanded ? 'relative overflow-visible' : 'relative'}
     >
+      {/* Aspect-ratio lock: the collapsed card reserves its exact box before the
+          mockup arrives, so the grid never shifts or jumps while loading. */}
       <div
         ref={cardRef}
         className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-          imageExpanded ? 'h-auto' : 'h-[110px] sm:h-[260px] md:h-[260px]'
+          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] h-[110px] sm:h-[260px] md:h-[260px]'
         }`}
+
         onClick={() => {
           toggleImageExpand();
           if (!imageExpanded && cardRef.current) {
@@ -168,6 +173,8 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
                 className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 fadeDuration={0.8}
+                loading="eager"
+                fetchPriority="high"
                 imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
               />
 
@@ -176,8 +183,12 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             <TiltImage
               src={project.image_url}
               alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
+              /* Only the first two cards sit near the fold — eager + high priority.
+                 Everything below stays lazy to protect first-load bandwidth. */
+              priority={index < 2}
             />
           )
+
         ) : (
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
             <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
@@ -364,11 +375,18 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
 }
 
 /* ── Tilt Image (matches Services "What We Do" card animation) ── */
+/*
+  ASSET HINT: portfolio mockups should be exported as .webp (or .avif with a
+  .webp fallback) at ~1600px on the long edge and quality ~78. These PNG/JPG
+  mockups are the heaviest payload on the page — converting them typically cuts
+  60-80% of the bytes with no visible quality loss on retina screens.
+*/
 
-function TiltImage({ src, alt }: { src: string; alt: string }) {
+function TiltImage({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const isMobile = useIsMobileDevice();
+
 
   // ── Velocity-based subtle scale (desktop only) ──
   // Map page scroll velocity → tiny scaleY 1.0 → 1.015 max.
@@ -417,9 +435,11 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
           alt={alt}
           containerClassName="w-full h-full"
           className="object-cover object-center cursor-pointer will-change-[opacity,transform]"
-          loading="lazy"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
           fadeDuration={0.8}
+
           onLoad={() => setImageLoaded(true)}
           imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
         />
@@ -438,6 +458,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   onClose: () => void;
 }) {
   const [current, setCurrent] = useState(initialIndex);
+  const [loadedIndex, setLoadedIndex] = useState(-1);
+
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
   const total = urls.length;
@@ -542,35 +564,52 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image — fade + drag-to-swap only (no hover tilt for a calm viewing experience) */}
+      {/* Main image — aspect-locked box with the brand shimmer behind it, so the
+          lightbox never resizes while a heavy mockup downloads. */}
       <div className="relative flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            src={urls[current]}
-            alt={`${title} mockup ${current + 1}`}
-            className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing will-change-transform"
-            style={{
-              backgroundColor: 'transparent',
-              boxShadow: 'none',
-              filter: 'none',
-            }}
-            onClick={(e) => e.stopPropagation()}
-            draggable={false}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={(_, info) => {
-              if (info.offset.x < -80 && current < total - 1) goNext();
-              else if (info.offset.x > 80 && current > 0) goPrev();
-            }}
-          />
-        </AnimatePresence>
+        <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
+          <motion.div
+            className="absolute inset-0 z-0 pointer-events-none"
+            initial={false}
+            animate={{ opacity: loadedIndex === current ? 0 : 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
+            <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
+          </motion.div>
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={current}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: loadedIndex === current ? 1 : 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              src={urls[current]}
+              alt={`${title} mockup ${current + 1}`}
+              onLoad={() => setLoadedIndex(current)}
+              onError={() => setLoadedIndex(current)}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="relative z-10 w-full h-full object-contain cursor-grab active:cursor-grabbing will-change-transform"
+              style={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                filter: 'none',
+              }}
+              onClick={(e) => e.stopPropagation()}
+              draggable={false}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -80 && current < total - 1) goNext();
+                else if (info.offset.x > 80 && current > 0) goPrev();
+              }}
+            />
+          </AnimatePresence>
+        </div>
       </div>
+
 
       {/* Dot indicators */}
       {total > 1 && (
