@@ -62,11 +62,33 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         </h2>
       </MotionReveal>
 
-      <div className="flex flex-col gap-16 md:gap-24 mt-14">
-        {displayProjects.map((project, i) => (
-          <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
-        ))}
-      </div>
+      <AnimatePresence mode="wait" initial={false}>
+        {isLoading ? (
+          <motion.div
+            key="portfolio-skeleton"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <PortfolioSkeleton />
+          </motion.div>
+        ) : (
+          <motion.div
+            key={`portfolio-list-${isBn ? 'bn' : 'en'}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-16 md:gap-24 mt-14"
+          >
+            {displayProjects.map((project, i) => (
+              <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 }
