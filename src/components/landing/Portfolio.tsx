@@ -382,28 +382,28 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate bg-muted/20"
+        className="relative z-[60] w-full h-full overflow-hidden isolate"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         initial={false}
-        animate={{ opacity: imageLoaded ? 1 : 0.35 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+        animate={{ scale: imageLoaded ? 1.0 : 1.02 }}
+        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
-        <motion.img
+        <PremiumImage
           src={src}
           alt={alt}
-          className="relative z-10 block w-full h-full object-cover object-center cursor-pointer will-change-transform"
-          loading="lazy" decoding="async"
-          draggable={false}
-          initial={false}
-          animate={{ scale: imageLoaded ? 1.0 : 1.03 }}
-          transition={{ duration: 2.0, ease: [0.76, 0, 0.24, 1] }}
+          containerClassName="w-full h-full"
+          className="object-cover object-center cursor-pointer will-change-[opacity,transform]"
+          loading="lazy"
+          decoding="async"
+          fadeDuration={0.8}
           onLoad={() => setImageLoaded(true)}
-          style={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' }}
+          imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
         />
       </motion.div>
     </div>
   );
 }
+
 
 /* ── Premium Swipeable Lightbox ── */
 
