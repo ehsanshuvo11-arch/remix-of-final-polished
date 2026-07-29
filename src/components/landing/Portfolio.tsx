@@ -7,16 +7,21 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
+import PremiumImage from '@/components/landing/PremiumImage';
+
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useUILabels } from '@/hooks/use-site-content';
+import { PortfolioSkeleton } from '@/components/landing/Skeleton';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
   content?: PortfolioMetaContent | null;
+  isLoading?: boolean;
 }
 
-export default function Portfolio({ projects, content }: PortfolioProps) {
+export default function Portfolio({ projects, content, isLoading = false }: PortfolioProps) {
+
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
   const defaultProjects: PortfolioProject[] = [
@@ -57,11 +62,33 @@ export default function Portfolio({ projects, content }: PortfolioProps) {
         </h2>
       </MotionReveal>
 
-      <div className="flex flex-col gap-16 md:gap-24 mt-14">
-        {displayProjects.map((project, i) => (
-          <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
-        ))}
-      </div>
+      <AnimatePresence mode="wait" initial={false}>
+        {isLoading ? (
+          <motion.div
+            key="portfolio-skeleton"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <PortfolioSkeleton />
+          </motion.div>
+        ) : (
+          <motion.div
+            key={`portfolio-list-${isBn ? 'bn' : 'en'}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col gap-16 md:gap-24 mt-14"
+          >
+            {displayProjects.map((project, i) => (
+              <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </section>
   );
 }
@@ -135,18 +162,15 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
             <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
-              <div className="relative z-[60] aspect-square w-full max-w-[80vh] overflow-hidden isolate">
-                <motion.img
-                  src={project.image_url}
-                  alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative z-10 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
-                  draggable={false}
-                />
-              </div>
+              <PremiumImage
+                src={project.image_url}
+                alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
+                containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
+                className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                fadeDuration={0.8}
+                imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
+              />
+
             </div>
           ) : (
             <TiltImage
@@ -382,28 +406,28 @@ function TiltImage({ src, alt }: { src: string; alt: string }) {
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate bg-muted/20"
+        className="relative z-[60] w-full h-full overflow-hidden isolate"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         initial={false}
-        animate={{ opacity: imageLoaded ? 1 : 0.35 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+        animate={{ scale: imageLoaded ? 1.0 : 1.02 }}
+        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
-        <motion.img
+        <PremiumImage
           src={src}
           alt={alt}
-          className="relative z-10 block w-full h-full object-cover object-center cursor-pointer will-change-transform"
-          loading="lazy" decoding="async"
-          draggable={false}
-          initial={false}
-          animate={{ scale: imageLoaded ? 1.0 : 1.03 }}
-          transition={{ duration: 2.0, ease: [0.76, 0, 0.24, 1] }}
+          containerClassName="w-full h-full"
+          className="object-cover object-center cursor-pointer will-change-[opacity,transform]"
+          loading="lazy"
+          decoding="async"
+          fadeDuration={0.8}
           onLoad={() => setImageLoaded(true)}
-          style={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' }}
+          imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
         />
       </motion.div>
     </div>
   );
 }
+
 
 /* ── Premium Swipeable Lightbox ── */
 

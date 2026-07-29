@@ -1,7 +1,10 @@
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import { PricingSkeleton } from '@/components/landing/Skeleton';
 import { ArrowRight } from 'lucide-react';
+
 
 interface PricingTier {
   id: string;
@@ -71,8 +74,9 @@ const sectionHeader = {
   title_em_bn: 'প্রিমিয়াম এক্সিকিউশন।',
 };
 
-export default function Pricing() {
+export default function Pricing({ isLoading = false }: { isLoading?: boolean }) {
   const { lang } = useLanguage();
+
   const isBn = lang === 'bn';
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
 
@@ -133,17 +137,39 @@ export default function Pricing() {
           )}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-14">
-          {pricingTiers.map((tier, index) => (
-            <TierCard
-              key={tier.id}
-              tier={tier}
-              index={index}
-              isBn={isBn}
-              onCtaClick={scrollToContact}
-            />
-          ))}
-        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          {isLoading ? (
+            <motion.div
+              key="pricing-skeleton"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <PricingSkeleton />
+            </motion.div>
+          ) : (
+            <motion.div
+              key={`pricing-tiers-${isBn ? 'bn' : 'en'}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-14"
+            >
+              {pricingTiers.map((tier, index) => (
+                <TierCard
+                  key={tier.id}
+                  tier={tier}
+                  index={index}
+                  isBn={isBn}
+                  onCtaClick={scrollToContact}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
 
         <div className="mt-14 md:mt-20">
           <MotionReveal>

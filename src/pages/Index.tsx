@@ -41,11 +41,12 @@ export default function Index() {
   const { data: logoData } = useSiteSetting<{ url: string }>('logo');
 
   const { data: services = [] } = useServices();
-  const { data: projects = [] } = usePortfolio();
+  const { data: projects = [], isLoading: projectsLoading } = usePortfolio();
   const { data: processSteps = [] } = useProcessSteps();
   const { data: stats = [] } = useStats();
   const { data: transformations = [] } = useTransformations();
   const { data: transformationsMeta } = useSiteSetting<TransformationsMetaContent>('transformations-meta');
+
 
   return (
     <SmoothScroll>
@@ -75,7 +76,7 @@ export default function Index() {
       <Services services={services} content={servicesMeta ?? null} />
       <SectionDivider className="py-4" />
       <Evolution />
-      <Portfolio projects={projects} content={portfolioMeta ?? null} />
+      <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
       <Transformations items={transformations} content={transformationsMeta ?? null} />
       <Process steps={processSteps} content={processMeta ?? null} />
       <SectionDivider className="py-4" />
