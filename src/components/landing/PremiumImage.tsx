@@ -3,7 +3,12 @@ import { motion } from 'framer-motion';
 import PremiumSkeleton from '@/components/landing/Skeleton';
 import { cn } from '@/lib/utils';
 
-interface PremiumImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+type BaseImgProps = Omit<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd' | 'src' | 'alt'
+>;
+
+interface PremiumImageProps extends BaseImgProps {
   src: string;
   alt: string;
   /** Classes for the positioned wrapper (must control the box size). */
@@ -14,6 +19,7 @@ interface PremiumImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   imgStyle?: React.CSSProperties;
   fadeDuration?: number;
 }
+
 
 /**
  * Smooth image: reserves its box, shows the quiet-luxury shimmer while the
