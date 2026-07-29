@@ -27,7 +27,19 @@ export default function WordReveal({
   return (
     <Tag ref={ref as any} className={className}>
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
+        // The mask needs overflow:hidden for the slide-up, which would otherwise
+        // clip descenders (g, y, p) and italic tails. Pad the mask and pull the
+        // extra space back with negative margins so layout stays identical.
+        <span
+          key={i}
+          className="inline-block overflow-hidden align-bottom"
+          style={{
+            paddingBottom: '0.18em',
+            marginBottom: '-0.18em',
+            paddingRight: '0.12em',
+            marginRight: '0.18em',
+          }}
+        >
           <m.span
             className="inline-block"
             initial={isMobile ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
