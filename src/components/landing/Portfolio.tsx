@@ -12,13 +12,16 @@ import PremiumImage from '@/components/landing/PremiumImage';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useUILabels } from '@/hooks/use-site-content';
+import { PortfolioSkeleton } from '@/components/landing/Skeleton';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
   content?: PortfolioMetaContent | null;
+  isLoading?: boolean;
 }
 
-export default function Portfolio({ projects, content }: PortfolioProps) {
+export default function Portfolio({ projects, content, isLoading = false }: PortfolioProps) {
+
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
   const defaultProjects: PortfolioProject[] = [
