@@ -560,35 +560,52 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image — fade + drag-to-swap only (no hover tilt for a calm viewing experience) */}
+      {/* Main image — aspect-locked box with the brand shimmer behind it, so the
+          lightbox never resizes while a heavy mockup downloads. */}
       <div className="relative flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            src={urls[current]}
-            alt={`${title} mockup ${current + 1}`}
-            className="aspect-square w-full max-w-[85vh] max-h-[85vh] object-contain cursor-grab active:cursor-grabbing will-change-transform"
-            style={{
-              backgroundColor: 'transparent',
-              boxShadow: 'none',
-              filter: 'none',
-            }}
-            onClick={(e) => e.stopPropagation()}
-            draggable={false}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={(_, info) => {
-              if (info.offset.x < -80 && current < total - 1) goNext();
-              else if (info.offset.x > 80 && current > 0) goPrev();
-            }}
-          />
-        </AnimatePresence>
+        <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
+          <motion.div
+            className="absolute inset-0 z-0 pointer-events-none"
+            initial={false}
+            animate={{ opacity: loadedIndex === current ? 0 : 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
+            <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
+          </motion.div>
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={current}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: loadedIndex === current ? 1 : 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              src={urls[current]}
+              alt={`${title} mockup ${current + 1}`}
+              onLoad={() => setLoadedIndex(current)}
+              onError={() => setLoadedIndex(current)}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="relative z-10 w-full h-full object-contain cursor-grab active:cursor-grabbing will-change-transform"
+              style={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                filter: 'none',
+              }}
+              onClick={(e) => e.stopPropagation()}
+              draggable={false}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -80 && current < total - 1) goNext();
+                else if (info.offset.x > 80 && current > 0) goPrev();
+              }}
+            />
+          </AnimatePresence>
+        </div>
       </div>
+
 
       {/* Dot indicators */}
       {total > 1 && (
