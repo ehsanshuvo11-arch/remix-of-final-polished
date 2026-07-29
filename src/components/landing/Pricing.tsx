@@ -74,8 +74,9 @@ const sectionHeader = {
   title_em_bn: 'প্রিমিয়াম এক্সিকিউশন।',
 };
 
-export default function Pricing() {
+export default function Pricing({ isLoading = false }: { isLoading?: boolean }) {
   const { lang } = useLanguage();
+
   const isBn = lang === 'bn';
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
 
