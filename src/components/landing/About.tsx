@@ -44,36 +44,15 @@ export default function About({ content, stats }: AboutProps) {
 
   return (
     <section id="about" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+      <SectionHeader
+        isBn={isBn}
+        subHeading={isBn ? 'ব্র্যান্ড ফিলোসফি' : (about.labelEn ?? 'About Polished')}
+        heading={isBn ? (about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই') : line1}
+        headingEm={isBn ? (about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।') : line2}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div>
-          <MotionReveal>
-            {isBn ? (
-              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                ব্র্যান্ড ফিলোসফি
-              </p>
-            ) : (
-              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-                {about.labelEn ?? 'About Polished'}
-              </p>
-            )}
-          </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className="font-heading font-normal text-primary mb-7 text-[clamp(36px,5vw,60px)] leading-[1.2]">
-            {isBn ? (
-              <>
-                <RevealText as="span" className="block" stagger={0} delay={0}>
-                  {(about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই')}
-                </RevealText>
-                <RevealText as="span" className="block italic" stagger={0} delay={0}>
-                  {(about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।')}
-                </RevealText>
-              </>
-            ) : (
-              <>
-                <RevealText as="span" className="block">{line1}</RevealText>
-                <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
-              </>
-            )}
-          </h2>
+
           <MotionReveal delay={0.3}>
             <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
               {isBn ? (
