@@ -8,6 +8,8 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import PremiumImage from '@/components/landing/PremiumImage';
+import PremiumSkeleton from '@/components/landing/Skeleton';
+
 
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
