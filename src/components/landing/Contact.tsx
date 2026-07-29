@@ -1,5 +1,7 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
+import SectionHeader from '@/components/landing/SectionHeader';
+
 import WordReveal from '@/components/landing/WordReveal';
 import LeadForm from '@/components/landing/LeadForm';
 import type { ContactContent } from '@/types/database';
@@ -72,45 +74,22 @@ export default function Contact({ contact }: ContactProps) {
       <div className="py-20 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
         <hr className="border-t border-white/10" />
       </div>
-      <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
-        <div>
-          <MotionReveal>
-            {isBn ? (
-              <p lang="bn" className="text-[14px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                যোগাযোগ করুন
-              </p>
-            ) : (
-              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-                {c.sectionLabelEn ?? 'Get In Touch'}
-              </p>
-            )}
-          </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(24px,6vw,34px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
-            {isBn ? (
-              <>
-                <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?</WordReveal>
-                <br />
-                <em className="italic text-accent">
-                  <WordReveal delay={0.25}>আসুন কথা বলি।</WordReveal>
-                </em>
-              </>
-            ) : (
-              <>
-                <WordReveal delay={0.1}>{line1}</WordReveal>
-                <br />
-                <em className="italic">
-                  <WordReveal delay={0.25}>{line2}</WordReveal>
-                </em>
-              </>
-            )}
-          </h2>
-          <MotionReveal delay={0.15}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.85] text-primary-foreground/50 mb-10`}>
-              {isBn
-                ? 'আপনার D2C ব্র্যান্ডকে স্কেল করতে অথবা মার্কেটিং এজেন্সিকে প্রিমিয়াম ভিজ্যুয়াল দিয়ে আরও শক্তিশালী করতে প্রস্তুত? চলুন কথা বলি। প্রতিটি প্রজেক্টে সর্বোচ্চ মনোযোগ নিশ্চিত করতে আমরা লিমিটেড সংখ্যক ক্লায়েন্ট নিয়ে কাজ করি।'
-                : (c.descEn ?? "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.")}
-            </p>
-          </MotionReveal>
+      <div className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+        <SectionHeader
+          isBn={isBn}
+          isDarkBackground
+          subHeading={isBn ? 'যোগাযোগ করুন' : (c.sectionLabelEn ?? 'Get In Touch')}
+          heading={isBn ? 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?' : line1}
+          headingEm={isBn ? 'আসুন কথা বলি।' : line2}
+          description={
+            isBn
+              ? 'আপনার D2C ব্র্যান্ডকে স্কেল করতে অথবা মার্কেটিং এজেন্সিকে প্রিমিয়াম ভিজ্যুয়াল দিয়ে আরও শক্তিশালী করতে প্রস্তুত? চলুন কথা বলি। প্রতিটি প্রজেক্টে সর্বোচ্চ মনোযোগ নিশ্চিত করতে আমরা লিমিটেড সংখ্যক ক্লায়েন্ট নিয়ে কাজ করি।'
+              : (c.descEn ?? "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.")
+          }
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
+          <div>
+
 
           <div className="flex flex-col gap-4">
             {links.map((link, i) => (
@@ -130,12 +109,14 @@ export default function Contact({ contact }: ContactProps) {
               </MotionReveal>
             ))}
           </div>
-        </div>
+          </div>
 
-        <MotionReveal delay={0.2}>
-          <LeadForm isBn={isBn} />
-        </MotionReveal>
+          <MotionReveal delay={0.2}>
+            <LeadForm isBn={isBn} />
+          </MotionReveal>
+        </div>
       </div>
     </div>
+
   );
 }
