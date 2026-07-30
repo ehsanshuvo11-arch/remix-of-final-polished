@@ -29,7 +29,7 @@ export default function Services({ services, content }: ServicesProps) {
 
   return (
     <div id="services" className="bg-primary">
-      <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -61,7 +61,7 @@ export default function Services({ services, content }: ServicesProps) {
           )}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-10 md:mt-14">
           {displayServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}

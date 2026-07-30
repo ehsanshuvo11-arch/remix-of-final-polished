@@ -89,7 +89,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
   return (
     <section id="investment" className="bg-primary">
-      <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p
@@ -155,7 +155,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-14"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-10 md:mt-14"
             >
               {pricingTiers.map((tier, index) => (
                 <TierCard
@@ -171,7 +171,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
         </AnimatePresence>
 
 
-        <div className="mt-14 md:mt-20">
+        <div className="mt-10 md:mt-20">
           <MotionReveal>
             <CustomBanner isBn={isBn} onCtaClick={scrollToContact} />
           </MotionReveal>

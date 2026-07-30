@@ -43,7 +43,7 @@ export default function About({ content, stats }: AboutProps) {
   const line2 = about.titleLine2En ?? 'trust at first glance.';
 
   return (
-    <section id="about" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="about" className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div>
           <MotionReveal>

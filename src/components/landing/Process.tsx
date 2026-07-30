@@ -28,7 +28,7 @@ export default function Process({ steps, content }: ProcessProps) {
 
   return (
     <div className="bg-secondary">
-      <section id="process" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+      <section id="process" className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -54,7 +54,7 @@ export default function Process({ steps, content }: ProcessProps) {
           )}
         </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-14">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-10 mt-10 md:mt-14">
           {displaySteps.map((step, i) => (
             <StepCard key={step.id} step={step} index={i} />
           ))}

@@ -33,7 +33,7 @@ export default function Evolution() {
   const afterSrc = data?.after_image_url || afterImg;
 
   return (
-    <section id="evolution" className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="evolution" className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -51,7 +51,7 @@ export default function Evolution() {
         </h2>
       </MotionReveal>
       <MotionReveal delay={0.2}>
-        <p className="font-heading italic text-primary/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-12">
+        <p className="font-heading italic text-primary/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-10 md:mb-12">
           {subtitle}
         </p>
       </MotionReveal>
@@ -184,13 +184,14 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuemax={100}
         aria-valuenow={pct}
         onKeyDown={onKeyDown}
+        style={{ touchAction: 'pan-y' }}
         onMouseDown={(e) => startDrag(e.clientX)}
         onTouchStart={(e) => startDrag(e.touches[0].clientX)}
         onClick={(e) => {
           // Only treat as click when not dragging (mousedown already positioned it)
           if (!dragging) handleClick(e.clientX);
         }}
-        className={`group relative w-full overflow-hidden select-none aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        className={`group relative w-full overflow-hidden select-none aspect-[4/5] md:aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-10%' }}
