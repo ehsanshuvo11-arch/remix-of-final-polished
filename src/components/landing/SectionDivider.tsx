@@ -14,10 +14,11 @@ function SectionDivider({ className = '' }: SectionDividerProps) {
     <div className={`bg-primary ${className}`} aria-hidden>
       <div className="max-w-[1200px] mx-auto px-6 md:px-14">
         <m.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, scaleX: 0.4 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: 'center' }}
           className="h-px w-full bg-gradient-to-r from-transparent via-primary-foreground/15 to-transparent"
         />
       </div>

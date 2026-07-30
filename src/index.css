@@ -323,36 +323,60 @@ html[data-lang="bn"] .brand-wordmark {
 }
 
 /* Scroll reveal */
-/* Scroll reveal — luxury easing */
+/* Scroll reveal — luxury easing (long decelerating settle, optical blur) */
 .reveal-element {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1), transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translate3d(0, 28px, 0) scale(0.985);
+  filter: blur(6px);
+  transition:
+    opacity 1s linear,
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
 .reveal-element.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
 }
 .reveal-left {
   opacity: 0;
-  transform: translateX(-36px);
-  transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1), transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translate3d(-40px, 0, 0);
+  filter: blur(6px);
+  transition:
+    opacity 1s linear,
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
 .reveal-left.visible {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
 }
 .reveal-right {
   opacity: 0;
-  transform: translateX(36px);
-  transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1), transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translate3d(40px, 0, 0);
+  filter: blur(6px);
+  transition:
+    opacity 1s linear,
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
 }
 .reveal-right.visible {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
+}
+
+/* Global interactive motion layer — every clickable element settles
+   on the same curve so the whole site feels like one material. */
+a, button, [role="button"] {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+a:active, button:active, [role="button"]:active {
+  transition-duration: 120ms;
 }
 
 /* Custom cursor — hide default cursor on frontend only (non-touch devices) */
@@ -521,6 +545,14 @@ a.story-link:hover::after {
   .service-card::before,
   .marquee-track {
     animation: none !important;
+    transition: none !important;
+  }
+  .reveal-element,
+  .reveal-left,
+  .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
     transition: none !important;
   }
 }

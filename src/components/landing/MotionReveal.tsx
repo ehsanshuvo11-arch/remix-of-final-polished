@@ -20,26 +20,33 @@ const directionMap: Record<Direction, { x?: number; y?: number }> = {
   right: { x: 40 },
 };
 
+// Quiet-luxury easing: long, decelerating settle with zero overshoot.
+const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
+
 export default function MotionReveal({
   children,
   delay = 0,
-  duration = 1.1,
+  duration = 1.15,
   direction = 'up',
   distance,
   className,
   once = true,
 }: MotionRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: '0px 0px -40px 0px', amount: 0.08 });
+  const isInView = useInView(ref, { once, margin: '0px 0px -60px 0px', amount: 0.08 });
   const isMobile = useIsMobileDevice();
 
   const offset = directionMap[direction];
+  const rest = { opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' };
   const initial = isMobile
-    ? { opacity: 1, x: 0, y: 0 }
+    ? rest
     : {
         opacity: 0,
         x: distance !== undefined && direction !== 'up' ? (direction === 'left' ? -distance : distance) : (offset.x ?? 0),
         y: distance !== undefined && direction === 'up' ? distance : (offset.y ?? 0),
+        // A whisper of scale + blur makes the settle feel optical rather than mechanical.
+        scale: 0.985,
+        filter: 'blur(6px)',
       };
 
   return (
@@ -49,15 +56,18 @@ export default function MotionReveal({
       // in its final position before Framer Motion hydrates (FOUC/jank fix).
       style={{
         opacity: initial.opacity,
-        transform: `translate3d(${initial.x ?? 0}px, ${initial.y ?? 0}px, 0)`,
-        willChange: 'transform, opacity',
+        transform: `translate3d(${initial.x ?? 0}px, ${initial.y ?? 0}px, 0) scale(${initial.scale ?? 1})`,
+        filter: initial.filter,
+        willChange: 'transform, opacity, filter',
       }}
       initial={initial}
-      animate={isMobile ? { opacity: 1, x: 0, y: 0 } : (isInView ? { opacity: 1, x: 0, y: 0 } : initial)}
+      animate={isMobile ? rest : (isInView ? rest : initial)}
       transition={{
         duration,
         delay,
-        ease: [0.22, 1, 0.36, 1], // Luxury slow ease-out
+        ease: LUXURY_EASE,
+        opacity: { duration: duration * 0.8, delay, ease: 'linear' },
+        filter: { duration: duration * 0.7, delay, ease: LUXURY_EASE },
       }}
       className={className}
     >
