@@ -405,11 +405,10 @@ async function refreshSiteSettingQueries(key: string) {
   if (!_queryClient) return;
 
   await Promise.all([
-    _queryClient.invalidateQueries({ queryKey: ['site-setting'] }),
-    _queryClient.invalidateQueries({ queryKey: ['site-setting', key] }),
-    _queryClient.refetchQueries({ queryKey: ['site-setting'], type: 'all' }),
-    _queryClient.refetchQueries({ queryKey: ['site-setting', key], type: 'all' }),
+    _queryClient.invalidateQueries({ queryKey: ['site-settings'] }),
+    _queryClient.refetchQueries({ queryKey: ['site-settings'], type: 'all' }),
   ]);
+
 }
 
 async function refreshCollectionQueries(queryKey: 'services' | 'stats' | 'portfolio' | 'process-steps') {

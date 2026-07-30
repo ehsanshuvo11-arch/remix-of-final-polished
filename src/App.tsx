@@ -18,7 +18,18 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 // the initial JS payload lean. `domMax` is required because Portfolio uses drag.
 const loadMotionFeatures = () => import("framer-motion").then((mod) => mod.domMax);
 
-const queryClient = new QueryClient();
+// Fewer retries + longer cache = far less network chatter on first load.
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+    },
+  },
+});
 
 const RouteCursorScope = () => {
   const location = useLocation();
