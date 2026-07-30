@@ -4,7 +4,6 @@ import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { HeroContent } from '@/types/database';
 import RevealText from '@/components/landing/RevealText';
-import HeroAtmosphere from '@/components/landing/HeroAtmosphere';
 
 interface HeroProps {
   content: HeroContent | null;
@@ -60,8 +59,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           animation: 'gridMove 20s linear infinite',
         }}
       />
-
-      <HeroAtmosphere />
 
       {/* Orbs with parallax — toned down for cleaner navy field */}
       <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)', animation: 'orbFloat 8s ease-in-out infinite' }} />
@@ -131,7 +128,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line hero-shimmer relative block text-[32px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[32px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
                 Unmissable!
@@ -199,9 +196,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       {/* Scroll indicator */}
       <div className="absolute bottom-6 md:bottom-9 left-1/2 -translate-x-1/2 hidden [@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/30 text-[10px] tracking-[3px] uppercase" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
         {hero.scrollEn ?? 'Scroll'}
-        <span className="relative w-px bg-primary-foreground/20 overflow-hidden" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }}>
-          <span className="absolute left-0 top-0 w-px h-3 bg-accent motion-reduce:hidden" style={{ animation: 'scrollTrail 2.4s cubic-bezier(0.65,0,0.35,1) 2.4s infinite' }} />
-        </span>
+        <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }} />
       </div>
 
       {/* Hairline accent at bottom — no glow bleed */}
