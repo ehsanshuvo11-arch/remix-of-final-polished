@@ -171,7 +171,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
         </AnimatePresence>
 
 
-        <div className="mt-10 md:mt-14 md:mt-20">
+        <div className="mt-10 md:mt-20">
           <MotionReveal>
             <CustomBanner isBn={isBn} onCtaClick={scrollToContact} />
           </MotionReveal>
