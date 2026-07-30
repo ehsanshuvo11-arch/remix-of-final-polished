@@ -32,7 +32,7 @@ export default function Services({ services, content }: ServicesProps) {
       <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
-            <p lang="bn" className="text-[14.6px] tracking-[1px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+            <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
               আমাদের এক্সপার্টিজ
             </p>
           ) : (

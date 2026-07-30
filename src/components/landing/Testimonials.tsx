@@ -119,13 +119,19 @@ export default function Testimonials() {
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
-          <p lang={isBn ? 'bn' : 'en'} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {label}
-          </p>
+          {isBn ? (
+            <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              {label}
+            </p>
+          ) : (
+            <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+              {label}
+            </p>
+          )}
         </MotionReveal>
 
         <MotionReveal delay={0.1}>
-          <h2 className="font-heading font-normal text-primary-foreground mb-5 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-5 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
             <WordReveal delay={0.1}>{heading}</WordReveal>
           </h2>
         </MotionReveal>

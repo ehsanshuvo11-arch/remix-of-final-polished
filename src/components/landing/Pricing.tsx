@@ -94,7 +94,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
           {isBn ? (
             <p
               lang="bn"
-              className="text-[14.6px] tracking-[1px] text-accent mb-4 font-medium leading-[1]"
+              className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]"
               style={{ fontFamily: "'Noto Serif Bengali', serif" }}
             >
               {sectionHeader.label_bn}
