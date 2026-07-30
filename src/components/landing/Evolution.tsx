@@ -87,6 +87,8 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   const [dragging, setDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [pct, setPct] = useState(50);
+  const leftTagOpacity = useTransform(x, [0, 100], [1, 0]);
+  const rightTagOpacity = useTransform(x, [0, 100], [0, 1]);
 
   useEffect(() => {
     const unsub = x.on('change', (v) => setPct(Math.round(v)));
