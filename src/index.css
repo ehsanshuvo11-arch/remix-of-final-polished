@@ -169,6 +169,38 @@
   from { opacity: 0; transform: translateY(-30px) scale(0.8); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+@keyframes auroraSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes moteDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(14px, -22px, 0); }
+  66% { transform: translate3d(-12px, -38px, 0); }
+}
+@keyframes accentShimmer {
+  0% { background-position: -150% 0; }
+  55%, 100% { background-position: 250% 0; }
+}
+.hero-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: -0.15em -0.4em;
+  background: linear-gradient(100deg, transparent 42%, hsl(0 0% 100% / 0.28) 50%, transparent 58%);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  mix-blend-mode: overlay;
+  animation: accentShimmer 7s cubic-bezier(0.22, 1, 0.36, 1) 2.6s infinite;
+  pointer-events: none;
+}
+@keyframes scrollTrail {
+  0% { transform: translateY(-14px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(42px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-shimmer::after { animation: none; opacity: 0; }
+}
 @keyframes wordReveal {
   to { transform: translateY(0); }
 }
