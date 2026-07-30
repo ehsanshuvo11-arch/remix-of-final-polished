@@ -12,21 +12,33 @@ export function useUILabels() {
   return useSiteSetting<UILabelsContent>('ui_labels');
 }
 
-export function useSiteSetting<T = Record<string, any>>(key: string) {
+/**
+ * All site settings are fetched in ONE request and cached, instead of one
+ * network round-trip per key (which was ~20 requests on first paint).
+ */
+function useAllSiteSettings() {
   return useQuery({
-    queryKey: ['site-setting', key],
+    queryKey: ['site-settings'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('value')
-        .eq('key', key)
-        .maybeSingle();
+      const { data, error } = await supabase.from('site_settings').select('key,value');
       if (error) throw error;
-      return (data?.value as T) ?? null;
+      const map: Record<string, unknown> = {};
+      for (const row of data ?? []) map[(row as { key: string }).key] = (row as { value: unknown }).value;
+      return map;
     },
-    staleTime: 30000,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 }
+
+export function useSiteSetting<T = Record<string, any>>(key: string) {
+  const query = useAllSiteSettings();
+  return {
+    ...query,
+    data: (query.data?.[key] as T | undefined) ?? null,
+  };
+}
+
 
 export function useServices() {
   return useQuery({
