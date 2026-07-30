@@ -35,15 +35,55 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     subBn: 'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা দেখা এবং মনে রাখার যোগ্য।',
   };
 
-  // Parallax on orbs
+  // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (orb1Ref.current) orb1Ref.current.style.transform = `translateY(${y * 0.3}px)`;
-      if (orb2Ref.current) orb2Ref.current.style.transform = `translateY(${y * -0.2}px)`;
+    let scrollY = 0;
+    let px = 0;
+    let py = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let raf = 0;
+
+    const apply = () => {
+      if (orb1Ref.current) {
+        orb1Ref.current.style.transform = `translate3d(${px}px, ${scrollY * 0.3 + py}px, 0)`;
+      }
+      if (orb2Ref.current) {
+        orb2Ref.current.style.transform = `translate3d(${px * -0.7}px, ${scrollY * -0.2 + py * -0.7}px, 0)`;
+      }
     };
+
+    const onScroll = () => {
+      scrollY = window.scrollY;
+      apply();
+    };
+
+    const tick = () => {
+      px += (targetX - px) * 0.045;
+      py += (targetY - py) * 0.045;
+      apply();
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 26;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 18;
+    };
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(pointer: fine)').matches;
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    if (!reduced && fine) {
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      raf = requestAnimationFrame(tick);
+    }
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('pointermove', onPointerMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
