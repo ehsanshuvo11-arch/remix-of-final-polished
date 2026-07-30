@@ -197,6 +197,33 @@
   to { width: 100%; }
 }
 
+/* Hero — quiet-luxury micro motion (barely perceptible) */
+@keyframes heroLogoBreath {
+  0%, 100% { filter: drop-shadow(0 0 34px hsl(28 96% 61% / 0.22)); }
+  50% { filter: drop-shadow(0 0 46px hsl(28 96% 61% / 0.34)); }
+}
+@keyframes heroAccentSheen {
+  0% { background-position: -140% 0; }
+  55%, 100% { background-position: 240% 0; }
+}
+.hero-accent-line {
+  background-image: linear-gradient(
+    100deg,
+    transparent 42%,
+    hsl(38 96% 74% / 0.55) 50%,
+    transparent 58%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: -140% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: heroAccentSheen 11s cubic-bezier(0.4, 0, 0.2, 1) 3.2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-accent-line { animation: none; }
+}
+
 /* Language switch */
 html[data-lang="bn"] .lang-en { display: none !important; }
 html[data-lang="en"] .lang-bn { display: none !important; }
