@@ -184,6 +184,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuemax={100}
         aria-valuenow={pct}
         onKeyDown={onKeyDown}
+        style={{ touchAction: 'pan-y' }}
         onMouseDown={(e) => startDrag(e.clientX)}
         onTouchStart={(e) => startDrag(e.touches[0].clientX)}
         onClick={(e) => {
