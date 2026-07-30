@@ -87,8 +87,10 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   const [dragging, setDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [pct, setPct] = useState(50);
-  const leftTagOpacity = useTransform(x, [0, 100], [1, 0]);
-  const rightTagOpacity = useTransform(x, [0, 100], [0, 1]);
+  // Left tag sits on the BEFORE side (visible while the handle is to the right of it)
+  const leftTagOpacity = useTransform(x, [8, 28], [0, 1]);
+  // Right tag sits on the AFTER side (visible while the handle is to the left of it)
+  const rightTagOpacity = useTransform(x, [72, 92], [1, 0]);
 
   useEffect(() => {
     const unsub = x.on('change', (v) => setPct(Math.round(v)));
