@@ -87,6 +87,8 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   const [dragging, setDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [pct, setPct] = useState(50);
+  const leftTagOpacity = useTransform(x, [0, 100], [1, 0]);
+  const rightTagOpacity = useTransform(x, [0, 100], [0, 1]);
 
   useEffect(() => {
     const unsub = x.on('change', (v) => setPct(Math.round(v)));
@@ -209,13 +211,13 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
           />
         </m.div>
 
-        {/* Floating labels */}
-        <span className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/60 backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
+        {/* Floating labels — fade as the corresponding side disappears */}
+        <m.span style={{ opacity: leftTagOpacity }} className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/60 backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
           {beforeLabel}
-        </span>
-        <span className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/85 backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
+        </m.span>
+        <m.span style={{ opacity: rightTagOpacity }} className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/85 backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
           {afterLabel}
-        </span>
+        </m.span>
 
         {/* First-time hint pill — gentle pulse, fades out on first interaction */}
         <AnimatePresence>
