@@ -115,7 +115,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
+      className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-16 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -137,7 +137,7 @@ export default function Testimonials() {
         </MotionReveal>
 
         <MotionReveal delay={0.2}>
-          <p className="font-heading italic text-primary-foreground/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-16">
+          <p className="font-heading italic text-primary-foreground/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-10 md:mb-16">
             {sub}
           </p>
         </MotionReveal>

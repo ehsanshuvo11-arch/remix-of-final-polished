@@ -37,7 +37,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const displayProjects = projects.length > 0 ? projects : defaultProjects;
 
   return (
-    <section id="work" className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="work" className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -82,7 +82,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-16 md:gap-24 mt-14"
+            className="flex flex-col gap-12 md:gap-24 mt-10 md:mt-14"
           >
             {displayProjects.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
