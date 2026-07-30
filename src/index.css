@@ -197,6 +197,23 @@
   to { width: 100%; }
 }
 
+/* Hero — quiet-luxury micro motion (barely perceptible) */
+@keyframes heroLogoBreath {
+  0%, 100% { filter: drop-shadow(0 0 34px hsl(28 96% 61% / 0.22)); }
+  50% { filter: drop-shadow(0 0 46px hsl(28 96% 61% / 0.34)); }
+}
+@keyframes heroAccentGlow {
+  0%, 100% { text-shadow: 0 0 0 hsl(28 96% 61% / 0); }
+  50% { text-shadow: 0 0 26px hsl(28 96% 61% / 0.28); }
+}
+.hero-accent-line {
+  animation: heroAccentGlow 9s ease-in-out 3.2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-accent-line,
+  .hero-logo-breath { animation: none !important; }
+}
+
 /* Language switch */
 html[data-lang="bn"] .lang-en { display: none !important; }
 html[data-lang="en"] .lang-bn { display: none !important; }

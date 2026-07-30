@@ -35,15 +35,55 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     subBn: 'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা দেখা এবং মনে রাখার যোগ্য।',
   };
 
-  // Parallax on orbs
+  // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (orb1Ref.current) orb1Ref.current.style.transform = `translateY(${y * 0.3}px)`;
-      if (orb2Ref.current) orb2Ref.current.style.transform = `translateY(${y * -0.2}px)`;
+    let scrollY = 0;
+    let px = 0;
+    let py = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let raf = 0;
+
+    const apply = () => {
+      if (orb1Ref.current) {
+        orb1Ref.current.style.transform = `translate3d(${px}px, ${scrollY * 0.3 + py}px, 0)`;
+      }
+      if (orb2Ref.current) {
+        orb2Ref.current.style.transform = `translate3d(${px * -0.7}px, ${scrollY * -0.2 + py * -0.7}px, 0)`;
+      }
     };
+
+    const onScroll = () => {
+      scrollY = window.scrollY;
+      apply();
+    };
+
+    const tick = () => {
+      px += (targetX - px) * 0.045;
+      py += (targetY - py) * 0.045;
+      apply();
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 26;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 18;
+    };
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(pointer: fine)').matches;
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    if (!reduced && fine) {
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      raf = requestAnimationFrame(tick);
+    }
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('pointermove', onPointerMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
@@ -60,9 +100,9 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         }}
       />
 
-      {/* Orbs with parallax — toned down for cleaner navy field */}
-      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)', animation: 'orbFloat 8s ease-in-out infinite' }} />
-      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)', animation: 'orbFloat 10s ease-in-out infinite reverse' }} />
+      {/* Orbs — scroll + pointer parallax (transform driven from JS) */}
+      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)' }} />
+      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
         {/* Logo badge */}
@@ -74,12 +114,14 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           loading="eager"
           fetchPriority="high"
           decoding="sync"
-          className="w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
+          className="hero-logo-breath w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
             filter: 'drop-shadow(0 0 40px rgba(251,146,60,0.3))',
-            animation: 'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both',
+            animation:
+              'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both, heroLogoBreath 9s ease-in-out 1.4s infinite',
           }}
         />
+
 
         {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
