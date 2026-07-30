@@ -59,13 +59,14 @@ export default function RevealText({
           <m.span
             className="inline-block will-change-transform"
             style={{ transform: 'translateY(100%)' }}
-            initial={{ y: '100%' }}
-            whileInView={{ y: '0%' }}
+            initial={{ y: '100%', opacity: 0 }}
+            whileInView={{ y: '0%', opacity: 1 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{
               duration,
               delay: delay + 0.15 + i * stagger,
               ease: LUXURY_EASE as any,
+              opacity: { duration: duration * 0.5, delay: delay + 0.15 + i * stagger, ease: 'linear' },
             }}
           >
             {part}
