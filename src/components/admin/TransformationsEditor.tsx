@@ -82,7 +82,7 @@ export default function TransformationsEditor() {
       if (!session) return false;
       const { error } = await supabase.from('site_settings').upsert({ key: 'transformations-meta', value: meta }, { onConflict: 'key' });
       if (error) { alert('Meta save failed: ' + error.message); return false; }
-      qc.invalidateQueries({ queryKey: ['site-setting', 'transformations-meta'] });
+      qc.invalidateQueries({ queryKey: ['site-settings'] });
       metaBaseline.current = JSON.stringify(meta);
       return true;
     },
