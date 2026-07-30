@@ -547,4 +547,12 @@ a.story-link:hover::after {
     animation: none !important;
     transition: none !important;
   }
+  .reveal-element,
+  .reveal-left,
+  .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
 }
