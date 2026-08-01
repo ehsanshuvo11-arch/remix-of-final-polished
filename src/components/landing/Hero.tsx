@@ -105,6 +105,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
+        {/* ── Unified hero welcome choreography ──
+            One timeline, every element in sync with the headline:
+            logo 0s → eyebrow 0.25s → headline 0.4s (0.15s stagger)
+            → subheadline 1.05s → CTAs 1.25s → scroll cue 1.45s        */}
         {/* Logo badge */}
         <img
           src="/logo.svg"
@@ -127,10 +131,11 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         <p
           lang="en"
           className="font-sans-eyebrow text-[8px] tracking-[0.35em] text-accent mt-4 mb-8 md:mt-0 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
         </p>
+
 
         {(() => {
           // Zero-shift headline: identical DOM, classes, fonts, sizes, and animation
@@ -179,16 +184,16 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           );
         })()}
 
-        {/* Static, always-rendered subheadline. */}
+        {/* Static, always-rendered subheadline — enters right as the headline settles. */}
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0 animate-fade-in"
+          className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
-            animationDelay: '1.2s',
-            animationFillMode: 'backwards',
+            animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both',
           }}
         >
+
           {isBn
             ? (hero.subBn ||
               'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা আলাদাভাবে নজর কাড়ে এবং মানুষের মনে গেঁথে থাকে।')
@@ -201,7 +206,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         {/* CTA buttons — Magnetic.
             Mobile order: Start a Project (primary, filled) → View Our Work (secondary, outlined).
             Desktop order preserved: View Our Work (primary) → Start a Project (secondary). */}
-        <div className="hidden md:flex flex-col-reverse w-[70%] max-w-[260px] mx-auto gap-3 mt-0 mb-6 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
+        <div className="hidden md:flex flex-col-reverse w-[70%] max-w-[260px] mx-auto gap-3 mt-0 mb-6 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
           <MagneticButton
             as="a"
             href="#work"
@@ -242,9 +247,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex md:hidden md:[@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform animate-[heroScrollPulse_2.6s_ease-in-out_1.8s_infinite] md:animate-none" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
+      <div className="absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex md:hidden md:[@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.45s both' }}>
         {hero.scrollEn ?? 'Scroll'}
-        <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }} />
+        <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.7s both' }} />
+
       </div>
 
       {/* Hairline accent at bottom — no glow bleed */}
