@@ -14,9 +14,31 @@ import type { PricingContent, PricingTier } from '@/types/database';
 export default function Pricing({ isLoading = false }: { isLoading?: boolean }) {
   const { lang } = useLanguage();
   const trackRef = useRef<HTMLDivElement>(null);
+  const { data: cms } = useSiteSetting<PricingContent>('pricing');
+
+  const content: PricingContent = { ...DEFAULT_PRICING, ...(cms ?? {}) };
+  const pricingTiers: PricingTier[] =
+    content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers!;
+  const sectionHeader = {
+    label_en: content.labelEn ?? '',
+    label_bn: content.labelBn ?? '',
+    title_en: content.titleEn ?? '',
+    title_em_en: content.titleEmEn ?? '',
+    title_bn: content.titleBn ?? '',
+    title_em_bn: content.titleEmBn ?? '',
+  };
+  const customContent = {
+    heading_en: content.customHeadingEn ?? '',
+    heading_bn: content.customHeadingBn ?? '',
+    desc_en: content.customDescEn ?? '',
+    desc_bn: content.customDescBn ?? '',
+    cta_en: content.customCtaEn ?? '',
+    cta_bn: content.customCtaBn ?? '',
+  };
 
   const isBn = lang === 'bn';
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+
 
 
   const scrollToContact = () => {
