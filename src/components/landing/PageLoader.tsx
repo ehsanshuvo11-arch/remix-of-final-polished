@@ -51,12 +51,28 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     };
   }, [show]);
 
+  // Safety net: if the exit animation never resolves (e.g. Framer Motion's
+  // lazy features are still loading on a slow connection), force-unmount the
+  // curtain and release the scroll locks anyway.
+  useEffect(() => {
+    if (show) return;
+    const t = window.setTimeout(() => {
+      setGone(true);
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      (window as unknown as { lenis?: { start?: () => void } }).lenis?.start?.();
+    }, EXIT_S * 1000 + 250);
+    return () => window.clearTimeout(t);
+  }, [show]);
 
   const letters = 'POLISHED'.split('');
+
+  if (gone) return null;
 
   return (
     <AnimatePresence>
       {show && (
+
         <m.div
           key="cinematic-loader"
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
