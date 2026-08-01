@@ -172,6 +172,21 @@
 @keyframes wordReveal {
   to { transform: translateY(0); }
 }
+/* Mount-triggered masked reveal — pure CSS so it never depends on JS/hydration. */
+@keyframes revealMaskUp {
+  from { transform: translate3d(0, 100%, 0); opacity: 0; }
+  to { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+.reveal-mask-up {
+  display: inline-block;
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+  backface-visibility: hidden;
+  animation: revealMaskUp var(--reveal-dur, 0.8s) cubic-bezier(0.76, 0, 0.24, 1) var(--reveal-delay, 0s) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-mask-up { animation: none; transform: none; opacity: 1; }
+}
 @keyframes pulseDot {
   0%, 100% { box-shadow: 0 0 0 0 hsl(28 96% 61% / 0.5); }
   50% { box-shadow: 0 0 0 6px hsl(28 96% 61% / 0); }
