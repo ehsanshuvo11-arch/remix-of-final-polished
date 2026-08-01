@@ -33,6 +33,8 @@ export default function Evolution() {
 
   const beforeSrc = data?.before_image_url || beforeImg;
   const afterSrc = data?.after_image_url || afterImg;
+  const beforeFallback = beforeImg;
+  const afterFallback = afterImg;
 
   return (
     <section id="evolution" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -63,6 +65,8 @@ export default function Evolution() {
           <EvolutionSlider
             before={beforeSrc}
             after={afterSrc}
+            beforeFallback={beforeFallback}
+            afterFallback={afterFallback}
             beforeLabel={beforeLabel}
             afterLabel={afterLabel}
             hint={hint}
@@ -76,12 +80,18 @@ export default function Evolution() {
 interface SliderProps {
   before: string;
   after: string;
+  beforeFallback: string;
+  afterFallback: string;
   beforeLabel: string;
   afterLabel: string;
   hint: string;
 }
 
-function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: SliderProps) {
+function EvolutionSlider({ before, after, beforeFallback, afterFallback, beforeLabel, afterLabel, hint }: SliderProps) {
+  const [beforeSrc, setBeforeSrc] = useState(before);
+  const [afterSrc, setAfterSrc] = useState(after);
+  useEffect(() => setBeforeSrc(before), [before]);
+  useEffect(() => setAfterSrc(after), [after]);
   const isMobile = useIsMobileDevice();
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(50);
@@ -246,22 +256,24 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         <img
-          src={after}
-          srcSet={buildSrcSet(after)}
+          src={afterSrc}
+          srcSet={buildSrcSet(afterSrc)}
           sizes="(max-width: 767px) 92vw, 900px"
           alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
           loading="lazy" decoding="async"
           draggable={false}
+          onError={() => setAfterSrc((s) => (s === afterFallback ? s : afterFallback))}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
         <m.div style={{ clipPath }} className="absolute inset-0">
           <img
-            src={before}
-          srcSet={buildSrcSet(before)}
-          sizes="(max-width: 767px) 92vw, 900px"
+            src={beforeSrc}
+            srcSet={buildSrcSet(beforeSrc)}
+            sizes="(max-width: 767px) 92vw, 900px"
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
             loading="lazy" decoding="async"
             draggable={false}
+            onError={() => setBeforeSrc((s) => (s === beforeFallback ? s : beforeFallback))}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           />
         </m.div>
