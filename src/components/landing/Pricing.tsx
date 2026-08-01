@@ -79,9 +79,11 @@ const sectionHeader = {
 
 export default function Pricing({ isLoading = false }: { isLoading?: boolean }) {
   const { lang } = useLanguage();
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const isBn = lang === 'bn';
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+
 
   const scrollToContact = () => {
     const el = document.getElementById('contact');
