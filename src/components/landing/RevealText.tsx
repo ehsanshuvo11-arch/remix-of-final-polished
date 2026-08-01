@@ -48,28 +48,47 @@ export default function RevealText({
 
   const rest = { y: '0%', opacity: 1 } as const;
 
+  const maskStyle = {
+    marginRight: splitBy === 'word' ? '0.28em' : 0,
+    // Italic glyphs (esp. trailing punctuation like "!") lean right and get
+    // clipped by overflow:hidden. Pad the mask and offset to keep layout stable.
+    paddingRight: '0.15em',
+    marginLeft: '-0.05em',
+    paddingBottom: '0.15em',
+  } as const;
+
+  // Mount-triggered reveals run on pure CSS so above-the-fold copy can never
+  // stay hidden if framer-motion's feature bundle loads late on a cold visit.
+  if (triggerOnMount) {
+    return (
+      <Wrapper className={className}>
+        {parts.map((part, i) => (
+          <span key={i} className="inline-block overflow-hidden align-bottom" style={maskStyle}>
+            <span
+              className="reveal-mask-up transform-gpu"
+              style={{
+                ['--reveal-dur' as string]: `${dur}s`,
+                ['--reveal-delay' as string]: `${delay + 0.15 + i * step}s`,
+              }}
+            >
+              {part}
+            </span>
+          </span>
+        ))}
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper className={className}>
       {parts.map((part, i) => (
-        <span
-          key={i}
-          className="inline-block overflow-hidden align-bottom"
-          style={{
-            marginRight: splitBy === 'word' ? '0.28em' : 0,
-            // Italic glyphs (esp. trailing punctuation like "!") lean right and get
-            // clipped by overflow:hidden. Pad the mask and offset to keep layout stable.
-            paddingRight: '0.15em',
-            marginLeft: '-0.05em',
-            paddingBottom: '0.15em',
-          }}
-        >
+        <span key={i} className="inline-block overflow-hidden align-bottom" style={maskStyle}>
           <m.span
             className="inline-block transform-gpu will-change-transform"
             style={{ transform: 'translate3d(0, 100%, 0)', backfaceVisibility: 'hidden' }}
             initial={{ y: '100%', opacity: 0 }}
-            {...(triggerOnMount
-              ? { animate: rest }
-              : { whileInView: rest, viewport: { once: true, margin: '50px' } })}
+            whileInView={rest}
+            viewport={{ once: true, margin: '50px' }}
             transition={{
               duration: dur,
               delay: delay + 0.15 + i * step,
