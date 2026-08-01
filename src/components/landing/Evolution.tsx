@@ -217,10 +217,10 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         </m.div>
 
         {/* Floating labels — fade as the corresponding side disappears */}
-        <m.span style={{ opacity: leftTagOpacity }} className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
+        <m.span style={{ opacity: leftTagOpacity }} className="absolute top-3 left-3 md:top-5 md:left-5 px-2 py-1 md:px-3 md:py-1.5 text-[8px] md:text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
           {beforeLabel}
         </m.span>
-        <m.span style={{ opacity: rightTagOpacity }} className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/95 md:bg-accent/85 md:backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
+        <m.span style={{ opacity: rightTagOpacity }} className="absolute top-3 right-3 md:top-5 md:right-5 px-2 py-1 md:px-3 md:py-1.5 text-[8px] md:text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/95 md:bg-accent/85 md:backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
           {afterLabel}
         </m.span>
 
