@@ -157,7 +157,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       <div
         ref={cardRef}
         className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] h-[110px] sm:h-[260px] md:h-[260px]'
+          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] w-full h-auto md:h-[260px]'
         }`}
 
         onClick={() => {
