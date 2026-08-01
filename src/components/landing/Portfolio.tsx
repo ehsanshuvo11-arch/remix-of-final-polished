@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { m, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
@@ -175,7 +175,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
           imageExpanded ? (
             <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10"></div>
               <PremiumImage
                 src={project.image_url}
                 alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
