@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { m, useInView } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
