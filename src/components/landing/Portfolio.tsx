@@ -394,19 +394,9 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
 function TiltImage({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const isMobile = useIsMobileDevice();
 
-
-  // ── Velocity-based subtle scale (desktop only) ──
-  // Map page scroll velocity → tiny scaleY 1.0 → 1.015 max.
-  // Spring-back snaps it cleanly to rest. Image-only, never the container,
-  // so click targets, hook text and case-study layout are not affected.
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, { stiffness: 400, damping: 30, mass: 0.4 });
-  // Clamp to a sliver — the "quiet luxury" tell is what you almost don't see.
-  const velocityScaleY = useTransform(smoothVelocity, [-3000, 0, 3000], [1.015, 1, 1.015]);
-
+  // No scroll-velocity springs here: they ran a rAF loop per card and were the
+  // main source of jank. Hover tilt is plain CSS transform, GPU composited.
   const handleTilt = (e: React.MouseEvent) => {
     const el = wrapperRef.current;
     if (!el) return;
@@ -426,36 +416,36 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
 
   return (
     <div className="group relative z-[60] w-full h-full overflow-visible isolate">
-      {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+      {/* Premium subtle orange aura — static (no pulse) to keep paint cost at zero */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10" />
 
-      <m.div
+      <div
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate"
+        className="relative z-[60] w-full h-full overflow-hidden isolate transform-gpu"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        initial={false}
-        animate={{ scale: imageLoaded ? 1.0 : 1.02 }}
-        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
         <PremiumImage
           src={src}
           alt={alt}
           containerClassName="w-full h-full"
-          className="object-cover object-center cursor-pointer will-change-[opacity,transform]"
+          className="object-cover object-center cursor-pointer transform-gpu"
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
-          fadeDuration={0.8}
-
+          fadeDuration={0.6}
           onLoad={() => setImageLoaded(true)}
-          imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
+          imgStyle={{
+            transform: imageLoaded ? 'scale(1)' : 'scale(1.02)',
+            transition: 'opacity 0.6s ease-out, transform 1.1s cubic-bezier(0.22,1,0.36,1)',
+          }}
         />
-      </m.div>
+      </div>
     </div>
   );
 }
+
 
 
 /* ── Premium Swipeable Lightbox ── */
