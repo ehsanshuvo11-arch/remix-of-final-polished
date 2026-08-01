@@ -225,9 +225,15 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuemax={100}
         aria-valuenow={pct}
         onKeyDown={onKeyDown}
-        style={{ touchAction: 'pan-y' }}
+        style={{ touchAction: 'pan-y', willChange: 'transform', transform: 'translateZ(0)' }}
         onMouseDown={(e) => startDrag(e.clientX)}
-        onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+        onTouchStart={(e) => {
+          // Keep the gesture local: never let a parent swipe track react to it.
+          e.stopPropagation();
+          startDrag(e.touches[0].clientX);
+        }}
+        onTouchMove={(e) => e.stopPropagation()}
+
         onClick={(e) => {
           // Only treat as click when not dragging (mousedown already positioned it)
           if (!dragging) handleClick(e.clientX);
