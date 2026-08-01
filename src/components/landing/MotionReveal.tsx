@@ -37,22 +37,27 @@ export default function MotionReveal({
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once, margin: '0px 0px -60px 0px', amount: 0.08 });
   const isMobile = useIsMobileDevice();
+  // Once the reveal has settled we release the GPU layer hint — a permanent
+  // will-change keeps a compositor layer alive per element and is the single
+  // biggest cause of scroll jank on mobile once dozens of them exist.
+  const [settled, setSettled] = useState(false);
 
   const offset = directionMap[direction];
-  // Identical distance / easing / duration on mobile — the only thing dropped is
-  // the blur filter, which is a non-composited (CPU) paint on mobile GPUs.
+  // On mobile we animate transform + opacity ONLY (both composited on the GPU).
+  // The blur filter is a non-composited CPU paint and is dropped entirely.
   const rest = { opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' };
   const initial = {
     opacity: 0,
     x: distance !== undefined && direction !== 'up' ? (direction === 'left' ? -distance : distance) : (offset.x ?? 0),
     y: distance !== undefined && direction === 'up' ? distance : (offset.y ?? 0),
     // A whisper of scale makes the settle feel optical rather than mechanical.
-    scale: 0.985,
+    scale: isMobile ? 1 : 0.985,
     filter: isMobile ? 'blur(0px)' : 'blur(6px)',
   };
 
   const dur = isMobile ? Math.min(duration, 0.5) : duration;
   const ease = isMobile ? MOBILE_EASE : LUXURY_EASE;
+  const delayed = isMobile ? Math.min(delay * 0.6, 0.24) : delay;
 
   return (
     <m.div
@@ -64,19 +69,29 @@ export default function MotionReveal({
         opacity: initial.opacity,
         transform: `translate3d(${initial.x ?? 0}px, ${initial.y ?? 0}px, 0) scale(${initial.scale ?? 1})`,
         filter: initial.filter,
-        willChange: 'transform, opacity',
+        willChange: settled ? 'auto' : 'transform, opacity',
         backfaceVisibility: 'hidden',
       }}
       initial={initial}
       animate={isInView ? rest : initial}
-      transition={{
-        duration: dur,
-        delay: isMobile ? delay * 0.6 : delay,
-        ease,
-        opacity: { duration: dur * 0.8, delay: isMobile ? delay * 0.6 : delay, ease: 'linear' },
-        filter: { duration: dur * 0.7, delay: isMobile ? delay * 0.6 : delay, ease },
-      }}
-      className={`transform-gpu will-change-transform ${className ?? ''}`}
+      onAnimationComplete={() => isInView && setSettled(true)}
+      transition={
+        isMobile
+          ? {
+              duration: dur,
+              delay: delayed,
+              ease,
+              opacity: { duration: dur * 0.8, delay: delayed, ease: 'linear' },
+            }
+          : {
+              duration: dur,
+              delay: delayed,
+              ease,
+              opacity: { duration: dur * 0.8, delay: delayed, ease: 'linear' },
+              filter: { duration: dur * 0.7, delay: delayed, ease },
+            }
+      }
+      className={`transform-gpu ${className ?? ''}`}
     >
       {children}
     </m.div>
