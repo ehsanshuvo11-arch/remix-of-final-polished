@@ -105,6 +105,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
+        {/* ── Unified hero welcome choreography ──
+            One timeline, every element in sync with the headline:
+            logo 0s → eyebrow 0.25s → headline 0.4s (0.15s stagger)
+            → subheadline 1.05s → CTAs 1.25s → scroll cue 1.45s        */}
         {/* Logo badge */}
         <img
           src="/logo.svg"
@@ -127,10 +131,11 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         <p
           lang="en"
           className="font-sans-eyebrow text-[8px] tracking-[0.35em] text-accent mt-4 mb-8 md:mt-0 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards', opacity: 0, fontFamily: "'Inter', sans-serif" }}
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: "'Inter', sans-serif" }}
         >
           {hero.eyebrowEn}
         </p>
+
 
         {(() => {
           // Zero-shift headline: identical DOM, classes, fonts, sizes, and animation
