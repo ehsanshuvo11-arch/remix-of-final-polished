@@ -320,3 +320,32 @@ export interface UILabelsContent {
   leadFormResetEn?: string;
   leadFormResetBn?: string;
 }
+
+export interface PricingTier {
+  id: string;
+  title_en: string;
+  title_bn: string;
+  target_en: string;
+  target_bn: string;
+  desc_en: string;
+  desc_bn: string;
+  cta_en: string;
+  cta_bn: string;
+  featured?: boolean;
+}
+
+export interface PricingContent {
+  labelEn?: string;
+  labelBn?: string;
+  titleEn?: string;
+  titleEmEn?: string;
+  titleBn?: string;
+  titleEmBn?: string;
+  customHeadingEn?: string;
+  customHeadingBn?: string;
+  customDescEn?: string;
+  customDescBn?: string;
+  customCtaEn?: string;
+  customCtaBn?: string;
+  tiers?: PricingTier[];
+}
