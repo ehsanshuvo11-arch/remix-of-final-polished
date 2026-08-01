@@ -40,9 +40,9 @@ export default function PremiumSkeleton({
 /** Skeleton stand-in for the portfolio list while projects resolve. */
 export function PortfolioSkeleton({ count = 3 }: { count?: number }) {
   return (
-    <div className="flex flex-col gap-16 md:gap-24 mt-14">
+    <div className="flex gap-4 overflow-hidden -mx-6 px-6 mt-10 md:mx-0 md:px-0 md:mt-14 md:flex-col md:gap-24">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="space-y-4">
+        <div key={i} className="space-y-4 min-w-[85vw] max-w-[85vw] shrink-0 md:min-w-0 md:max-w-none">
           <PremiumSkeleton className="h-[110px] sm:h-[260px] md:h-[260px] w-full" />
           <PremiumSkeleton className="h-4 w-2/3" />
           <div className="flex gap-4">
@@ -58,11 +58,11 @@ export function PortfolioSkeleton({ count = 3 }: { count?: number }) {
 /** Skeleton stand-in for the three pricing tier cards. */
 export function PricingSkeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-14">
+    <div className="flex gap-4 overflow-hidden -mx-6 px-6 mt-10 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:gap-8 md:mt-14">
       {Array.from({ length: 3 }).map((_, i) => (
         <div
           key={i}
-          className="flex flex-col gap-5 p-8 md:p-10 border border-primary-foreground/10"
+          className="flex flex-col gap-5 p-6 md:p-10 border border-primary-foreground/10 min-w-[85vw] max-w-[85vw] shrink-0 md:min-w-0 md:max-w-none"
         >
           <PremiumSkeleton tone="light" className="h-3 w-24" />
           <PremiumSkeleton tone="light" className="h-7 w-3/4" />
@@ -73,3 +73,4 @@ export function PricingSkeleton() {
     </div>
   );
 }
+

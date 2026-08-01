@@ -8,7 +8,9 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import PremiumImage from '@/components/landing/PremiumImage';
+import SwipeProgress from '@/components/landing/SwipeProgress';
 import PremiumSkeleton from '@/components/landing/Skeleton';
+
 
 
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
@@ -26,6 +28,8 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
+  const trackRef = useRef<HTMLDivElement>(null);
+
   const defaultProjects: PortfolioProject[] = [
     { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
     { id: '2', sort_order: 2, title_en: 'Project 02', title_bn: 'প্রজেক্ট ০২', category_en: 'Brand Identity', category_bn: 'ব্র্যান্ড আইডেন্টিটি', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
@@ -82,6 +86,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            ref={trackRef}
             className="flex items-start w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:flex-col md:items-stretch md:gap-24 md:mt-14 md:overflow-visible"
           >
             {displayProjects.map((project, i) => (
@@ -90,6 +95,8 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
           </m.div>
         )}
       </AnimatePresence>
+      {!isLoading && <SwipeProgress containerRef={trackRef} count={displayProjects.length} />}
+
 
     </section>
   );

@@ -2,7 +2,9 @@ import { useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import SwipeProgress from '@/components/landing/SwipeProgress';
 import type { Service, ServicesMetaContent } from '@/types/database';
+
 
 interface ServicesProps {
   services: Service[];
@@ -12,6 +14,8 @@ interface ServicesProps {
 export default function Services({ services, content }: ServicesProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
+  const trackRef = useRef<HTMLDivElement>(null);
+
 
   const defaultServices: Service[] = [
     { id: '1', sort_order: 1, name_en: 'Social Media Design', name_bn: 'সোশ্যাল মিডিয়া ডিজাইন', desc_en: 'Feed posts, stories, reels covers, and carousels — all crafted with visual consistency and scroll-stopping clarity. Built for Instagram skincare brands that want to look premium, not templated.', desc_bn: 'ফিড পোস্ট, স্টোরি, রিলস কভার এবং ক্যারোসেল — সবকিছু তৈরি হয় ভিজ্যুয়াল সামঞ্জস্য রেখে।' },
@@ -61,11 +65,13 @@ export default function Services({ services, content }: ServicesProps) {
           )}
         </h2>
 
-        <div className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-2 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
+        <div ref={trackRef} className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-2 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
           {displayServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}
         </div>
+        <SwipeProgress containerRef={trackRef} count={displayServices.length} tone="light" />
+
       </div>
     </div>
   );
@@ -101,10 +107,11 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         ref={cardRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="service-card h-full bg-primary border border-primary-foreground/10 md:border-0 p-7 md:p-12 relative overflow-hidden transition-all duration-700 ease-out group hover:bg-[#152f78] hover:-translate-y-1 md:hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-700 hover:after:opacity-100"
+        className="service-card h-full bg-primary border border-primary-foreground/10 md:border-0 p-6 md:p-12 relative overflow-hidden transition-all duration-700 ease-out group hover:bg-[#152f78] hover:-translate-y-1 md:hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-700 hover:after:opacity-100"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), background-color 0.7s ease-out, box-shadow 0.7s ease-out' }}
       >
-        <div className="font-heading text-5xl font-light text-primary-foreground/[0.06] leading-none mb-7 transition-all duration-700 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">
+        <div className="font-heading text-[38px] md:text-5xl font-light text-primary-foreground/[0.06] leading-none mb-5 md:mb-7 transition-all duration-700 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">
+
           {String(index + 1).padStart(2, '0')}
         </div>
         <div lang={isBn ? 'bn' : 'en'} className="font-heading text-xl font-normal text-primary-foreground mb-3.5 leading-tight">
