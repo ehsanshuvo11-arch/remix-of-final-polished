@@ -145,20 +145,24 @@ export default function Navbar({ content }: NavbarProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.55, ease: LUXE }}
-            className="md:hidden fixed inset-0 z-[105] bg-primary"
+            transition={{ duration: 0.5, ease: LUXE }}
+            className="mobile-nav-glass md:hidden fixed inset-0 z-[105] bg-primary/85 backdrop-blur-2xl"
+            style={{ WebkitBackdropFilter: 'blur(26px) saturate(140%)', backdropFilter: 'blur(26px) saturate(140%)' }}
             onClick={() => setOpen(false)}
           >
             {/* Soft orange studio glow — top-right accent */}
             <div
               className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none bg-accent"
-              style={{ filter: 'blur(100px)', opacity: 0.12 }}
+              style={{ filter: 'blur(100px)', opacity: 0.14 }}
             />
             {/* Deep cinematic vignette at the base */}
             <div
               className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, hsl(var(--primary)), transparent)' }}
+              style={{ background: 'linear-gradient(to top, hsl(var(--primary) / 0.9), transparent)' }}
             />
+            {/* Hairline glass edge */}
+            <div className="absolute inset-0 pointer-events-none border-t border-primary-foreground/10" />
+
 
             <div className="relative h-full flex flex-col justify-center items-end px-7 sm:px-9 py-24 pointer-events-none">
               <ul
