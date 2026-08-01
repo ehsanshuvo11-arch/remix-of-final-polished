@@ -23,6 +23,8 @@ export default function WordReveal({
   const isMobile = useIsMobileDevice();
 
   const words = children.split(' ');
+  // Same reveal on mobile, marginally tighter stagger to avoid frame backlog.
+  const step = isMobile ? 0.03 : 0.04;
 
   return (
     <Tag ref={ref as any} className={className}>
@@ -41,12 +43,13 @@ export default function WordReveal({
           }}
         >
           <m.span
-            className="inline-block"
-            initial={isMobile ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
-            animate={isMobile ? { y: '0%', opacity: 1 } : (isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 })}
+            className="inline-block transform-gpu will-change-transform"
+            style={{ backfaceVisibility: 'hidden' }}
+            initial={{ y: '110%', opacity: 0 }}
+            animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
             transition={{
               duration: 0.9,
-              delay: delay + i * 0.04,
+              delay: delay + i * step,
               ease: LUXURY_EASE as any,
             }}
           >

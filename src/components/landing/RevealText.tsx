@@ -19,6 +19,8 @@ const LUXURY_EASE = [0.76, 0, 0.24, 1] as const;
  * Splits text into lines/words, masks each with overflow:hidden,
  * and slides inner block from y:100% to y:0% on scroll-into-view.
  * No bounce, no spring — only deliberate cubic-bezier easing.
+ * Mobile runs the exact same reveal, with a tighter stagger so the
+ * browser never has a large backlog of concurrent animations.
  */
 export default function RevealText({
   children,
@@ -36,10 +38,7 @@ export default function RevealText({
 
   const Wrapper = Tag as any;
   const isMobile = useIsMobileDevice();
-
-  if (isMobile) {
-    return <Wrapper className={className}>{text}</Wrapper>;
-  }
+  const step = isMobile ? Math.min(stagger, 0.05) : stagger;
 
   return (
     <Wrapper className={className}>
@@ -57,16 +56,16 @@ export default function RevealText({
           }}
         >
           <m.span
-            className="inline-block will-change-transform"
-            style={{ transform: 'translateY(100%)' }}
+            className="inline-block transform-gpu will-change-transform"
+            style={{ transform: 'translate3d(0, 100%, 0)', backfaceVisibility: 'hidden' }}
             initial={{ y: '100%', opacity: 0 }}
             whileInView={{ y: '0%', opacity: 1 }}
             viewport={{ once: true, margin: '50px' }}
             transition={{
               duration,
-              delay: delay + 0.15 + i * stagger,
+              delay: delay + 0.15 + i * step,
               ease: LUXURY_EASE as any,
-              opacity: { duration: duration * 0.5, delay: delay + 0.15 + i * stagger, ease: 'linear' },
+              opacity: { duration: duration * 0.5, delay: delay + 0.15 + i * step, ease: 'linear' },
             }}
           >
             {part}
