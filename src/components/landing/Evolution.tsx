@@ -65,6 +65,8 @@ export default function Evolution() {
           <EvolutionSlider
             before={beforeSrc}
             after={afterSrc}
+            beforeFallback={beforeFallback}
+            afterFallback={afterFallback}
             beforeLabel={beforeLabel}
             afterLabel={afterLabel}
             hint={hint}
