@@ -48,7 +48,7 @@ export default function WordReveal({
             initial={{ y: '110%', opacity: 0 }}
             animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
             transition={{
-              duration: 0.9,
+              duration: isMobile ? 0.5 : 0.9,
               delay: delay + i * step,
               ease: LUXURY_EASE as any,
             }}

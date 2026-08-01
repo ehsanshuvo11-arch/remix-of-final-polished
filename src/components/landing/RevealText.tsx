@@ -39,6 +39,7 @@ export default function RevealText({
   const Wrapper = Tag as any;
   const isMobile = useIsMobileDevice();
   const step = isMobile ? Math.min(stagger, 0.05) : stagger;
+  const dur = isMobile ? Math.min(duration, 0.5) : duration;
 
   return (
     <Wrapper className={className}>
@@ -62,10 +63,10 @@ export default function RevealText({
             whileInView={{ y: '0%', opacity: 1 }}
             viewport={{ once: true, margin: '50px' }}
             transition={{
-              duration,
+              duration: dur,
               delay: delay + 0.15 + i * step,
               ease: LUXURY_EASE as any,
-              opacity: { duration: duration * 0.5, delay: delay + 0.15 + i * step, ease: 'linear' },
+              opacity: { duration: dur * 0.5, delay: delay + 0.15 + i * step, ease: 'linear' },
             }}
           >
             {part}
