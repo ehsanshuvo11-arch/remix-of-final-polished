@@ -34,6 +34,7 @@ export default function RevealText({
   stagger = 0.1,
   splitBy = 'word',
   as: Tag = 'span',
+  triggerOnMount = false,
 }: RevealTextProps) {
   const text = typeof children === 'string' ? children : String(children ?? '');
   const parts = splitBy === 'line'
@@ -44,6 +45,8 @@ export default function RevealText({
   const isMobile = useIsMobileDevice();
   const step = isMobile ? Math.min(stagger, 0.05) : stagger;
   const dur = isMobile ? Math.min(duration, 0.5) : duration;
+
+  const rest = { y: '0%', opacity: 1 } as const;
 
   return (
     <Wrapper className={className}>
@@ -64,8 +67,9 @@ export default function RevealText({
             className="inline-block transform-gpu will-change-transform"
             style={{ transform: 'translate3d(0, 100%, 0)', backfaceVisibility: 'hidden' }}
             initial={{ y: '100%', opacity: 0 }}
-            whileInView={{ y: '0%', opacity: 1 }}
-            viewport={{ once: true, margin: '50px' }}
+            {...(triggerOnMount
+              ? { animate: rest }
+              : { whileInView: rest, viewport: { once: true, margin: '50px' } })}
             transition={{
               duration: dur,
               delay: delay + 0.15 + i * step,
@@ -77,6 +81,7 @@ export default function RevealText({
           </m.span>
         </span>
       ))}
+
     </Wrapper>
   );
 }
