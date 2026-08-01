@@ -94,32 +94,53 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   // Right tag sits on the AFTER side (visible while the handle is to the left of it)
   const rightTagOpacity = useTransform(x, [72, 92], [1, 0]);
 
+  // Throttle React state updates (aria-valuenow only) to one per frame so the
+  // motion value can drive the visuals on the compositor without re-rendering.
   useEffect(() => {
-    const unsub = x.on('change', (v) => setPct(Math.round(v)));
-    return unsub;
+    let frame = 0;
+    let last = -1;
+    const unsub = x.on('change', (v) => {
+      const rounded = Math.round(v);
+      if (rounded === last || frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        last = rounded;
+        setPct(rounded);
+      });
+    });
+    return () => {
+      unsub();
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [x]);
+
+  // Cache the rect during a drag so touchmove never triggers layout reads.
+  const rectRef = useRef<DOMRect | null>(null);
 
   const setFromClientX = useCallback((clientX: number, animateTo = false) => {
     const el = containerRef.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
+    const rect = rectRef.current ?? el.getBoundingClientRect();
     const p = ((clientX - rect.left) / rect.width) * 100;
     const clamped = Math.max(0, Math.min(100, p));
     if (animateTo) {
       animate(x, clamped, { type: 'spring', stiffness: 120, damping: 20, mass: 0.8 });
     } else {
-      // Smooth drag with tiny spring for tactile feel
-      animate(x, clamped, { type: 'spring', stiffness: 500, damping: 40, mass: 0.4 });
+      // Direct set: 1:1 with the finger, transform-only, zero animation overhead.
+      x.set(clamped);
     }
   }, [x]);
 
+
   const startDrag = useCallback((clientX: number) => {
+    rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     setDragging(true);
     setHasInteracted(true);
     setFromClientX(clientX);
   }, [setFromClientX]);
 
   const handleClick = useCallback((clientX: number) => {
+    rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     setHasInteracted(true);
     setFromClientX(clientX, true);
   }, [setFromClientX]);
@@ -127,22 +148,40 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
 
   useEffect(() => {
     if (!dragging) return;
+    let frame = 0;
+    let pendingX: number | null = null;
+    const flush = () => {
+      frame = 0;
+      if (pendingX !== null) {
+        setFromClientX(pendingX);
+        pendingX = null;
+      }
+    };
     const onMove = (e: MouseEvent | TouchEvent) => {
       const cx = 'touches' in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
-      if (typeof cx === 'number') setFromClientX(cx);
+      if (typeof cx !== 'number') return;
+      pendingX = cx;
+      if (!frame) frame = requestAnimationFrame(flush);
     };
-    const onUp = () => setDragging(false);
+    const onUp = () => {
+      rectRef.current = null;
+      setDragging(false);
+    };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     window.addEventListener('touchmove', onMove, { passive: true });
     window.addEventListener('touchend', onUp);
+    window.addEventListener('touchcancel', onUp);
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
       window.removeEventListener('touchmove', onMove);
       window.removeEventListener('touchend', onUp);
+      window.removeEventListener('touchcancel', onUp);
+      if (frame) cancelAnimationFrame(frame);
     };
   }, [dragging, setFromClientX]);
+
 
   // Entrance teaser: sweep from 65 -> 50 with soft spring settle
   useEffect(() => {
@@ -186,9 +225,15 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuemax={100}
         aria-valuenow={pct}
         onKeyDown={onKeyDown}
-        style={{ touchAction: 'pan-y' }}
+        style={{ touchAction: 'pan-y', willChange: 'transform', transform: 'translateZ(0)' }}
         onMouseDown={(e) => startDrag(e.clientX)}
-        onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+        onTouchStart={(e) => {
+          // Keep the gesture local: never let a parent swipe track react to it.
+          e.stopPropagation();
+          startDrag(e.touches[0].clientX);
+        }}
+        onTouchMove={(e) => e.stopPropagation()}
+
         onClick={(e) => {
           // Only treat as click when not dragging (mousedown already positioned it)
           if (!dragging) handleClick(e.clientX);

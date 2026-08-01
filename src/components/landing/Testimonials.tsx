@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { m } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
@@ -98,29 +98,42 @@ export default function Testimonials() {
   const count = testimonials.length;
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Mobile: derive the active dot from native scroll-snap position (rAF-throttled).
-  const rafRef = useRef(0);
-  const onTrackScroll = () => {
-    if (rafRef.current) return;
-    rafRef.current = requestAnimationFrame(() => {
-      rafRef.current = 0;
-      const el = trackRef.current;
-      if (!el) return;
-      const center = el.scrollLeft + el.clientWidth / 2;
-      let nearest = 0;
-      let best = Infinity;
-      Array.from(el.children).forEach((child, i) => {
-        const c = child as HTMLElement;
-        const mid = c.offsetLeft + c.offsetWidth / 2;
-        const d = Math.abs(mid - center);
-        if (d < best) {
-          best = d;
-          nearest = i;
-        }
+  // Mobile swipe track keeps its OWN index, fully isolated from the desktop
+  // carousel index above (and from every other carousel on the page).
+  const [mobileActive, setMobileActive] = useState(0);
+
+  // Native (non-bubbling) scroll listener — React's synthetic onScroll bubbles,
+  // which let sibling/parent scroll containers react to this track's scrolling.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const center = el.scrollLeft + el.clientWidth / 2;
+        let nearest = 0;
+        let best = Infinity;
+        Array.from(el.children).forEach((child, i) => {
+          const c = child as HTMLElement;
+          const mid = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(mid - center);
+          if (d < best) {
+            best = d;
+            nearest = i;
+          }
+        });
+        setMobileActive((prev) => (prev === nearest ? prev : nearest));
       });
-      setActive(nearest);
-    });
-  };
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
@@ -171,10 +184,12 @@ export default function Testimonials() {
         {/* ── MOBILE: native scroll-snap swipe track ── */}
         <div
           ref={trackRef}
-          onScroll={onTrackScroll}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
           className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide overscroll-x-contain [scroll-padding-left:1.5rem]"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
         >
+
           {testimonials.map((t) => (
             <div key={t.id} className="snap-center shrink-0 w-[85vw] max-w-[420px]">
               <TestimonialCard testimonial={t} isBn={isBn} />
@@ -189,7 +204,7 @@ export default function Testimonials() {
               key={i}
               aria-hidden
               className={`h-1.5 rounded-full transition-all duration-500 ${
-                i === active ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
+                i === mobileActive ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
               }`}
               style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
             />
