@@ -160,24 +160,44 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              ref={trackRef}
-              className="flex w-full max-w-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide gap-4 pb-6 -mx-6 px-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:gap-8 md:mt-14 md:grid md:grid-cols-3 md:overflow-visible md:max-w-none"
             >
-              {pricingTiers.map((tier, index) => (
-                <TierCard
-                  key={tier.id}
-                  tier={tier}
-                  index={index}
-                  isBn={isBn}
-                  onCtaClick={scrollToContact}
-                />
-              ))}
+              {/* Mobile-only: native horizontal swipe carousel */}
+              <div
+                ref={trackRef}
+                className="flex md:hidden w-full max-w-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide gap-4 pb-6 -mx-6 px-6 mt-10 [-webkit-overflow-scrolling:touch]"
+              >
+                {pricingTiers.map((tier, index) => (
+                  <TierCard
+                    key={tier.id}
+                    tier={tier}
+                    index={index}
+                    isBn={isBn}
+                    variant="mobile"
+                    onCtaClick={scrollToContact}
+                  />
+                ))}
+              </div>
+
+              {/* Desktop: unchanged three-column grid */}
+              <div className="hidden md:grid md:grid-cols-3 md:gap-8 md:mt-14">
+                {pricingTiers.map((tier, index) => (
+                  <TierCard
+                    key={tier.id}
+                    tier={tier}
+                    index={index}
+                    isBn={isBn}
+                    variant="desktop"
+                    onCtaClick={scrollToContact}
+                  />
+                ))}
+              </div>
             </m.div>
           )}
         </AnimatePresence>
         {!isLoading && (
           <SwipeProgress containerRef={trackRef} count={pricingTiers.length} tone="light" />
         )}
+
 
 
 
@@ -195,11 +215,13 @@ function TierCard({
   tier,
   index,
   isBn,
+  variant = 'desktop',
   onCtaClick,
 }: {
   tier: PricingTier;
   index: number;
   isBn: boolean;
+  variant?: 'mobile' | 'desktop';
   onCtaClick: () => void;
 }) {
   const title = isBn ? tier.title_bn : tier.title_en;
@@ -208,7 +230,10 @@ function TierCard({
   const cta = isBn ? tier.cta_bn : tier.cta_en;
 
   return (
-    <MotionReveal delay={0.12 * (index + 1)} className="min-w-[85vw] max-w-[85vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none">
+    <MotionReveal
+      delay={0.12 * (index + 1)}
+      className={variant === 'mobile' ? 'min-w-[85vw] max-w-[85vw] shrink-0 snap-center' : ''}
+    >
       <div
         className={`relative flex flex-col h-full p-6 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
           tier.featured
