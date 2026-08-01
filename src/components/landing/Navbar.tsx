@@ -145,7 +145,7 @@ export default function Navbar({ content }: NavbarProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: LUXE }}
+            transition={{ duration: 0.55, ease: LUXE }}
             className="md:hidden fixed inset-0 z-[105] bg-primary"
             onClick={() => setOpen(false)}
           >
@@ -154,21 +154,26 @@ export default function Navbar({ content }: NavbarProps) {
               className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none bg-accent"
               style={{ filter: 'blur(100px)', opacity: 0.12 }}
             />
+            {/* Deep cinematic vignette at the base */}
+            <div
+              className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, hsl(var(--primary)), transparent)' }}
+            />
 
-            <div className="relative h-full flex flex-col justify-center items-end px-6 sm:px-8 py-24 pointer-events-none">
+            <div className="relative h-full flex flex-col justify-center items-end px-7 sm:px-9 py-24 pointer-events-none">
               <ul
-                className="flex flex-col items-end gap-6 sm:gap-7 pointer-events-auto w-full"
+                className="flex flex-col items-end gap-5 sm:gap-6 pointer-events-auto w-full"
                 onClick={(e) => e.stopPropagation()}
               >
                 {navItems.map((item, i) => (
                   <m.li
                     key={item.href}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
                     transition={{
-                      duration: 0.7,
-                      delay: 0.15 + i * 0.08,
+                      duration: 0.66,
+                      delay: 0.12 + i * 0.07,
                       ease: LUXE,
                     }}
                     className="text-right w-full"
@@ -182,9 +187,16 @@ export default function Navbar({ content }: NavbarProps) {
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
                       lang={isBn ? 'bn' : 'en'}
-                      className="font-heading text-primary-foreground hover:text-accent text-[clamp(34px,9vw,52px)] leading-tight font-light transition-colors duration-500 block min-h-[56px] text-right [text-wrap:balance]"
+                      className={`font-heading text-primary-foreground hover:text-accent transition-colors duration-500 flex items-baseline justify-end gap-3 min-h-[56px] text-right [text-wrap:balance] font-light ${
+                        isBn
+                          ? 'text-[clamp(26px,7.2vw,40px)] leading-[1.45]'
+                          : 'text-[clamp(32px,8.4vw,48px)] leading-[1.08] tracking-[-0.015em]'
+                      }`}
                       style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)', ...(isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : {}) }}
                     >
+                      <span className="brand-wordmark text-accent/50 text-[11px] tracking-[2px] font-normal not-italic">
+                        0{i + 1}
+                      </span>
                       {item.label}
                     </a>
                   </m.li>
@@ -196,9 +208,9 @@ export default function Navbar({ content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-16 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
+                className="mt-14 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
               >
-                <p lang="en" className="brand-wordmark text-[10px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
+                <p lang="en" className="brand-wordmark text-[10.5px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
                   POLISHED<span className="text-accent">.</span> Studio
                 </p>
               </m.div>
@@ -206,6 +218,7 @@ export default function Navbar({ content }: NavbarProps) {
           </m.div>
         )}
       </AnimatePresence>
+
     </>
   );
 }
