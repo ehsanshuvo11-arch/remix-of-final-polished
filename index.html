@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://tvbnnqmffqtyhgtpwqri.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://tvbnnqmffqtyhgtpwqri.supabase.co" />
-    <!-- Preload + apply Cormorant Garamond synchronously so the brand wordmark
-         on the PageLoader curtain renders in the luxury serif from frame 1
-         (no FOUT). Other fonts are still imported via src/index.css. -->
+    <!-- Cormorant Garamond (brand wordmark) is fetched at high priority via
+         preload, then applied without ever blocking the first paint. -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" />
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" /></noscript>
     <!-- Remaining families load async so they never block first paint. -->
     <link
       rel="stylesheet"
