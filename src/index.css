@@ -594,3 +594,69 @@ a.story-link:hover::after {
 @media (prefers-reduced-motion: reduce) {
   .animate-\[heroScrollPulse_2\.6s_ease-in-out_1\.8s_infinite\] { animation: none !important; }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   MOBILE PERFORMANCE LAYER (touch / coarse-pointer devices)
+   Hover states never fire on touch, but their painted layers
+   (blurs, big shadows, radial gradients) still cost the compositor.
+   Strip them and keep only transform/opacity work on mobile.
+   ───────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  /* 1. Kill desktop-only hover affordances */
+  .service-card::before,
+  a.story-link::after {
+    display: none !important;
+  }
+  .marquee-track:hover {
+    animation-play-state: running;
+  }
+
+  /* 2. No expensive box-shadow / blur repaints on scroll */
+  [class*="hover:shadow-"],
+  [class*="shadow-["] {
+    box-shadow: none !important;
+  }
+  .backdrop-blur-md,
+  .backdrop-blur-sm,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* 3. Ambient decorative glows: heavy multi-pass blurs → cheap flat fade */
+  .blur-3xl,
+  .blur-2xl {
+    filter: none !important;
+    opacity: 0.35;
+  }
+
+  /* 4. Scroll reveals: transform + opacity only (no filter tweening) */
+  .reveal-element,
+  .reveal-left,
+  .reveal-right {
+    filter: none !important;
+    transition:
+      opacity 0.45s linear,
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    will-change: transform, opacity;
+  }
+  .reveal-element.visible,
+  .reveal-left.visible,
+  .reveal-right.visible {
+    will-change: auto;
+  }
+
+  /* 5. Continuous decorative animations pause on mobile — they never stop
+     compositing and are the main source of scroll jitter. */
+  .stat-box .font-heading,
+  section.bg-primary > .max-w-\[900px\] > p:first-of-type {
+    animation: none !important;
+  }
+
+  /* 6. Native momentum scrolling for the swipe carousels */
+  .scrollbar-hide {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
