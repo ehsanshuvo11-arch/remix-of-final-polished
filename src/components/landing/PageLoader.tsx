@@ -17,10 +17,14 @@ const EXIT_S = 0.35;
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
   const [show, setShow] = useState(true);
+  // Keep the latest callback in a ref so parent re-renders (data loading on
+  // slow mobile connections) can never reset the dismiss timer mid-flight.
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
     if (!show) {
-      onComplete?.();
+      onCompleteRef.current?.();
       return;
     }
 
@@ -36,7 +40,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     const dismissTimer = window.setTimeout(() => {
       // Notify parent the moment the curtain begins exiting so the page
       // underneath can fade in *behind* the rising curtain — no blank gap.
-      onComplete?.();
+      onCompleteRef.current?.();
       setShow(false);
     }, HOLD_MS);
 
@@ -45,7 +49,8 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       document.body.style.overflow = prevBodyOverflow;
       document.documentElement.style.overflow = prevHtmlOverflow;
     };
-  }, [show, onComplete]);
+  }, [show]);
+
 
   const letters = 'POLISHED'.split('');
 
