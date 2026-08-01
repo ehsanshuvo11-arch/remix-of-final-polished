@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 
 interface PageLoaderProps {
@@ -17,10 +17,15 @@ const EXIT_S = 0.35;
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
   const [show, setShow] = useState(true);
+  const [gone, setGone] = useState(false);
+  // Keep the latest callback in a ref so parent re-renders (data loading on
+  // slow mobile connections) can never reset the dismiss timer mid-flight.
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
     if (!show) {
-      onComplete?.();
+      onCompleteRef.current?.();
       return;
     }
 
@@ -36,7 +41,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     const dismissTimer = window.setTimeout(() => {
       // Notify parent the moment the curtain begins exiting so the page
       // underneath can fade in *behind* the rising curtain — no blank gap.
-      onComplete?.();
+      onCompleteRef.current?.();
       setShow(false);
     }, HOLD_MS);
 
@@ -45,13 +50,30 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       document.body.style.overflow = prevBodyOverflow;
       document.documentElement.style.overflow = prevHtmlOverflow;
     };
-  }, [show, onComplete]);
+  }, [show]);
+
+  // Safety net: if the exit animation never resolves (e.g. Framer Motion's
+  // lazy features are still loading on a slow connection), force-unmount the
+  // curtain and release the scroll locks anyway.
+  useEffect(() => {
+    if (show) return;
+    const t = window.setTimeout(() => {
+      setGone(true);
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      (window as unknown as { lenis?: { start?: () => void } }).lenis?.start?.();
+    }, EXIT_S * 1000 + 250);
+    return () => window.clearTimeout(t);
+  }, [show]);
 
   const letters = 'POLISHED'.split('');
+
+  if (gone) return null;
 
   return (
     <AnimatePresence>
       {show && (
+
         <m.div
           key="cinematic-loader"
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"

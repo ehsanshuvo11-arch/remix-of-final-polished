@@ -89,7 +89,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
   return (
     <section id="investment" className="bg-primary">
-      <div className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p
@@ -202,7 +202,7 @@ function TierCard({
       <div
         className={`relative flex flex-col h-full p-6 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
           tier.featured
-            ? 'bg-primary/80 border border-accent/40 ring-1 ring-accent/30 shadow-[0_0_60px_-12px_rgba(251,146,60,0.15)]'
+            ? 'bg-primary/80 border border-accent/40 ring-1 ring-accent/30 md:shadow-[0_0_60px_-12px_rgba(251,146,60,0.15)]'
             : 'bg-primary/95 md:bg-primary/60 border border-primary-foreground/15 md:backdrop-blur-md hover:border-primary-foreground/25'
         }`}
       >

@@ -37,7 +37,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const displayProjects = projects.length > 0 ? projects : defaultProjects;
 
   return (
-    <section id="work" className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="work" className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -82,7 +82,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-12 md:gap-24 mt-10 md:mt-14"
+            className="flex items-start w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:flex-col md:items-stretch md:gap-24 md:mt-14 md:overflow-visible"
           >
             {displayProjects.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
@@ -140,7 +140,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   }, []);
 
   return (
-    <MotionReveal delay={0.12 * index} className={imageExpanded ? 'overflow-visible' : undefined}>
+    <MotionReveal delay={0.12 * index} className={`min-w-[85vw] max-w-[85vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
     <div
       data-project-card={isFirst ? '' : undefined}
       className={imageExpanded ? 'relative overflow-visible' : 'relative'}
@@ -269,7 +269,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 <div
                   role="group"
                   aria-label="Case study language"
-                  className="inline-flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 md:backdrop-blur-sm shadow-sm select-none"
+                  className="inline-flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 md:backdrop-blur-sm md:shadow-sm select-none"
                 >
                   <button
                     type="button"

@@ -88,7 +88,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 pt-16 pb-32 sm:px-8 md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
+      className="h-[100svh] min-h-[100svh] flex items-center justify-center relative overflow-hidden px-6 pt-0 pb-0 sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
       {/* Animated grid */}
       <div
@@ -195,7 +195,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         {/* CTA buttons — Magnetic.
             Mobile order: Start a Project (primary, filled) → View Our Work (secondary, outlined).
             Desktop order preserved: View Our Work (primary) → Start a Project (secondary). */}
-        <div className="flex flex-col-reverse w-[70%] max-w-[260px] mx-auto gap-3 mt-0 mb-6 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
+        <div className="hidden md:flex flex-col-reverse w-[70%] max-w-[260px] mx-auto gap-3 mt-0 mb-6 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s forwards', opacity: 0 }}>
           <MagneticButton
             as="a"
             href="#work"
@@ -236,7 +236,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 md:bottom-9 left-1/2 -translate-x-1/2 hidden [@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/30 text-[10px] tracking-[3px] uppercase" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
+      <div className="absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex md:hidden md:[@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform animate-[heroScrollPulse_2.6s_ease-in-out_1.8s_infinite] md:animate-none" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.4s both' }}>
         {hero.scrollEn ?? 'Scroll'}
         <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.8s both' }} />
       </div>

@@ -22,6 +22,8 @@ const directionMap: Record<Direction, { x?: number; y?: number }> = {
 
 // Quiet-luxury easing: long, decelerating settle with zero overshoot.
 const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
+// Mobile keeps a luxury curve but resolves faster so it feels thumb-responsive.
+const MOBILE_EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function MotionReveal({
   children,
@@ -49,6 +51,9 @@ export default function MotionReveal({
     filter: isMobile ? 'blur(0px)' : 'blur(6px)',
   };
 
+  const dur = isMobile ? Math.min(duration, 0.5) : duration;
+  const ease = isMobile ? MOBILE_EASE : LUXURY_EASE;
+
   return (
     <m.div
       ref={ref}
@@ -65,11 +70,11 @@ export default function MotionReveal({
       initial={initial}
       animate={isInView ? rest : initial}
       transition={{
-        duration,
-        delay,
-        ease: LUXURY_EASE,
-        opacity: { duration: duration * 0.8, delay, ease: 'linear' },
-        filter: { duration: duration * 0.7, delay, ease: LUXURY_EASE },
+        duration: dur,
+        delay: isMobile ? delay * 0.6 : delay,
+        ease,
+        opacity: { duration: dur * 0.8, delay: isMobile ? delay * 0.6 : delay, ease: 'linear' },
+        filter: { duration: dur * 0.7, delay: isMobile ? delay * 0.6 : delay, ease },
       }}
       className={`transform-gpu will-change-transform ${className ?? ''}`}
     >

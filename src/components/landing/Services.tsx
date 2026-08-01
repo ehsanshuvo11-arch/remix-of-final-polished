@@ -29,7 +29,7 @@ export default function Services({ services, content }: ServicesProps) {
 
   return (
     <div id="services" className="bg-primary">
-      <div className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -61,7 +61,7 @@ export default function Services({ services, content }: ServicesProps) {
           )}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-primary-foreground/8 border border-primary-foreground/8 mt-10 md:mt-14">
+        <div className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-2 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
           {displayServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}
@@ -96,12 +96,12 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   };
 
   return (
-    <MotionReveal delay={0.12 * (index + 1)}>
+    <MotionReveal delay={0.12 * (index + 1)} className="min-w-[85vw] max-w-[85vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none">
       <div
         ref={cardRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="service-card bg-primary p-7 md:p-12 relative overflow-hidden transition-all duration-700 ease-out group hover:bg-[#152f78] hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-700 hover:after:opacity-100"
+        className="service-card h-full bg-primary border border-primary-foreground/10 md:border-0 p-7 md:p-12 relative overflow-hidden transition-all duration-700 ease-out group hover:bg-[#152f78] hover:-translate-y-1 md:hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-br after:from-accent/[0.09] after:to-transparent after:opacity-0 after:transition-opacity after:duration-700 hover:after:opacity-100"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1), background-color 0.7s ease-out, box-shadow 0.7s ease-out' }}
       >
         <div className="font-heading text-5xl font-light text-primary-foreground/[0.06] leading-none mb-7 transition-all duration-700 group-hover:text-accent/15 group-hover:scale-110 group-hover:translate-x-1">

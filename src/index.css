@@ -567,3 +567,12 @@ a.story-link:hover::after {
     display: none;
   }
 }
+
+/* Bespoke mobile hero — quiet-luxury pulsing scroll indicator */
+@keyframes heroScrollPulse {
+  0%, 100% { opacity: 0.35; transform: translate3d(0, 0, 0); }
+  50% { opacity: 0.85; transform: translate3d(0, 4px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[heroScrollPulse_2\.6s_ease-in-out_1\.8s_infinite\] { animation: none !important; }
+}
