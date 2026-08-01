@@ -184,10 +184,12 @@ export default function Testimonials() {
         {/* ── MOBILE: native scroll-snap swipe track ── */}
         <div
           ref={trackRef}
-          onScroll={onTrackScroll}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
           className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide overscroll-x-contain [scroll-padding-left:1.5rem]"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
         >
+
           {testimonials.map((t) => (
             <div key={t.id} className="snap-center shrink-0 w-[85vw] max-w-[420px]">
               <TestimonialCard testimonial={t} isBn={isBn} />
