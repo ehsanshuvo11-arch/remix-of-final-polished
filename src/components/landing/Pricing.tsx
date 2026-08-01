@@ -198,7 +198,7 @@ function TierCard({
   const cta = isBn ? tier.cta_bn : tier.cta_en;
 
   return (
-    <MotionReveal delay={0.12 * (index + 1)} className="min-w-[85%] sm:min-w-[70%] shrink-0 snap-center md:min-w-0 md:shrink md:snap-align-none">
+    <MotionReveal delay={0.12 * (index + 1)} className="min-w-[85vw] max-w-[85vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none">
       <div
         className={`relative flex flex-col h-full p-6 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
           tier.featured
