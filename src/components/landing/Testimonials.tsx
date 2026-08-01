@@ -98,29 +98,42 @@ export default function Testimonials() {
   const count = testimonials.length;
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Mobile: derive the active dot from native scroll-snap position (rAF-throttled).
-  const rafRef = useRef(0);
-  const onTrackScroll = () => {
-    if (rafRef.current) return;
-    rafRef.current = requestAnimationFrame(() => {
-      rafRef.current = 0;
-      const el = trackRef.current;
-      if (!el) return;
-      const center = el.scrollLeft + el.clientWidth / 2;
-      let nearest = 0;
-      let best = Infinity;
-      Array.from(el.children).forEach((child, i) => {
-        const c = child as HTMLElement;
-        const mid = c.offsetLeft + c.offsetWidth / 2;
-        const d = Math.abs(mid - center);
-        if (d < best) {
-          best = d;
-          nearest = i;
-        }
+  // Mobile swipe track keeps its OWN index, fully isolated from the desktop
+  // carousel index above (and from every other carousel on the page).
+  const [mobileActive, setMobileActive] = useState(0);
+
+  // Native (non-bubbling) scroll listener — React's synthetic onScroll bubbles,
+  // which let sibling/parent scroll containers react to this track's scrolling.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const center = el.scrollLeft + el.clientWidth / 2;
+        let nearest = 0;
+        let best = Infinity;
+        Array.from(el.children).forEach((child, i) => {
+          const c = child as HTMLElement;
+          const mid = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(mid - center);
+          if (d < best) {
+            best = d;
+            nearest = i;
+          }
+        });
+        setMobileActive((prev) => (prev === nearest ? prev : nearest));
       });
-      setActive(nearest);
-    });
-  };
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
