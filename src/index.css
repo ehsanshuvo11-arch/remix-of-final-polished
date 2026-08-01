@@ -556,3 +556,14 @@ a.story-link:hover::after {
     transition: none !important;
   }
 }
+
+/* Hide horizontal scrollbar on mobile swipe carousels while keeping scroll intact */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
