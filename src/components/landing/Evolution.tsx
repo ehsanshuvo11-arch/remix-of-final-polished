@@ -133,12 +133,14 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
 
 
   const startDrag = useCallback((clientX: number) => {
+    rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     setDragging(true);
     setHasInteracted(true);
     setFromClientX(clientX);
   }, [setFromClientX]);
 
   const handleClick = useCallback((clientX: number) => {
+    rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     setHasInteracted(true);
     setFromClientX(clientX, true);
   }, [setFromClientX]);
@@ -146,22 +148,40 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
 
   useEffect(() => {
     if (!dragging) return;
+    let frame = 0;
+    let pendingX: number | null = null;
+    const flush = () => {
+      frame = 0;
+      if (pendingX !== null) {
+        setFromClientX(pendingX);
+        pendingX = null;
+      }
+    };
     const onMove = (e: MouseEvent | TouchEvent) => {
       const cx = 'touches' in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
-      if (typeof cx === 'number') setFromClientX(cx);
+      if (typeof cx !== 'number') return;
+      pendingX = cx;
+      if (!frame) frame = requestAnimationFrame(flush);
     };
-    const onUp = () => setDragging(false);
+    const onUp = () => {
+      rectRef.current = null;
+      setDragging(false);
+    };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
     window.addEventListener('touchmove', onMove, { passive: true });
     window.addEventListener('touchend', onUp);
+    window.addEventListener('touchcancel', onUp);
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
       window.removeEventListener('touchmove', onMove);
       window.removeEventListener('touchend', onUp);
+      window.removeEventListener('touchcancel', onUp);
+      if (frame) cancelAnimationFrame(frame);
     };
   }, [dragging, setFromClientX]);
+
 
   // Entrance teaser: sweep from 65 -> 50 with soft spring settle
   useEffect(() => {
