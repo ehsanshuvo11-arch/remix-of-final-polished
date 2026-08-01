@@ -33,6 +33,8 @@ export default function Evolution() {
 
   const beforeSrc = data?.before_image_url || beforeImg;
   const afterSrc = data?.after_image_url || afterImg;
+  const beforeFallback = beforeImg;
+  const afterFallback = afterImg;
 
   return (
     <section id="evolution" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
