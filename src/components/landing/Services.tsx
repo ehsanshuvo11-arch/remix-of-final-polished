@@ -14,6 +14,8 @@ interface ServicesProps {
 export default function Services({ services, content }: ServicesProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
+  const trackRef = useRef<HTMLDivElement>(null);
+
 
   const defaultServices: Service[] = [
     { id: '1', sort_order: 1, name_en: 'Social Media Design', name_bn: 'সোশ্যাল মিডিয়া ডিজাইন', desc_en: 'Feed posts, stories, reels covers, and carousels — all crafted with visual consistency and scroll-stopping clarity. Built for Instagram skincare brands that want to look premium, not templated.', desc_bn: 'ফিড পোস্ট, স্টোরি, রিলস কভার এবং ক্যারোসেল — সবকিছু তৈরি হয় ভিজ্যুয়াল সামঞ্জস্য রেখে।' },
