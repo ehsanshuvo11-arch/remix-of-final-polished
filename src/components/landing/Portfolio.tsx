@@ -457,7 +457,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   onClose: () => void;
 }) {
   const [current, setCurrent] = useState(initialIndex);
-  const [loadedIndex, setLoadedIndex] = useState(-1);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
 
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
@@ -563,51 +563,49 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image — aspect-locked box with the brand shimmer behind it, so the
-          lightbox never resizes while a heavy mockup downloads. */}
+      {/* Main image — aspect-locked box with a pure-CSS shimmer behind it, so the
+          lightbox never resizes while a heavy mockup downloads. Fades are plain
+          CSS opacity transitions (compositor-only, zero main-thread work). */}
       <div className="relative flex items-center justify-center">
         <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
-          <m.div
-            className="absolute inset-0 z-0 pointer-events-none"
-            initial={false}
-            animate={{ opacity: loadedIndex === current ? 0 : 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+          <div
+            aria-hidden
+            className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out"
+            style={{ opacity: loaded[current] ? 0 : 1 }}
           >
             <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
-          </m.div>
-          <AnimatePresence mode="wait">
-            <m.img
-              key={current}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: loadedIndex === current ? 1 : 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              src={urls[current]}
-              alt={`${title} mockup ${current + 1}`}
-              onLoad={() => setLoadedIndex(current)}
-              onError={() => setLoadedIndex(current)}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              className="relative z-10 w-full h-full object-contain cursor-grab active:cursor-grabbing will-change-transform"
-              style={{
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                filter: 'none',
-              }}
-              onClick={(e) => e.stopPropagation()}
-              draggable={false}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={(_, info) => {
-                if (info.offset.x < -80 && current < total - 1) goNext();
-                else if (info.offset.x > 80 && current > 0) goPrev();
-              }}
-            />
-          </AnimatePresence>
+          </div>
+          {urls.map((url, i) => {
+            // Only the current slide and its immediate neighbours are mounted —
+            // neighbours load lazily so swiping feels instant without paying for
+            // every mockup upfront.
+            if (Math.abs(i - current) > 1) return null;
+            const isCurrent = i === current;
+            return (
+              <img
+                key={url + i}
+                src={url}
+                alt={`${title} mockup ${i + 1}`}
+                onLoad={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
+                onError={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
+                loading={isCurrent ? 'eager' : 'lazy'}
+                fetchPriority={isCurrent ? 'high' : 'low'}
+                decoding="async"
+                className="absolute inset-0 z-10 w-full h-full object-contain transform-gpu"
+                style={{
+                  opacity: isCurrent && loaded[i] ? 1 : 0,
+                  pointerEvents: isCurrent ? 'auto' : 'none',
+                  transition: 'opacity 0.5s ease-out',
+                  backgroundColor: 'transparent',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                draggable={false}
+              />
+            );
+          })}
         </div>
       </div>
+
 
 
       {/* Dot indicators */}
