@@ -57,7 +57,7 @@ export default function About({ content, stats }: AboutProps) {
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)] leading-[1.4]' : 'text-[clamp(36px,5vw,60px)] leading-[1.2]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)] leading-[1.4]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.2]'}`}>
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>

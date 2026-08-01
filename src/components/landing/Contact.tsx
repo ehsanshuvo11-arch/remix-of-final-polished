@@ -69,7 +69,7 @@ export default function Contact({ contact }: ContactProps) {
 
   return (
     <div id="contact" className="bg-[#1e3a8a]">
-      <div className="py-12 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-10 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
         <hr className="border-t border-white/10" />
       </div>
       <div className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
