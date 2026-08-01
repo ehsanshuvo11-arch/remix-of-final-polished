@@ -147,7 +147,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   }, []);
 
   return (
-    <MotionReveal delay={0.12 * index} className={`min-w-[85vw] max-w-[85vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
+    <MotionReveal delay={0.12 * index} className={`min-w-[95vw] max-w-[95vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
     <div
       data-project-card={isFirst ? '' : undefined}
       className={imageExpanded ? 'relative overflow-visible' : 'relative'}
