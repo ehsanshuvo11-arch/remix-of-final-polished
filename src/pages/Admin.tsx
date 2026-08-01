@@ -1876,7 +1876,7 @@ function TestimonialsEditor() {
     return await upsertSetting('testimonials', data as unknown as Record<string, any>);
   };
 
-  const { markLoaded } = useDirtySection({ key: 'testimonials', label: 'Testimonials', data, save });
+  const { markLoaded } = useDirtySection({ key: 'testimonials', label: 'Partnerships', data, save });
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
