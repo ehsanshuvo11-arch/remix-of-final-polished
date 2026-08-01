@@ -204,7 +204,7 @@ export default function Testimonials() {
               key={i}
               aria-hidden
               className={`h-1.5 rounded-full transition-all duration-500 ${
-                i === active ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
+                i === mobileActive ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
               }`}
               style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
             />
