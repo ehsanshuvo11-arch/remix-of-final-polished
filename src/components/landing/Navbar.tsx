@@ -69,8 +69,8 @@ export default function Navbar({ content }: NavbarProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[100] flex justify-between items-center transition-all duration-500 ${
-          scrolled
+        className={`fixed top-0 left-0 right-0 ${open ? 'z-[120]' : 'z-[100]'} flex justify-between items-center transition-all duration-500 ${
+          scrolled && !open
             ? 'py-3.5 px-6 md:px-14 bg-background/95 md:backdrop-blur-2xl border-b border-border shadow-[0_2px_24px_rgba(0,0,0,0.05)]'
             : 'py-[22px] px-6 md:px-14 bg-transparent border-b border-transparent'
         }`}
