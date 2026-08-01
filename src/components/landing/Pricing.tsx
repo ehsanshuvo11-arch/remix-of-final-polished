@@ -89,7 +89,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
   return (
     <section id="investment" className="bg-primary">
-      <div className="py-16 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p

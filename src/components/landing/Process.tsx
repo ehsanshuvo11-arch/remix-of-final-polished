@@ -28,7 +28,7 @@ export default function Process({ steps, content }: ProcessProps) {
 
   return (
     <div className="bg-secondary">
-      <section id="process" className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+      <section id="process" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
             <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
