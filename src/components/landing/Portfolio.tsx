@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
