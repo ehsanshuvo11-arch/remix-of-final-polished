@@ -172,15 +172,16 @@ export default function Navbar({ content }: NavbarProps) {
                 {navItems.map((item, i) => (
                   <m.li
                     key={item.href}
-                    initial={{ opacity: 0, y: 18 }}
+                    initial={{ opacity: 0, y: 34 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
+                    exit={{ opacity: 0, y: 16 }}
                     transition={{
-                      duration: 0.66,
-                      delay: 0.12 + i * 0.07,
+                      duration: 0.7,
+                      delay: 0.1 + i * 0.075,
                       ease: LUXE,
                     }}
-                    className="text-right w-full"
+                    style={{ willChange: 'transform, opacity' }}
+                    className="text-right w-full transform-gpu"
                   >
                     <a
                       href={item.href}
@@ -191,11 +192,12 @@ export default function Navbar({ content }: NavbarProps) {
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
                       lang={isBn ? 'bn' : 'en'}
-                      className={`font-heading text-primary-foreground hover:text-accent transition-colors duration-500 flex items-baseline justify-end gap-3 min-h-[56px] text-right [text-wrap:balance] font-light ${
+                      className={`font-heading text-primary-foreground hover:text-accent active:text-accent transition-all duration-500 active:scale-[0.97] origin-right flex items-baseline justify-end gap-3 min-h-[56px] px-1 text-right [text-wrap:balance] font-light ${
                         isBn
                           ? 'text-[clamp(26px,7.2vw,40px)] leading-[1.45]'
                           : 'text-[clamp(32px,8.4vw,48px)] leading-[1.08] tracking-[-0.015em]'
                       }`}
+
                       style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)', ...(isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : {}) }}
                     >
                       <span className="brand-wordmark text-accent/50 text-[11px] tracking-[2px] font-normal not-italic">
