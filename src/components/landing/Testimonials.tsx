@@ -173,7 +173,7 @@ export default function Testimonials() {
           })}
         </div>
 
-        <div className="flex items-center justify-center gap-8 mt-12">
+        <div className="flex items-center justify-center gap-6 mt-10 md:gap-8 md:mt-12">
           <button
             type="button"
             onClick={prev}
