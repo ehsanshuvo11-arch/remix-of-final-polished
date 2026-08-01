@@ -96,10 +96,36 @@ export default function Testimonials() {
   const [active, setActive] = useState(0);
   const isMobile = useIsMobile();
   const count = testimonials.length;
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // Mobile: derive the active dot from native scroll-snap position (rAF-throttled).
+  const rafRef = useRef(0);
+  const onTrackScroll = () => {
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      const el = trackRef.current;
+      if (!el) return;
+      const center = el.scrollLeft + el.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      Array.from(el.children).forEach((child, i) => {
+        const c = child as HTMLElement;
+        const mid = c.offsetLeft + c.offsetWidth / 2;
+        const d = Math.abs(mid - center);
+        if (d < best) {
+          best = d;
+          nearest = i;
+        }
+      });
+      setActive(nearest);
+    });
+  };
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
   const goTo = (i: number) => setActive(i);
+
 
   const getOffset = (i: number) => {
     let diff = i - active;
