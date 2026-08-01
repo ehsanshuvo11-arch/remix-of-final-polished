@@ -115,7 +115,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
           className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${
             isBn
               ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]'
-              : 'text-[clamp(36px,5vw,60px)]'
+              : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'
           }`}
         >
           {isBn ? (
@@ -200,7 +200,7 @@ function TierCard({
   return (
     <MotionReveal delay={0.12 * (index + 1)}>
       <div
-        className={`relative flex flex-col h-full p-8 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
+        className={`relative flex flex-col h-full p-6 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
           tier.featured
             ? 'bg-primary/80 border border-accent/40 ring-1 ring-accent/30 shadow-[0_0_60px_-12px_rgba(251,146,60,0.15)]'
             : 'bg-primary/60 border border-primary-foreground/15 backdrop-blur-md hover:border-primary-foreground/25'

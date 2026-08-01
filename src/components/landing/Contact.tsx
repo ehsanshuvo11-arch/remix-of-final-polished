@@ -69,7 +69,7 @@ export default function Contact({ contact }: ContactProps) {
 
   return (
     <div id="contact" className="bg-[#1e3a8a]">
-      <div className="py-12 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-10 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
         <hr className="border-t border-white/10" />
       </div>
       <div className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
@@ -85,7 +85,7 @@ export default function Contact({ contact }: ContactProps) {
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(36px,5vw,60px)]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
             {isBn ? (
               <>
                 <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?</WordReveal>
