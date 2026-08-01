@@ -96,7 +96,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   };
 
   return (
-    <MotionReveal delay={0.12 * (index + 1)}>
+    <MotionReveal delay={0.12 * (index + 1)} className="min-w-[85vw] max-w-[85vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none">
       <div
         ref={cardRef}
         onMouseMove={handleTilt}
