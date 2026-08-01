@@ -256,22 +256,24 @@ function EvolutionSlider({ before, after, beforeFallback, afterFallback, beforeL
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         <img
-          src={after}
-          srcSet={buildSrcSet(after)}
+          src={afterSrc}
+          srcSet={buildSrcSet(afterSrc)}
           sizes="(max-width: 767px) 92vw, 900px"
           alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
           loading="lazy" decoding="async"
           draggable={false}
+          onError={() => setAfterSrc((s) => (s === afterFallback ? s : afterFallback))}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         />
         <m.div style={{ clipPath }} className="absolute inset-0">
           <img
-            src={before}
-          srcSet={buildSrcSet(before)}
-          sizes="(max-width: 767px) 92vw, 900px"
+            src={beforeSrc}
+            srcSet={buildSrcSet(beforeSrc)}
+            sizes="(max-width: 767px) 92vw, 900px"
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
             loading="lazy" decoding="async"
             draggable={false}
+            onError={() => setBeforeSrc((s) => (s === beforeFallback ? s : beforeFallback))}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           />
         </m.div>
