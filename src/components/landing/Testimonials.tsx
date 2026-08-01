@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { m } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
@@ -96,10 +96,36 @@ export default function Testimonials() {
   const [active, setActive] = useState(0);
   const isMobile = useIsMobile();
   const count = testimonials.length;
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // Mobile: derive the active dot from native scroll-snap position (rAF-throttled).
+  const rafRef = useRef(0);
+  const onTrackScroll = () => {
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      const el = trackRef.current;
+      if (!el) return;
+      const center = el.scrollLeft + el.clientWidth / 2;
+      let nearest = 0;
+      let best = Infinity;
+      Array.from(el.children).forEach((child, i) => {
+        const c = child as HTMLElement;
+        const mid = c.offsetLeft + c.offsetWidth / 2;
+        const d = Math.abs(mid - center);
+        if (d < best) {
+          best = d;
+          nearest = i;
+        }
+      });
+      setActive(nearest);
+    });
+  };
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
   const goTo = (i: number) => setActive(i);
+
 
   const getOffset = (i: number) => {
     let diff = i - active;
@@ -142,7 +168,36 @@ export default function Testimonials() {
           </p>
         </MotionReveal>
 
-        <div className="relative h-[380px] md:h-[340px] flex items-center justify-center overflow-visible">
+        {/* ── MOBILE: native scroll-snap swipe track ── */}
+        <div
+          ref={trackRef}
+          onScroll={onTrackScroll}
+          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide overscroll-x-contain [scroll-padding-left:1.5rem]"
+          style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
+        >
+          {testimonials.map((t) => (
+            <div key={t.id} className="snap-center shrink-0 w-[85vw] max-w-[420px]">
+              <TestimonialCard testimonial={t} isBn={isBn} />
+            </div>
+          ))}
+        </div>
+
+        {/* Minimal mobile pagination dots */}
+        <div className="md:hidden flex items-center justify-center gap-2 mt-6">
+          {testimonials.map((_, i) => (
+            <span
+              key={i}
+              aria-hidden
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === active ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
+              }`}
+              style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+            />
+          ))}
+        </div>
+
+        {/* ── DESKTOP: original stacked carousel (unchanged) ── */}
+        <div className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
             const isActive = offset === 0;
@@ -155,14 +210,13 @@ export default function Testimonials() {
                 animate={{
                   x: `calc(-50% + ${offset * spacing}%)`,
                   y: '-50%',
-                  // Mobile: transform-scale animation causes repaint thrash — opacity + x only.
-                  scale: isMobile ? 1 : (isActive ? 1 : 0.85),
+                  scale: isActive ? 1 : 0.85,
                   opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
                 }}
                 transition={{
-                  x: { duration: isMobile ? 0.5 : 0.8, ease: LUXE },
+                  x: { duration: 0.8, ease: LUXE },
                   y: { duration: 0 },
-                  scale: { duration: isMobile ? 0 : 0.8, ease: LUXE },
+                  scale: { duration: 0.8, ease: LUXE },
                   opacity: { duration: 0.6, ease: LUXE },
                 }}
                 style={{ willChange: 'transform, opacity', top: '50%', left: '50%' }}
@@ -174,7 +228,7 @@ export default function Testimonials() {
           })}
         </div>
 
-        <div className="flex items-center justify-center gap-6 mt-10 md:gap-8 md:mt-12">
+        <div className="hidden md:flex items-center justify-center gap-8 mt-12">
           <button
             type="button"
             onClick={prev}
@@ -210,6 +264,7 @@ export default function Testimonials() {
             <ChevronRight size={20} className="group-hover:translate-x-0.5 transition-transform duration-300" />
           </button>
         </div>
+
       </div>
     </section>
   );
