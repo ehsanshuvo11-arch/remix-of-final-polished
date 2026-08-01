@@ -82,6 +82,7 @@ interface SliderProps {
 }
 
 function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: SliderProps) {
+  const isMobile = useIsMobileDevice();
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(50);
   const clipPath = useTransform(x, (v) => `inset(0 ${100 - v}% 0 0)`);
