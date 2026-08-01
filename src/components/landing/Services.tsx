@@ -2,7 +2,9 @@ import { useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import SwipeProgress from '@/components/landing/SwipeProgress';
 import type { Service, ServicesMetaContent } from '@/types/database';
+
 
 interface ServicesProps {
   services: Service[];
