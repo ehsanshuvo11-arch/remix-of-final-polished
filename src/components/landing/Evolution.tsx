@@ -234,9 +234,9 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
               className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
             >
               <m.div
-                animate={{ opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
+                animate={isMobile ? { opacity: [0.8, 1, 0.8] } : { opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
                 transition={{ duration: 2.8, ease: 'easeInOut', repeat: Infinity }}
-                className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+                className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] will-change-[opacity]"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
