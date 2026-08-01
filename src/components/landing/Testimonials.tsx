@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { m } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
