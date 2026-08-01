@@ -31,7 +31,10 @@ import type {
   TestimonialsContent,
   TestimonialItem,
   UILabelsContent,
+  PricingContent,
+  PricingTier,
 } from '@/types/database';
+import { DEFAULT_PRICING, makePricingTierId } from '@/lib/pricing-defaults';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import TransformationsEditor from '@/components/admin/TransformationsEditor';
 import AdminLogin from '@/components/admin/AdminLogin';
