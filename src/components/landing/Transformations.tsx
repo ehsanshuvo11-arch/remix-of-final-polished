@@ -139,7 +139,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       className="relative w-full overflow-hidden rounded-sm border border-primary/10 select-none aspect-[16/10] cursor-ew-resize bg-primary/5"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10%' }}
+      viewport={{ once: true, margin: '50px' }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* AFTER (base) */}

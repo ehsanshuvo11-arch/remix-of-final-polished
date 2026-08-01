@@ -14,7 +14,6 @@ export default function Evolution() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const { data } = useSiteSetting<EvolutionContent>('evolution');
-  const isMobile = useIsMobileDevice();
 
   const title = isBn
     ? (data?.title_bn || 'দ্য ইভোলিউশন')
@@ -197,7 +196,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         className={`group relative w-full overflow-hidden select-none aspect-[4/5] md:aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-10%' }}
+        viewport={{ once: true, margin: '50px' }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         <img

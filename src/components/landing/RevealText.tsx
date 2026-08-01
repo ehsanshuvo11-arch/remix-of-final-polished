@@ -61,7 +61,7 @@ export default function RevealText({
             style={{ transform: 'translateY(100%)' }}
             initial={{ y: '100%', opacity: 0 }}
             whileInView={{ y: '0%', opacity: 1 }}
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: true, margin: '50px' }}
             transition={{
               duration,
               delay: delay + 0.15 + i * stagger,
