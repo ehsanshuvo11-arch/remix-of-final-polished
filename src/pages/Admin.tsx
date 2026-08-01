@@ -2120,3 +2120,168 @@ function UILabelsEditor() {
 
 
 
+
+// ── PRICING / INVESTMENT EDITOR ──
+function PricingEditor() {
+  const [data, setData] = useState<PricingContent>(DEFAULT_PRICING);
+  const [_loaded, _setLoaded] = useState(false);
+
+  useEffect(() => {
+    supabase.from('site_settings').select('value').eq('key', 'pricing').maybeSingle().then(({ data: row }) => {
+      if (row?.value) {
+        const v = row.value as PricingContent;
+        setData({
+          ...DEFAULT_PRICING,
+          ...v,
+          tiers: (v.tiers ?? DEFAULT_PRICING.tiers ?? []).map((t) => ({
+            ...t,
+            id: t.id || makePricingTierId(),
+          })),
+        });
+      }
+      _setLoaded(true);
+    });
+  }, []);
+
+  const save = async (): Promise<boolean> =>
+    await upsertSetting('pricing', data as unknown as Record<string, any>);
+
+  const { markLoaded } = useDirtySection({ key: 'pricing', label: 'Investment / Pricing', data, save });
+  useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
+
+  const tiers = data.tiers ?? [];
+  const updateTier = (idx: number, patch: Partial<PricingTier>) =>
+    setData({ ...data, tiers: tiers.map((t, i) => (i === idx ? { ...t, ...patch } : t)) });
+  const removeTier = (idx: number) => setData({ ...data, tiers: tiers.filter((_, i) => i !== idx) });
+  const moveTier = (idx: number, dir: -1 | 1) => {
+    const n = idx + dir;
+    if (n < 0 || n >= tiers.length) return;
+    const next = [...tiers];
+    [next[idx], next[n]] = [next[n], next[idx]];
+    setData({ ...data, tiers: next });
+  };
+  const addTier = () =>
+    setData({
+      ...data,
+      tiers: [
+        ...tiers,
+        {
+          id: makePricingTierId(),
+          title_en: '', title_bn: '',
+          target_en: '', target_bn: '',
+          desc_en: '', desc_bn: '',
+          cta_en: '', cta_bn: '',
+          featured: false,
+        },
+      ],
+    });
+
+  return (
+    <>
+      <AdminSection title="Investment — Section heading">
+        <div className="grid grid-cols-2 gap-4">
+          <AdminField label="Eyebrow (EN)">
+            <AdminInput value={data.labelEn ?? ''} onChange={(v) => setData({ ...data, labelEn: v })} />
+          </AdminField>
+          <AdminField label="Eyebrow (বাংলা)">
+            <AdminInput value={data.labelBn ?? ''} onChange={(v) => setData({ ...data, labelBn: v })} />
+          </AdminField>
+          <AdminField label="Heading line 1 (EN)">
+            <AdminInput value={data.titleEn ?? ''} onChange={(v) => setData({ ...data, titleEn: v })} />
+          </AdminField>
+          <AdminField label="Heading line 1 (বাংলা)">
+            <AdminInput value={data.titleBn ?? ''} onChange={(v) => setData({ ...data, titleBn: v })} />
+          </AdminField>
+          <AdminField label="Heading line 2 — italic (EN)">
+            <AdminInput value={data.titleEmEn ?? ''} onChange={(v) => setData({ ...data, titleEmEn: v })} />
+          </AdminField>
+          <AdminField label="Heading line 2 — italic (বাংলা)">
+            <AdminInput value={data.titleEmBn ?? ''} onChange={(v) => setData({ ...data, titleEmBn: v })} />
+          </AdminField>
+        </div>
+      </AdminSection>
+
+      <AdminSection title={`Pricing tiers (${tiers.length})`}>
+        <div className="space-y-6">
+          {tiers.map((t, i) => (
+            <div key={t.id} className="border border-primary-foreground/10 rounded p-5 bg-primary-foreground/[0.02]">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[10px] tracking-[3px] uppercase text-primary-foreground/40">#{i + 1}</p>
+                <div className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 text-[10px] tracking-[2px] uppercase text-primary-foreground/60 mr-2">
+                    <input
+                      type="checkbox"
+                      checked={!!t.featured}
+                      onChange={(e) => updateTier(i, { featured: e.target.checked })}
+                      className="accent-[hsl(var(--accent))]"
+                    />
+                    Featured
+                  </label>
+                  <button type="button" onClick={() => moveTier(i, -1)} disabled={i === 0} className="text-[11px] px-2 py-1 text-primary-foreground/60 hover:text-accent disabled:opacity-20">↑</button>
+                  <button type="button" onClick={() => moveTier(i, 1)} disabled={i === tiers.length - 1} className="text-[11px] px-2 py-1 text-primary-foreground/60 hover:text-accent disabled:opacity-20">↓</button>
+                  <button type="button" onClick={() => removeTier(i)} className="text-[11px] tracking-[2px] uppercase px-2 py-1 text-red-400/80 hover:text-red-300">Remove</button>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <AdminField label="Audience label (EN)">
+                  <AdminInput value={t.target_en} onChange={(v) => updateTier(i, { target_en: v })} />
+                </AdminField>
+                <AdminField label="Audience label (বাংলা)">
+                  <AdminInput value={t.target_bn} onChange={(v) => updateTier(i, { target_bn: v })} />
+                </AdminField>
+                <AdminField label="Title (EN)">
+                  <AdminInput value={t.title_en} onChange={(v) => updateTier(i, { title_en: v })} />
+                </AdminField>
+                <AdminField label="Title (বাংলা)">
+                  <AdminInput value={t.title_bn} onChange={(v) => updateTier(i, { title_bn: v })} />
+                </AdminField>
+                <AdminField label="Description (EN)">
+                  <AdminTextarea value={t.desc_en} onChange={(v) => updateTier(i, { desc_en: v })} rows={4} />
+                </AdminField>
+                <AdminField label="Description (বাংলা)">
+                  <AdminTextarea value={t.desc_bn} onChange={(v) => updateTier(i, { desc_bn: v })} rows={4} />
+                </AdminField>
+                <AdminField label="Button label (EN)">
+                  <AdminInput value={t.cta_en} onChange={(v) => updateTier(i, { cta_en: v })} />
+                </AdminField>
+                <AdminField label="Button label (বাংলা)">
+                  <AdminInput value={t.cta_bn} onChange={(v) => updateTier(i, { cta_bn: v })} />
+                </AdminField>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={addTier}
+          className="mt-6 px-4 py-2 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase rounded-sm hover:-translate-y-0.5 transition-transform duration-300"
+        >
+          + Add tier
+        </button>
+      </AdminSection>
+
+      <AdminSection title="Custom solution banner">
+        <div className="grid grid-cols-2 gap-4">
+          <AdminField label="Heading (EN)">
+            <AdminInput value={data.customHeadingEn ?? ''} onChange={(v) => setData({ ...data, customHeadingEn: v })} />
+          </AdminField>
+          <AdminField label="Heading (বাংলা)">
+            <AdminInput value={data.customHeadingBn ?? ''} onChange={(v) => setData({ ...data, customHeadingBn: v })} />
+          </AdminField>
+          <AdminField label="Description (EN)">
+            <AdminTextarea value={data.customDescEn ?? ''} onChange={(v) => setData({ ...data, customDescEn: v })} rows={3} />
+          </AdminField>
+          <AdminField label="Description (বাংলা)">
+            <AdminTextarea value={data.customDescBn ?? ''} onChange={(v) => setData({ ...data, customDescBn: v })} rows={3} />
+          </AdminField>
+          <AdminField label="Button label (EN)">
+            <AdminInput value={data.customCtaEn ?? ''} onChange={(v) => setData({ ...data, customCtaEn: v })} />
+          </AdminField>
+          <AdminField label="Button label (বাংলা)">
+            <AdminInput value={data.customCtaBn ?? ''} onChange={(v) => setData({ ...data, customCtaBn: v })} />
+          </AdminField>
+        </div>
+      </AdminSection>
+    </>
+  );
+}
