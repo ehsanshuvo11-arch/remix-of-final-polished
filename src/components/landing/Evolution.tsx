@@ -5,6 +5,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import type { EvolutionContent } from '@/types/database';
 import beforeImg from '@/assets/evolution-before.jpg';
 import afterImg from '@/assets/evolution-after.jpg';
@@ -13,6 +14,7 @@ export default function Evolution() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const { data } = useSiteSetting<EvolutionContent>('evolution');
+  const isMobile = useIsMobileDevice();
 
   const title = isBn
     ? (data?.title_bn || 'দ্য ইভোলিউশন')
