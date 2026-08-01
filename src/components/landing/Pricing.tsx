@@ -245,9 +245,18 @@ function TierCard({
 function CustomBanner({
   isBn,
   onCtaClick,
+  customContent,
 }: {
   isBn: boolean;
   onCtaClick: () => void;
+  customContent: {
+    heading_en: string;
+    heading_bn: string;
+    desc_en: string;
+    desc_bn: string;
+    cta_en: string;
+    cta_bn: string;
+  };
 }) {
   return (
     <div className="relative overflow-hidden rounded-sm border border-primary-foreground/15 bg-primary p-8 md:p-12">
