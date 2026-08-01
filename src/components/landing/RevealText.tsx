@@ -10,7 +10,11 @@ interface RevealTextProps {
   stagger?: number;
   splitBy?: 'line' | 'word';
   as?: keyof JSX.IntrinsicElements;
+  /** Animate as soon as it mounts instead of waiting for an intersection hit.
+   *  Use for above-the-fold copy so it can never stay stuck hidden. */
+  triggerOnMount?: boolean;
 }
+
 
 const LUXURY_EASE = [0.76, 0, 0.24, 1] as const;
 
