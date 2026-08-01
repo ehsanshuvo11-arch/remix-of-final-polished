@@ -701,3 +701,87 @@ a.story-link:hover::after {
     scroll-behavior: smooth;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   MOBILE NATIVE TOUCH LAYER (< 768px / coarse pointers)
+   Makes the phone experience read like a high-end native iOS app
+   without touching a single desktop pixel.
+   ───────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  /* 1. No cheap grey/blue tap flash anywhere */
+  html,
+  body,
+  a,
+  button,
+  [role="button"],
+  input,
+  textarea,
+  select,
+  label,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* 2. Native press feedback — a whisper of compression, GPU only */
+  a,
+  button,
+  [role="button"],
+  .touch-press {
+    transition:
+      transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  a:active,
+  button:not(:disabled):active,
+  [role="button"]:active,
+  .touch-press:active {
+    transform: scale(0.96) translateZ(0);
+  }
+  /* Cards / carousel tiles compress less so they don't feel rubbery */
+  .service-card:active,
+  .portfolio-card:active,
+  .pricing-card:active,
+  [data-touch-card]:active {
+    transform: scale(0.985) translateZ(0);
+  }
+  button:disabled:active {
+    transform: none;
+  }
+
+  /* 3. Guaranteed 44x44 touch targets for icon-only controls */
+  button,
+  [role="button"],
+  a[aria-label],
+  nav a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Inline text links inside paragraphs keep their natural box */
+  p a,
+  li a:not([aria-label]) {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  /* 4. Breathing room around text blocks — no squinting */
+  section p,
+  section li {
+    padding-right: 0.15rem;
+  }
+
+  /* 5. Buttery scroll: momentum + no rubber-band chaining */
+  html,
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
+
+  /* 6. Glass nav overlay is the ONE place blur is worth its cost —
+     it paints once over a static page, never during scroll. */
+  .mobile-nav-glass {
+    backdrop-filter: blur(26px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(140%) !important;
+  }
+}

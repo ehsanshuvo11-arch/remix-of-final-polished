@@ -69,8 +69,8 @@ export default function Navbar({ content }: NavbarProps) {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[100] flex justify-between items-center transition-all duration-500 ${
-          scrolled
+        className={`fixed top-0 left-0 right-0 ${open ? 'z-[120]' : 'z-[100]'} flex justify-between items-center transition-all duration-500 ${
+          scrolled && !open
             ? 'py-3.5 px-6 md:px-14 bg-background/95 md:backdrop-blur-2xl border-b border-border shadow-[0_2px_24px_rgba(0,0,0,0.05)]'
             : 'py-[22px] px-6 md:px-14 bg-transparent border-b border-transparent'
         }`}
@@ -145,20 +145,24 @@ export default function Navbar({ content }: NavbarProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.55, ease: LUXE }}
-            className="md:hidden fixed inset-0 z-[105] bg-primary"
+            transition={{ duration: 0.5, ease: LUXE }}
+            className="mobile-nav-glass md:hidden fixed inset-0 z-[105] bg-primary/85 backdrop-blur-2xl"
+            style={{ WebkitBackdropFilter: 'blur(26px) saturate(140%)', backdropFilter: 'blur(26px) saturate(140%)' }}
             onClick={() => setOpen(false)}
           >
             {/* Soft orange studio glow — top-right accent */}
             <div
               className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none bg-accent"
-              style={{ filter: 'blur(100px)', opacity: 0.12 }}
+              style={{ filter: 'blur(100px)', opacity: 0.14 }}
             />
             {/* Deep cinematic vignette at the base */}
             <div
               className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, hsl(var(--primary)), transparent)' }}
+              style={{ background: 'linear-gradient(to top, hsl(var(--primary) / 0.9), transparent)' }}
             />
+            {/* Hairline glass edge */}
+            <div className="absolute inset-0 pointer-events-none border-t border-primary-foreground/10" />
+
 
             <div className="relative h-full flex flex-col justify-center items-end px-7 sm:px-9 py-24 pointer-events-none">
               <ul
@@ -168,15 +172,16 @@ export default function Navbar({ content }: NavbarProps) {
                 {navItems.map((item, i) => (
                   <m.li
                     key={item.href}
-                    initial={{ opacity: 0, y: 18 }}
+                    initial={{ opacity: 0, y: 34 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
+                    exit={{ opacity: 0, y: 16 }}
                     transition={{
-                      duration: 0.66,
-                      delay: 0.12 + i * 0.07,
+                      duration: 0.7,
+                      delay: 0.1 + i * 0.075,
                       ease: LUXE,
                     }}
-                    className="text-right w-full"
+                    style={{ willChange: 'transform, opacity' }}
+                    className="text-right w-full transform-gpu"
                   >
                     <a
                       href={item.href}
@@ -187,11 +192,12 @@ export default function Navbar({ content }: NavbarProps) {
                         setTimeout(() => scrollTo(item.href), 350);
                       }}
                       lang={isBn ? 'bn' : 'en'}
-                      className={`font-heading text-primary-foreground hover:text-accent transition-colors duration-500 flex items-baseline justify-end gap-3 min-h-[56px] text-right [text-wrap:balance] font-light ${
+                      className={`font-heading text-primary-foreground hover:text-accent active:text-accent transition-all duration-500 active:scale-[0.97] origin-right flex items-baseline justify-end gap-3 min-h-[56px] px-1 text-right [text-wrap:balance] font-light ${
                         isBn
                           ? 'text-[clamp(26px,7.2vw,40px)] leading-[1.45]'
                           : 'text-[clamp(32px,8.4vw,48px)] leading-[1.08] tracking-[-0.015em]'
                       }`}
+
                       style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)', ...(isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : {}) }}
                     >
                       <span className="brand-wordmark text-accent/50 text-[11px] tracking-[2px] font-normal not-italic">
