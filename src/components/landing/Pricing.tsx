@@ -155,7 +155,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-6 -mx-6 px-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:gap-8 md:mt-14 md:grid md:grid-cols-3 md:overflow-visible"
+              className="flex w-full max-w-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide gap-4 pb-6 -mx-6 px-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:gap-8 md:mt-14 md:grid md:grid-cols-3 md:overflow-visible md:max-w-none"
             >
               {pricingTiers.map((tier, index) => (
                 <TierCard
