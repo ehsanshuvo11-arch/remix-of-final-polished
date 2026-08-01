@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Hind+Siliguri:wght@300;400;500;600&family=Noto+Serif+Bengali:wght@200;300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap');
+/* Fonts are loaded asynchronously from index.html (non render-blocking).
+   Keeping them out of an @import here removes a serialized CSS request
+   from the critical path, which is what was pushing mobile FCP past 1.5s. */
+
 
 @tailwind base;
 @tailwind components;
@@ -160,7 +163,55 @@
     .eyebrow, [class*="tracking-[3px]"], [class*="tracking-[4px]"] {
       font-size: max(10.5px, 0.68rem);
     }
+
+    /* ── Quiet Luxury display scale (mobile only) ──
+       Slightly smaller, tighter-set headings so display type breathes
+       inside a 360–430px viewport instead of shouting. */
+    h1 {
+      font-size: clamp(30px, 8.4vw, 40px) !important;
+      line-height: 1.08 !important;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-size: clamp(24px, 6.6vw, 32px) !important;
+      line-height: 1.12 !important;
+      letter-spacing: -0.016em;
+    }
+    h3 {
+      font-size: clamp(18px, 4.8vw, 22px) !important;
+      line-height: 1.22 !important;
+    }
+    [lang="bn"]h1 { font-size: clamp(24px, 6.6vw, 32px) !important; line-height: 1.45 !important; }
+    [lang="bn"]h2 { font-size: clamp(20px, 5.4vw, 27px) !important; line-height: 1.45 !important; }
+    [lang="bn"]h3 { font-size: clamp(17px, 4.4vw, 20px) !important; line-height: 1.5 !important; }
+
+    /* ── Accessible contrast on navy surfaces ──
+       Faded body copy at 40–50% opacity failed WCAG AA against #1e3a8a.
+       Floor it at a compliant tone while keeping the muted feel. */
+    .bg-primary [class*="text-primary-foreground/4"],
+    .bg-primary [class*="text-primary-foreground/5"],
+    .bg-primary [class*="text-white/4"],
+    .bg-primary [class*="text-white/5"],
+    footer [class*="text-primary-foreground/4"],
+    footer [class*="text-primary-foreground/5"] {
+      color: hsl(var(--primary-foreground) / 0.78) !important;
+    }
+    .text-muted-foreground {
+      color: hsl(215 25% 38%);
+    }
+
+    /* ── No accidental horizontal scroll ──
+       Intentional carousels opt out via .snap-x / [data-carousel]. */
+    html, body, #root {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    section > *:not(.snap-x):not([data-carousel]),
+    main > *:not(.snap-x):not([data-carousel]) {
+      max-width: 100%;
+    }
   }
+
 
 
 
