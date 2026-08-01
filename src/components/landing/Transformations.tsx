@@ -145,6 +145,8 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       {/* AFTER (base) */}
       <img
         src={after}
+          srcSet={buildSrcSet(after)}
+          sizes="(max-width: 767px) 92vw, 1100px"
         alt={`${afterLabel} — POLISHED premium brand transformation (after)`}
         loading="lazy"
         decoding="async"
@@ -158,6 +160,8 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       >
         <img
           src={before}
+          srcSet={buildSrcSet(before)}
+          sizes="(max-width: 767px) 92vw, 1100px"
           alt={`${beforeLabel} — original brand visual before POLISHED transformation`}
           loading="lazy"
           decoding="async"

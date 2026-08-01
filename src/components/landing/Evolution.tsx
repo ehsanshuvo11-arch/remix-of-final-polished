@@ -3,6 +3,7 @@ import { m, useMotionValue, useTransform, animate, AnimatePresence } from 'frame
 
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import { buildSrcSet } from '@/lib/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
@@ -246,6 +247,8 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
       >
         <img
           src={after}
+          srcSet={buildSrcSet(after)}
+          sizes="(max-width: 767px) 92vw, 900px"
           alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
           loading="lazy" decoding="async"
           draggable={false}
@@ -254,6 +257,8 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         <m.div style={{ clipPath }} className="absolute inset-0">
           <img
             src={before}
+          srcSet={buildSrcSet(before)}
+          sizes="(max-width: 767px) 92vw, 900px"
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
             loading="lazy" decoding="async"
             draggable={false}
