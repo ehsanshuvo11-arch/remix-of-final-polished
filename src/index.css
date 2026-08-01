@@ -122,6 +122,47 @@
     }
   }
 
+  /* ─── MOBILE EDITORIAL TYPOGRAPHY LAYER ───
+     Keeps the cinematic Navy/Orange voice legible at small widths:
+     slightly looser leading, tighter tracking on display type, and
+     comfortable measure so nothing feels cramped. */
+  @media (max-width: 767px) {
+    body {
+      font-size: 15.5px;
+      line-height: 1.7;
+      letter-spacing: 0.006em;
+    }
+    h1, h2, h3 {
+      letter-spacing: -0.012em;
+      text-wrap: balance;
+      hyphens: none;
+    }
+    h2 {
+      line-height: 1.16;
+    }
+    h3 {
+      line-height: 1.25;
+    }
+    p {
+      max-width: 62ch;
+      text-wrap: pretty;
+    }
+    /* Bengali needs more vertical breathing room than Latin */
+    [lang="bn"] {
+      line-height: 1.85;
+      letter-spacing: 0;
+      word-spacing: 0.04em;
+    }
+    [lang="bn"]h1, [lang="bn"]h2, [lang="bn"]h3 {
+      line-height: 1.5;
+    }
+    /* Eyebrow / kicker labels: never below readable size */
+    .eyebrow, [class*="tracking-[3px]"], [class*="tracking-[4px]"] {
+      font-size: max(10.5px, 0.68rem);
+    }
+  }
+
+
 
 
   /* ─── Brand text selection — POLISHED orange on navy ─── */
