@@ -159,7 +159,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
         <div className="mt-10 md:mt-20">
           <MotionReveal>
-            <CustomBanner isBn={isBn} onCtaClick={scrollToContact} />
+            <CustomBanner isBn={isBn} onCtaClick={scrollToContact} customContent={customContent} />
           </MotionReveal>
         </div>
       </div>
