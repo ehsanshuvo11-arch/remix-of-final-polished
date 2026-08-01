@@ -17,6 +17,7 @@ const EXIT_S = 0.35;
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   // Always run on every hard refresh — no session/local storage gating.
   const [show, setShow] = useState(true);
+  const [gone, setGone] = useState(false);
   // Keep the latest callback in a ref so parent re-renders (data loading on
   // slow mobile connections) can never reset the dismiss timer mid-flight.
   const onCompleteRef = useRef(onComplete);
