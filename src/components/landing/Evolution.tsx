@@ -80,12 +80,18 @@ export default function Evolution() {
 interface SliderProps {
   before: string;
   after: string;
+  beforeFallback: string;
+  afterFallback: string;
   beforeLabel: string;
   afterLabel: string;
   hint: string;
 }
 
-function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: SliderProps) {
+function EvolutionSlider({ before, after, beforeFallback, afterFallback, beforeLabel, afterLabel, hint }: SliderProps) {
+  const [beforeSrc, setBeforeSrc] = useState(before);
+  const [afterSrc, setAfterSrc] = useState(after);
+  useEffect(() => setBeforeSrc(before), [before]);
+  useEffect(() => setAfterSrc(after), [after]);
   const isMobile = useIsMobileDevice();
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(50);
