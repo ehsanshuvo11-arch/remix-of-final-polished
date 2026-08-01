@@ -269,7 +269,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 <div
                   role="group"
                   aria-label="Case study language"
-                  className="inline-flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm shadow-sm select-none"
+                  className="inline-flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 md:backdrop-blur-sm shadow-sm select-none"
                 >
                   <button
                     type="button"
@@ -546,7 +546,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current > 0 && (
         <button
           onClick={(e) => { e.stopPropagation(); goPrev(); }}
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
           aria-label="Previous"
         >
           <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
@@ -557,7 +557,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current < total - 1 && (
         <button
           onClick={(e) => { e.stopPropagation(); goNext(); }}
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
           aria-label="Next"
         >
           <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />

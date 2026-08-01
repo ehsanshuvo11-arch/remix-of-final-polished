@@ -139,7 +139,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       className="relative w-full overflow-hidden rounded-sm border border-primary/10 select-none aspect-[16/10] cursor-ew-resize bg-primary/5"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10%' }}
+      viewport={{ once: true, margin: '50px' }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* AFTER (base) */}
@@ -167,10 +167,10 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       </m.div>
 
       {/* Labels */}
-      <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-primary/80 text-primary-foreground backdrop-blur-sm rounded-sm">
+      <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-primary/80 text-primary-foreground md:backdrop-blur-sm rounded-sm">
         {beforeLabel}
       </span>
-      <span className="absolute top-4 right-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-accent/90 text-accent-foreground backdrop-blur-sm rounded-sm">
+      <span className="absolute top-4 right-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-accent/90 text-accent-foreground md:backdrop-blur-sm rounded-sm">
         {afterLabel}
       </span>
 

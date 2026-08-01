@@ -33,7 +33,7 @@ export default function RevealImage({
       className={`relative overflow-hidden ${containerClassName}`}
       initial={isMobile ? { clipPath: 'inset(0% 0% 0% 0%)' } : { clipPath: 'inset(100% 0% 0% 0%)' }}
       whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-      viewport={{ once: true, margin: '-100px' }}
+      viewport={{ once: true, margin: '50px' }}
       transition={{ duration: isMobile ? 0 : 1.2, delay: isMobile ? 0 : delay, ease: LUXURY_EASE as any }}
     >
       <m.img
@@ -42,7 +42,7 @@ export default function RevealImage({
         className={`block w-full h-full will-change-transform ${className}`}
         initial={isMobile ? { scale: 1.0 } : { scale: 1.15 }}
         whileInView={{ scale: 1.0 }}
-        viewport={{ once: true, margin: '-100px' }}
+        viewport={{ once: true, margin: '50px' }}
         transition={{ duration: isMobile ? 0 : 2.0, delay: isMobile ? 0 : delay, ease: LUXURY_EASE as any }}
         draggable={false}
         loading={loading}

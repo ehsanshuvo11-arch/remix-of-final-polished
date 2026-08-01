@@ -203,7 +203,7 @@ function TierCard({
         className={`relative flex flex-col h-full p-6 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
           tier.featured
             ? 'bg-primary/80 border border-accent/40 ring-1 ring-accent/30 shadow-[0_0_60px_-12px_rgba(251,146,60,0.15)]'
-            : 'bg-primary/60 border border-primary-foreground/15 backdrop-blur-md hover:border-primary-foreground/25'
+            : 'bg-primary/95 md:bg-primary/60 border border-primary-foreground/15 md:backdrop-blur-md hover:border-primary-foreground/25'
         }`}
       >
         {tier.featured && (

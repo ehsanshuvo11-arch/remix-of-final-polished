@@ -55,7 +55,7 @@ export default function AdminLogin() {
           </p>
         </div>
 
-        <div className="bg-primary-foreground/[0.03] border border-primary-foreground/10 rounded-sm p-10 backdrop-blur-sm">
+        <div className="bg-primary-foreground/[0.03] border border-primary-foreground/10 rounded-sm p-10 md:backdrop-blur-sm">
           <h2 className="text-[11px] tracking-[3px] uppercase text-primary-foreground/60 mb-6 text-center">
             Sign In
           </h2>

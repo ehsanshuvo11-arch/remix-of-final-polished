@@ -5,6 +5,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import type { EvolutionContent } from '@/types/database';
 import beforeImg from '@/assets/evolution-before.jpg';
 import afterImg from '@/assets/evolution-after.jpg';
@@ -80,6 +81,7 @@ interface SliderProps {
 }
 
 function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: SliderProps) {
+  const isMobile = useIsMobileDevice();
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(50);
   const clipPath = useTransform(x, (v) => `inset(0 ${100 - v}% 0 0)`);
@@ -194,7 +196,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         className={`group relative w-full overflow-hidden select-none aspect-[4/5] md:aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-10%' }}
+        viewport={{ once: true, margin: '50px' }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         <img
@@ -215,10 +217,10 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         </m.div>
 
         {/* Floating labels — fade as the corresponding side disappears */}
-        <m.span style={{ opacity: leftTagOpacity }} className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/60 backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
+        <m.span style={{ opacity: leftTagOpacity }} className="absolute top-5 left-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md border border-primary-foreground/15 rounded-sm pointer-events-none">
           {beforeLabel}
         </m.span>
-        <m.span style={{ opacity: rightTagOpacity }} className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/85 backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
+        <m.span style={{ opacity: rightTagOpacity }} className="absolute top-5 right-5 px-3 py-1.5 text-[9px] tracking-[3px] uppercase font-heading italic text-primary-foreground bg-accent/95 md:bg-accent/85 md:backdrop-blur-md border border-accent/40 rounded-sm pointer-events-none">
           {afterLabel}
         </m.span>
 
@@ -234,9 +236,9 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
               className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
             >
               <m.div
-                animate={{ opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
+                animate={isMobile ? { opacity: [0.8, 1, 0.8] } : { opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
                 transition={{ duration: 2.8, ease: 'easeInOut', repeat: Infinity }}
-                className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/60 backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+                className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] will-change-[opacity]"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
@@ -250,7 +252,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         {/* Divider + handle — crisp 1px off-white with blurred edge */}
         <m.div
           style={{ left: handleLeft }}
-          className="absolute top-0 bottom-0 w-px bg-[#f9fafb] pointer-events-none -translate-x-1/2 backdrop-blur-[2px] shadow-[0_0_24px_rgba(249,250,251,0.55)]"
+          className="absolute top-0 bottom-0 w-px bg-[#f9fafb] pointer-events-none -translate-x-1/2 md:backdrop-blur-[2px] shadow-[0_0_24px_rgba(249,250,251,0.55)]"
         >
           <div
             className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-accent flex items-center justify-center transition-all duration-300 ease-out ${

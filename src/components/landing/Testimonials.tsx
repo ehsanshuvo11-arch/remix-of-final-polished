@@ -155,13 +155,14 @@ export default function Testimonials() {
                 animate={{
                   x: `calc(-50% + ${offset * spacing}%)`,
                   y: '-50%',
-                  scale: isActive ? 1 : 0.85,
+                  // Mobile: transform-scale animation causes repaint thrash — opacity + x only.
+                  scale: isMobile ? 1 : (isActive ? 1 : 0.85),
                   opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
                 }}
                 transition={{
-                  x: { duration: 0.8, ease: LUXE },
+                  x: { duration: isMobile ? 0.5 : 0.8, ease: LUXE },
                   y: { duration: 0 },
-                  scale: { duration: 0.8, ease: LUXE },
+                  scale: { duration: isMobile ? 0 : 0.8, ease: LUXE },
                   opacity: { duration: 0.6, ease: LUXE },
                 }}
                 style={{ willChange: 'transform, opacity', top: '50%', left: '50%' }}
@@ -225,7 +226,7 @@ function TestimonialCard({
 }) {
   return (
     <div
-      className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border backdrop-blur-md min-h-[260px] ${
+      className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border md:backdrop-blur-md min-h-[260px] ${
         dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
           : 'bg-[#1e3a8a] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
