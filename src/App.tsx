@@ -1,18 +1,21 @@
-import { lazy, Suspense, useLayoutEffect } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from "react";
 import { LazyMotion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
-import FilmGrain from "./components/FilmGrain";
-import CustomCursor from "./components/landing/CustomCursor";
 
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Non-critical chrome — none of it is needed for the first paint, so it is
+// code-split and mounted only once the browser is idle. This keeps the
+// initial JS payload (and therefore FCP/TBT on mobile) as small as possible.
+const Toaster = lazy(() => import("@/components/ui/toaster").then((m) => ({ default: m.Toaster })));
+const Sonner = lazy(() => import("@/components/ui/sonner").then((m) => ({ default: m.Toaster })));
+const FilmGrain = lazy(() => import("./components/FilmGrain"));
+const CustomCursor = lazy(() => import("./components/landing/CustomCursor"));
+const Analytics = lazy(() => import("@vercel/analytics/react").then((m) => ({ default: m.Analytics })));
 
 // Framer Motion features are loaded asynchronously AFTER first paint, keeping
 // the initial JS payload lean. `domMax` is required because Portfolio uses drag.
@@ -30,6 +33,27 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+/** Mounts its children only after the browser has gone idle post-paint. */
+const AfterPaint = ({ children }: { children: React.ReactNode }) => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (win.requestIdleCallback) {
+      const id = win.requestIdleCallback(() => setReady(true), { timeout: 2500 });
+      return () => win.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(() => setReady(true), 1200);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  if (!ready) return null;
+  return <Suspense fallback={null}>{children}</Suspense>;
+};
 
 const RouteCursorScope = () => {
   const location = useLocation();
@@ -62,15 +86,10 @@ const RouteCursorScope = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <LanguageProvider>
-        <LazyMotion features={loadMotionFeatures}>
+    <LanguageProvider>
+      <LazyMotion features={loadMotionFeatures}>
         <BrowserRouter>
           <RouteCursorScope />
-          <FilmGrain />
-          <CustomCursor />
           <Suspense fallback={<div className="min-h-screen bg-background" />}>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -80,11 +99,16 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          <AfterPaint>
+            <Toaster />
+            <Sonner />
+            <FilmGrain />
+            <CustomCursor />
+            <Analytics />
+          </AfterPaint>
         </BrowserRouter>
-        </LazyMotion>
-      </LanguageProvider>
-    </TooltipProvider>
-    <Analytics />
+      </LazyMotion>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
