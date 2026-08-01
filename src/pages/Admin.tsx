@@ -219,7 +219,7 @@ const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] =
   { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
   { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
   { id: 'process', label: 'Process', description: 'How we work' },
-  { id: 'testimonials', label: 'Testimonials', description: 'Founder quotes & carousel copy' },
+  { id: 'testimonials', label: 'Partnerships', description: 'Partnerships label, heading, sub-copy & testimonial carousel (EN + বাংলা)' },
   { id: 'pricing', label: 'Investment', description: 'Pricing tiers & custom banner' },
   { id: 'contact', label: 'Contact', description: 'Form copy' },
   { id: 'labels', label: 'UI Labels', description: 'Buttons, nav, form micro-copy (EN + বাংলা)' },
@@ -1876,7 +1876,7 @@ function TestimonialsEditor() {
     return await upsertSetting('testimonials', data as unknown as Record<string, any>);
   };
 
-  const { markLoaded } = useDirtySection({ key: 'testimonials', label: 'Testimonials', data, save });
+  const { markLoaded } = useDirtySection({ key: 'testimonials', label: 'Partnerships', data, save });
   const [_loaded, _setLoaded] = useState(false);
   useEffect(() => { if (_loaded) markLoaded(data); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [_loaded]);
 
@@ -1906,7 +1906,7 @@ function TestimonialsEditor() {
 
   return (
     <>
-      <AdminSection title="Testimonials — Section copy">
+      <AdminSection title="Partnerships — Section copy">
         <div className="grid grid-cols-2 gap-4">
           <AdminField label="Eyebrow (EN)">
             <AdminInput value={data.labelEn ?? ''} onChange={(v) => setData({ ...data, labelEn: v })} />
@@ -1929,7 +1929,7 @@ function TestimonialsEditor() {
         </div>
       </AdminSection>
 
-      <AdminSection title={`Testimonial quotes (${items.length})`}>
+      <AdminSection title={`Partnership quotes (${items.length})`}>
         <div className="space-y-6">
           {items.map((it, i) => (
             <div key={it.id} className="border border-primary-foreground/10 rounded p-5 bg-primary-foreground/[0.02]">
