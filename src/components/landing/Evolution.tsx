@@ -94,24 +94,43 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   // Right tag sits on the AFTER side (visible while the handle is to the left of it)
   const rightTagOpacity = useTransform(x, [72, 92], [1, 0]);
 
+  // Throttle React state updates (aria-valuenow only) to one per frame so the
+  // motion value can drive the visuals on the compositor without re-rendering.
   useEffect(() => {
-    const unsub = x.on('change', (v) => setPct(Math.round(v)));
-    return unsub;
+    let frame = 0;
+    let last = -1;
+    const unsub = x.on('change', (v) => {
+      const rounded = Math.round(v);
+      if (rounded === last || frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        last = rounded;
+        setPct(rounded);
+      });
+    });
+    return () => {
+      unsub();
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [x]);
+
+  // Cache the rect during a drag so touchmove never triggers layout reads.
+  const rectRef = useRef<DOMRect | null>(null);
 
   const setFromClientX = useCallback((clientX: number, animateTo = false) => {
     const el = containerRef.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
+    const rect = rectRef.current ?? el.getBoundingClientRect();
     const p = ((clientX - rect.left) / rect.width) * 100;
     const clamped = Math.max(0, Math.min(100, p));
     if (animateTo) {
       animate(x, clamped, { type: 'spring', stiffness: 120, damping: 20, mass: 0.8 });
     } else {
-      // Smooth drag with tiny spring for tactile feel
-      animate(x, clamped, { type: 'spring', stiffness: 500, damping: 40, mass: 0.4 });
+      // Direct set: 1:1 with the finger, transform-only, zero animation overhead.
+      x.set(clamped);
     }
   }, [x]);
+
 
   const startDrag = useCallback((clientX: number) => {
     setDragging(true);
