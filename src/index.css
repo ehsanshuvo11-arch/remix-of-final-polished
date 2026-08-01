@@ -210,11 +210,6 @@
     main > *:not(.snap-x):not([data-carousel]) {
       max-width: 100%;
     }
-    /* Gracefully stack any multi-column layout that wasn't given a
-       mobile breakpoint. Explicit mobile grids/rows are respected. */
-    .grid:not([class*="grid-cols-1"]):not([class*="sm:grid-cols"]):not(.snap-x) {
-      grid-template-columns: 1fr;
-    }
   }
 
 
