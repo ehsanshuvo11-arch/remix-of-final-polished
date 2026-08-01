@@ -1929,7 +1929,7 @@ function TestimonialsEditor() {
         </div>
       </AdminSection>
 
-      <AdminSection title={`Testimonial quotes (${items.length})`}>
+      <AdminSection title={`Partnership quotes (${items.length})`}>
         <div className="space-y-6">
           {items.map((it, i) => (
             <div key={it.id} className="border border-primary-foreground/10 rounded p-5 bg-primary-foreground/[0.02]">
