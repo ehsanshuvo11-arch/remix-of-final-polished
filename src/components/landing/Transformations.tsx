@@ -167,10 +167,10 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
       </m.div>
 
       {/* Labels */}
-      <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-primary/80 text-primary-foreground backdrop-blur-sm rounded-sm">
+      <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-primary/80 text-primary-foreground md:backdrop-blur-sm rounded-sm">
         {beforeLabel}
       </span>
-      <span className="absolute top-4 right-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-accent/90 text-accent-foreground backdrop-blur-sm rounded-sm">
+      <span className="absolute top-4 right-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-accent/90 text-accent-foreground md:backdrop-blur-sm rounded-sm">
         {afterLabel}
       </span>
 
