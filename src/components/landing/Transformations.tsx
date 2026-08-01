@@ -2,6 +2,7 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { m, useMotionValue, useTransform, animate } from 'framer-motion';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
+import { buildSrcSet } from '@/lib/image';
 import type { Transformation, TransformationsMetaContent } from '@/types/database';
 
 interface TransformationsProps {
