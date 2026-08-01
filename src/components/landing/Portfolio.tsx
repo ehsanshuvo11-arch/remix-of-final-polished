@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { m, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll, useVelocity } from 'framer-motion';
-import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
+import { m, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -175,7 +174,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
           imageExpanded ? (
             <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
               {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10"></div>
               <PremiumImage
                 src={project.image_url}
                 alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
@@ -394,19 +393,9 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
 function TiltImage({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const isMobile = useIsMobileDevice();
 
-
-  // ── Velocity-based subtle scale (desktop only) ──
-  // Map page scroll velocity → tiny scaleY 1.0 → 1.015 max.
-  // Spring-back snaps it cleanly to rest. Image-only, never the container,
-  // so click targets, hook text and case-study layout are not affected.
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, { stiffness: 400, damping: 30, mass: 0.4 });
-  // Clamp to a sliver — the "quiet luxury" tell is what you almost don't see.
-  const velocityScaleY = useTransform(smoothVelocity, [-3000, 0, 3000], [1.015, 1, 1.015]);
-
+  // No scroll-velocity springs here: they ran a rAF loop per card and were the
+  // main source of jank. Hover tilt is plain CSS transform, GPU composited.
   const handleTilt = (e: React.MouseEvent) => {
     const el = wrapperRef.current;
     if (!el) return;
@@ -426,36 +415,36 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
 
   return (
     <div className="group relative z-[60] w-full h-full overflow-visible isolate">
-      {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10 animate-pulse"></div>
+      {/* Premium subtle orange aura — static (no pulse) to keep paint cost at zero */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10" />
 
-      <m.div
+      <div
         ref={wrapperRef}
         onMouseMove={handleTilt}
         onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate"
+        className="relative z-[60] w-full h-full overflow-hidden isolate transform-gpu"
         style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        initial={false}
-        animate={{ scale: imageLoaded ? 1.0 : 1.02 }}
-        transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
       >
         <PremiumImage
           src={src}
           alt={alt}
           containerClassName="w-full h-full"
-          className="object-cover object-center cursor-pointer will-change-[opacity,transform]"
+          className="object-cover object-center cursor-pointer transform-gpu"
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
-          fadeDuration={0.8}
-
+          fadeDuration={0.6}
           onLoad={() => setImageLoaded(true)}
-          imgStyle={isMobile ? undefined : { scaleY: velocityScaleY, transformOrigin: '50% 50%' } as any}
+          imgStyle={{
+            transform: imageLoaded ? 'scale(1)' : 'scale(1.02)',
+            transition: 'opacity 0.6s ease-out, transform 1.1s cubic-bezier(0.22,1,0.36,1)',
+          }}
         />
-      </m.div>
+      </div>
     </div>
   );
 }
+
 
 
 /* ── Premium Swipeable Lightbox ── */
@@ -467,7 +456,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   onClose: () => void;
 }) {
   const [current, setCurrent] = useState(initialIndex);
-  const [loadedIndex, setLoadedIndex] = useState(-1);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
 
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
@@ -573,51 +562,49 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
         </button>
       )}
 
-      {/* Main image — aspect-locked box with the brand shimmer behind it, so the
-          lightbox never resizes while a heavy mockup downloads. */}
+      {/* Main image — aspect-locked box with a pure-CSS shimmer behind it, so the
+          lightbox never resizes while a heavy mockup downloads. Fades are plain
+          CSS opacity transitions (compositor-only, zero main-thread work). */}
       <div className="relative flex items-center justify-center">
         <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
-          <m.div
-            className="absolute inset-0 z-0 pointer-events-none"
-            initial={false}
-            animate={{ opacity: loadedIndex === current ? 0 : 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+          <div
+            aria-hidden
+            className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out"
+            style={{ opacity: loaded[current] ? 0 : 1 }}
           >
             <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
-          </m.div>
-          <AnimatePresence mode="wait">
-            <m.img
-              key={current}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: loadedIndex === current ? 1 : 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              src={urls[current]}
-              alt={`${title} mockup ${current + 1}`}
-              onLoad={() => setLoadedIndex(current)}
-              onError={() => setLoadedIndex(current)}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              className="relative z-10 w-full h-full object-contain cursor-grab active:cursor-grabbing will-change-transform"
-              style={{
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                filter: 'none',
-              }}
-              onClick={(e) => e.stopPropagation()}
-              draggable={false}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={(_, info) => {
-                if (info.offset.x < -80 && current < total - 1) goNext();
-                else if (info.offset.x > 80 && current > 0) goPrev();
-              }}
-            />
-          </AnimatePresence>
+          </div>
+          {urls.map((url, i) => {
+            // Only the current slide and its immediate neighbours are mounted —
+            // neighbours load lazily so swiping feels instant without paying for
+            // every mockup upfront.
+            if (Math.abs(i - current) > 1) return null;
+            const isCurrent = i === current;
+            return (
+              <img
+                key={url + i}
+                src={url}
+                alt={`${title} mockup ${i + 1}`}
+                onLoad={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
+                onError={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
+                loading={isCurrent ? 'eager' : 'lazy'}
+                fetchPriority={isCurrent ? 'high' : 'low'}
+                decoding="async"
+                className="absolute inset-0 z-10 w-full h-full object-contain transform-gpu"
+                style={{
+                  opacity: isCurrent && loaded[i] ? 1 : 0,
+                  pointerEvents: isCurrent ? 'auto' : 'none',
+                  transition: 'opacity 0.5s ease-out',
+                  backgroundColor: 'transparent',
+                }}
+                onClick={(e) => e.stopPropagation()}
+                draggable={false}
+              />
+            );
+          })}
         </div>
       </div>
+
 
 
       {/* Dot indicators */}
