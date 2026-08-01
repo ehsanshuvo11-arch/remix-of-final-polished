@@ -13,9 +13,6 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 // initial JS payload (and therefore FCP/TBT on mobile) as small as possible.
 const Toaster = lazy(() => import("@/components/ui/toaster").then((m) => ({ default: m.Toaster })));
 const Sonner = lazy(() => import("@/components/ui/sonner").then((m) => ({ default: m.Toaster })));
-const TooltipProvider = lazy(() =>
-  import("@/components/ui/tooltip").then((m) => ({ default: m.TooltipProvider })),
-);
 const FilmGrain = lazy(() => import("./components/FilmGrain"));
 const CustomCursor = lazy(() => import("./components/landing/CustomCursor"));
 const Analytics = lazy(() => import("@vercel/analytics/react").then((m) => ({ default: m.Analytics })));
@@ -103,13 +100,11 @@ const App = () => (
             </Routes>
           </Suspense>
           <AfterPaint>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <FilmGrain />
-              <CustomCursor />
-              <Analytics />
-            </TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <FilmGrain />
+            <CustomCursor />
+            <Analytics />
           </AfterPaint>
         </BrowserRouter>
       </LazyMotion>
