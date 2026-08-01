@@ -206,6 +206,7 @@ type ContentTabId =
   | 'evolution'
   | 'process'
   | 'testimonials'
+  | 'pricing'
   | 'contact'
   | 'labels'
   | 'footer';
@@ -219,6 +220,7 @@ const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] =
   { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
   { id: 'process', label: 'Process', description: 'How we work' },
   { id: 'testimonials', label: 'Testimonials', description: 'Founder quotes & carousel copy' },
+  { id: 'pricing', label: 'Investment', description: 'Pricing tiers & custom banner' },
   { id: 'contact', label: 'Contact', description: 'Form copy' },
   { id: 'labels', label: 'UI Labels', description: 'Buttons, nav, form micro-copy (EN + বাংলা)' },
   { id: 'footer', label: 'Footer', description: 'Footer copy' },
@@ -306,6 +308,7 @@ function LegacyContentDashboard() {
             </>
           )}
           {activeTab === 'testimonials' && <TestimonialsEditor />}
+          {activeTab === 'pricing' && <PricingEditor />}
           {activeTab === 'contact' && <ContactEditor />}
           {activeTab === 'labels' && <UILabelsEditor />}
           {activeTab === 'footer' && <FooterEditor />}
