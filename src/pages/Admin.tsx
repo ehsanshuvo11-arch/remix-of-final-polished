@@ -1906,7 +1906,7 @@ function TestimonialsEditor() {
 
   return (
     <>
-      <AdminSection title="Testimonials — Section copy">
+      <AdminSection title="Partnerships — Section copy">
         <div className="grid grid-cols-2 gap-4">
           <AdminField label="Eyebrow (EN)">
             <AdminInput value={data.labelEn ?? ''} onChange={(v) => setData({ ...data, labelEn: v })} />
