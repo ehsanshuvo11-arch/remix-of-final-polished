@@ -184,16 +184,16 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           );
         })()}
 
-        {/* Static, always-rendered subheadline. */}
+        {/* Static, always-rendered subheadline — enters right as the headline settles. */}
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0 animate-fade-in"
+          className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
-            animationDelay: '1.2s',
-            animationFillMode: 'backwards',
+            animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both',
           }}
         >
+
           {isBn
             ? (hero.subBn ||
               'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা আলাদাভাবে নজর কাড়ে এবং মানুষের মনে গেঁথে থাকে।')
