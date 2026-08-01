@@ -219,7 +219,7 @@ const CONTENT_TABS: { id: ContentTabId; label: string; description: string }[] =
   { id: 'portfolio', label: 'Portfolio', description: 'Case studies' },
   { id: 'evolution', label: 'Evolution', description: 'Before & after showcase' },
   { id: 'process', label: 'Process', description: 'How we work' },
-  { id: 'testimonials', label: 'Testimonials', description: 'Founder quotes & carousel copy' },
+  { id: 'testimonials', label: 'Partnerships', description: 'Partnerships label, heading, sub-copy & testimonial carousel (EN + বাংলা)' },
   { id: 'pricing', label: 'Investment', description: 'Pricing tiers & custom banner' },
   { id: 'contact', label: 'Contact', description: 'Form copy' },
   { id: 'labels', label: 'UI Labels', description: 'Buttons, nav, form micro-copy (EN + বাংলা)' },
