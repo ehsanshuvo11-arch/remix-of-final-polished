@@ -366,9 +366,14 @@ function ComparisonImage({ src, fallback, alt, label }: ComparisonImageProps) {
 
   return (
     <img
+      // Remount on every stage change — without a new key the browser keeps the
+      // already-failed image and never re-requests the fallback source.
+      key={`${label}-${stage}-${current}`}
       src={current}
+      // Storage image transformations are not available on every plan; only try
+      // them once, then fall back to the untouched original object URL.
       srcSet={stage === 0 ? buildSrcSet(src) : undefined}
-      sizes="(max-width: 767px) 92vw, 900px"
+      sizes={stage === 0 ? '(max-width: 767px) 92vw, 900px' : undefined}
       alt={alt}
       loading="lazy"
       decoding="async"
@@ -381,3 +386,4 @@ function ComparisonImage({ src, fallback, alt, label }: ComparisonImageProps) {
     />
   );
 }
+
