@@ -9,6 +9,7 @@ import MagneticButton from '@/components/landing/MagneticButton';
 import PremiumImage from '@/components/landing/PremiumImage';
 import SwipeProgress from '@/components/landing/SwipeProgress';
 import PremiumSkeleton from '@/components/landing/Skeleton';
+import { buildSrcSet } from '@/lib/image';
 
 
 
@@ -180,6 +181,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
                 containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
                 className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                sizes="(max-width: 767px) 92vw, 800px"
                 fadeDuration={0.8}
                 loading="eager"
                 fetchPriority="high"
@@ -584,6 +586,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
               <img
                 key={url + i}
                 src={url}
+                srcSet={buildSrcSet(url)}
+                sizes="(max-width: 767px) 96vw, 1080px"
                 alt={`${title} mockup ${i + 1}`}
                 onLoad={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
                 onError={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
