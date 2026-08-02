@@ -3,7 +3,7 @@ import { m, useMotionValue, useTransform, animate, AnimatePresence } from 'frame
 
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
-import { buildSrcSet } from '@/lib/image';
+import { buildSrcSet, resolveStorageUrl } from '@/lib/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
