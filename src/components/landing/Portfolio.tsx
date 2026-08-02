@@ -585,6 +585,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
               <img
                 key={url + i}
                 src={url}
+                srcSet={buildSrcSet(url)}
+                sizes="(max-width: 767px) 96vw, 1080px"
                 alt={`${title} mockup ${i + 1}`}
                 onLoad={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
                 onError={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
