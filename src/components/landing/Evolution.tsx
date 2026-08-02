@@ -31,8 +31,18 @@ export default function Evolution() {
     : (data?.after_label_en || 'POLISHED Standard');
   const hint = isBn ? 'তুলনা করতে টানুন' : 'Drag or tap to compare';
 
-  const beforeSrc = data?.before_image_url || beforeImg;
-  const afterSrc = data?.after_image_url || afterImg;
+  const beforeSrc = resolveStorageUrl(data?.before_image_url) || beforeImg;
+  const afterSrc = resolveStorageUrl(data?.after_image_url) || afterImg;
+
+  useEffect(() => {
+    // Verify what Storage actually returns for the configured paths.
+    console.log('[Evolution] image sources', {
+      before_image_url: data?.before_image_url,
+      after_image_url: data?.after_image_url,
+      resolvedBefore: beforeSrc,
+      resolvedAfter: afterSrc,
+    });
+  }, [data?.before_image_url, data?.after_image_url, beforeSrc, afterSrc]);
 
   return (
     <section id="evolution" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
