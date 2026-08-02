@@ -3,7 +3,7 @@ import { m, useMotionValue, useTransform, animate, AnimatePresence } from 'frame
 
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
-import { buildSrcSet } from '@/lib/image';
+import { buildSrcSet, resolveStorageUrl } from '@/lib/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
@@ -31,8 +31,18 @@ export default function Evolution() {
     : (data?.after_label_en || 'POLISHED Standard');
   const hint = isBn ? 'তুলনা করতে টানুন' : 'Drag or tap to compare';
 
-  const beforeSrc = data?.before_image_url || beforeImg;
-  const afterSrc = data?.after_image_url || afterImg;
+  const beforeSrc = resolveStorageUrl(data?.before_image_url) || beforeImg;
+  const afterSrc = resolveStorageUrl(data?.after_image_url) || afterImg;
+
+  useEffect(() => {
+    // Verify what Storage actually returns for the configured paths.
+    console.log('[Evolution] image sources', {
+      before_image_url: data?.before_image_url,
+      after_image_url: data?.after_image_url,
+      resolvedBefore: beforeSrc,
+      resolvedAfter: afterSrc,
+    });
+  }, [data?.before_image_url, data?.after_image_url, beforeSrc, afterSrc]);
 
   return (
     <section id="evolution" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -245,24 +255,18 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         viewport={{ once: true, margin: '50px' }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
-        <img
+        <ComparisonImage
           src={after}
-          srcSet={buildSrcSet(after)}
-          sizes="(max-width: 767px) 92vw, 900px"
+          fallback={afterImg}
           alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
-          loading="lazy" decoding="async"
-          draggable={false}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          label="after"
         />
         <m.div style={{ clipPath }} className="absolute inset-0">
-          <img
+          <ComparisonImage
             src={before}
-          srcSet={buildSrcSet(before)}
-          sizes="(max-width: 767px) 92vw, 900px"
+            fallback={beforeImg}
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
-            loading="lazy" decoding="async"
-            draggable={false}
-            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+            label="before"
           />
         </m.div>
 
@@ -338,5 +342,42 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
       </div>
 
     </div>
+  );
+}
+
+interface ComparisonImageProps {
+  src: string;
+  fallback: string;
+  alt: string;
+  label: 'before' | 'after';
+}
+
+/**
+ * Renders a comparison image with a two-stage recovery path:
+ * 1. If the Storage transformation (srcSet) fails, retry the untouched original.
+ * 2. If the original also fails, fall back to the bundled placeholder.
+ */
+function ComparisonImage({ src, fallback, alt, label }: ComparisonImageProps) {
+  const [stage, setStage] = useState<0 | 1 | 2>(0);
+
+  useEffect(() => setStage(0), [src]);
+
+  const current = stage === 2 ? fallback : src;
+
+  return (
+    <img
+      src={current}
+      srcSet={stage === 0 ? buildSrcSet(src) : undefined}
+      sizes="(max-width: 767px) 92vw, 900px"
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      onError={() => {
+        console.error(`[Evolution] ${label} image failed to load`, { stage, src: current });
+        setStage((s) => (s === 0 ? 1 : 2));
+      }}
+      className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+    />
   );
 }

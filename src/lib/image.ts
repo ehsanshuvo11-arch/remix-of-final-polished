@@ -33,3 +33,25 @@ export function buildSrcSet(
   if (!isTransformable(src)) return undefined;
   return widths.map((w) => `${transformedUrl(src, w, quality)} ${w}w`).join(', ');
 }
+
+// ---------------------------------------------------------------------------
+// Supabase Storage URL resolution
+// ---------------------------------------------------------------------------
+
+import { supabase } from '@/lib/supabase';
+
+const BUCKET = 'polished-assets';
+
+/**
+ * Accepts either a fully-qualified URL, a local bundled asset, or a raw storage
+ * path (e.g. `evolution/before.jpg`) and always returns something usable in an
+ * <img src>. Raw paths are resolved through Storage's public URL API.
+ */
+export function resolveStorageUrl(value: string | undefined | null): string | undefined {
+  if (!value) return undefined;
+  const v = value.trim();
+  if (!v) return undefined;
+  if (/^(https?:|data:|blob:|\/)/i.test(v)) return v;
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(v);
+  return data.publicUrl;
+}
