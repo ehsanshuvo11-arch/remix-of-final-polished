@@ -344,3 +344,40 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     </div>
   );
 }
+
+interface ComparisonImageProps {
+  src: string;
+  fallback: string;
+  alt: string;
+  label: 'before' | 'after';
+}
+
+/**
+ * Renders a comparison image with a two-stage recovery path:
+ * 1. If the Storage transformation (srcSet) fails, retry the untouched original.
+ * 2. If the original also fails, fall back to the bundled placeholder.
+ */
+function ComparisonImage({ src, fallback, alt, label }: ComparisonImageProps) {
+  const [stage, setStage] = useState<0 | 1 | 2>(0);
+
+  useEffect(() => setStage(0), [src]);
+
+  const current = stage === 2 ? fallback : src;
+
+  return (
+    <img
+      src={current}
+      srcSet={stage === 0 ? buildSrcSet(src) : undefined}
+      sizes="(max-width: 767px) 92vw, 900px"
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      onError={() => {
+        console.error(`[Evolution] ${label} image failed to load`, { stage, src: current });
+        setStage((s) => (s === 0 ? 1 : 2));
+      }}
+      className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+    />
+  );
+}
