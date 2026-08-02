@@ -255,24 +255,18 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         viewport={{ once: true, margin: '50px' }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
-        <img
+        <ComparisonImage
           src={after}
-          srcSet={buildSrcSet(after)}
-          sizes="(max-width: 767px) 92vw, 900px"
+          fallback={afterImg}
           alt={`${afterLabel} — POLISHED premium skincare brand redesign (after)`}
-          loading="lazy" decoding="async"
-          draggable={false}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          label="after"
         />
         <m.div style={{ clipPath }} className="absolute inset-0">
-          <img
+          <ComparisonImage
             src={before}
-          srcSet={buildSrcSet(before)}
-          sizes="(max-width: 767px) 92vw, 900px"
+            fallback={beforeImg}
             alt={`${beforeLabel} — original skincare brand visual before POLISHED redesign`}
-            loading="lazy" decoding="async"
-            draggable={false}
-            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+            label="before"
           />
         </m.div>
 
