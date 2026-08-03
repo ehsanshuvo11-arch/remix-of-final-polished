@@ -180,7 +180,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                 src={project.image_url}
                 alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
                 containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
-                className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                className="object-contain transform-gpu"
                 sizes="(max-width: 767px) 92vw, 800px"
                 fadeDuration={0.8}
                 loading="eager"
