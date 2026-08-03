@@ -6,6 +6,7 @@ import WordReveal from '@/components/landing/WordReveal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
+import { useDragScroll } from '@/hooks/use-drag-scroll';
 import type { TestimonialItem, TestimonialsContent } from '@/types/database';
 
 interface DisplayTestimonial {
@@ -186,7 +187,7 @@ export default function Testimonials() {
           ref={trackRef}
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
-          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide overscroll-x-contain [scroll-padding-left:1.5rem]"
+          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain [scroll-padding-left:1.5rem]"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
         >
 
