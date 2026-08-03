@@ -135,10 +135,36 @@ export default function Testimonials() {
     };
   }, []);
 
+  // Desktop: click-and-pull dragging + trackpad / wheel navigation.
+  useDragScroll(trackRef);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
   const goTo = (i: number) => setActive(i);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    let lock = 0;
+    const onWheel = (e: WheelEvent) => {
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1;
+      const dx = e.deltaX * unit;
+      const dy = e.deltaY * unit;
+      // Only intercept clearly horizontal trackpad / shift-wheel gestures so
+      // vertical page scrolling stays completely untouched.
+      if (Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now - lock < 420 || Math.abs(dx) < 6) return;
+      lock = now;
+      setActive((p) => (dx > 0 ? (p + 1) % count : (p - 1 + count) % count));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [count]);
+
+
 
 
   const getOffset = (i: number) => {
