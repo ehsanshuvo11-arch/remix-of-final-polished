@@ -239,7 +239,21 @@ export default function Testimonials() {
         </div>
 
         {/* ── DESKTOP: original stacked carousel (unchanged) ── */}
-        <div className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible">
+        <m.div
+          ref={stageRef}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.14}
+          dragMomentum={false}
+          dragTransition={{ bounceStiffness: 260, bounceDamping: 30 }}
+          onDragEnd={(_, info) => {
+            const power = info.offset.x + info.velocity.x * 0.14;
+            if (power < -70) next();
+            else if (power > 70) prev();
+          }}
+          whileTap={{ cursor: 'grabbing' }}
+          style={{ touchAction: 'pan-y' }}
+          className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
             const isActive = offset === 0;
@@ -268,7 +282,7 @@ export default function Testimonials() {
               </m.div>
             );
           })}
-        </div>
+        </m.div>
 
         <div className="hidden md:flex items-center justify-center gap-8 mt-12">
           <button
