@@ -10,6 +10,7 @@ import PremiumImage from '@/components/landing/PremiumImage';
 import SwipeProgress from '@/components/landing/SwipeProgress';
 import PremiumSkeleton from '@/components/landing/Skeleton';
 import { buildSrcSet } from '@/lib/image';
+import { useDragScroll } from '@/hooks/use-drag-scroll';
 
 
 
@@ -29,6 +30,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
   const trackRef = useRef<HTMLDivElement>(null);
+  useDragScroll(trackRef);
 
   const defaultProjects: PortfolioProject[] = [
     { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
@@ -89,7 +91,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             ref={trackRef}
             onTouchStart={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
-            className="flex items-start w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:flex-col md:items-stretch md:gap-24 md:mt-14 md:overflow-visible"
+            className="flex items-start w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:flex-col md:items-stretch md:gap-24 md:mt-14 md:overflow-visible"
           >
             {displayProjects.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />

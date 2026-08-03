@@ -3,6 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import SwipeProgress from '@/components/landing/SwipeProgress';
+import { useDragScroll } from '@/hooks/use-drag-scroll';
 import type { Service, ServicesMetaContent } from '@/types/database';
 
 
@@ -15,6 +16,7 @@ export default function Services({ services, content }: ServicesProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
   const trackRef = useRef<HTMLDivElement>(null);
+  useDragScroll(trackRef);
 
 
   const defaultServices: Service[] = [
@@ -65,7 +67,7 @@ export default function Services({ services, content }: ServicesProps) {
           )}
         </h2>
 
-        <div ref={trackRef} onTouchStart={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()} className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-2 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
+        <div ref={trackRef} onTouchStart={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()} className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-2 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
           {displayServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}

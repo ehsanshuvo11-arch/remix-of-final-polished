@@ -6,6 +6,7 @@ import WordReveal from '@/components/landing/WordReveal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSiteSetting } from '@/hooks/use-site-content';
+import { useDragScroll } from '@/hooks/use-drag-scroll';
 import type { TestimonialItem, TestimonialsContent } from '@/types/database';
 
 interface DisplayTestimonial {
@@ -134,10 +135,36 @@ export default function Testimonials() {
     };
   }, []);
 
+  // Desktop: click-and-pull dragging + trackpad / wheel navigation.
+  useDragScroll(trackRef);
+  const stageRef = useRef<HTMLDivElement>(null);
 
   const next = () => setActive((prev) => (prev + 1) % count);
   const prev = () => setActive((prev) => (prev - 1 + count) % count);
   const goTo = (i: number) => setActive(i);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    let lock = 0;
+    const onWheel = (e: WheelEvent) => {
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1;
+      const dx = e.deltaX * unit;
+      const dy = e.deltaY * unit;
+      // Only intercept clearly horizontal trackpad / shift-wheel gestures so
+      // vertical page scrolling stays completely untouched.
+      if (Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now - lock < 420 || Math.abs(dx) < 6) return;
+      lock = now;
+      setActive((p) => (dx > 0 ? (p + 1) % count : (p - 1 + count) % count));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [count]);
+
+
 
 
   const getOffset = (i: number) => {
@@ -186,7 +213,7 @@ export default function Testimonials() {
           ref={trackRef}
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
-          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide overscroll-x-contain [scroll-padding-left:1.5rem]"
+          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain [scroll-padding-left:1.5rem]"
           style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
         >
 
@@ -212,7 +239,21 @@ export default function Testimonials() {
         </div>
 
         {/* ── DESKTOP: original stacked carousel (unchanged) ── */}
-        <div className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible">
+        <m.div
+          ref={stageRef}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.14}
+          dragMomentum={false}
+          dragTransition={{ bounceStiffness: 260, bounceDamping: 30 }}
+          onDragEnd={(_, info) => {
+            const power = info.offset.x + info.velocity.x * 0.14;
+            if (power < -70) next();
+            else if (power > 70) prev();
+          }}
+          whileTap={{ cursor: 'grabbing' }}
+          style={{ touchAction: 'pan-y' }}
+          className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
             const isActive = offset === 0;
@@ -241,7 +282,7 @@ export default function Testimonials() {
               </m.div>
             );
           })}
-        </div>
+        </m.div>
 
         <div className="hidden md:flex items-center justify-center gap-8 mt-12">
           <button
