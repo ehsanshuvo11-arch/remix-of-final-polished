@@ -16,6 +16,7 @@ export default function Services({ services, content }: ServicesProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
   const trackRef = useRef<HTMLDivElement>(null);
+  useDragScroll(trackRef);
 
 
   const defaultServices: Service[] = [

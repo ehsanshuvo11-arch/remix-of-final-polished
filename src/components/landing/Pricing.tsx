@@ -15,6 +15,7 @@ import type { PricingContent, PricingTier } from '@/types/database';
 export default function Pricing({ isLoading = false }: { isLoading?: boolean }) {
   const { lang } = useLanguage();
   const trackRef = useRef<HTMLDivElement>(null);
+  useDragScroll(trackRef);
   const { data: cms } = useSiteSetting<PricingContent>('pricing');
 
   const content: PricingContent = { ...DEFAULT_PRICING, ...(cms ?? {}) };
