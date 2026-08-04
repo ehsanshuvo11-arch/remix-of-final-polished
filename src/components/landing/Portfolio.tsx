@@ -229,7 +229,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
         <button
           onClick={toggleImageExpand}
           lang={isBn ? 'bn' : 'en'}
-          className={`text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+          className={`inline-flex items-center min-h-[44px] md:min-h-0 text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
         >
           {imageExpanded
@@ -240,7 +240,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
         <button
           onClick={toggleCaseStudy}
           lang={isBn ? 'bn' : 'en'}
-          className={`inline-flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 ${isBn ? 'text-[14px] tracking-normal' : 'text-[11px] tracking-[2px] uppercase'}`}
+          className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-6 py-2.5 bg-accent text-accent-foreground font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 ${isBn ? 'text-[14px] tracking-normal' : 'text-[11px] tracking-[2px] uppercase'}`}
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
         >
           <span className="relative z-10 text-primary-foreground">
@@ -254,7 +254,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
           <button
             onClick={openLightbox}
             lang={isBn ? 'bn' : 'en'}
-            className={`inline-flex items-center gap-2 px-5 py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+            className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
           >
             <span>{isBn ? (labels?.portfolioViewMockupsBn ?? 'প্রোজেক্ট মকআপ দেখুন') : (labels?.portfolioViewMockupsEn ?? 'View project mockups')}</span>
@@ -531,7 +531,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {/* Close button */}
       <button
         onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute top-6 right-6 text-primary-foreground/60 hover:text-primary-foreground transition-colors duration-200 z-50"
+        className="absolute top-4 right-4 md:top-6 md:right-6 w-11 h-11 flex items-center justify-center text-primary-foreground/60 hover:text-primary-foreground transition-colors duration-200 z-50"
         aria-label="Close"
       >
         <X className="w-6 h-6" />
@@ -548,7 +548,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current > 0 && (
         <button
           onClick={(e) => { e.stopPropagation(); goPrev(); }}
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
           aria-label="Previous"
         >
           <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
@@ -559,7 +559,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {total > 1 && current < total - 1 && (
         <button
           onClick={(e) => { e.stopPropagation(); goNext(); }}
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
           aria-label="Next"
         >
           <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
@@ -615,16 +615,20 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
 
       {/* Dot indicators */}
       {total > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 z-50">
           {urls.map((_, i) => (
             <button
               key={i}
               onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === current ? 'bg-accent w-6' : 'bg-primary-foreground/30 hover:bg-primary-foreground/50'
-              }`}
+              className="h-11 w-6 flex items-center justify-center"
               aria-label={`Go to mockup ${i + 1}`}
-            />
+            >
+              <span
+                className={`block h-2 rounded-full transition-all duration-300 ${
+                  i === current ? 'bg-accent w-6' : 'bg-primary-foreground/30 hover:bg-primary-foreground/50 w-2'
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}
