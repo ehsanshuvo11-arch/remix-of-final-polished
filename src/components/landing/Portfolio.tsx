@@ -229,7 +229,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
         <button
           onClick={toggleImageExpand}
           lang={isBn ? 'bn' : 'en'}
-          className={`text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+          className={`inline-flex items-center min-h-[44px] md:min-h-0 text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
         >
           {imageExpanded
