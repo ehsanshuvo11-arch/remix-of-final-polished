@@ -187,7 +187,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         {/* Static, always-rendered subheadline — enters right as the headline settles. */}
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-primary-foreground/55 leading-[1.6] md:leading-[1.7] tracking-[0.3px] max-w-[300px] md:max-w-[520px] mx-auto mb-12 md:mb-8 text-[12px] md:text-[15px] px-2 md:px-0"
+          className="block font-sans-body text-primary-foreground/55 leading-[1.65] md:leading-[1.7] tracking-[0.3px] max-w-[310px] md:max-w-[520px] mx-auto mb-8 md:mb-8 text-[13px] md:text-[15px] px-1 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
             animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both',
@@ -206,7 +206,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         {/* CTA buttons — Magnetic.
             Mobile order: Start a Project (primary, filled) → View Our Work (secondary, outlined).
             Desktop order preserved: View Our Work (primary) → Start a Project (secondary). */}
-        <div className="hidden md:flex flex-col-reverse w-[70%] max-w-[260px] mx-auto gap-3 mt-0 mb-6 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
+        <div className="flex flex-col-reverse w-full max-w-[300px] mx-auto gap-2.5 mt-0 mb-2 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
           <MagneticButton
             as="a"
             href="#work"
