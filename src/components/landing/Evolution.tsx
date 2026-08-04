@@ -45,7 +45,7 @@ export default function Evolution() {
   }, [data?.before_image_url, data?.after_image_url, beforeSrc, afterSrc]);
 
   return (
-    <section id="evolution" className="py-16 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="evolution" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -63,7 +63,7 @@ export default function Evolution() {
         </h2>
       </MotionReveal>
       <MotionReveal delay={0.2}>
-        <p className="font-heading italic text-primary/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-10 md:mb-12">
+        <p className="font-heading italic text-primary/60 text-[15px] md:text-[clamp(16px,1.6vw,20px)] max-w-xl mb-8 md:mb-12">
           {subtitle}
         </p>
       </MotionReveal>
@@ -287,12 +287,12 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 6, transition: { duration: 0.5, ease: 'easeOut' } }}
               transition={{ delay: 1.4, duration: 0.6 }}
-              className="absolute bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
+              className="absolute bottom-4 md:bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
             >
               <m.div
                 animate={isMobile ? { opacity: [0.8, 1, 0.8] } : { opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
                 transition={{ duration: 2.8, ease: 'easeInOut', repeat: Infinity }}
-                className="px-3.5 py-1.5 text-[10px] tracking-[2px] uppercase text-primary-foreground bg-primary/95 md:bg-primary/60 md:backdrop-blur-md rounded-full border border-primary-foreground/15 flex items-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] will-change-[opacity]"
+                className="px-3 py-1.5 md:px-3.5 text-[9px] md:text-[10px] tracking-[1.5px] md:tracking-[2px] uppercase whitespace-nowrap text-primary-foreground bg-primary/85 backdrop-blur-md md:bg-primary/60 rounded-full border border-primary-foreground/15 flex items-center gap-1.5 md:gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] will-change-[opacity]"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />

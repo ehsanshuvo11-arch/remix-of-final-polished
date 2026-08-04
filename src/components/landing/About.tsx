@@ -43,8 +43,8 @@ export default function About({ content, stats }: AboutProps) {
   const line2 = about.titleLine2En ?? 'trust at first glance.';
 
   return (
-    <section id="about" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+    <section id="about" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
         <div>
           <MotionReveal>
             {isBn ? (
@@ -103,9 +103,9 @@ export default function About({ content, stats }: AboutProps) {
           {displayStats.map((stat, i) => (
             <MotionReveal key={stat.id} delay={0.15 * (i + 1)}>
               <div
-                className="stat-box bg-background p-7 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
+                className="stat-box bg-background p-6 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#eef2ff] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
               >
-                <div className="font-heading text-[52px] font-light text-primary leading-none mb-2">
+                <div className="font-heading text-[40px] md:text-[52px] font-light text-primary leading-none mb-1.5 md:mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
                 {isBn ? (
@@ -113,7 +113,7 @@ export default function About({ content, stats }: AboutProps) {
                     {(['সফল প্রজেক্ট','ব্র্যান্ড পার্টনার','ইন্ডাস্ট্রি অভিজ্ঞতা','ক্লায়েন্ট সন্তুষ্টি'])[i] ?? stat.label_bn}
                   </div>
                 ) : (
-                  <div lang="en" style={enFont} className="text-[11px] tracking-[2px] uppercase text-muted-foreground">
+                  <div lang="en" style={enFont} className="text-[10px] md:text-[11px] tracking-[1.5px] md:tracking-[2px] uppercase text-muted-foreground leading-[1.4]">
                     {stat.label_en}
                   </div>
                 )}
