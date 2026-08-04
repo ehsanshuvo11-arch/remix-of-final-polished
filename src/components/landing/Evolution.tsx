@@ -45,7 +45,7 @@ export default function Evolution() {
   }, [data?.before_image_url, data?.after_image_url, beforeSrc, afterSrc]);
 
   return (
-    <section id="evolution" className="py-24 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="evolution" className="py-16 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -331,7 +331,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.96 }}
           transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-          className="group/reset inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium cursor-pointer shadow-[0_2px_10px_-4px_hsl(var(--accent)/0.5)] hover:bg-accent hover:text-accent-foreground hover:border-accent hover:shadow-[0_8px_24px_-8px_hsl(var(--accent)/0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-300"
+          className="group/reset inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 rounded-full bg-accent/10 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium cursor-pointer shadow-[0_2px_10px_-4px_hsl(var(--accent)/0.5)] hover:bg-accent hover:text-accent-foreground hover:border-accent hover:shadow-[0_8px_24px_-8px_hsl(var(--accent)/0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-300"
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-500 group-hover/reset:-rotate-180">
             <path d="M3 12a9 9 0 1 1 3 6.7" />
