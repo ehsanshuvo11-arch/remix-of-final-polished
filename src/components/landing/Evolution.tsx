@@ -287,7 +287,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 6, transition: { duration: 0.5, ease: 'easeOut' } }}
               transition={{ delay: 1.4, duration: 0.6 }}
-              className="absolute bottom-4 md:bottom-5 left-1/2 -translate-x-1/2 pointer-events-none"
+              className="absolute bottom-4 md:bottom-5 inset-x-0 flex justify-center px-3 pointer-events-none"
             >
               <m.div
                 animate={isMobile ? { opacity: [0.8, 1, 0.8] } : { opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
