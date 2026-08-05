@@ -15,9 +15,11 @@ const HOLD_MS = REVEAL_END_MS + MIN_HOLD_MS;
 const EXIT_S = 0.35;
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
-  // Always run on every hard refresh — no session/local storage gating.
-  const [show, setShow] = useState(true);
-  const [gone, setGone] = useState(false);
+  // Preserve the cinematic desktop entrance. On mobile, play it once per tab
+  // rather than blocking every refresh and back-navigation.
+  const shouldShow = shouldShowLoader();
+  const [show, setShow] = useState(shouldShow);
+  const [gone, setGone] = useState(!shouldShow);
   // Keep the latest callback in a ref so parent re-renders (data loading on
   // slow mobile connections) can never reset the dismiss timer mid-flight.
   const onCompleteRef = useRef(onComplete);
@@ -34,6 +36,9 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     const prevHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      sessionStorage.setItem('polished_mobile_intro_seen', '1');
+    }
     // Pause Lenis if present on window.
     const lenis = (window as unknown as { lenis?: { stop?: () => void; start?: () => void } }).lenis;
     lenis?.stop?.();
@@ -179,6 +184,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 }
 
 export function shouldShowLoader() {
-  // Loader now plays on every refresh — signature brand entrance.
-  return typeof window !== 'undefined';
+  if (typeof window === 'undefined') return false;
+  if (!window.matchMedia('(max-width: 767px)').matches) return true;
+  return sessionStorage.getItem('polished_mobile_intro_seen') !== '1';
 }

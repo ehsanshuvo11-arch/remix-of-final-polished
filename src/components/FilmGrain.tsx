@@ -17,6 +17,7 @@ function FilmGrain() {
 
   return (
     <div
+      className="film-grain"
       aria-hidden="true"
       style={{
         position: "fixed",

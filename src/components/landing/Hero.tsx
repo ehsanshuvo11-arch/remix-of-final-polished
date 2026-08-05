@@ -37,6 +37,13 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
   // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
   useEffect(() => {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Touch scrolling must stay entirely on the browser compositor. Attaching a
+    // scroll listener here made the two oversized ambient layers repaint on
+    // every finger movement, which was the main source of mobile judder.
+    if (!fine || reduced) return;
+
     let scrollY = 0;
     let px = 0;
     let py = 0;
@@ -70,14 +77,9 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       targetY = (e.clientY / window.innerHeight - 0.5) * 18;
     };
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const fine = window.matchMedia('(pointer: fine)').matches;
-
     window.addEventListener('scroll', onScroll, { passive: true });
-    if (!reduced && fine) {
-      window.addEventListener('pointermove', onPointerMove, { passive: true });
-      raf = requestAnimationFrame(tick);
-    }
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    raf = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
@@ -92,7 +94,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     >
       {/* Animated grid */}
       <div
-        className="absolute inset-0"
+        className="hero-grid absolute inset-0"
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
@@ -101,8 +103,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       />
 
       {/* Orbs — scroll + pointer parallax (transform driven from JS) */}
-      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)' }} />
-      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
+      <div ref={orb1Ref} className="hero-orb absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)' }} />
+      <div ref={orb2Ref} className="hero-orb absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
         {/* ── Unified hero welcome choreography ──
