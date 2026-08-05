@@ -122,9 +122,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               {/* Mobile-only: native horizontal swipe carousel */}
               <div
                 ref={trackRef}
-                onTouchStart={(e) => e.stopPropagation()}
-                onTouchMove={(e) => e.stopPropagation()}
-                className="flex md:hidden w-full max-w-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab gap-4 pb-6 -mx-6 px-6 mt-10 [-webkit-overflow-scrolling:touch]"
+                 className="flex md:hidden w-full max-w-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab touch-auto gap-4 pb-6 -mx-6 px-6 mt-10 [-webkit-overflow-scrolling:touch]"
               >
                 {pricingTiers.map((tier, index) => (
                   <TierCard
