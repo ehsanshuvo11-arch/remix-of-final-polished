@@ -236,20 +236,17 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuemax={100}
         aria-valuenow={pct}
         onKeyDown={onKeyDown}
-        style={{ touchAction: 'pan-y', willChange: 'transform', transform: 'translateZ(0)' }}
+        style={{ willChange: 'transform', transform: 'translateZ(0)' }}
         onMouseDown={(e) => startDrag(e.clientX)}
         onTouchStart={(e) => {
-          // Keep the gesture local: never let a parent swipe track react to it.
-          e.stopPropagation();
           startDrag(e.touches[0].clientX);
         }}
-        onTouchMove={(e) => e.stopPropagation()}
 
         onClick={(e) => {
           // Only treat as click when not dragging (mousedown already positioned it)
           if (!dragging) handleClick(e.clientX);
         }}
-        className={`group relative w-full overflow-hidden select-none aspect-[4/5] md:aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        className={`group relative w-full overflow-hidden select-none touch-pan-y aspect-[4/5] md:aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '50px' }}

@@ -181,7 +181,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative bg-[#1e3a8a] text-primary-foreground overflow-hidden py-24 md:py-32 px-6 md:px-14"
+       className="relative bg-[#1e3a8a] text-primary-foreground overflow-x-clip py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -211,10 +211,8 @@ export default function Testimonials() {
         {/* ── MOBILE: native scroll-snap swipe track ── */}
         <div
           ref={trackRef}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchMove={(e) => e.stopPropagation()}
-          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain [scroll-padding-left:1.5rem]"
-          style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
+           className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain touch-auto [scroll-padding-left:1.5rem]"
+           style={{ WebkitOverflowScrolling: 'touch' }}
         >
 
           {testimonials.map((t) => (
@@ -242,6 +240,7 @@ export default function Testimonials() {
         <m.div
           ref={stageRef}
           drag="x"
+           dragDirectionLock={true}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.14}
           dragMomentum={false}
@@ -252,8 +251,7 @@ export default function Testimonials() {
             else if (power > 70) prev();
           }}
           whileTap={{ cursor: 'grabbing' }}
-          style={{ touchAction: 'pan-y' }}
-          className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu">
+           className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu touch-pan-y">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
             const isActive = offset === 0;
