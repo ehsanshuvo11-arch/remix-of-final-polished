@@ -19,6 +19,9 @@ export default function Navbar({ content }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 });
+
 
   useEffect(() => {
     let frame = 0;
