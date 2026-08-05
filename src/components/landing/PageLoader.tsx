@@ -32,15 +32,10 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     }
 
     const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
-    // The fixed curtain already blocks interaction on mobile. Never mutate the
-    // document roots there: interrupted WebKit animations can retain that lock
-    // and leave wheel scrolling functional while finger scrolling is frozen.
-    const prevBodyOverflow = document.body.style.overflow;
-    const prevHtmlOverflow = document.documentElement.style.overflow;
-    if (!isMobile) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
+    // The fixed curtain already owns the viewport. Never mutate overflow on
+    // html/body: a cancelled WebKit animation can otherwise strand the mobile
+    // document in a non-scrollable state after the curtain has disappeared.
+    if (isMobile) {
       sessionStorage.setItem('polished_mobile_intro_seen', '1');
     }
     // Pause Lenis if present on window.
@@ -56,13 +51,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 
     return () => {
       window.clearTimeout(dismissTimer);
-      if (!isMobile) {
-        document.body.style.overflow = prevBodyOverflow;
-        document.documentElement.style.overflow = prevHtmlOverflow;
-      } else {
-        document.body.style.removeProperty('overflow');
-        document.documentElement.style.removeProperty('overflow');
-      }
     };
   }, [show]);
 
@@ -73,8 +61,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     if (show) return;
     const t = window.setTimeout(() => {
       setGone(true);
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
       (window as unknown as { lenis?: { start?: () => void } }).lenis?.start?.();
     }, EXIT_S * 1000 + 250);
     return () => window.clearTimeout(t);
@@ -96,9 +82,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           transition={{ duration: EXIT_S, ease: [0.76, 0, 0.24, 1] }}
           onAnimationComplete={(def) => {
             if ((def as { y?: string })?.y === '-100%') {
-              // Curtain has fully cleared the viewport — release scroll locks.
-              document.body.style.overflow = '';
-              document.documentElement.style.overflow = '';
               const lenis = (window as unknown as { lenis?: { start?: () => void } }).lenis;
               lenis?.start?.();
             }
