@@ -66,7 +66,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setTimeout(restore, 200);
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  useEffect(() => {
+    const onState = (e: Event) => setMobileMenuOpen((e as CustomEvent<boolean>).detail);
+    window.addEventListener('polished:menu-state', onState);
+    return () => window.removeEventListener('polished:menu-state', onState);
+  }, []);
+
   const setLang = (l: Lang) => {
+
     // Used by the (now hidden) initial popup. Keep behaviour but preserve scroll.
     swapLanguagePreservingScroll(l);
     setTransitioning(true);
