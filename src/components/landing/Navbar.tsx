@@ -99,6 +99,13 @@ export default function Navbar({ content }: NavbarProps) {
 
   return (
     <>
+      {/* Mobile reading-progress hairline — orientation without extra chrome */}
+      <m.div
+        aria-hidden
+        style={{ scaleX: progress }}
+        className="md:hidden fixed top-0 left-0 right-0 z-[130] h-[2px] origin-left bg-accent pointer-events-none"
+      />
+
       <nav
         className={`fixed top-0 left-0 right-0 ${open ? 'z-[120]' : 'z-[100]'} flex justify-between items-center transition-all duration-500 ${
           scrolled && !open
