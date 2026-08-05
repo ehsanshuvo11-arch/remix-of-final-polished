@@ -94,6 +94,8 @@ export default function Index() {
         <Contact contact={contactContent ?? null} />
         <Footer footer={footerContent ?? null} />
       </Suspense>
+      <MobileActionBar />
+      </Suspense>
     </div>
     </SmoothScroll>
   );
