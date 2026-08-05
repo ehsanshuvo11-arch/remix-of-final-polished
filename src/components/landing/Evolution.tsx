@@ -34,15 +34,7 @@ export default function Evolution() {
   const beforeSrc = resolveStorageUrl(data?.before_image_url) || beforeImg;
   const afterSrc = resolveStorageUrl(data?.after_image_url) || afterImg;
 
-  useEffect(() => {
-    // Verify what Storage actually returns for the configured paths.
-    console.log('[Evolution] image sources', {
-      before_image_url: data?.before_image_url,
-      after_image_url: data?.after_image_url,
-      resolvedBefore: beforeSrc,
-      resolvedAfter: afterSrc,
-    });
-  }, [data?.before_image_url, data?.after_image_url, beforeSrc, afterSrc]);
+
 
   return (
     <section id="evolution" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -91,6 +83,10 @@ interface SliderProps {
   hint: string;
 }
 
+const SNAP_POINTS = [0, 50, 100];
+const SNAP_THRESHOLD = 6;
+const SPRING = { type: 'spring', stiffness: 260, damping: 30, mass: 0.7 } as const;
+
 function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: SliderProps) {
   const isMobile = useIsMobileDevice();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -125,74 +121,114 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     };
   }, [x]);
 
-  // Cache the rect during a drag so touchmove never triggers layout reads.
+  // Cache the rect for the whole gesture so pointermove never reads layout.
   const rectRef = useRef<DOMRect | null>(null);
+  // Per-gesture state: origin, whether the horizontal axis has been claimed and
+  // whether the pointer moved enough to count as a drag (vs. a tap).
+  const gesture = useRef({ id: -1, startX: 0, startY: 0, locked: false, moved: false });
 
-  const setFromClientX = useCallback((clientX: number, animateTo = false) => {
-    const el = containerRef.current;
-    if (!el) return;
-    const rect = rectRef.current ?? el.getBoundingClientRect();
-    const p = ((clientX - rect.left) / rect.width) * 100;
-    const clamped = Math.max(0, Math.min(100, p));
-    if (animateTo) {
-      animate(x, clamped, { type: 'spring', stiffness: 120, damping: 20, mass: 0.8 });
-    } else {
-      // Direct set: 1:1 with the finger, transform-only, zero animation overhead.
-      x.set(clamped);
-    }
+  const tick = useCallback(() => {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate?.(8);
+  }, []);
+
+  const pctFromClientX = useCallback((clientX: number) => {
+    const rect = rectRef.current ?? containerRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    return Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+  }, []);
+
+  const springTo = useCallback((target: number) => {
+    setHasInteracted(true);
+    animate(x, target, SPRING);
   }, [x]);
 
+  /** Release behaviour: gently magnetise onto 0 / 50 / 100 when close by. */
+  const settle = useCallback(() => {
+    const current = x.get();
+    const near = SNAP_POINTS.find((p) => Math.abs(current - p) <= SNAP_THRESHOLD);
+    if (near !== undefined && Math.abs(current - near) > 0.2) {
+      tick();
+      animate(x, near, { type: 'spring', stiffness: 300, damping: 28, mass: 0.6 });
+    }
+  }, [x, tick]);
 
-  const startDrag = useCallback((clientX: number) => {
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
-    setDragging(true);
+    gesture.current = {
+      id: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      // Mouse and pen claim the axis instantly; touch waits so the page can
+      // still be scrolled vertically from on top of the slider.
+      locked: e.pointerType !== 'touch',
+      moved: false,
+    };
     setHasInteracted(true);
-    setFromClientX(clientX);
-  }, [setFromClientX]);
+    if (e.pointerType !== 'touch') {
+      containerRef.current?.setPointerCapture(e.pointerId);
+      setDragging(true);
+      const p = pctFromClientX(e.clientX);
+      if (p !== null) x.set(p);
+    }
+  }, [pctFromClientX, x]);
 
-  const handleClick = useCallback((clientX: number) => {
-    rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
-    setHasInteracted(true);
-    setFromClientX(clientX, true);
-  }, [setFromClientX]);
+  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const g = gesture.current;
+    if (g.id !== e.pointerId) return;
 
-
-  useEffect(() => {
-    if (!dragging) return;
-    let frame = 0;
-    let pendingX: number | null = null;
-    const flush = () => {
-      frame = 0;
-      if (pendingX !== null) {
-        setFromClientX(pendingX);
-        pendingX = null;
+    if (!g.locked) {
+      const dx = Math.abs(e.clientX - g.startX);
+      const dy = Math.abs(e.clientY - g.startY);
+      if (dx < 6 && dy < 6) return;
+      // Vertical intent wins — hand the gesture back to the browser.
+      if (dy > dx) {
+        gesture.current.id = -1;
+        return;
       }
-    };
-    const onMove = (e: MouseEvent | TouchEvent) => {
-      const cx = 'touches' in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
-      if (typeof cx !== 'number') return;
-      pendingX = cx;
-      if (!frame) frame = requestAnimationFrame(flush);
-    };
-    const onUp = () => {
-      rectRef.current = null;
-      setDragging(false);
-    };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchmove', onMove, { passive: true });
-    window.addEventListener('touchend', onUp);
-    window.addEventListener('touchcancel', onUp);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-      window.removeEventListener('touchmove', onMove);
-      window.removeEventListener('touchend', onUp);
-      window.removeEventListener('touchcancel', onUp);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [dragging, setFromClientX]);
+      g.locked = true;
+      containerRef.current?.setPointerCapture(e.pointerId);
+      setDragging(true);
+    }
 
+    if (Math.abs(e.clientX - g.startX) > 3) g.moved = true;
+    const p = pctFromClientX(e.clientX);
+    if (p !== null) x.set(p);
+  }, [pctFromClientX, x]);
+
+  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const g = gesture.current;
+    if (g.id !== e.pointerId) return;
+    if (g.locked) {
+      if (g.moved) {
+        settle();
+      } else {
+        // Treat a stationary press as a tap-to-position with a smooth glide.
+        const p = pctFromClientX(e.clientX);
+        if (p !== null) animate(x, p, SPRING);
+      }
+    }
+    if (containerRef.current?.hasPointerCapture?.(e.pointerId)) {
+      containerRef.current.releasePointerCapture(e.pointerId);
+    }
+    gesture.current.id = -1;
+    rectRef.current = null;
+    setDragging(false);
+  }, [pctFromClientX, settle, x]);
+
+  // Desktop: horizontal wheel / trackpad swipe scrubs the divider.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || isMobile) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // vertical scroll passes through
+      e.preventDefault();
+      setHasInteracted(true);
+      x.set(Math.max(0, Math.min(100, x.get() + e.deltaX * 0.18)));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [isMobile, x]);
 
   // Entrance teaser: sweep from 65 -> 50 with soft spring settle
   useEffect(() => {
@@ -201,11 +237,6 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     return controls.stop;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const springTo = useCallback((target: number) => {
-    setHasInteracted(true);
-    animate(x, target, { type: 'spring', stiffness: 120, damping: 20, mass: 0.8 });
-  }, [x]);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     const step = e.shiftKey ? 10 : 2;
@@ -224,6 +255,11 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     }
   };
 
+  const views: { value: number; label: string }[] = [
+    { value: 0, label: afterLabel },
+    { value: 50, label: '50 / 50' },
+    { value: 100, label: beforeLabel },
+  ];
 
   return (
     <div className="space-y-4">
@@ -235,17 +271,14 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={pct}
+        aria-valuetext={`${pct}% ${beforeLabel}`}
         onKeyDown={onKeyDown}
         style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-        onMouseDown={(e) => startDrag(e.clientX)}
-        onTouchStart={(e) => {
-          startDrag(e.touches[0].clientX);
-        }}
-
-        onClick={(e) => {
-          // Only treat as click when not dragging (mousedown already positioned it)
-          if (!dragging) handleClick(e.clientX);
-        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onDoubleClick={() => springTo(50)}
         className={`group relative w-full overflow-hidden select-none touch-pan-y aspect-[4/5] md:aspect-square bg-primary/5 rounded-md shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${dragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -312,30 +345,52 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
                 : 'scale-100 shadow-[0_8px_24px_rgba(251,146,60,0.45)] group-hover:scale-110 group-hover:shadow-[0_0_28px_rgba(251,146,60,0.65),0_10px_28px_rgba(251,146,60,0.35)]'
             }`}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
+            {/* Soft halo that breathes while the user drags */}
+            <span
+              className={`absolute inset-0 rounded-full bg-accent/30 transition-transform duration-500 ease-out ${
+                dragging ? 'scale-[1.6] opacity-100' : 'scale-100 opacity-0'
+              }`}
+            />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="relative text-primary-foreground">
               <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
             </svg>
           </div>
         </m.div>
       </m.div>
 
-      {/* Status indicator — center comparison */}
+      {/* Segmented jump control — before / split / after */}
       <div className="flex items-center justify-center">
-        <m.button
-          type="button"
-          onClick={() => springTo(50)}
-          aria-label="Reset comparison to 50 / 50"
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.96 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-          className="group/reset inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 rounded-full bg-accent/10 border border-accent/40 text-accent text-[11px] tracking-[2px] uppercase font-medium cursor-pointer shadow-[0_2px_10px_-4px_hsl(var(--accent)/0.5)] hover:bg-accent hover:text-accent-foreground hover:border-accent hover:shadow-[0_8px_24px_-8px_hsl(var(--accent)/0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-300"
+        <div
+          role="group"
+          aria-label="Comparison view"
+          className="inline-flex items-center gap-1 p-1 rounded-full bg-primary/5 border border-primary/10"
         >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-500 group-hover/reset:-rotate-180">
-            <path d="M3 12a9 9 0 1 1 3 6.7" />
-            <path d="M3 21v-6h6" />
-          </svg>
-          Reset 50/50
-        </m.button>
+          {views.map((v) => {
+            const active = Math.abs(pct - v.value) < 3;
+            return (
+              <m.button
+                key={v.value}
+                type="button"
+                onClick={() => springTo(v.value)}
+                aria-pressed={active}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                className={`relative min-h-[44px] px-4 md:px-5 rounded-full text-[9px] md:text-[10px] tracking-[1.5px] md:tracking-[2px] uppercase font-medium whitespace-nowrap transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  active ? 'text-accent-foreground' : 'text-primary/60 hover:text-primary'
+                }`}
+              >
+                {active && (
+                  <m.span
+                    layoutId="evolution-view-pill"
+                    className="absolute inset-0 rounded-full bg-accent shadow-[0_6px_20px_-8px_hsl(var(--accent)/0.8)]"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <span className="relative">{v.label}</span>
+              </m.button>
+            );
+          })}
+        </div>
       </div>
 
     </div>
