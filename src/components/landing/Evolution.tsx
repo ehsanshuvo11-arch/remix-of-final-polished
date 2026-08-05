@@ -273,7 +273,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         aria-valuenow={pct}
         aria-valuetext={`${pct}% ${beforeLabel}`}
         onKeyDown={onKeyDown}
-        style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+        style={{ willChange: 'transform', transform: 'translateZ(0)', touchAction: 'pan-y' }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

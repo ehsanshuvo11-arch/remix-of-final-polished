@@ -460,8 +460,6 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
   const [current, setCurrent] = useState(initialIndex);
   const [loaded, setLoaded] = useState<Record<number, boolean>>({});
 
-  const touchStartX = useRef(0);
-  const touchDeltaX = useRef(0);
   const total = urls.length;
 
   // 3D tilt removed for a calm, distortion-free viewing experience.
@@ -481,20 +479,6 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
     return () => window.removeEventListener('keydown', handler);
   }, [onClose, goNext, goPrev]);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchDeltaX.current = 0;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchDeltaX.current > 50) goPrev();
-    else if (touchDeltaX.current < -50) goNext();
-  };
-
   return (
     <m.div
       initial={{ opacity: 0 }}
@@ -504,9 +488,6 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none bg-black/90"
       style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
       onClick={onClose}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
     >
       {/* Invisible Story-style tap zones */}
       <button

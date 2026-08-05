@@ -57,7 +57,7 @@ export default function Index() {
 
   return (
     <SmoothScroll>
-    <div className="font-body">
+    <main className="font-body">
       <PageLoader onComplete={() => setHeroReady(true)} />
       <SectionTheme />
       
@@ -96,7 +96,7 @@ export default function Index() {
       </Suspense>
       <MobileActionBar />
 
-    </div>
+    </main>
     </SmoothScroll>
   );
 }

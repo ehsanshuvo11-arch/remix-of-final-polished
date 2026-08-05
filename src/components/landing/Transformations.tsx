@@ -107,20 +107,15 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
 
   useEffect(() => {
     if (!dragging) return;
-    const onMove = (e: MouseEvent | TouchEvent) => {
-      const cx = 'touches' in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
-      if (typeof cx === 'number') setFromClientX(cx);
+    const onMove = (e: MouseEvent) => {
+      setFromClientX(e.clientX);
     };
     const onUp = () => stopDrag();
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchmove', onMove, { passive: true });
-    window.addEventListener('touchend', onUp);
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
-      window.removeEventListener('touchmove', onMove);
-      window.removeEventListener('touchend', onUp);
     };
   }, [dragging, setFromClientX, stopDrag]);
 
@@ -136,7 +131,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
     <m.div
       ref={containerRef}
       onMouseDown={(e) => startDrag(e.clientX)}
-      onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+      style={{ touchAction: 'pan-y' }}
       className="relative w-full overflow-hidden rounded-sm border border-primary/10 select-none touch-pan-y aspect-[16/10] cursor-ew-resize bg-primary/5"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}

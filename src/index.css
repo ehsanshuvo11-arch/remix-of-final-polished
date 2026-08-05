@@ -96,12 +96,17 @@
   }
   html {
     /* smooth scrolling handled by Lenis */
+    touch-action: pan-y !important;
   }
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y !important;
+  }
+  main {
+    touch-action: pan-y !important;
   }
   /* Clip wide decoration at the app boundary, never on html/body. WebKit can
      stop routing touch gestures to the document when either root element has
@@ -864,13 +869,13 @@ a.story-link:hover::after {
     -webkit-overflow-scrolling: touch;
     /* Explicitly reserve one-finger vertical movement for document scrolling.
        Horizontal carousels remain native overflow regions and can still pan-x. */
-    touch-action: pan-y pinch-zoom;
+    touch-action: pan-y !important;
     overscroll-behavior-y: auto;
   }
   #root,
   main,
   section {
-    touch-action: pan-y pinch-zoom;
+    touch-action: pan-y !important;
   }
 
   /* 6. Mobile-only paint budget: retain the visual identity without keeping
