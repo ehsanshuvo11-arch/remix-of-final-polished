@@ -4,6 +4,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { NavContent } from '@/types/database';
 import { useUILabels } from '@/hooks/use-site-content';
+import { MOBILE_MENU_EVENT } from '@/components/landing/MobileActionBar';
+
 
 interface NavbarProps {
   content?: NavContent | null;
