@@ -109,6 +109,7 @@
   }
   main {
     touch-action: pan-y !important;
+    overflow-y: auto !important;
   }
   /* Clip wide decoration at the app boundary, never on html/body. WebKit can
      stop routing touch gestures to the document when either root element has
@@ -234,7 +235,7 @@
     main {
       height: auto !important;
       min-height: 0;
-      overflow-y: visible !important;
+      overflow-y: auto !important;
     }
     section > *:not(.snap-x):not([data-carousel]),
     main > *:not(.snap-x):not([data-carousel]) {
