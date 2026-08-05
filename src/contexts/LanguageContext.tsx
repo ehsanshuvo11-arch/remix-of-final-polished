@@ -16,6 +16,8 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue>({
   lang: 'en',
   setLang: () => {},
+  toggleLanguage: () => {},
+
   t: (en) => en,
 });
 
