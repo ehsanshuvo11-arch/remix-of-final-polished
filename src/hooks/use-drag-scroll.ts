@@ -53,7 +53,9 @@ export function useDragScroll(ref: RefObject<HTMLElement>, enabled = true) {
     };
 
     const onPointerMove = (e: PointerEvent) => {
-      if (!dragging) return;
+      // Touch/pen must always remain completely native. In particular, never
+      // call preventDefault after a hybrid device has started a mouse drag.
+      if (e.pointerType !== 'mouse' || !dragging) return;
       const dx = e.clientX - startX;
       if (!moved && Math.abs(dx) > 3) {
         moved = true;
@@ -105,7 +107,7 @@ export function useDragScroll(ref: RefObject<HTMLElement>, enabled = true) {
       el.scrollLeft += dy;
     };
 
-    el.addEventListener('pointerdown', onPointerDown);
+    el.addEventListener('pointerdown', onPointerDown, { passive: true });
     el.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', endDrag);
     window.addEventListener('pointercancel', endDrag);
