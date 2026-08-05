@@ -19,9 +19,25 @@ export default function Navbar({ content }: NavbarProps) {
   const isBn = lang === 'bn';
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let frame = 0;
+    let last = false;
+    const handleScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const next = window.scrollY > 60;
+        if (next !== last) {
+          last = next;
+          setScrolled(next);
+        }
+      });
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   // Lock body scroll when mobile menu is open
@@ -146,8 +162,7 @@ export default function Navbar({ content }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
-            className="mobile-nav-glass md:hidden fixed inset-0 z-[105] bg-primary/85 backdrop-blur-2xl"
-            style={{ WebkitBackdropFilter: 'blur(26px) saturate(140%)', backdropFilter: 'blur(26px) saturate(140%)' }}
+            className="mobile-nav-glass md:hidden fixed inset-0 z-[105] bg-primary"
             onClick={() => setOpen(false)}
           >
             {/* Soft orange studio glow — top-right accent */}

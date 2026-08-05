@@ -451,42 +451,68 @@ html[data-lang="bn"] .brand-wordmark {
 .reveal-element {
   opacity: 0;
   transform: translate3d(0, 28px, 0) scale(0.985);
-  filter: blur(6px);
+  will-change: opacity, transform;
   transition:
     opacity 1s linear,
-    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 768px) {
+  .reveal-element {
+    filter: blur(6px);
+    will-change: opacity, transform, filter;
+    transition:
+      opacity 1s linear,
+      transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 .reveal-element.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
 }
+
 .reveal-left {
   opacity: 0;
   transform: translate3d(-40px, 0, 0);
-  filter: blur(6px);
+  will-change: opacity, transform;
   transition:
     opacity 1s linear,
-    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 768px) {
+  .reveal-left {
+    filter: blur(6px);
+    will-change: opacity, transform, filter;
+    transition:
+      opacity 1s linear,
+      transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 .reveal-left.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   filter: blur(0);
 }
+
 .reveal-right {
   opacity: 0;
   transform: translate3d(40px, 0, 0);
-  filter: blur(6px);
+  will-change: opacity, transform;
   transition:
     opacity 1s linear,
-    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform, filter;
+    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 768px) {
+  .reveal-right {
+    filter: blur(6px);
+    will-change: opacity, transform, filter;
+    transition:
+      opacity 1s linear,
+      transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 .reveal-right.visible {
   opacity: 1;
@@ -763,7 +789,7 @@ a.story-link:hover::after {
   /* 6. Native momentum scrolling for the swipe carousels */
   .scrollbar-hide {
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    scroll-snap-stop: always;
   }
 }
 
@@ -843,10 +869,22 @@ a.story-link:hover::after {
     touch-action: pan-y pinch-zoom;
   }
 
-  /* 6. Glass nav overlay is the ONE place blur is worth its cost —
-     it paints once over a static page, never during scroll. */
+  /* 6. Mobile-only paint budget: retain the visual identity without keeping
+     full-viewport filters or oversized compositor layers alive while scrolling. */
+  .film-grain,
+  .hero-orb {
+    display: none !important;
+  }
+  .hero-grid {
+    animation: none !important;
+    opacity: 0.7;
+  }
+  .hero-logo-breath,
+  .hero-accent-line {
+    animation-iteration-count: 1 !important;
+  }
   .mobile-nav-glass {
-    backdrop-filter: blur(26px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(26px) saturate(140%) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }

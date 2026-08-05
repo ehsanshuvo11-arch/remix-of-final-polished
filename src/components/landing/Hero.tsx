@@ -4,23 +4,17 @@ import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { HeroContent } from '@/types/database';
 import RevealText from '@/components/landing/RevealText';
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 interface HeroProps {
   content: HeroContent | null;
   logoUrl: string;
 }
 
-
-function parseItalic(text: string) {
-  const parts = text.split(/\*([^*]+)\*/);
-  return parts.map((part, i) =>
-    i % 2 === 1 ? <em key={i} className="italic text-accent">{part}</em> : part
-  );
-}
-
 export default function Hero({ content, logoUrl }: HeroProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
+  const isMobile = useIsMobileDevice();
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
 
@@ -37,6 +31,9 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
   // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
   useEffect(() => {
+    // Performance: Skip heavy JS-driven parallax on mobile devices to save CPU/Battery
+    if (isMobile) return;
+
     let scrollY = 0;
     let px = 0;
     let py = 0;
@@ -84,7 +81,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       window.removeEventListener('pointermove', onPointerMove);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -96,7 +93,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
-          animation: 'gridMove 20s linear infinite',
+          // Performance: Slow down the grid animation on mobile to reduce GPU load
+          animation: `gridMove ${isMobile ? '40s' : '20s'} linear infinite`,
         }}
       />
 
@@ -105,11 +103,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
-        {/* ── Unified hero welcome choreography ──
-            One timeline, every element in sync with the headline:
-            logo 0s → eyebrow 0.25s → headline 0.4s (0.15s stagger)
-            → subheadline 1.05s → CTAs 1.25s → scroll cue 1.45s        */}
-        {/* Logo badge */}
         <img
           src="/logo.svg"
           alt="POLISHED Logo"
@@ -126,8 +119,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           }}
         />
 
-
-        {/* Eyebrow locked to English in both locales — identical typography & layout */}
         <p
           lang="en"
           className="font-sans-eyebrow text-[8px] tracking-[0.35em] text-accent mt-4 mb-8 md:mt-0 md:text-[11px] md:tracking-[4px] md:mb-5 uppercase font-normal"
@@ -136,14 +127,9 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           {hero.eyebrowEn}
         </p>
 
-
         {(() => {
-          // Zero-shift headline: identical DOM, classes, fonts, sizes, and animation
-          // timings for EN and BN. Only the raw text strings differ.
           const BASE = 0.4;
           const STAGGER = 0.15;
-          // Headline is locked to English in both locales to guarantee zero layout shift
-          // and identical typography (font, weight, size, spacing) across language toggles.
           const line2Delay = BASE + 3 * STAGGER;
           return (
             <h1
@@ -184,7 +170,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           );
         })()}
 
-        {/* Static, always-rendered subheadline — enters right as the headline settles. */}
         <p
           lang={isBn ? 'bn' : 'en'}
           className="block font-sans-body text-primary-foreground/55 leading-[1.65] md:leading-[1.7] tracking-[0.3px] max-w-[310px] md:max-w-[520px] mx-auto mb-8 md:mb-8 text-[13px] md:text-[15px] px-1 md:px-0"
@@ -193,7 +178,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both',
           }}
         >
-
           {isBn
             ? (hero.subBn ||
               'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা আলাদাভাবে নজর কাড়ে এবং মানুষের মনে গেঁথে থাকে।')
@@ -201,11 +185,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               'We craft refined, trust-driven visual identities for skincare & self-care brands that deserve to be seen — and remembered.')}
         </p>
 
-
-
-        {/* CTA buttons — Magnetic.
-            Mobile order: Start a Project (primary, filled) → View Our Work (secondary, outlined).
-            Desktop order preserved: View Our Work (primary) → Start a Project (secondary). */}
         <div className="flex flex-col-reverse w-full max-w-[300px] mx-auto gap-2.5 mt-0 mb-2 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
           <MagneticButton
             as="a"
@@ -243,17 +222,13 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             </span>
           </MagneticButton>
         </div>
-
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex md:hidden md:[@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.45s both' }}>
         {hero.scrollEn ?? 'Scroll'}
         <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.7s both' }} />
-
       </div>
 
-      {/* Hairline accent at bottom — no glow bleed */}
       <div className="absolute bottom-0 left-0 w-full h-px bg-accent/40" />
     </section>
   );
