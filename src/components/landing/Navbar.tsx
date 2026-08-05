@@ -57,13 +57,17 @@ export default function Navbar({ content }: NavbarProps) {
     window.dispatchEvent(new CustomEvent('polished:menu-state', { detail: open }));
   }, [open]);
 
-  // Lock body scroll when mobile menu is open
+  // Never mutate document scrolling for the mobile menu. The fixed overlay
+  // already owns its interaction area; locking body/html can survive an HMR,
+  // interrupted animation, or route change and leave mobile users unable to
+  // scroll the page after the menu closes.
   useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => { document.body.style.overflow = prev; };
-    }
+    document.body.style.removeProperty('overflow');
+    document.documentElement.style.removeProperty('overflow');
+    return () => {
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('overflow');
+    };
   }, [open]);
 
 

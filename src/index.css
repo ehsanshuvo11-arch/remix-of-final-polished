@@ -866,7 +866,11 @@ a.story-link:hover::after {
   html,
   body {
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y pinch-zoom;
+    /* Keep document gestures fully native. Interactive horizontal regions
+       declare touch-pan-y locally, so no global gesture policy can trap or
+       cancel page scrolling on iOS/Android. */
+    touch-action: auto;
+    overscroll-behavior-y: auto;
   }
 
   /* 6. Mobile-only paint budget: retain the visual identity without keeping
