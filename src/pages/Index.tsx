@@ -13,6 +13,8 @@ const Footer = lazy(() => import('@/components/landing/Footer'));
 const Evolution = lazy(() => import('@/components/landing/Evolution'));
 const Testimonials = lazy(() => import('@/components/landing/Testimonials'));
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
+import MobileActionBar from '@/components/landing/MobileActionBar';
+
 
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
@@ -92,6 +94,8 @@ export default function Index() {
         <Contact contact={contactContent ?? null} />
         <Footer footer={footerContent ?? null} />
       </Suspense>
+      <MobileActionBar />
+
     </div>
     </SmoothScroll>
   );

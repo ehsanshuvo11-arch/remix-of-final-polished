@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
 import type { NavContent } from '@/types/database';
 import { useUILabels } from '@/hooks/use-site-content';
+import { MOBILE_MENU_EVENT } from '@/components/landing/MobileActionBar';
+
 
 interface NavbarProps {
   content?: NavContent | null;
@@ -15,8 +17,11 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 export default function Navbar({ content }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { t, lang } = useLanguage();
+  const { t, lang, toggleLanguage } = useLanguage();
   const isBn = lang === 'bn';
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 });
+
 
   useEffect(() => {
     let frame = 0;
@@ -40,6 +45,18 @@ export default function Navbar({ content }: NavbarProps) {
     };
   }, []);
 
+  // The thumb dock can toggle the same menu from the bottom of the screen.
+  useEffect(() => {
+    const toggle = () => setOpen((o) => !o);
+    window.addEventListener(MOBILE_MENU_EVENT, toggle);
+    return () => window.removeEventListener(MOBILE_MENU_EVENT, toggle);
+  }, []);
+
+  // Broadcast state so the dock icon can mirror open/close.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('polished:menu-state', { detail: open }));
+  }, [open]);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (open) {
@@ -48,6 +65,7 @@ export default function Navbar({ content }: NavbarProps) {
       return () => { document.body.style.overflow = prev; };
     }
   }, [open]);
+
 
   const linkClass = scrolled
     ? 'text-muted-foreground hover:text-accent'
@@ -84,6 +102,13 @@ export default function Navbar({ content }: NavbarProps) {
 
   return (
     <>
+      {/* Mobile reading-progress hairline — orientation without extra chrome */}
+      <m.div
+        aria-hidden
+        style={{ scaleX: progress }}
+        className="md:hidden fixed top-0 left-0 right-0 z-[130] h-[2px] origin-left bg-accent pointer-events-none"
+      />
+
       <nav
         className={`fixed top-0 left-0 right-0 ${open ? 'z-[120]' : 'z-[100]'} flex justify-between items-center transition-all duration-500 ${
           scrolled && !open
@@ -179,10 +204,12 @@ export default function Navbar({ content }: NavbarProps) {
             <div className="absolute inset-0 pointer-events-none border-t border-primary-foreground/10" />
 
 
-            <div className="relative h-full flex flex-col justify-center items-end px-7 sm:px-9 py-24 pointer-events-none">
+            {/* Bottom-anchored so every link lands inside the natural thumb arc */}
+            <div className="relative h-full flex flex-col justify-end items-end px-7 sm:px-9 pt-24 pb-[calc(env(safe-area-inset-bottom)+96px)] pointer-events-none">
               <ul
-                className="flex flex-col items-end gap-5 sm:gap-6 pointer-events-auto w-full"
+                className="flex flex-col items-end gap-4 sm:gap-5 pointer-events-auto w-full"
                 onClick={(e) => e.stopPropagation()}
+
               >
                 {navItems.map((item, i) => (
                   <m.li
@@ -229,10 +256,22 @@ export default function Navbar({ content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-14 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
+                className="mt-10 pt-6 self-end w-full flex items-center justify-between gap-4 pointer-events-auto border-t border-primary-foreground/15"
+                onClick={(e) => e.stopPropagation()}
               >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    setTimeout(() => toggleLanguage(), 320);
+                  }}
+                  className="min-h-[44px] rounded-full border border-primary-foreground/20 px-4 text-[11px] tracking-[2px] text-primary-foreground/80 transition-colors duration-300 active:bg-primary-foreground/10 active:text-accent"
+                >
+                  {isBn ? 'English' : 'বাংলা'}
+                </button>
                 <p lang="en" className="brand-wordmark text-[10.5px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
                   POLISHED<span className="text-accent">.</span> Studio
+
                 </p>
               </m.div>
             </div>
