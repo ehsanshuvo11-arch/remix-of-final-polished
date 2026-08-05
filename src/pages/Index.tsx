@@ -95,7 +95,7 @@ export default function Index() {
         <Footer footer={footerContent ?? null} />
       </Suspense>
       <MobileActionBar />
-      </Suspense>
+
     </div>
     </SmoothScroll>
   );
