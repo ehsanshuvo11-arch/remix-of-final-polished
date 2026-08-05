@@ -17,7 +17,7 @@ const LUXE = [0.22, 1, 0.36, 1] as const;
 export default function Navbar({ content }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { t, lang } = useLanguage();
+  const { t, lang, toggleLanguage } = useLanguage();
   const isBn = lang === 'bn';
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 });
