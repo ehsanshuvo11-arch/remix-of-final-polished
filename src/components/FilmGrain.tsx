@@ -1,23 +1,25 @@
 import { memo } from 'react';
-// Film grain overlay — no mix-blend, neutral opacity (deploy trigger)
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 const SVG = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='1'/></svg>`;
 const DATA_URL = `url("data:image/svg+xml;utf8,${SVG}")`;
 
 function FilmGrain() {
   const location = useLocation();
+  const isMobile = useIsMobileDevice();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
-  if (location.pathname.startsWith("/admin")) return null;
+  // Performance: SVG turbulence filters are expensive on mobile GPUs.
+  // We disable the grain overlay on mobile to ensure smooth 60fps scrolling.
+  if (isMobile || location.pathname.startsWith("/admin")) return null;
 
   return (
     <div
-      className="film-grain"
       aria-hidden="true"
       style={{
         position: "fixed",
@@ -32,5 +34,4 @@ function FilmGrain() {
   );
 }
 
-// Static/decorative — memoized so scroll & state churn never re-renders it.
 export default memo(FilmGrain);
