@@ -57,7 +57,7 @@ export default function Index() {
 
   return (
     <SmoothScroll>
-    <main className="font-body">
+    <main className="font-body overflow-y-auto">
       <PageLoader onComplete={() => setHeroReady(true)} />
       <SectionTheme />
       

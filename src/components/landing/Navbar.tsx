@@ -177,7 +177,7 @@ export default function Navbar({ content }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: LUXE }}
-            className="mobile-nav-glass md:hidden fixed inset-0 z-[105] bg-primary"
+            className="mobile-nav-glass md:hidden absolute inset-x-0 top-0 min-h-[100dvh] z-[105] bg-primary overflow-y-auto"
             onClick={() => setOpen(false)}
           >
             {/* Soft orange studio glow — top-right accent */}
