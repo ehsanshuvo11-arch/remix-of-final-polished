@@ -194,9 +194,12 @@ export default function Navbar({ content }: NavbarProps) {
             <div className="absolute inset-0 pointer-events-none border-t border-primary-foreground/10" />
 
 
-            <div className="relative h-full flex flex-col justify-center items-end px-7 sm:px-9 py-24 pointer-events-none">
+            {/* Bottom-anchored so every link lands inside the natural thumb arc */}
+            <div className="relative h-full flex flex-col justify-end items-end px-7 sm:px-9 pt-24 pb-[calc(env(safe-area-inset-bottom)+96px)] pointer-events-none">
               <ul
-                className="flex flex-col items-end gap-5 sm:gap-6 pointer-events-auto w-full"
+                className="flex flex-col items-end gap-4 sm:gap-5 pointer-events-auto w-full"
+                onClick={(e) => e.stopPropagation()}
+
                 onClick={(e) => e.stopPropagation()}
               >
                 {navItems.map((item, i) => (
