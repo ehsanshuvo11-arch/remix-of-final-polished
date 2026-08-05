@@ -7,8 +7,11 @@ type Lang = 'en' | 'bn';
 interface LanguageContextValue {
   lang: Lang;
   setLang: (lang: Lang) => void;
+  /** Curtain-drop toggle, shared by the floating button and the mobile menu. */
+  toggleLanguage: () => void;
   t: (en: string, bn: string) => string;
 }
+
 
 const LanguageContext = createContext<LanguageContextValue>({
   lang: 'en',
