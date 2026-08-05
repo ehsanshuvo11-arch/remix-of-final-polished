@@ -101,8 +101,15 @@
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
-    overflow-x: hidden;
+    /* `clip` avoids turning <body> into a scroll container (which breaks
+       touch scrolling / sticky on iOS) while still killing sideways drift. */
+    overflow-x: clip;
     -webkit-tap-highlight-color: transparent;
+  }
+  @supports not (overflow: clip) {
+    body {
+      overflow-x: hidden;
+    }
   }
   h1, h2, h3, h4 {
     font-family: 'Cormorant Garamond', serif;
