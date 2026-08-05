@@ -40,6 +40,18 @@ export default function Navbar({ content }: NavbarProps) {
     };
   }, []);
 
+  // The thumb dock can toggle the same menu from the bottom of the screen.
+  useEffect(() => {
+    const toggle = () => setOpen((o) => !o);
+    window.addEventListener(MOBILE_MENU_EVENT, toggle);
+    return () => window.removeEventListener(MOBILE_MENU_EVENT, toggle);
+  }, []);
+
+  // Broadcast state so the dock icon can mirror open/close.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('polished:menu-state', { detail: open }));
+  }, [open]);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (open) {
@@ -48,6 +60,7 @@ export default function Navbar({ content }: NavbarProps) {
       return () => { document.body.style.overflow = prev; };
     }
   }, [open]);
+
 
   const linkClass = scrolled
     ? 'text-muted-foreground hover:text-accent'
