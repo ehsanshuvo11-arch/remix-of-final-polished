@@ -208,10 +208,17 @@
     }
 
     /* ── No accidental horizontal scroll ──
+       Uses `clip` so neither <html> nor <body> becomes a nested scroll
+       container — that is what kills touch scrolling on iOS Safari.
        Intentional carousels opt out via .snap-x / [data-carousel]. */
     html, body, #root {
       max-width: 100%;
-      overflow-x: hidden;
+      overflow-x: clip;
+    }
+    @supports not (overflow: clip) {
+      html, body, #root {
+        overflow-x: hidden;
+      }
     }
     section > *:not(.snap-x):not([data-carousel]),
     main > *:not(.snap-x):not([data-carousel]) {
