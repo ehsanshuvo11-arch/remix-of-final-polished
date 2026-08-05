@@ -31,12 +31,16 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       return;
     }
 
-    // Lock body + html scroll (covers Lenis which reads from html/body).
+    const isMobile = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+    // The fixed curtain already blocks interaction on mobile. Never mutate the
+    // document roots there: interrupted WebKit animations can retain that lock
+    // and leave wheel scrolling functional while finger scrolling is frozen.
     const prevBodyOverflow = document.body.style.overflow;
     const prevHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    if (window.matchMedia('(max-width: 767px)').matches) {
+    if (!isMobile) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
       sessionStorage.setItem('polished_mobile_intro_seen', '1');
     }
     // Pause Lenis if present on window.
@@ -52,8 +56,13 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 
     return () => {
       window.clearTimeout(dismissTimer);
-      document.body.style.overflow = prevBodyOverflow;
-      document.documentElement.style.overflow = prevHtmlOverflow;
+      if (!isMobile) {
+        document.body.style.overflow = prevBodyOverflow;
+        document.documentElement.style.overflow = prevHtmlOverflow;
+      } else {
+        document.body.style.removeProperty('overflow');
+        document.documentElement.style.removeProperty('overflow');
+      }
     };
   }, [show]);
 

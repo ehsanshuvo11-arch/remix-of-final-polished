@@ -101,15 +101,14 @@
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
-    /* `clip` avoids turning <body> into a scroll container (which breaks
-       touch scrolling / sticky on iOS) while still killing sideways drift. */
-    overflow-x: clip;
     -webkit-tap-highlight-color: transparent;
   }
-  @supports not (overflow: clip) {
-    body {
-      overflow-x: hidden;
-    }
+  /* Clip wide decoration at the app boundary, never on html/body. WebKit can
+     stop routing touch gestures to the document when either root element has
+     axis-specific overflow, even though mouse-wheel scrolling still works. */
+  #root {
+    width: 100%;
+    overflow-x: clip;
   }
   h1, h2, h3, h4 {
     font-family: 'Cormorant Garamond', serif;
@@ -213,12 +212,9 @@
        Intentional carousels opt out via .snap-x / [data-carousel]. */
     html, body, #root {
       max-width: 100%;
-      overflow-x: clip;
     }
-    @supports not (overflow: clip) {
-      html, body, #root {
-        overflow-x: hidden;
-      }
+    #root {
+      overflow-x: clip;
     }
     section > *:not(.snap-x):not([data-carousel]),
     main > *:not(.snap-x):not([data-carousel]) {
@@ -866,11 +862,15 @@ a.story-link:hover::after {
   html,
   body {
     -webkit-overflow-scrolling: touch;
-    /* Keep document gestures fully native. Interactive horizontal regions
-       declare touch-pan-y locally, so no global gesture policy can trap or
-       cancel page scrolling on iOS/Android. */
-    touch-action: auto;
+    /* Explicitly reserve one-finger vertical movement for document scrolling.
+       Horizontal carousels remain native overflow regions and can still pan-x. */
+    touch-action: pan-y pinch-zoom;
     overscroll-behavior-y: auto;
+  }
+  #root,
+  main,
+  section {
+    touch-action: pan-y pinch-zoom;
   }
 
   /* 6. Mobile-only paint budget: retain the visual identity without keeping
