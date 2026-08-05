@@ -251,6 +251,7 @@ export default function Testimonials() {
             else if (power > 70) prev();
           }}
           whileTap={{ cursor: 'grabbing' }}
+          style={{ touchAction: 'pan-y' }}
            className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu touch-pan-y">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
