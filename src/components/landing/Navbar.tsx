@@ -200,7 +200,6 @@ export default function Navbar({ content }: NavbarProps) {
                 className="flex flex-col items-end gap-4 sm:gap-5 pointer-events-auto w-full"
                 onClick={(e) => e.stopPropagation()}
 
-                onClick={(e) => e.stopPropagation()}
               >
                 {navItems.map((item, i) => (
                   <m.li
