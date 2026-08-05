@@ -209,8 +209,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Floating language toggle */}
-      {!showPopup && !transitioning && (
+      {/* Floating language toggle — steps aside while the mobile menu is open */}
+      {!showPopup && !transitioning && !mobileMenuOpen && (
+
         <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
