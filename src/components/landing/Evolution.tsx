@@ -153,43 +153,28 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   }, [x, tick]);
 
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    // Touch scrolling is browser-owned. The previous touch axis-lock could
+    // misclassify a noisy first movement as horizontal, capture the pointer,
+    // and kill that finger's vertical page-scroll gesture.
+    if (e.pointerType === 'touch' || (e.pointerType === 'mouse' && e.button !== 0)) return;
     rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     gesture.current = {
       id: e.pointerId,
       startX: e.clientX,
       startY: e.clientY,
-      // Mouse and pen claim the axis instantly; touch waits so the page can
-      // still be scrolled vertically from on top of the slider.
-      locked: e.pointerType !== 'touch',
+      locked: true,
       moved: false,
     };
     setHasInteracted(true);
-    if (e.pointerType !== 'touch') {
-      containerRef.current?.setPointerCapture(e.pointerId);
-      setDragging(true);
-      const p = pctFromClientX(e.clientX);
-      if (p !== null) x.set(p);
-    }
+    containerRef.current?.setPointerCapture(e.pointerId);
+    setDragging(true);
+    const p = pctFromClientX(e.clientX);
+    if (p !== null) x.set(p);
   }, [pctFromClientX, x]);
 
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     const g = gesture.current;
     if (g.id !== e.pointerId) return;
-
-    if (!g.locked) {
-      const dx = Math.abs(e.clientX - g.startX);
-      const dy = Math.abs(e.clientY - g.startY);
-      if (dx < 6 && dy < 6) return;
-      // Vertical intent wins — hand the gesture back to the browser.
-      if (dy > dx) {
-        gesture.current.id = -1;
-        return;
-      }
-      g.locked = true;
-      containerRef.current?.setPointerCapture(e.pointerId);
-      setDragging(true);
-    }
 
     if (Math.abs(e.clientX - g.startX) > 3) g.moved = true;
     const p = pctFromClientX(e.clientX);

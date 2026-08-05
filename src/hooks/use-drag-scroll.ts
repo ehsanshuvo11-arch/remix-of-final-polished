@@ -16,6 +16,17 @@ export function useDragScroll(ref: RefObject<HTMLElement>, enabled = true) {
     const el = ref.current;
     if (!el || !enabled) return;
 
+    // This hook exists only for desktop mouse/trackpad enhancement. Previously
+    // it still registered non-passive pointermove and wheel listeners on every
+    // mobile carousel, then tried to ignore touch inside the callbacks. Mobile
+    // Safari performs gesture arbitration when listeners are registered, before
+    // those callbacks return, so the desktop handlers could still swallow the
+    // document's vertical pan. Native overflow + scroll-snap owns touch input.
+    const touchDevice =
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (touchDevice) return;
+
     const scrollable = () => el.scrollWidth - el.clientWidth > 4;
 
     // ── Pointer drag ──────────────────────────────────────────────
