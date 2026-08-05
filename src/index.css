@@ -836,11 +836,11 @@ a.story-link:hover::after {
     padding-right: 0.15rem;
   }
 
-  /* 5. Buttery scroll: momentum + no rubber-band chaining */
+  /* 5. Native momentum scrolling, nothing hijacked */
   html,
   body {
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: none;
+    touch-action: pan-y pinch-zoom;
   }
 
   /* 6. Glass nav overlay is the ONE place blur is worth its cost —
