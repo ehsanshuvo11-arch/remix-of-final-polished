@@ -256,10 +256,22 @@ export default function Navbar({ content }: NavbarProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: LUXE }}
-                className="mt-14 pt-8 self-end w-full text-right pointer-events-none border-t border-primary-foreground/15"
+                className="mt-10 pt-6 self-end w-full flex items-center justify-between gap-4 pointer-events-auto border-t border-primary-foreground/15"
+                onClick={(e) => e.stopPropagation()}
               >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    setTimeout(() => toggleLanguage(), 320);
+                  }}
+                  className="min-h-[44px] rounded-full border border-primary-foreground/20 px-4 text-[11px] tracking-[2px] text-primary-foreground/80 transition-colors duration-300 active:bg-primary-foreground/10 active:text-accent"
+                >
+                  {isBn ? 'English' : 'বাংলা'}
+                </button>
                 <p lang="en" className="brand-wordmark text-[10.5px] tracking-[3px] uppercase text-primary-foreground/45" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '3px' }}>
                   POLISHED<span className="text-accent">.</span> Studio
+
                 </p>
               </m.div>
             </div>
