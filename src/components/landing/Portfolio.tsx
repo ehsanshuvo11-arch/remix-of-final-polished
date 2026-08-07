@@ -223,7 +223,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       )}
 
       {/* Controls — ALWAYS visible */}
-      <div className="mt-3 px-1 flex flex-wrap items-center gap-4">
+      <div className="mt-3 px-1 flex flex-wrap justify-center md:justify-start items-center gap-4">
         <button
           onClick={toggleImageExpand}
           lang={isBn ? 'bn' : 'en'}
