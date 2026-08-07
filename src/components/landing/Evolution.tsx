@@ -241,9 +241,9 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   };
 
   const views: { value: number; label: string }[] = [
-    { value: 0, label: afterLabel },
+    { value: 0, label: beforeLabel },
     { value: 50, label: '50 / 50' },
-    { value: 100, label: beforeLabel },
+    { value: 100, label: afterLabel },
   ];
 
   return (
