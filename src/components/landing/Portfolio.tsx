@@ -149,7 +149,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   }, []);
 
   return (
-    <MotionReveal delay={0.12 * index} className={`min-w-[100vw] max-w-[100vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
+    <MotionReveal delay={0.12 * index} className={`min-w-[95vw] max-w-[95vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
     <div
       data-project-card={isFirst ? '' : undefined}
       className={imageExpanded ? 'relative overflow-visible' : 'relative'}
@@ -159,7 +159,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       <div
         ref={cardRef}
         className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] w-full h-auto md:h-[260px]'
+          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] w-[100vw] left-1/2 -translate-x-1/2 md:w-full md:left-auto md:translate-x-0 h-auto md:h-[260px]'
         }`}
 
         onClick={() => {
