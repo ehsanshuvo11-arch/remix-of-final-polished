@@ -89,7 +89,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             ref={trackRef}
-             className="flex items-start w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab touch-auto -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:flex-col md:items-stretch md:gap-24 md:mt-14 md:overflow-visible"
+            className="flex flex-col w-full max-w-full mt-10 md:items-stretch md:gap-24"
           >
             {displayProjects.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
@@ -149,7 +149,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   }, []);
 
   return (
-    <MotionReveal delay={0.12 * index} className={`min-w-[95vw] max-w-[95vw] shrink-0 snap-center md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
+    <MotionReveal delay={0.12 * index} className={`w-full mb-16 md:mb-0 md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
     <div
       data-project-card={isFirst ? '' : undefined}
       className={imageExpanded ? 'relative overflow-visible' : 'relative'}
@@ -159,7 +159,7 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
       <div
         ref={cardRef}
         className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] w-[100vw] left-1/2 -translate-x-1/2 md:w-full md:left-auto md:translate-x-0 h-auto md:h-[260px]'
+          imageExpanded ? 'h-auto' : 'aspect-[16/9] sm:aspect-[21/9] w-full md:w-full md:left-auto md:translate-x-0 h-auto md:h-[260px]'
         }`}
 
         onClick={() => {
