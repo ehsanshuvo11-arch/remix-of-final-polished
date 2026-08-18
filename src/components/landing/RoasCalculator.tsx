@@ -237,7 +237,7 @@ export default function RoasCalculator() {
 
             <a
               href="#contact"
-              className="group mt-10 inline-flex min-h-[56px] w-full items-center justify-center gap-3 rounded-full bg-[#fb923c] px-8 font-body text-sm font-medium tracking-wide text-[#1e3a8a] shadow-[0_18px_40px_-14px_rgba(251,146,60,0.85)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] hover:bg-[#f97316] hover:shadow-[0_26px_55px_-14px_rgba(249,115,22,0.8)] md:text-base"
+              className="group mt-10 inline-flex min-h-[56px] w-full items-center justify-center gap-3 rounded-full bg-[#f9fafb] px-8 font-body text-sm font-medium tracking-wide text-[#1e3a8a] shadow-[0_18px_40px_-14px_rgba(249,115,22,0.35)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] hover:bg-white hover:shadow-[0_26px_55px_-14px_rgba(249,115,22,0.5)] md:text-base"
             >
               Stop Losing Money. Upgrade Your Brand
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
