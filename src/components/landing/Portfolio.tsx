@@ -565,27 +565,15 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             if (Math.abs(i - current) > 1) return null;
             const isCurrent = i === current;
             return (
-              <img
-                key={url + i}
-                src={url}
-                srcSet={buildSrcSet(url)}
-                sizes="(max-width: 767px) 96vw, 1080px"
-                alt={`${title} mockup ${i + 1}`}
-                onLoad={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
-                onError={() => setLoaded((p) => (p[i] ? p : { ...p, [i]: true }))}
-                loading={isCurrent ? 'eager' : 'lazy'}
-                fetchPriority={isCurrent ? 'high' : 'low'}
-                decoding="async"
-                className="absolute inset-0 z-10 w-full h-full object-contain transform-gpu"
-                style={{
-                  opacity: isCurrent && loaded[i] ? 1 : 0,
-                  pointerEvents: isCurrent ? 'auto' : 'none',
-                  transition: 'opacity 0.5s ease-out',
-                  backgroundColor: 'transparent',
-                }}
-                onClick={(e) => e.stopPropagation()}
-                draggable={false}
-              />
+            <img
+              key={url + i}
+              src={url}
+              alt={`Project Mockup ${i + 1}`}
+              className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
+                isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
+              }`}
+              onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+            />
             );
           })}
         </div>
