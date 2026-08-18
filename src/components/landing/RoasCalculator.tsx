@@ -226,8 +226,7 @@ export default function RoasCalculator() {
                 initial={{ opacity: 0.65 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                className="mt-3 text-[clamp(2.75rem,9vw,5rem)] font-bold leading-[0.95] text-[#fb923c]"
+                className="mt-3 font-heading text-[clamp(2.75rem,9vw,5rem)] font-bold leading-[0.95] text-[#fb923c]"
               >
                 {bdt(animLeak)}
               </m.p>
