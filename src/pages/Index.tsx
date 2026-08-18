@@ -90,6 +90,8 @@ export default function Index() {
         <SectionDivider className="py-4" />
         <Testimonials />
         <SectionDivider className="py-4" />
+        <RoasCalculator />
+        <SectionDivider className="py-4" />
         <Pricing />
         <Contact contact={contactContent ?? null} />
         <Footer footer={footerContent ?? null} />
