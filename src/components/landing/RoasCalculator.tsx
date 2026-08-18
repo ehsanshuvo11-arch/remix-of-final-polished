@@ -148,9 +148,9 @@ export default function RoasCalculator() {
         </div>
 
         {/* Body */}
-        <div className="mt-12 grid gap-10 md:mt-20 md:grid-cols-[1.05fr_1fr] md:gap-16">
+        <div className="mt-12 grid overflow-hidden rounded-3xl border border-[#1e3a8a]/10 bg-[#f9fafb] shadow-[0_40px_90px_-50px_rgba(30,58,138,0.45)] md:mt-20 md:grid-cols-2">
           {/* Inputs */}
-          <div className="space-y-8 rounded-2xl bg-white/70 p-5 shadow-[0_18px_50px_-30px_rgba(30,58,138,0.35)] md:p-8">
+          <div className="space-y-8 border-b border-[#1e3a8a]/10 p-6 md:border-b-0 md:border-r md:p-12">
             <Field
               label="Monthly Ad Spend"
               icon={<Wallet className="h-4 w-4" />}
