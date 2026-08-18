@@ -20,6 +20,7 @@ import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
 import SectionDivider from '@/components/landing/SectionDivider';
 const Transformations = lazy(() => import('@/components/landing/Transformations'));
+const RoasCalculator = lazy(() => import('@/components/landing/RoasCalculator'));
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
 import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent } from '@/types/database';
@@ -89,6 +90,8 @@ export default function Index() {
         <Process steps={processSteps} content={processMeta ?? null} />
         <SectionDivider className="py-4" />
         <Testimonials />
+        <SectionDivider className="py-4" />
+        <RoasCalculator />
         <SectionDivider className="py-4" />
         <Pricing />
         <Contact contact={contactContent ?? null} />
