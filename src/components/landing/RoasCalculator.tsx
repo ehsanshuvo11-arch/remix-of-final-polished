@@ -148,9 +148,9 @@ export default function RoasCalculator() {
         </div>
 
         {/* Body */}
-        <div className="mt-12 grid gap-10 md:mt-20 md:grid-cols-[1.05fr_1fr] md:gap-16">
+        <div className="mt-12 grid overflow-hidden rounded-3xl border border-[#1e3a8a]/10 bg-[#f9fafb] shadow-[0_40px_90px_-50px_rgba(30,58,138,0.45)] md:mt-20 md:grid-cols-2">
           {/* Inputs */}
-          <div className="space-y-8 rounded-2xl bg-white/70 p-5 shadow-[0_18px_50px_-30px_rgba(30,58,138,0.35)] md:p-8">
+          <div className="space-y-8 border-b border-[#1e3a8a]/10 p-6 md:border-b-0 md:border-r md:p-12">
             <Field
               label="Monthly Ad Spend"
               icon={<Wallet className="h-4 w-4" />}
@@ -194,30 +194,30 @@ export default function RoasCalculator() {
           </div>
 
           {/* Results */}
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center bg-[#1e3a8a] p-6 md:p-12">
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <p className="font-body text-[0.7rem] uppercase tracking-[0.2em] text-[#1e3a8a]/45">
+                <p className="font-body text-[0.7rem] uppercase tracking-[0.2em] text-[#f9fafb]/50">
                   Current Revenue
                 </p>
-                <p className="mt-2 font-heading text-2xl text-[#1e3a8a] md:text-3xl">
+                <p className="mt-2 font-heading text-2xl text-[#f9fafb] md:text-3xl">
                   {bdt(animCurrent)}
                 </p>
               </div>
               <div>
-                <p className="font-body text-[0.7rem] uppercase tracking-[0.2em] text-[#1e3a8a]/45">
+                <p className="font-body text-[0.7rem] uppercase tracking-[0.2em] text-[#fb923c]/80">
                   With POLISHED
                 </p>
-                <p className="mt-2 font-heading text-2xl text-[#1e3a8a] md:text-3xl">
+                <p className="mt-2 font-heading text-2xl text-[#f9fafb] md:text-3xl">
                   {bdt(animProjected)}
                 </p>
               </div>
             </div>
 
-            <div className="my-8 h-px w-full bg-[#1e3a8a]/10" />
+            <div className="my-8 h-px w-full bg-[#f9fafb]/15" />
 
             <div>
-              <p className="flex items-center gap-2 font-body text-[0.7rem] uppercase tracking-[0.25em] text-[#1e3a8a]/45">
+              <p className="flex items-center gap-2 font-body text-[0.7rem] uppercase tracking-[0.25em] text-[#f9fafb]/50">
                 <TrendingUp className="h-4 w-4 text-[#fb923c]" />
                 Revenue left on the table / month
               </p>
@@ -226,18 +226,18 @@ export default function RoasCalculator() {
                 initial={{ opacity: 0.65 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-3 font-heading text-[clamp(2.75rem,11vw,5.5rem)] font-bold leading-[0.95] text-[#fb923c]"
+                className="mt-3 font-heading text-[clamp(2.75rem,9vw,5rem)] font-bold leading-[0.95] text-[#fb923c]"
               >
                 {bdt(animLeak)}
               </m.p>
-              <p className="mt-4 font-body text-xs leading-relaxed text-[#1e3a8a]/50 md:text-sm">
+              <p className="mt-4 font-body text-xs leading-relaxed text-[#f9fafb]/45 md:text-sm">
                 Based on a conservative +{UPLIFT_PP}% conversion lift from premium visual trust.
               </p>
             </div>
 
             <a
               href="#contact"
-              className="group mt-10 inline-flex min-h-[56px] w-full items-center justify-center gap-3 rounded-full bg-[#fb923c] px-8 font-body text-sm font-medium tracking-wide text-white shadow-[0_12px_30px_-12px_rgba(251,146,60,0.7)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] hover:bg-[#f97316] hover:shadow-[0_20px_45px_-12px_rgba(249,115,22,0.65)] md:text-base"
+              className="group mt-10 inline-flex min-h-[56px] w-full items-center justify-center gap-3 rounded-full bg-[#fb923c] px-8 font-body text-sm font-medium tracking-wide text-[#1e3a8a] shadow-[0_18px_40px_-14px_rgba(251,146,60,0.85)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] hover:bg-[#f97316] hover:shadow-[0_26px_55px_-14px_rgba(249,115,22,0.8)] md:text-base"
             >
               Stop Losing Money. Upgrade Your Brand
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
