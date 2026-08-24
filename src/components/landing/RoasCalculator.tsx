@@ -4,6 +4,9 @@ export default function RoasCalculator() {
   const [isBn, setIsBn] = useState(false);
 
   useEffect(() => {
+    // 🕵️‍♂️ Tracker to verify if the new code is actually running on the live site
+    console.log("🔥 POLISHED Calculator v2.1 loaded successfully!");
+
     const currentLang = document.documentElement.lang;
     setIsBn(currentLang === 'bn' || currentLang === 'bn-BD');
 
@@ -72,7 +75,7 @@ export default function RoasCalculator() {
   const fontBody = isBn ? '"Noto Serif Bengali", sans-serif' : 'inherit';
 
   return (
-    <section className="py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden">
+    <section className="py-28 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden">
       
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#fb923c] opacity-[0.03] rounded-bl-full pointer-events-none"></div>
 
@@ -262,4 +265,4 @@ export default function RoasCalculator() {
       </div>
     </section>
   );
-}   
+}
