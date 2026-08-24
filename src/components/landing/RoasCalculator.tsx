@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 export default function RoasCalculator() {
-  // ১০০% গ্যারান্টেড ল্যাঙ্গুয়েজ ডিটেকশন (MutationObserver দিয়ে)
   const [isBn, setIsBn] = useState(false);
 
   useEffect(() => {
-    // Initial check
     const currentLang = document.documentElement.lang;
     setIsBn(currentLang === 'bn' || currentLang === 'bn-BD');
 
-    // Watch for language changes from the toggle button
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'lang') {
@@ -40,7 +37,6 @@ export default function RoasCalculator() {
     const traffic = adSpend / (cpc || 1);
     const current = traffic * (conversionRate / 100) * aov;
     
-    // Assuming a conservative +1.5% CR boost with premium design
     const projectedCR = conversionRate + 1.5;
     const projected = traffic * (projectedCR / 100) * aov;
     
@@ -56,18 +52,18 @@ export default function RoasCalculator() {
     return `${formatted}`; 
   };
 
-  // 🌍 Translation Dictionary (Strictly Formal Bengali)
+  // 🌍 Translation Dictionary (Premium "Quiet Luxury" Bengali)
   const t = {
     subtitle: isBn ? "রেভিনিউ ডায়াগনস্টিক" : "Revenue Diagnostic",
-    desc: isBn ? "অ্যাভারেজ ভিজ্যুয়ালের কারণে প্রতি মাসে আপনি ঠিক কত টাকা হারাচ্ছেন, তা হিসাব করুন।" : "Calculate exactly how much revenue you are leaving on the table every month due to average visuals.",
-    adSpend: isBn ? "মাসিক অ্যাড স্পেন্ড" : "Monthly Ad Spend",
-    cpc: isBn ? "প্রতি ক্লিকের গড় খরচ" : "Avg. Cost Per Click",
-    cr: isBn ? "কনভার্শন রেট" : "Conversion Rate",
-    aov: isBn ? "গড় অর্ডারের মূল্য" : "Avg. Order Value",
-    currentRev: isBn ? "বর্তমান রেভিনিউ" : "Current Revenue",
-    withPolished: isBn ? "POLISHED এর সাথে (+১.৫%)" : "With POLISHED (+1.5%)",
-    lostRev: isBn ? "প্রতি মাসে আপনার হারানো রেভিনিউ" : "Revenue Left On The Table",
-    disclaimer: isBn ? "*প্রিমিয়াম ভিজ্যুয়াল ট্রাস্ট এবং স্ট্র্যাটেজির কারণে ন্যূনতম ১.৫% কনভার্শন বৃদ্ধির ওপর ভিত্তি করে।" : "*Based on a conservative 1.5% conversion lift from premium visual trust & strategy.",
+    desc: isBn ? "গড়পড়তা ভিজ্যুয়ালের কারণে প্রতি মাসে আপনি ঠিক কত টাকার সম্ভাব্য রেভিনিউ হারাচ্ছেন, তা নিখুঁতভাবে হিসাব করুন।" : "Calculate exactly how much revenue you are leaving on the table every month due to average visuals.",
+    adSpend: isBn ? "মাসিক অ্যাড বাজেট" : "Monthly Ad Spend",
+    cpc: isBn ? "ক্লিক-প্রতি গড় খরচ (CPC)" : "Avg. Cost Per Click (CPC)",
+    cr: isBn ? "বর্তমান কনভার্শন রেট" : "Current Conversion Rate",
+    aov: isBn ? "গড় অর্ডার ভ্যালু (AOV)" : "Average Order Value",
+    currentRev: isBn ? "আপনার বর্তমান রেভিনিউ" : "Current Revenue",
+    withPolished: isBn ? "POLISHED-এর সাথে (+১.৫%)" : "With POLISHED (+1.5%)",
+    lostRev: isBn ? "প্রতি মাসে যে পরিমাণ রেভিনিউ আপনি হারাচ্ছেন" : "Revenue Left On The Table",
+    disclaimer: isBn ? "*প্রিমিয়াম ভিজ্যুয়াল ট্রাস্ট এবং স্ট্র্যাটেজির কারণে ন্যূনতম ১.৫% কনভার্শন বৃদ্ধির ওপর ভিত্তি করে হিসাবটি করা হয়েছে।" : "*Based on a conservative 1.5% conversion lift from premium visual trust & strategy.",
     btn: isBn ? "লোকসান বন্ধ করুন" : "Stop Losing Money",
     currency: isBn ? "টাকা" : "BDT"
   };
@@ -78,7 +74,6 @@ export default function RoasCalculator() {
   return (
     <section className="py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden">
       
-      {/* Subtle Orange Accent Graphic in Background */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#fb923c] opacity-[0.03] rounded-bl-full pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto px-6 md:px-14 relative z-10">
@@ -90,7 +85,7 @@ export default function RoasCalculator() {
           </span>
           <h2 className="text-[#1e3a8a] text-4xl md:text-5xl font-medium mb-6 leading-tight" style={{ fontFamily: fontPrimary }}>
             {isBn ? (
-              <>গড়পড়তা ডিজাইন কি আপনার অ্যাড বাজেট <span className="text-[#fb923c] font-bold">নষ্ট</span> করছে?</>
+              <>সাধারণ ভিজ্যুয়াল কি আপনার অ্যাড বাজেট <span className="text-[#fb923c] font-bold">নষ্ট</span> করছে?</>
             ) : (
               <>Is Poor Design <span className="text-[#fb923c] font-bold">Bleeding</span> Your Ad Budget?</>
             )}
@@ -117,9 +112,10 @@ export default function RoasCalculator() {
                   <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
                     <input 
                       type="number" 
+                      lang={isBn ? "bn" : "en"}
                       value={adSpend}
                       onChange={(e) => setAdSpend(Number(e.target.value))}
-                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
                       style={{ fontFamily: fontPrimary }}
                     />
                     <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">{t.currency}</span>
@@ -144,9 +140,10 @@ export default function RoasCalculator() {
                   <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
                     <input 
                       type="number" 
+                      lang={isBn ? "bn" : "en"}
                       value={cpc}
                       onChange={(e) => setCpc(Number(e.target.value))}
-                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
                       style={{ fontFamily: fontPrimary }}
                     />
                     <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">{t.currency}</span>
@@ -171,9 +168,10 @@ export default function RoasCalculator() {
                   <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
                     <input 
                       type="number" 
+                      lang={isBn ? "bn" : "en"}
                       value={conversionRate}
                       onChange={(e) => setConversionRate(Number(e.target.value))}
-                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
                       style={{ fontFamily: fontPrimary }}
                     />
                     <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">%</span>
@@ -198,9 +196,10 @@ export default function RoasCalculator() {
                   <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
                     <input 
                       type="number" 
+                      lang={isBn ? "bn" : "en"}
                       value={aov}
                       onChange={(e) => setAov(Number(e.target.value))}
-                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
                       style={{ fontFamily: fontPrimary }}
                     />
                     <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">{t.currency}</span>
@@ -221,7 +220,6 @@ export default function RoasCalculator() {
           {/* RIGHT COLUMN: RESULTS */}
           <div className="w-full lg:w-1/2 p-10 md:p-14 bg-[#1e3a8a] text-[#f9fafb] flex flex-col justify-between relative overflow-hidden">
             
-            {/* Subtle Right Column Accent */}
             <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#fb923c] opacity-[0.05] rounded-tl-full pointer-events-none"></div>
 
             <div className="mb-12 border-b border-white/10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
