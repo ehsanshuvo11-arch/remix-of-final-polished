@@ -30,48 +30,44 @@ export default function RoasCalculator() {
   };
 
   return (
-    <section className="py-32 relative bg-[#f9fafb] overflow-hidden">
-      {/* Subtle Background Glow for Premium Depth */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1e3a8a]/5 to-transparent blur-3xl"></div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 md:px-14 relative z-10">
+    <section className="py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10">
+      <div className="max-w-6xl mx-auto px-6 md:px-14">
         
         {/* Header Section */}
-        <div className="text-center mb-20">
-          <span className="text-[#fb923c] text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
+        <div className="text-center mb-16">
+          <span className="text-[#fb923c] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block">
             Revenue Diagnostic
           </span>
-          <h2 className="text-[#1e3a8a] text-5xl md:text-6xl font-bold mb-6" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
+          <h2 className="text-[#1e3a8a] text-4xl md:text-5xl font-medium mb-6" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
             Is Poor Design Bleeding Your Ad Budget?
           </h2>
-          <p className="text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-[#1e3a8a]/70 text-base max-w-2xl mx-auto font-light">
             Calculate exactly how much revenue you are leaving on the table every month due to average visuals.
           </p>
         </div>
 
-        {/* The Main Calculator Card */}
-        <div className="flex flex-col lg:flex-row rounded-[2rem] overflow-hidden shadow-[0_30px_100px_-20px_rgba(30,58,138,0.15)] bg-white border border-white/50 backdrop-blur-xl">
+        {/* Quiet Luxury Calculator Layout */}
+        <div className="flex flex-col lg:flex-row shadow-sm border border-[#1e3a8a]/10">
           
-          {/* LEFT COLUMN: INPUTS */}
-          <div className="w-full lg:w-7/12 p-10 md:p-14 bg-white/60">
+          {/* LEFT COLUMN: INPUTS (Off-white - 40%) */}
+          <div className="w-full lg:w-1/2 p-10 md:p-14 bg-[#f9fafb]">
             <div className="space-y-12">
               
               {/* Input 1 */}
-              <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] font-bold text-xs uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
+              <div>
+                <div className="flex justify-between items-end mb-2">
+                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold">
                     Monthly Ad Spend
                   </label>
-                  <div className="flex items-center gap-2 border-b-2 border-gray-100 group-hover:border-[#fb923c] transition-colors pb-1">
+                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 pb-1">
                     <input 
                       type="number" 
                       value={adSpend}
                       onChange={(e) => setAdSpend(Number(e.target.value))}
-                      className="w-32 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
+                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      style={{ fontFamily: '"Cormorant Garamond", serif' }}
                     />
-                    <span className="text-gray-400 text-xs font-bold tracking-wider">BDT</span>
+                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">BDT</span>
                   </div>
                 </div>
                 <input 
@@ -79,24 +75,25 @@ export default function RoasCalculator() {
                   min="50000" max="5000000" step="10000"
                   value={adSpend} 
                   onChange={(e) => setAdSpend(Number(e.target.value))}
-                  className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#fb923c] hover:h-2 transition-all"
+                  className="w-full h-[2px] bg-gray-200 appearance-none cursor-pointer accent-[#1e3a8a]"
                 />
               </div>
 
               {/* Input 2 */}
-              <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] font-bold text-xs uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
-                    Avg. Cost Per Click (CPC)
+              <div>
+                <div className="flex justify-between items-end mb-2">
+                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold">
+                    Avg. Cost Per Click
                   </label>
-                  <div className="flex items-center gap-2 border-b-2 border-gray-100 group-hover:border-[#fb923c] transition-colors pb-1">
+                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 pb-1">
                     <input 
                       type="number" 
                       value={cpc}
                       onChange={(e) => setCpc(Number(e.target.value))}
-                      className="w-24 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
+                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      style={{ fontFamily: '"Cormorant Garamond", serif' }}
                     />
-                    <span className="text-gray-400 text-xs font-bold tracking-wider">BDT</span>
+                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">BDT</span>
                   </div>
                 </div>
                 <input 
@@ -104,24 +101,25 @@ export default function RoasCalculator() {
                   min="2" max="200" step="1"
                   value={cpc} 
                   onChange={(e) => setCpc(Number(e.target.value))}
-                  className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#fb923c] hover:h-2 transition-all"
+                  className="w-full h-[2px] bg-gray-200 appearance-none cursor-pointer accent-[#1e3a8a]"
                 />
               </div>
 
               {/* Input 3 */}
-              <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] font-bold text-xs uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
-                    Current Conversion Rate
+              <div>
+                <div className="flex justify-between items-end mb-2">
+                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold">
+                    Conversion Rate
                   </label>
-                  <div className="flex items-center gap-2 border-b-2 border-gray-100 group-hover:border-[#fb923c] transition-colors pb-1">
+                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 pb-1">
                     <input 
                       type="number" 
                       value={conversionRate}
                       onChange={(e) => setConversionRate(Number(e.target.value))}
-                      className="w-24 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
+                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      style={{ fontFamily: '"Cormorant Garamond", serif' }}
                     />
-                    <span className="text-gray-400 text-xs font-bold tracking-wider">%</span>
+                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">%</span>
                   </div>
                 </div>
                 <input 
@@ -129,24 +127,25 @@ export default function RoasCalculator() {
                   min="0.1" max="10" step="0.1"
                   value={conversionRate} 
                   onChange={(e) => setConversionRate(Number(e.target.value))}
-                  className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#fb923c] hover:h-2 transition-all"
+                  className="w-full h-[2px] bg-gray-200 appearance-none cursor-pointer accent-[#1e3a8a]"
                 />
               </div>
 
               {/* Input 4 */}
-              <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] font-bold text-xs uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
-                    Average Order Value
+              <div>
+                <div className="flex justify-between items-end mb-2">
+                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold">
+                    Avg. Order Value
                   </label>
-                  <div className="flex items-center gap-2 border-b-2 border-gray-100 group-hover:border-[#fb923c] transition-colors pb-1">
+                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 pb-1">
                     <input 
                       type="number" 
                       value={aov}
                       onChange={(e) => setAov(Number(e.target.value))}
-                      className="w-32 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
+                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-medium text-lg"
+                      style={{ fontFamily: '"Cormorant Garamond", serif' }}
                     />
-                    <span className="text-gray-400 text-xs font-bold tracking-wider">BDT</span>
+                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">BDT</span>
                   </div>
                 </div>
                 <input 
@@ -154,54 +153,49 @@ export default function RoasCalculator() {
                   min="500" max="15000" step="100"
                   value={aov} 
                   onChange={(e) => setAov(Number(e.target.value))}
-                  className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#fb923c] hover:h-2 transition-all"
+                  className="w-full h-[2px] bg-gray-200 appearance-none cursor-pointer accent-[#1e3a8a]"
                 />
               </div>
 
             </div>
           </div>
 
-          {/* RIGHT COLUMN: RESULTS */}
-          <div className="w-full lg:w-5/12 p-10 md:p-14 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#2749a3] via-[#1e3a8a] to-[#0f2156] text-[#f9fafb] flex flex-col justify-center relative overflow-hidden">
+          {/* RIGHT COLUMN: RESULTS (Navy-blue - 60%) */}
+          <div className="w-full lg:w-1/2 p-10 md:p-14 bg-[#1e3a8a] text-[#f9fafb] flex flex-col justify-between">
             
-            {/* Decorative Glow */}
-            <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#fb923c] rounded-full mix-blend-screen filter blur-[100px] opacity-10"></div>
-            
-            <div className="relative z-10">
-              <div className="mb-10 pb-10 border-b border-white/10 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <p className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-2">Current Revenue</p>
-                  <p className="text-2xl font-medium tracking-tight" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
-                    {formatCurrency(currentRevenue)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-white/50 text-[10px] font-bold uppercase tracking-widest mb-2">With POLISHED (+1.5%)</p>
-                  <p className="text-2xl font-bold text-[#fb923c] tracking-tight drop-shadow-md" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
-                    {formatCurrency(projectedRevenue)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mb-12">
-                <p className="text-[#fb923c] text-[10px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#fb923c] animate-pulse"></span>
-                  Revenue Left On The Table
-                </p>
-                <h3 className="text-6xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg leading-none" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
-                  {formatCurrency(revenueLost)}
-                </h3>
-                <p className="text-white/40 text-xs italic font-light">
-                  *Based on a highly conservative 1.5% conversion lift from premium visual trust & strategy.
+            <div className="mb-12 border-b border-white/20 pb-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <p className="text-white/60 text-[10px] font-semibold uppercase tracking-widest mb-3">Current Revenue</p>
+                <p className="text-3xl font-medium tracking-tight" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
+                  {formatCurrency(currentRevenue)}
                 </p>
               </div>
-
-              <button className="w-full bg-[#fb923c] hover:bg-white hover:text-[#1e3a8a] text-white py-5 px-8 rounded-xl font-bold text-xs uppercase tracking-widest transition-all duration-500 flex items-center justify-center gap-3 shadow-[0_10px_40px_-10px_rgb(251,146,60,0.6)] hover:shadow-[0_20px_40px_-10px_rgb(255,255,255,0.4)] hover:-translate-y-1">
-                Stop Losing Money
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </button>
+              <div>
+                <p className="text-white/60 text-[10px] font-semibold uppercase tracking-widest mb-3">With POLISHED (+1.5%)</p>
+                <p className="text-3xl font-medium tracking-tight text-[#fb923c]" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
+                  {formatCurrency(projectedRevenue)}
+                </p>
+              </div>
             </div>
 
+            <div className="mb-12">
+              <p className="text-[#fb923c] text-[10px] font-semibold uppercase tracking-[0.2em] mb-4">
+                Revenue Left On The Table / Month
+              </p>
+              <h3 className="text-5xl md:text-6xl font-normal text-white mb-6 leading-tight" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
+                {formatCurrency(revenueLost)}
+              </h3>
+              <p className="text-white/50 text-xs italic font-light" style={{ fontFamily: '"Cormorant Garamond", serif' }}>
+                *Based on a conservative 1.5% conversion lift from premium visual trust & strategy.
+              </p>
+            </div>
+
+            {/* Accent Color - 10% */}
+            <button className="w-full bg-[#fb923c] hover:bg-[#e8812c] text-white py-5 px-8 font-semibold text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center justify-center gap-3">
+              Stop Losing Money
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            
           </div>
         </div>
       </div>
