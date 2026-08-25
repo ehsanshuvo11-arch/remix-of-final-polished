@@ -262,11 +262,23 @@ export default function RoasCalculator() {
             </div>
 
             {/* Accent Color Button */}
-            <button className="w-full bg-[#fb923c] hover:bg-[#e8812c] text-white py-5 px-8 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center justify-center gap-3 relative z-10 shadow-[0_4px_20px_rgba(251,146,60,0.3)] hover:shadow-[0_8px_30px_rgba(251,146,60,0.5)] border border-[#fb923c]/50" style={{ fontFamily: fontBody }}>
+            {/* Accent Color Button with Smooth Scroll */}
+            <button 
+              onClick={() => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  // Fallback: If contact section is not found, scroll to bottom
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }
+              }}
+              className="w-full bg-[#fb923c] hover:bg-[#e8812c] text-white py-5 px-8 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center justify-center gap-3 relative z-10 shadow-[0_4px_20px_rgba(251,146,60,0.3)] hover:shadow-[0_8px_30px_rgba(251,146,60,0.5)] border border-[#fb923c]/50 cursor-pointer" 
+              style={{ fontFamily: fontBody }}
+            >
               {t.btn}
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
-            
           </div>
         </div>
       </div>
