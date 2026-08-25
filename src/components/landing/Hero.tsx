@@ -118,15 +118,15 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both, heroLogoBreath 9s ease-in-out 1.4s infinite',
           }}
         />
-
-        <p
-          lang="en"
-          className="font-sans-eyebrow text-[8px] tracking-[0.35em] indent-[0.35em] text-accent mt-4 mb-8 md:mt-0 md:text-[11px] md:tracking-[4px] md:indent-[4px] md:mb-5 uppercase font-normal"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: "'Inter', sans-serif" }}
-        >
-          {hero.eyebrowEn}
-        </p>
-
+       <div className="w-full flex justify-center mt-4 mb-8 md:mt-0 md:mb-5">
+          <p
+            lang="en"
+            className="font-sans-eyebrow text-[8px] tracking-[0.35em] -mr-[0.35em] text-accent md:text-[11px] md:tracking-[4px] md:-mr-[4px] uppercase font-normal"
+            style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: '"Inter", sans-serif' }}
+          >
+            {hero.eyebrowEn}
+          </p>
+        </div>
         {(() => {
           const BASE = 0.4;
           const STAGGER = 0.15;
