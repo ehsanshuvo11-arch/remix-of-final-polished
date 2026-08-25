@@ -5,7 +5,7 @@ export default function RoasCalculator() {
 
   useEffect(() => {
     // 🕵️‍♂️ Tracker to verify if the new code is actually running on the live site
-    console.log("🔥 POLISHED Calculator v2.1 loaded successfully!");
+    console.log("🔥 POLISHED Calculator v2.2 (Realistic 0.5% Lift) loaded successfully!");
 
     const currentLang = document.documentElement.lang;
     setIsBn(currentLang === 'bn' || currentLang === 'bn-BD');
@@ -40,7 +40,8 @@ export default function RoasCalculator() {
     const traffic = adSpend / (cpc || 1);
     const current = traffic * (conversionRate / 100) * aov;
     
-    const projectedCR = conversionRate + 1.5;
+    // Adjusted to a highly realistic and achievable +0.5% CR boost
+    const projectedCR = conversionRate + 0.5;
     const projected = traffic * (projectedCR / 100) * aov;
     
     setCurrentRevenue(current);
@@ -64,9 +65,9 @@ export default function RoasCalculator() {
     cr: isBn ? "বর্তমান কনভার্শন রেট" : "Current Conversion Rate",
     aov: isBn ? "গড় অর্ডার ভ্যালু (AOV)" : "Average Order Value",
     currentRev: isBn ? "আপনার বর্তমান রেভিনিউ" : "Current Revenue",
-    withPolished: isBn ? "POLISHED-এর সাথে (+১.৫%)" : "With POLISHED (+1.5%)",
+    withPolished: isBn ? "POLISHED-এর সাথে (+০.৫%)" : "With POLISHED (+0.5%)",
     lostRev: isBn ? "প্রতি মাসে যে পরিমাণ রেভিনিউ আপনি হারাচ্ছেন" : "Revenue Left On The Table",
-    disclaimer: isBn ? "*প্রিমিয়াম ভিজ্যুয়াল ট্রাস্ট এবং স্ট্র্যাটেজির কারণে ন্যূনতম ১.৫% কনভার্শন বৃদ্ধির ওপর ভিত্তি করে হিসাবটি করা হয়েছে।" : "*Based on a conservative 1.5% conversion lift from premium visual trust & strategy.",
+    disclaimer: isBn ? "*প্রিমিয়াম ভিজ্যুয়াল ট্রাস্ট এবং স্ট্র্যাটেজির কারণে ন্যূনতম ০.৫% কনভার্শন বৃদ্ধির ওপর ভিত্তি করে হিসাবটি করা হয়েছে।" : "*Based on a highly conservative 0.5% conversion lift from premium visual trust & strategy.",
     btn: isBn ? "লোকসান বন্ধ করুন" : "Stop Losing Money",
     currency: isBn ? "টাকা" : "BDT"
   };
