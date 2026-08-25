@@ -4,8 +4,7 @@ export default function RoasCalculator() {
   const [isBn, setIsBn] = useState(false);
 
   useEffect(() => {
-    // 🕵️‍♂️ Tracker to verify if the new code is actually running on the live site
-    console.log("🔥 POLISHED Calculator v2.2 (Realistic 0.5% Lift) loaded successfully!");
+    console.log("🔥 POLISHED Calculator v2.3 (Marketing Hook + Subtle Note) loaded!");
 
     const currentLang = document.documentElement.lang;
     setIsBn(currentLang === 'bn' || currentLang === 'bn-BD');
@@ -40,8 +39,8 @@ export default function RoasCalculator() {
     const traffic = adSpend / (cpc || 1);
     const current = traffic * (conversionRate / 100) * aov;
     
-    // Adjusted to a highly realistic and achievable +0.5% CR boost
-    const projectedCR = conversionRate + 0.5;
+    // Kept the 1.5% hook for maximum marketing impact
+    const projectedCR = conversionRate + 1.5;
     const projected = traffic * (projectedCR / 100) * aov;
     
     setCurrentRevenue(current);
@@ -65,9 +64,14 @@ export default function RoasCalculator() {
     cr: isBn ? "বর্তমান কনভার্শন রেট" : "Current Conversion Rate",
     aov: isBn ? "গড় অর্ডার ভ্যালু (AOV)" : "Average Order Value",
     currentRev: isBn ? "আপনার বর্তমান রেভিনিউ" : "Current Revenue",
-    withPolished: isBn ? "POLISHED-এর সাথে (+০.৫%)" : "With POLISHED (+0.5%)",
+    withPolished: isBn ? "POLISHED-এর সাথে (+১.৫%)" : "With POLISHED (+1.5%)",
     lostRev: isBn ? "প্রতি মাসে যে পরিমাণ রেভিনিউ আপনি হারাচ্ছেন" : "Revenue Left On The Table",
-    disclaimer: isBn ? "*প্রিমিয়াম ভিজ্যুয়াল ট্রাস্ট এবং স্ট্র্যাটেজির কারণে ন্যূনতম ০.৫% কনভার্শন বৃদ্ধির ওপর ভিত্তি করে হিসাবটি করা হয়েছে।" : "*Based on a highly conservative 0.5% conversion lift from premium visual trust & strategy.",
+    
+    // The "Hidden in Plain Sight" Note
+    methodologyNote: isBn 
+      ? "ভিজ্যুয়াল আপগ্রেডের মাধ্যমে সম্ভাব্য ১.৫% কনভার্শন বৃদ্ধির গাণিতিক অনুমানের ওপর ভিত্তি করে এই প্রজেকশনটি তৈরি।" 
+      : "Projection is based on a mathematical estimate of a potential 1.5% conversion lift via visual upgrades.",
+    
     btn: isBn ? "লোকসান বন্ধ করুন" : "Stop Losing Money",
     currency: isBn ? "টাকা" : "BDT"
   };
@@ -243,15 +247,17 @@ export default function RoasCalculator() {
               </div>
             </div>
 
-            <div className="mb-12 relative z-10">
+            <div className="mb-10 relative z-10">
               <p className="text-white/90 text-[10px] font-semibold uppercase tracking-[0.2em] mb-4 bg-[#fb923c]/20 inline-block px-3 py-1 rounded-sm border border-[#fb923c]/30" style={{ fontFamily: fontBody }}>
                 <span className="text-[#fb923c] mr-2">■</span>{t.lostRev}
               </p>
-              <h3 className="text-5xl md:text-6xl font-normal text-white mb-6 leading-tight flex items-baseline gap-3" style={{ fontFamily: fontPrimary }}>
+              <h3 className="text-5xl md:text-6xl font-normal text-white mb-2 leading-tight flex items-baseline gap-3" style={{ fontFamily: fontPrimary }}>
                 {formatCurrency(revenueLost)} <span className="text-2xl text-[#fb923c]">{t.currency}</span>
               </h3>
-              <p className="text-white/50 text-xs italic font-light" style={{ fontFamily: fontBody }}>
-                {t.disclaimer}
+              
+              {/* THE HIDDEN IN PLAIN SIGHT NOTE */}
+              <p className="text-white/30 text-[9px] tracking-wide font-light" style={{ fontFamily: fontBody }}>
+                {t.methodologyNote}
               </p>
             </div>
 
