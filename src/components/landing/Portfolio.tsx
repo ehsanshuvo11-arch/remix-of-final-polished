@@ -554,7 +554,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           lightbox never resizes while a heavy mockup downloads. Fades are plain
           CSS opacity transitions (compositor-only, zero main-thread work). */}
       <div className="relative flex items-center justify-center">
-        <div className="relative aspect-square w-full max-w-[85vh] max-h-[85vh]">
+       <div className="relative flex items-center justify-center w-full h-full">
           <div
             aria-hidden
             className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out"
