@@ -553,7 +553,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {/* Main image — aspect-locked box with a pure-CSS shimmer behind it, so the
           lightbox never resizes while a heavy mockup downloads. Fades are plain
           CSS opacity transitions (compositor-only, zero main-thread work). */}
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center justify-center w-full flex-1 h-[80vh] px-4 md:px-12">
        <div className="relative flex items-center justify-center w-full h-full">
           <div
             aria-hidden
