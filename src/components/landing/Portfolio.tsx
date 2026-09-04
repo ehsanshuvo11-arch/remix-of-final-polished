@@ -559,42 +559,28 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
           </div>
           {urls.map((url, i) => {
-            // Only the current slide and its immediate neighbours are mounted —
-            // neighbours load lazily so swiping feels instant without paying for
-            // every mockup upfront.
+            // Only the current slide and its immediate neighbours are mounted
             if (Math.abs(i - current) > 1) return null;
-            {urls.map((url, i) => {
-          // Only the current slide and its immediate neighbours are mounted
-          if (Math.abs(i - current) > 1) return null;
-          const isCurrent = i === current;
+            const isCurrent = i === current;
 
-          // 100% TS-SAFE URL PARSER
-          let cleanUrl = String(url || '').replace(/['"]/g, '');
-          
-          if (cleanUrl && !cleanUrl.startsWith('http')) {
-            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-            cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${cleanUrl}`;
-          }
+            // 100% TS-SAFE URL PARSER
+            let cleanUrl = String(url || '').replace(/['"]/g, '');
+            
+            if (cleanUrl && !cleanUrl.startsWith('http')) {
+              const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+              cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${cleanUrl}`;
+            }
 
-          return (
-            <img
-              key={cleanUrl + i}
-              src={cleanUrl}
-              alt={`Project Mockup ${i + 1}`}
-              className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
-                isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
-              }`}
-              onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
-            />
-          );
-        })}
-
-              alt={`Project Mockup ${i + 1}`}
-              className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
-                isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
-              }`}
-              onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
-            />
+            return (
+              <img
+                key={cleanUrl + i}
+                src={cleanUrl}
+                alt={`Project Mockup ${i + 1}`}
+                className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
+                  isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
+                }`}
+                onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+              />
             );
           })}
         </div>
