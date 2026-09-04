@@ -563,13 +563,30 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             if (Math.abs(i - current) > 1) return null;
             const isCurrent = i === current;
 
-            // 100% TS-SAFE URL PARSER
-            let cleanUrl = String(url || '').replace(/['"]/g, '');
-            
-            if (cleanUrl && !cleanUrl.startsWith('http')) {
-              const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-              cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${cleanUrl}`;
+            // BULLETPROOF URL PARSER (Handles Strings, Objects & JSON from CMS)
+          let rawUrl = url;
+          try {
+            // If CMS saved it as a JSON string
+            if (typeof url === 'string' && (url.startsWith('{') || url.startsWith('['))) {
+              rawUrl = JSON.parse(url);
             }
+          } catch (e) {}
+
+          if (Array.isArray(rawUrl)) rawUrl = rawUrl[0]; // If array, pick first
+          
+          if (typeof rawUrl === 'object' && rawUrl !== null) {
+            // Extract the actual file path from the object
+            rawUrl = rawUrl.url || rawUrl.path || rawUrl.src || rawUrl.image || Object.values(rawUrl)[0] || '';
+          }
+
+          let cleanUrl = String(rawUrl || '').replace(/['"]/g, '').trim();
+
+          if (cleanUrl && !cleanUrl.startsWith('http')) {
+            // Prevent duplicate bucket names just in case
+            cleanUrl = cleanUrl.replace('polished-assets/', '').replace(/^\/+/, '');
+            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+            cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${cleanUrl}`;
+          }
 
             return (
               <img
