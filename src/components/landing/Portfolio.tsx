@@ -563,9 +563,29 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             // neighbours load lazily so swiping feels instant without paying for
             // every mockup upfront.
             if (Math.abs(i - current) > 1) return null;
-            const isCurrent = i === current;
-            return (
+            {urls.map((url, i) => {
+          // Only the current slide and its immediate neighbours are mounted
+          if (Math.abs(i - current) > 1) return null;
+          const isCurrent = i === current;
+
+          // BUG FIX: Clean the URL (remove extra quotes) and ensure full Supabase path
+          let cleanUrl = typeof url === 'string' ? url.replace(/['"]/g, '') : (url?.url || '');
+          if (cleanUrl && !cleanUrl.startsWith('http')) {
+            cleanUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/polished-assets/${cleanUrl}`;
+          }
+
+          return (
             <img
+              key={cleanUrl + i}
+              src={cleanUrl}
+              alt={`Project Mockup ${i + 1}`}
+              className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
+                isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
+              }`}
+              onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+            />
+          );
+        })}
               key={url + i}
               src={url}
               alt={`Project Mockup ${i + 1}`}
