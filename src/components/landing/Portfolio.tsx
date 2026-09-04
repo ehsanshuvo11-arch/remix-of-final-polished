@@ -615,34 +615,15 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             const rawPath = extractPath(url);
             if (!rawPath) return null;
 
-            const supabaseUrl = String(import.meta.env.VITE_SUPABASE_URL ?? '').replace(/\/+$/, '');
-            let cleanUrl: string;
-
-            if (/^https?:\/\//i.test(rawPath)) {
-              cleanUrl = rawPath;
-            } else if (rawPath.startsWith('/storage/v1/')) {
-              if (!supabaseUrl) return null;
-              cleanUrl = `${supabaseUrl}${rawPath}`;
-            } else {
-              if (!supabaseUrl) return null;
-              const storagePath = rawPath
-                .replace(/^\/+/, '')
-                .replace(/^storage\/v1\/object\/public\/polished-assets\//i, '')
-                .replace(/^polished-assets\//i, '');
-              const encodedPath = storagePath
-                .split('/')
-                .filter(Boolean)
-                .map((segment) => {
-                  try {
-                    return encodeURIComponent(decodeURIComponent(segment));
-                  } catch {
-                    return encodeURIComponent(segment);
-                  }
-                })
-                .join('/');
-              if (!encodedPath) return null;
-              cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${encodedPath}`;
-            }
+            // Resolve through the Supabase client (works without VITE_SUPABASE_URL being set).
+            const storagePath = rawPath
+              .replace(/^\/+/, '')
+              .replace(/^storage\/v1\/object\/public\/polished-assets\//i, '')
+              .replace(/^polished-assets\//i, '');
+            const cleanUrl = /^https?:\/\//i.test(rawPath)
+              ? rawPath
+              : resolveStorageUrl(storagePath);
+            if (!cleanUrl) return null;
 
             return (
               <img
