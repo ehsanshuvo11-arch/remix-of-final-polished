@@ -588,8 +588,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             />
           );
         })}
-              key={url + i}
-              src={url}
+
               alt={`Project Mockup ${i + 1}`}
               className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
                 isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
