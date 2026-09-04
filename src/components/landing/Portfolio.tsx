@@ -119,7 +119,11 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   const [caseStudyLang, setCaseStudyLang] = useState<'en' | 'bn'>(isBn ? 'bn' : 'en');
   const csIsBn = caseStudyLang === 'bn';
 
-  const mockupUrls = project.mockup_urls?.length ? project.mockup_urls : (project.mockup_url ? [project.mockup_url] : []);
+  const mockupUrls: unknown[] = project.mockup_url_data?.length
+    ? project.mockup_url_data
+    : project.mockup_urls?.length
+      ? project.mockup_urls
+      : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
   // Locale-aware field mapping with English fallback when BN translation missing.
@@ -453,7 +457,7 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
 /* ── Premium Swipeable Lightbox ── */
 
 function MockupLightbox({ urls, initialIndex, title, onClose }: {
-  urls: string[];
+  urls: unknown[];
   initialIndex: number;
   title: string;
   onClose: () => void;
@@ -559,34 +563,86 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
             <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
           </div>
           {urls.map((url, i) => {
+            console.log("Raw URL Data:", url);
+
             // Only the current slide and its immediate neighbours are mounted
             if (Math.abs(i - current) > 1) return null;
             const isCurrent = i === current;
 
-            // BULLETPROOF URL PARSER (Handles Strings, Objects & JSON from CMS)
-          let rawUrl = url;
-          try {
-            // If CMS saved it as a JSON string
-            if (typeof url === 'string' && (url.startsWith('{') || url.startsWith('['))) {
-              rawUrl = JSON.parse(url);
+            const extractPath = (value: unknown, seen = new Set<object>()): string | null => {
+              if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (!trimmed || trimmed === '[object Object]') return null;
+
+                if (
+                  (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+                  (trimmed.startsWith('[') && trimmed.endsWith(']'))
+                ) {
+                  try {
+                    return extractPath(JSON.parse(trimmed) as unknown, seen);
+                  } catch {
+                    // It only resembled JSON; treat it as a normal storage path.
+                  }
+                }
+
+                return trimmed.replace(/^['"]|['"]$/g, '').trim() || null;
+              }
+
+              if (Array.isArray(value)) {
+                for (const item of value) {
+                  const result = extractPath(item, seen);
+                  if (result) return result;
+                }
+                return null;
+              }
+
+              if (typeof value !== 'object' || value === null || seen.has(value)) return null;
+              seen.add(value);
+
+              const record = value as Record<string, unknown>;
+              const preferredKeys = ['url', 'path', 'src', 'image', 'publicUrl', 'file', 'name', 'key'] as const;
+              for (const key of preferredKeys) {
+                const result = extractPath(record[key], seen);
+                if (result) return result;
+              }
+              for (const nestedValue of Object.values(record)) {
+                const result = extractPath(nestedValue, seen);
+                if (result) return result;
+              }
+              return null;
+            };
+
+            const rawPath = extractPath(url);
+            if (!rawPath) return null;
+
+            const supabaseUrl = String(import.meta.env.VITE_SUPABASE_URL ?? '').replace(/\/+$/, '');
+            let cleanUrl: string;
+
+            if (/^https?:\/\//i.test(rawPath)) {
+              cleanUrl = rawPath;
+            } else if (rawPath.startsWith('/storage/v1/')) {
+              if (!supabaseUrl) return null;
+              cleanUrl = `${supabaseUrl}${rawPath}`;
+            } else {
+              if (!supabaseUrl) return null;
+              const storagePath = rawPath
+                .replace(/^\/+/, '')
+                .replace(/^storage\/v1\/object\/public\/polished-assets\//i, '')
+                .replace(/^polished-assets\//i, '');
+              const encodedPath = storagePath
+                .split('/')
+                .filter(Boolean)
+                .map((segment) => {
+                  try {
+                    return encodeURIComponent(decodeURIComponent(segment));
+                  } catch {
+                    return encodeURIComponent(segment);
+                  }
+                })
+                .join('/');
+              if (!encodedPath) return null;
+              cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${encodedPath}`;
             }
-          } catch (e) {}
-
-          if (Array.isArray(rawUrl)) rawUrl = rawUrl[0]; // If array, pick first
-          
-          if (typeof rawUrl === 'object' && rawUrl !== null) {
-            // Extract the actual file path from the object
-            rawUrl = rawUrl.url || rawUrl.path || rawUrl.src || rawUrl.image || Object.values(rawUrl)[0] || '';
-          }
-
-          let cleanUrl = String(rawUrl || '').replace(/['"]/g, '').trim();
-
-          if (cleanUrl && !cleanUrl.startsWith('http')) {
-            // Prevent duplicate bucket names just in case
-            cleanUrl = cleanUrl.replace('polished-assets/', '').replace(/^\/+/, '');
-            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-            cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${cleanUrl}`;
-          }
 
             return (
               <img
@@ -597,6 +653,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
                   isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
                 }`}
                 onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
+                onError={() => console.error('Portfolio lightbox image failed:', { raw: url, resolved: cleanUrl })}
               />
             );
           })}

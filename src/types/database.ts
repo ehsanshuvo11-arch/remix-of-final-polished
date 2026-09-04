@@ -30,6 +30,8 @@ export interface PortfolioProject {
   pdf_url_bn?: string;
   mockup_url?: string;
   mockup_urls?: string[];
+  /** Raw CMS values retained for resilient frontend URL extraction. */
+  mockup_url_data?: unknown[];
 }
 
 export interface ProcessStep {

@@ -68,6 +68,11 @@ export function normalizeProcessStepRow(row: RowLike): ProcessStep {
 export function normalizePortfolioProjectRow(row: RowLike): PortfolioProject {
   const mockupUrls = stringArray(row.mockup_urls);
   const singleMockup = stringValue(row.mockup_url);
+  const rawMockupData = Array.isArray(row.mockup_urls)
+    ? row.mockup_urls
+    : row.mockup_urls == null
+      ? (row.mockup_url == null ? [] : [row.mockup_url])
+      : [row.mockup_urls];
 
   return {
     id: stringValue(row.id),
@@ -85,6 +90,7 @@ export function normalizePortfolioProjectRow(row: RowLike): PortfolioProject {
     pdf_url_bn: stringValue(row.pdf_url_bn),
     mockup_url: firstNonEmpty(singleMockup, mockupUrls[0]),
     mockup_urls: mockupUrls.length ? mockupUrls : (singleMockup ? [singleMockup] : []),
+    mockup_url_data: rawMockupData,
   };
 }
 
