@@ -568,10 +568,12 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           if (Math.abs(i - current) > 1) return null;
           const isCurrent = i === current;
 
-          // BUG FIX: Clean the URL (remove extra quotes) and ensure full Supabase path
-          let cleanUrl = typeof url === 'string' ? url.replace(/['"]/g, '') : (url?.url || '');
+          // 100% TS-SAFE URL PARSER
+          let cleanUrl = String(url || '').replace(/['"]/g, '');
+          
           if (cleanUrl && !cleanUrl.startsWith('http')) {
-            cleanUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/polished-assets/${cleanUrl}`;
+            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+            cleanUrl = `${supabaseUrl}/storage/v1/object/public/polished-assets/${cleanUrl}`;
           }
 
           return (
