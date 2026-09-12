@@ -553,8 +553,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
       {/* Main image — aspect-locked box with a pure-CSS shimmer behind it, so the
           lightbox never resizes while a heavy mockup downloads. Fades are plain
           CSS opacity transitions (compositor-only, zero main-thread work). */}
-      <div className="relative flex items-center justify-center w-full flex-1 h-[80vh] px-4 md:px-12">
-       <div className="relative flex items-center justify-center w-full h-full">
+      <div className="relative flex items-center justify-center w-full flex-1 h-[80vh] px-4 md:px-12 transform-gpu will-change-transform [transform:translateZ(0)]">
+       <div className="relative flex items-center justify-center w-full h-full transform-gpu will-change-transform [transform:translateZ(0)]">
           <div
             aria-hidden
             className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out"
@@ -630,7 +630,9 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
                 key={cleanUrl + i}
                 src={cleanUrl}
                 alt={`Project Mockup ${i + 1}`}
-                className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 ease-out ${
+                 loading="lazy"
+                 decoding="async"
+                 className={`absolute inset-0 w-full h-full object-contain transform-gpu will-change-transform [transform:translateZ(0)] transition-[opacity,transform] duration-500 ease-out ${
                   isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
                 }`}
                 onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
