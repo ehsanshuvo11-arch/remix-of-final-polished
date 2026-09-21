@@ -153,30 +153,49 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
   }, [x, tick]);
 
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    // Touch scrolling is browser-owned. The previous touch axis-lock could
-    // misclassify a noisy first movement as horizontal, capture the pointer,
-    // and kill that finger's vertical page-scroll gesture.
-    if (e.pointerType === 'touch' || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const isTouch = e.pointerType === 'touch';
     rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     gesture.current = {
       id: e.pointerId,
       startX: e.clientX,
       startY: e.clientY,
-      locked: true,
+      // Mouse/pen claim the horizontal axis right away. Touch waits until the
+      // movement is clearly horizontal so vertical page scrolling stays native
+      // (touch-action: pan-y already reserves vertical for the browser).
+      locked: !isTouch,
       moved: false,
     };
-    setHasInteracted(true);
-    containerRef.current?.setPointerCapture(e.pointerId);
-    setDragging(true);
-    const p = pctFromClientX(e.clientX);
-    if (p !== null) x.set(p);
+    if (!isTouch) {
+      setHasInteracted(true);
+      containerRef.current?.setPointerCapture(e.pointerId);
+      setDragging(true);
+      const p = pctFromClientX(e.clientX);
+      if (p !== null) x.set(p);
+    }
   }, [pctFromClientX, x]);
 
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     const g = gesture.current;
     if (g.id !== e.pointerId) return;
 
-    if (Math.abs(e.clientX - g.startX) > 3) g.moved = true;
+    const dx = e.clientX - g.startX;
+    const dy = e.clientY - g.startY;
+
+    if (!g.locked) {
+      // Not yet decided: only claim the gesture on a clearly horizontal swipe.
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) {
+        g.id = -1; // vertical scroll — hand it back to the page
+        return;
+      }
+      if (Math.abs(dx) < 8) return;
+      g.locked = true;
+      setHasInteracted(true);
+      setDragging(true);
+      containerRef.current?.setPointerCapture?.(e.pointerId);
+    }
+
+    if (Math.abs(dx) > 3) g.moved = true;
     const p = pctFromClientX(e.clientX);
     if (p !== null) x.set(p);
   }, [pctFromClientX, x]);
@@ -192,6 +211,11 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
         const p = pctFromClientX(e.clientX);
         if (p !== null) animate(x, p, SPRING);
       }
+    } else if (e.pointerType === 'touch' && Math.abs(e.clientX - g.startX) < 8 && Math.abs(e.clientY - g.startY) < 8) {
+      // Simple tap on touch: glide the divider to the tapped position.
+      setHasInteracted(true);
+      const p = pctFromClientX(e.clientX);
+      if (p !== null) animate(x, p, SPRING);
     }
     if (containerRef.current?.hasPointerCapture?.(e.pointerId)) {
       containerRef.current.releasePointerCapture(e.pointerId);
@@ -200,6 +224,7 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     rectRef.current = null;
     setDragging(false);
   }, [pctFromClientX, settle, x]);
+
 
   // Desktop: horizontal wheel / trackpad swipe scrubs the divider.
   useEffect(() => {
