@@ -12,22 +12,26 @@ interface HeroProps {
 }
 
 export default function Hero({ content, logoUrl }: HeroProps) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const isMobile = useIsMobileDevice();
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
 
   const hero = content ?? {
-    titleEn: 'Make Your Collection',
-    title2En: '*Unmissable!*',
-    titleBn: 'আপনার কালেকশন হোক',
-    title2Bn: '*অনবদ্য!*',
-    eyebrowEn: 'Graphics Design Agency · Bangladesh',
-    eyebrowBn: 'গ্রাফিক্স ডিজাইন এজেন্সি · বাংলাদেশ',
-    subEn: 'We craft refined, trust-driven visual identities for skincare & self-care brands that deserve to be seen — and remembered.',
-    subBn: 'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা দেখা এবং মনে রাখার যোগ্য।',
+    titleEn: 'Creative Built for',
+    title2En: '*Profitable Growth.*',
+    titleBn: 'লাভজনক প্রবৃদ্ধির জন্য',
+    title2Bn: '*তৈরি ক্রিয়েটিভ।*',
+    eyebrowEn: 'Performance Creative Agency · Bangladesh',
+    eyebrowBn: 'পারফরম্যান্স ক্রিয়েটিভ এজেন্সি · বাংলাদেশ',
+    subEn: 'We engineer high-converting visual assets and Meta-policy safe creatives for D2C skincare brands—designed to slash Customer Acquisition Cost (CAC) and maximize ROAS.',
+    subBn: 'আমরা D2C স্কিনকেয়ার ব্র্যান্ডের জন্য হাই-কনভার্টিং ভিজ্যুয়াল অ্যাসেট ও Meta-policy safe ক্রিয়েটিভ তৈরি করি—যা Customer Acquisition Cost (CAC) কমিয়ে ROAS সর্বোচ্চ করতে ডিজাইন করা।',
   };
+
+  const heroEyebrow = 'Performance Creative Agency · Bangladesh';
+  const heroSubEn = 'We engineer high-converting visual assets and Meta-policy safe creatives for D2C skincare brands—designed to slash Customer Acquisition Cost (CAC) and maximize ROAS.';
+  const heroSubBn = 'আমরা D2C স্কিনকেয়ার ব্র্যান্ডের জন্য হাই-কনভার্টিং ভিজ্যুয়াল অ্যাসেট ও Meta-policy safe ক্রিয়েটিভ তৈরি করি—যা Customer Acquisition Cost (CAC) কমিয়ে ROAS সর্বোচ্চ করতে ডিজাইন করা।';
 
   // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
   useEffect(() => {
@@ -124,7 +128,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             className="font-sans-eyebrow text-[8px] tracking-[0.35em] -mr-[0.35em] text-accent md:text-[11px] md:tracking-[4px] md:-mr-[4px] uppercase font-normal"
             style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: '"Inter", sans-serif' }}
           >
-            {hero.eyebrowEn}
+            {heroEyebrow}
           </p>
         </div>
         {(() => {
@@ -148,7 +152,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="block md:inline whitespace-nowrap"
                 stagger={STAGGER}
               >
-                Make
+                Creative Built
               </RevealText>
               <RevealText
                 as="span"
@@ -156,7 +160,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="block md:inline whitespace-nowrap"
                 stagger={STAGGER}
               >
-                Your Collection
+                for
               </RevealText>
               <RevealText
                 as="span"
@@ -164,7 +168,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="hero-accent-line block text-[32px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
                 stagger={STAGGER}
               >
-                Unmissable!
+                Profitable Growth.
               </RevealText>
             </h1>
           );
@@ -179,10 +183,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           }}
         >
           {isBn
-            ? (hero.subBn ||
-              'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা আলাদাভাবে নজর কাড়ে এবং মানুষের মনে গেঁথে থাকে।')
-            : (hero.subEn ||
-              'We craft refined, trust-driven visual identities for skincare & self-care brands that deserve to be seen — and remembered.')}
+            ? heroSubBn
+            : heroSubEn}
         </p>
 
         <div className="flex flex-col-reverse w-full max-w-[300px] mx-auto gap-2.5 mt-0 mb-2 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>

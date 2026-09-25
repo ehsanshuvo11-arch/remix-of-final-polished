@@ -1,6 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
-import WordReveal from '@/components/landing/WordReveal';
 import RevealText from '@/components/landing/RevealText';
 import type { AboutContent, Stat } from '@/types/database';
 
@@ -10,7 +9,7 @@ interface AboutProps {
 }
 
 export default function About({ content, stats }: AboutProps) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
   const about = content ?? {
@@ -39,8 +38,11 @@ export default function About({ content, stats }: AboutProps) {
 
   // About copy is intentionally locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = about.titleLine1En ?? 'Design that earns';
-  const line2 = about.titleLine2En ?? 'trust at first glance.';
+  const philosophyPoints = [
+    'Stopping the scroll with psychological visual hooks.',
+    'Meta ad policy compliant designs—without risky creative that can trigger account bans.',
+    'Combo-selling visuals engineered to increase Average Order Value (AOV).',
+  ];
 
   return (
     <section id="about" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -53,7 +55,7 @@ export default function About({ content, stats }: AboutProps) {
               </p>
             ) : (
               <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-                {about.labelEn ?? 'About Polished'}
+                Visual Philosophy
               </p>
             )}
           </MotionReveal>
@@ -61,42 +63,29 @@ export default function About({ content, stats }: AboutProps) {
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>
-                  {(about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই')}
+                  ডেটা-ড্রিভেন
                 </RevealText>
                 <RevealText as="span" className="block italic" stagger={0} delay={0}>
-                  {(about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।')}
+                  কনভার্শন ক্রিয়েটিভ
                 </RevealText>
               </>
             ) : (
               <>
-                <RevealText as="span" className="block">{line1}</RevealText>
-                <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
+                <RevealText as="span" className="block">Data-Driven</RevealText>
+                <RevealText as="span" delay={0.15} className="block italic">Conversion Creatives</RevealText>
               </>
             )}
           </h2>
-          <MotionReveal delay={0.3}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-              {isBn ? (
-                <><span lang="en">POLISHED</span>{' একটি প্রিমিয়াম ভিজ্যুয়াল আইডেন্টিটি পার্টনার যা D2C স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ড এবং ই-কমার্স মার্কেটিং এজেন্সিগুলোর জন্য হোয়াইট-লেবেল ক্রিয়েটিভ ইঞ্জিন হিসেবে কাজ করে।'}</>
-              ) : about.p1En}
-            </p>
-          </MotionReveal>
-          <MotionReveal delay={0.4}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[15px] leading-[1.85] text-muted-foreground mb-5">
-              {isBn ? about.p2Bn : about.p2En}
-            </p>
-          </MotionReveal>
-          <MotionReveal delay={0.5}>
-            {isBn ? (
-              <p lang="bn" className="text-[15px] leading-[1.85] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                — আমাদের সিগনেচার: নিখুঁত ও প্রফেশনাল বাংলা ভিজ্যুয়াল আইডেন্টিটি।
-              </p>
-            ) : (
-              <p lang="en" style={enFont} className="text-[15px] leading-[1.85] text-primary italic">
-                {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
-              </p>
-            )}
-          </MotionReveal>
+          <ul className="space-y-5" aria-label="Our conversion-first principles">
+            {philosophyPoints.map((point, index) => (
+              <MotionReveal key={point} delay={0.3 + index * 0.1}>
+                <li className="flex items-start gap-4 text-[15px] leading-[1.75] text-muted-foreground" style={enFont}>
+                  <span className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
+                  <span>{point}</span>
+                </li>
+              </MotionReveal>
+            ))}
+          </ul>
         </div>
 
         <div className="grid grid-cols-2 gap-px bg-border border border-border">
