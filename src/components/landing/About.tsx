@@ -9,7 +9,7 @@ interface AboutProps {
 }
 
 export default function About({ content, stats }: AboutProps) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
   const about = content ?? {

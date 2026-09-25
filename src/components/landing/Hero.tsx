@@ -12,7 +12,7 @@ interface HeroProps {
 }
 
 export default function Hero({ content, logoUrl }: HeroProps) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const isMobile = useIsMobileDevice();
   const orb1Ref = useRef<HTMLDivElement>(null);
