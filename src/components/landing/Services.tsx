@@ -13,20 +13,32 @@ interface ServicesProps {
 }
 
 export default function Services({ services, content }: ServicesProps) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const trackRef = useRef<HTMLDivElement>(null);
   useDragScroll(trackRef);
 
 
-  const defaultServices: Service[] = [
-    { id: '1', sort_order: 1, name_en: 'Social Media Design', name_bn: 'সোশ্যাল মিডিয়া ডিজাইন', desc_en: 'Feed posts, stories, reels covers, and carousels — all crafted with visual consistency and scroll-stopping clarity. Built for Instagram skincare brands that want to look premium, not templated.', desc_bn: 'ফিড পোস্ট, স্টোরি, রিলস কভার এবং ক্যারোসেল — সবকিছু তৈরি হয় ভিজ্যুয়াল সামঞ্জস্য রেখে।' },
-    { id: '2', sort_order: 2, name_en: 'Bangla Visual Design', name_bn: 'বাংলা ভিজ্যুয়াল ডিজাইন', desc_en: 'Professional, aesthetically refined Bangla typography and layout — a rare skill. If your brand speaks to Bangladesh, your visuals should feel premium in Bangla too.', desc_bn: 'পেশাদার ও নান্দনিক বাংলা টাইপোগ্রাফি — যা বাংলাদেশে বিরল।' },
-    { id: '3', sort_order: 3, name_en: 'White-Label Agency Partnership', name_bn: 'হোয়াইট-লেবেল এজেন্সি পার্টনারশিপ', desc_en: "Acting as the creative backend for marketting agencies, delivering high-converting 'Premium Bengali' visuals to lower CAC and maximize ROAS for your clients.", desc_bn: "মার্কেটিং এজেন্সিগুলোর ক্রিয়েটিভ ব্যাকএন্ড হিসেবে কাজ করে, আমরা তৈরি করি হাই-কনভার্টিং 'প্রিমিয়াম বাংলা' ভিজ্যুয়াল—যা আপনার ক্লায়েন্টদের CAC কমায় এবং ROAS বহুগুণ বাড়িয়ে দেয়।" },
-    { id: '4', sort_order: 4, name_en: 'E-commerce Visual Strategy', name_bn: 'ই-কমার্স ভিজ্যুয়াল স্ট্র্যাটেজি', desc_en: 'Crafting trust-building assets for storefronts, ensuring your brand looks expensive, authoritative, and perfectly optimized for high-conversion sales.', desc_bn: 'ই-কমার্স স্টোরফ্রন্টের জন্য ট্রাস্ট-বিল্ডিং ভিজ্যুয়াল তৈরি করা, যা আপনার ব্র্যান্ডকে প্রিমিয়াম লুক দেওয়ার পাশাপাশি কনভার্শন রেট বাড়াতে সাহায্য করে।' },
+  const coreServices: Service[] = [
+    { id: 'meta-ad-fatigue-rescue', sort_order: 1, name_en: 'Meta Ad Fatigue Rescue (Sprint)', name_bn: 'মেটা অ্যাড ফ্যাটিগ রেসকিউ (স্প্রিন্ট)', desc_en: 'Refresh your underperforming ads with 4 new psychological hook variations. We lower your Cost Per Result (CPR) and rescue your ad spend from creative fatigue.', desc_bn: '৪টি নতুন সাইকোলজিক্যাল হুক ভ্যারিয়েশন দিয়ে আপনার কম পারফর্ম করা বিজ্ঞাপনগুলোকে নতুন করে সাজাই। আমরা আপনার Cost Per Result (CPR) কমিয়ে ক্রিয়েটিভ ফ্যাটিগ থেকে বিজ্ঞাপনের বাজেট রক্ষা করি।' },
+    { id: 'educational-combo-carousels', sort_order: 2, name_en: 'Educational Combo Carousels', name_bn: 'এডুকেশনাল কম্বো ক্যারোসেল', desc_en: '5-7 slide swipeable carousels focusing on problem → ingredient → usage → combo offer. Proven to increase basket size and Average Order Value (AOV) by 50%.', desc_bn: 'সমস্যা → উপাদান → ব্যবহার → কম্বো অফার—এই ধারায় ৫–৭ স্লাইডের সোয়াইপযোগ্য ক্যারোসেল। বাস্কেট সাইজ এবং Average Order Value (AOV) ৫০% পর্যন্ত বাড়াতে কার্যকর।' },
+    { id: 'meta-policy-safe-creatives', sort_order: 3, name_en: 'Meta Policy-Safe Creatives', name_bn: 'মেটা পলিসি-সেফ ক্রিয়েটিভ', desc_en: "Stop worrying about ad account bans. We design 100% Meta-compliant creatives without risky 'zoom-in' Before-After shots, ensuring your campaigns run smoothly.", desc_bn: 'অ্যাড অ্যাকাউন্ট ব্যান হওয়ার দুশ্চিন্তা বাদ দিন। ঝুঁকিপূর্ণ “জুম-ইন” Before-After শট ছাড়াই আমরা ১০০% Meta-compliant ক্রিয়েটিভ তৈরি করি, যাতে আপনার ক্যাম্পেইন নির্বিঘ্নে চলে।' },
   ];
 
-  const displayServices = services.length > 0 ? services : defaultServices;
+  const legacyServiceNames = [
+    'social media design',
+    'high-conversion social media design',
+    'bangla visual design',
+    'bangla visual identity',
+    'white-label agency partnership',
+    'white-label agency',
+    'e-commerce visual strategy',
+    'e-commerce strategy',
+  ];
+  const hasLegacyServices = services.some((service) =>
+    legacyServiceNames.includes(service.name_en.trim().toLowerCase()),
+  );
+  const displayServices = services.length > 0 && !hasLegacyServices ? services : coreServices;
 
   // Services headings/labels locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
@@ -67,7 +79,7 @@ export default function Services({ services, content }: ServicesProps) {
           )}
         </h2>
 
-        <div ref={trackRef} className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab touch-auto -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-2 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
+        <div ref={trackRef} className="flex items-stretch w-full max-w-full gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab touch-auto -mx-6 px-6 pb-6 mt-10 md:mx-0 md:px-0 md:pb-0 md:mt-14 md:grid md:grid-cols-3 md:gap-px md:bg-primary-foreground/8 md:border md:border-primary-foreground/8 md:overflow-visible md:max-w-none">
           {displayServices.map((service, i) => (
             <ServiceCard key={service.id} service={service} index={i} />
           ))}
@@ -80,7 +92,7 @@ export default function Services({ services, content }: ServicesProps) {
 }
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -117,9 +129,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           {String(index + 1).padStart(2, '0')}
         </div>
         <div lang={isBn ? 'bn' : 'en'} className="font-heading text-xl font-normal text-primary-foreground mb-3.5 leading-tight">
-          {isBn
-            ? (index === 0 ? 'সোশ্যাল মিডিয়া ডিজাইন' : index === 1 ? 'প্রিমিয়াম বাংলা ভিজ্যুয়াল ডিজাইন' : service.name_bn || service.name_en)
-            : service.name_en}
+          {isBn ? (service.name_bn || service.name_en) : service.name_en}
         </div>
         <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }} className="text-[13px] leading-[1.75] text-primary-foreground/50 relative z-10">
           {isBn ? (service.desc_bn || service.desc_en) : service.desc_en}
