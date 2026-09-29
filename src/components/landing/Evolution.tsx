@@ -438,7 +438,7 @@ function ComparisonImage({ src, fallback, alt, label }: ComparisonImageProps) {
       decoding="async"
       draggable={false}
       onError={() => {
-        console.error(`[Evolution] ${label} image failed to load`, { stage, src: current });
+        console.warn(`[Evolution] ${label} image falling back`, { stage, src: current });
         setStage((s) => (s === 0 ? 1 : 2));
       }}
       className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
