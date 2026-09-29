@@ -232,11 +232,10 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
     if (!el || isMobile) return;
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // vertical scroll passes through
-      e.preventDefault();
       setHasInteracted(true);
       x.set(Math.max(0, Math.min(100, x.get() + e.deltaX * 0.18)));
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('wheel', onWheel, { passive: true });
     return () => el.removeEventListener('wheel', onWheel);
   }, [isMobile, x]);
 

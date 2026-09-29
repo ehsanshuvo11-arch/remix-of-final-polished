@@ -31,9 +31,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     subBn: "সুন্দর ডিজাইন অনেকেই দেয়, কিন্তু সেলস আনা সহজ নয়। আমাদের ডেটা-ড্রিভেন ডিজাইন আপনার মেটা অ্যাডের খরচ কমাবে এবং ক্যাশ-অন-ডেলিভারি (COD) রিটার্ন ঝুঁকি জিরো করবে।",
   };
 
-  // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
+  // Parallax on orbs — scroll + pointer drift with viewport-culled RAF
   useEffect(() => {
-    // Performance: Skip heavy JS-driven parallax on mobile devices to save CPU/Battery
     if (isMobile) return;
 
     let scrollY = 0;
@@ -42,29 +41,39 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     let targetX = 0;
     let targetY = 0;
     let raf = 0;
+    let isVisible = true;
 
     const apply = () => {
+      if (!isVisible) return;
       if (orb1Ref.current) {
-        orb1Ref.current.style.transform = `translate3d(${px}px, ${scrollY * 0.3 + py}px, 0)`;
+        orb1Ref.current.style.transform = `translate3d(${px}px, ${scrollY * 0.25 + py}px, 0)`;
       }
       if (orb2Ref.current) {
-        orb2Ref.current.style.transform = `translate3d(${px * -0.7}px, ${scrollY * -0.2 + py * -0.7}px, 0)`;
+        orb2Ref.current.style.transform = `translate3d(${px * -0.7}px, ${scrollY * -0.15 + py * -0.7}px, 0)`;
       }
     };
 
     const onScroll = () => {
       scrollY = window.scrollY;
-      apply();
+      isVisible = scrollY < window.innerHeight * 1.2;
+      if (isVisible) apply();
     };
 
     const tick = () => {
-      px += (targetX - px) * 0.045;
-      py += (targetY - py) * 0.045;
-      apply();
+      if (isVisible) {
+        const dx = targetX - px;
+        const dy = targetY - py;
+        if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05) {
+          px += dx * 0.05;
+          py += dy * 0.05;
+          apply();
+        }
+      }
       raf = requestAnimationFrame(tick);
     };
 
     const onPointerMove = (e: PointerEvent) => {
+      if (!isVisible) return;
       targetX = (e.clientX / window.innerWidth - 0.5) * 26;
       targetY = (e.clientY / window.innerHeight - 0.5) * 18;
     };
@@ -89,14 +98,12 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     <section
       className="min-h-[100svh] py-14 px-5 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
-      {/* Animated grid */}
+      {/* Subtle luxury static grid */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none opacity-40"
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
-          // Performance: Slow down the grid animation on mobile to reduce GPU load
-          animation: `gridMove ${isMobile ? '40s' : '20s'} linear infinite`,
         }}
       />
 

@@ -156,23 +156,31 @@ const TIER_FEATURES: Record<string, { en: string[]; bn: string[] }> = {
   'trial-pack': {
     en: [
       '5 Premium Meta Ad Creatives',
-      'Bangla Sales Copy',
+      'High-Converting Bangla Sales Copy',
+      'Audience Hook Testing Strategy',
+      '48-Hour Rapid Delivery',
     ],
     bn: [
       '৫টি প্রিমিয়াম মেটা অ্যাড ক্রিয়েটিভ',
       'উচ্চ-কনভার্টিং বাংলা সেলস কপি',
+      'অডিয়েন্স হুক টেস্টিং স্ট্র্যাটেজি',
+      '৪৮ ঘণ্টার দ্রুত ডেলিভারি',
     ],
   },
   'growth-pack': {
     en: [
-      '12 High-Converting Posts',
-      '1 Free Page Cover',
-      'Unlimited Minor Revisions',
+      '12 High-Converting Feed & Ad Creatives',
+      '1 Bespoke Storefront / Page Cover',
+      'Persuasive Bengali Sales Copy for Every Ad',
+      'AOV-Maximizing Combo Offer Visuals',
+      'Unlimited Minor Revisions & Priority Support',
     ],
     bn: [
-      '১২টি হাই-কনভার্টিং পোস্ট',
-      '১টি ফ্রি পেইজ কভার ডিজাইন',
-      'আনলিমিটেড মাইনর রিভিশন',
+      '১২টি হাই-কনভার্টিং ফিড ও অ্যাড ক্রিয়েটিভ',
+      '১টি কাস্টম স্টোরফ্রন্ট / পেইজ কভার',
+      'প্রতিটি অ্যাডের জন্য মনস্তাত্ত্বিক বাংলা সেলস কপি',
+      'AOV বৃদ্ধিকারী কম্বো অফার ভিজ্যুয়াল',
+      'আনলিমিটেড মাইনর রিভিশন ও প্রায়োরিটি সাপোর্ট',
     ],
   },
 };

@@ -101,29 +101,11 @@ export function useDragScroll(ref: RefObject<HTMLElement>, enabled = true) {
       }
     };
 
-    // ── Wheel / trackpad ──────────────────────────────────────────
-    const onWheel = (e: WheelEvent) => {
-      if (!scrollable()) return;
-      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 100 : 1;
-      const dx = e.deltaX * unit;
-      const dy = e.deltaY * unit;
-      // Horizontal trackpad gesture: let the browser handle it natively.
-      if (Math.abs(dx) > Math.abs(dy)) return;
-      const max = el.scrollWidth - el.clientWidth;
-      const atStart = el.scrollLeft <= 0 && dy < 0;
-      const atEnd = el.scrollLeft >= max - 1 && dy > 0;
-      if (atStart || atEnd) return; // release the gesture back to the page
-      e.preventDefault();
-      if (raf) cancelAnimationFrame(raf), (raf = 0);
-      el.scrollLeft += dy;
-    };
-
     el.addEventListener('pointerdown', onPointerDown, { passive: true });
     el.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', endDrag);
     window.addEventListener('pointercancel', endDrag);
     el.addEventListener('click', onClickCapture, true);
-    el.addEventListener('wheel', onWheel, { passive: false });
 
     return () => {
       el.removeEventListener('pointerdown', onPointerDown);
@@ -131,7 +113,6 @@ export function useDragScroll(ref: RefObject<HTMLElement>, enabled = true) {
       window.removeEventListener('pointerup', endDrag);
       window.removeEventListener('pointercancel', endDrag);
       el.removeEventListener('click', onClickCapture, true);
-      el.removeEventListener('wheel', onWheel);
       if (raf) cancelAnimationFrame(raf);
       el.style.scrollSnapType = '';
       el.classList.remove('cursor-grabbing');

@@ -92,14 +92,12 @@
   html {
     /* Document-level scrolling handled cleanly by browser and Lenis */
     touch-action: pan-y;
-    overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     -webkit-tap-highlight-color: transparent;
-    overflow-x: hidden;
     position: relative;
     width: 100%;
   }

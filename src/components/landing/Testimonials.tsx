@@ -154,13 +154,12 @@ export default function Testimonials() {
       // Only intercept clearly horizontal trackpad / shift-wheel gestures so
       // vertical page scrolling stays completely untouched.
       if (Math.abs(dx) <= Math.abs(dy) * 1.2) return;
-      e.preventDefault();
       const now = performance.now();
       if (now - lock < 420 || Math.abs(dx) < 6) return;
       lock = now;
       setActive((p) => (dx > 0 ? (p + 1) % count : (p - 1 + count) % count));
     };
-    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('wheel', onWheel, { passive: true });
     return () => el.removeEventListener('wheel', onWheel);
   }, [count]);
 

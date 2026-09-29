@@ -174,13 +174,13 @@ export default function Navbar({ content }: NavbarProps) {
           </button>
 
           <a
-            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B3999%20Skincare%20Trial%20Pack!"
+            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-accent-foreground text-[11px] font-bold tracking-[1.5px] uppercase rounded-sm transition-all duration-300 hover:bg-accent/90 hover:shadow-[0_4px_20px_rgba(251,146,60,0.45)] active:scale-[0.97] cursor-pointer btn-shimmer"
-            title="Start ৳999 Trial on WhatsApp"
+            title="Start ৳3,999 Trial on WhatsApp"
           >
-            <span>{isBn ? '৳৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳999 Trial'}</span>
+            <span>{isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}</span>
           </a>
         </div>
 
@@ -290,12 +290,12 @@ export default function Navbar({ content }: NavbarProps) {
               >
                 {/* High-Converting Mobile Drawer Action */}
                 <a
-                  href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B3999%20Skincare%20Trial%20Pack!"
+                  href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3.5 px-6 rounded-full bg-accent text-accent-foreground text-center font-bold text-xs uppercase tracking-[2px] shadow-[0_4px_20px_rgba(251,146,60,0.35)] flex items-center justify-center gap-2 btn-shimmer"
                 >
-                  <span>{isBn ? '৳৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳999 Trial'}</span>
+                  <span>{isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}</span>
                   <span>→</span>
                 </a>
 

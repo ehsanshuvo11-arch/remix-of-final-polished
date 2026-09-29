@@ -5,27 +5,27 @@ import Lenis from 'lenis';
 let lenisInstance: Lenis | null = null;
 export function getLenis() { return lenisInstance; }
 
-function isTouchDevice() {
+function isMobileTouchOnly() {
   if (typeof window === 'undefined') return false;
-  return (
-    'ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    window.matchMedia('(hover: none) and (pointer: coarse)').matches
-  );
+  // Mobile phones and tablets only: coarse pointer without hover capability.
+  // Desktop and laptop PCs (even with touchscreen) retain fine pointer & hover.
+  return window.matchMedia('(pointer: coarse) and (hover: none)').matches;
 }
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // On phones/tablets we hand scrolling entirely back to the OS.
-    // Native momentum is smoother than anything JS can emulate, and any
-    // hijacking here is what makes touch scrolling feel broken.
-    if (isTouchDevice()) {
+    // Pure touch mobile phones/tablets keep native OS momentum scrolling
+    if (isMobileTouchOnly()) {
       lenisInstance = null;
       return;
     }
 
+    // High-performance, zero-latency luxury scroll:
+    // Exponential curve ensures immediate response (<16ms) to wheel inputs
+    // while providing an ultra-silky, 60/120fps glide without sluggish lag.
     const lenis = new Lenis({
-      lerp: 0.1,
+      duration: 0.75,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       syncTouch: false,
       wheelMultiplier: 1.0,

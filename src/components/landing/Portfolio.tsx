@@ -76,7 +76,9 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
     },
   ];
 
-  const displayProjects = projects.length > 0 ? projects : defaultProjects;
+  const displayProjects = projects.length >= 3 
+    ? projects 
+    : [...projects, ...defaultProjects.slice(projects.length)];
 
   return (
     <section id="work" className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
