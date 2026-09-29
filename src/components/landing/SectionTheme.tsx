@@ -22,39 +22,31 @@ export default function SectionTheme() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Inject the transition once. We animate the CSS HSL tokens directly so
-    // every Tailwind utility (bg-background, text-foreground) crossfades.
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('section[data-theme], footer[data-theme]')
+    );
+    if (sections.length === 0) return;
+
+    // Inject the transition only when data-theme sections exist
     const style = document.createElement('style');
     style.setAttribute('data-section-theme', '');
     style.textContent = `
-      :root {
+      :root, body {
         transition:
-          background-color 1.2s cubic-bezier(0.4, 0, 0.2, 1),
-          color 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      body {
-        transition:
-          background-color 1.2s cubic-bezier(0.4, 0, 0.2, 1),
-          color 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+          background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+          color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       }
     `;
     document.head.appendChild(style);
 
     const root = document.documentElement;
-    // Snapshot the original tokens so we can always restore.
     const baseBg = getComputedStyle(root).getPropertyValue('--background').trim();
     const baseFg = getComputedStyle(root).getPropertyValue('--foreground').trim();
 
     const THEMES: Record<string, { bg: string; fg: string }> = {
       light: { bg: baseBg, fg: baseFg },
-      // Brand Navy + Off-white text — same tokens used by the loader curtain.
       navy: { bg: '224 64% 33%', fg: '210 20% 98%' },
     };
-
-    const sections = Array.from(
-      document.querySelectorAll<HTMLElement>('section[data-theme], footer[data-theme]')
-    );
-    if (sections.length === 0) return;
 
     let activeTheme = 'light';
     const apply = (themeName: string) => {

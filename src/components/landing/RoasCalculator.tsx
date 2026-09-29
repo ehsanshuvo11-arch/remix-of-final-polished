@@ -1,32 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { triggerInquiry } from '@/lib/inquiry-events';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function RoasCalculator() {
-  const [isBn, setIsBn] = useState(false);
-
-  useEffect(() => {
-    console.log("🔥 POLISHED Calculator v2.3 (Marketing Hook + Subtle Note) loaded!");
-
-    const currentLang = document.documentElement.lang;
-    setIsBn(currentLang === 'bn' || currentLang === 'bn-BD');
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'lang') {
-          const newLang = document.documentElement.lang;
-          setIsBn(newLang === 'bn' || newLang === 'bn-BD');
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['lang']
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { lang } = useLanguage();
+  const isBn = lang === 'bn';
 
   const [adSpend, setAdSpend] = useState(300000);
   const [cpc, setCpc] = useState(15);

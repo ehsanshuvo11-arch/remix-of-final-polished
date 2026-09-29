@@ -126,32 +126,32 @@ export default function MarketGap() {
                 style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
               >
                 {isBn
-                  ? 'ডেটা-ড্রিভেন কনভার্শন ক্রিয়েটিভস'
-                  : 'Data-Driven Conversion Creatives'}
+                  ? '"প্রিমিয়াম বাংলা" অ্যাসথেটিক ও কনভার্শন আর্কিটেকচার'
+                  : 'The "Premium Bengali" Aesthetic & Conversion Architecture'}
               </h3>
               <ul className="space-y-3.5 text-[13px] md:text-[14px] text-primary-foreground/80 leading-relaxed">
                 <li className="flex items-start gap-3">
                   <span className="text-accent font-bold shrink-0 mt-0.5">✓</span>
                   <span>
                     {isBn
-                      ? 'মনস্তাত্ত্বিক ভিজ্যুয়াল হুকস যা স্ক্রল থামায় এবং তাৎক্ষণিকভাবে মনোযোগ আকর্ষণ করে'
-                      : 'Psychological visual hooks that stop the scroll and capture attention within 1.3 seconds'}
+                      ? 'উচ্চমানের পরিশীলিত বাংলা কপিরাইটিং এবং বিশ্বমানের ভিজ্যুয়াল ডিজাইন — যা লাক্সারি লুক অক্ষুণ্ণ রেখে স্থানীয় ক্রেতাদের সর্বোচ্চ বিশ্বাস ও আকর্ষণ তৈরি করে'
+                      : 'High-class, sophisticated Bengali copywriting paired with world-class visual design — delivering maximum cultural relatability with zero compromise on luxury prestige'}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-accent font-bold shrink-0 mt-0.5">✓</span>
                   <span>
                     {isBn
-                      ? 'Meta অ্যাড পলিসি কমপ্লায়েন্ট ডিজাইন — অ্যাকাউন্ট ব্যান বা অ্যাড রিজেকশনের ঝুঁকি নেই'
-                      : 'Meta ad policy compliant designs — zero account bans, zero ad rejections, full approval'}
+                      ? 'মনস্তাত্ত্বিক ভিজ্যুয়াল হুকস যা ১.৩ সেকেন্ডে স্ক্রল থামায়, ব্যানার ব্লাইন্ডনেস দূর করে এবং মেটা অ্যাডের CPR উল্লেখযোগ্যভাবে কমায়'
+                      : 'Psychological visual hooks that stop the scroll within 1.3 seconds, eliminate banner blindness, and drop Meta Ad CPR'}
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-accent font-bold shrink-0 mt-0.5">✓</span>
                   <span>
                     {isBn
-                      ? 'কম্বো সেলিং ফোকাস যা অ্যাভারেজ অর্ডার ভ্যালু (AOV) বাড়ায় এবং প্রতিটি বিক্রয়ের মুনাফা বৃদ্ধি করে'
-                      : 'Combo selling creatives that increase Average Order Value (AOV) and boost profit per transaction'}
+                      ? 'কম্বো সেলিং ভিজ্যুয়াল আর্কিটেকচার যা গড় অর্ডার ভ্যালু (AOV) বাড়ায় এবং ক্যাশ-অন-ডেলিভারি (COD) গ্রাহকদের সংশয় দূর করে'
+                      : 'Combo selling visual architecture that maximizes Average Order Value (AOV) and eliminates COD return hesitation'}
                   </span>
                 </li>
               </ul>

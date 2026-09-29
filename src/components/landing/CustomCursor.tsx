@@ -34,25 +34,19 @@ export default function CustomCursor() {
 
     const selector = 'a,button,.service-card,.work-card,.stat-box,.play-btn,[role="button"],input,textarea';
 
-    const onEnter = () => setHovered(true);
-    const onLeave = () => setHovered(false);
-
-    const attach = () => {
-      document.querySelectorAll(selector).forEach(el => {
-        el.removeEventListener('mouseenter', onEnter);
-        el.removeEventListener('mouseleave', onLeave);
-        el.addEventListener('mouseenter', onEnter);
-        el.addEventListener('mouseleave', onLeave);
-      });
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && target.closest(selector)) {
+        setHovered(true);
+      } else {
+        setHovered(false);
+      }
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseleave', onMouseLeaveWindow);
-    document.addEventListener('mouseenter', onMouseEnterWindow);
-    attach();
-
-    const observer = new MutationObserver(attach);
-    observer.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeaveWindow, { passive: true });
+    document.addEventListener('mouseenter', onMouseEnterWindow, { passive: true });
+    document.addEventListener('mouseover', onMouseOver, { passive: true });
 
     return () => {
       document.body.removeAttribute('data-custom-cursor');
@@ -61,11 +55,7 @@ export default function CustomCursor() {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeaveWindow);
       document.removeEventListener('mouseenter', onMouseEnterWindow);
-      document.querySelectorAll(selector).forEach(el => {
-        el.removeEventListener('mouseenter', onEnter);
-        el.removeEventListener('mouseleave', onLeave);
-      });
-      observer.disconnect();
+      document.removeEventListener('mouseover', onMouseOver);
     };
   }, [cursorX, cursorY, visible]);
 

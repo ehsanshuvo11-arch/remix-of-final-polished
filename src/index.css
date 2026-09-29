@@ -1,7 +1,4 @@
-/* Fonts are loaded asynchronously from index.html (non render-blocking).
-   Keeping them out of an @import here removes a serialized CSS request
-   from the critical path, which is what was pushing mobile FCP past 1.5s. */
-
+@import "lenis/dist/lenis.css";
 
 @tailwind base;
 @tailwind components;
@@ -93,21 +90,22 @@
     @apply border-border;
   }
   html {
-    /* smooth scrolling handled by Lenis */
-    touch-action: pan-y !important;
-    overflow-y: auto !important;
+    /* Document-level scrolling handled cleanly by browser and Lenis */
+    touch-action: pan-y;
+    overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     -webkit-tap-highlight-color: transparent;
-    touch-action: pan-y !important;
-    overflow-y: auto !important;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
   }
   main {
-    touch-action: pan-y !important;
-    overflow-y: auto !important;
+    position: relative;
+    width: 100%;
   }
   /* Clip wide decoration at the app boundary, never on html/body. WebKit can
      stop routing touch gestures to the document when either root element has

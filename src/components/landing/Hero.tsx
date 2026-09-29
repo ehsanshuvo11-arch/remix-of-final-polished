@@ -199,13 +199,13 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
           <MagneticButton
             as="a"
-            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B3999%20Skincare%20Trial%20Pack!"
+            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
             target="_blank"
             rel="noopener noreferrer"
             className={`w-full py-3.5 text-xs tracking-[1.5px] uppercase flex justify-center items-center bg-accent text-accent-foreground border border-accent md:inline-flex md:w-auto md:px-10 md:py-4 md:min-w-[240px] ${isBn ? 'md:text-[16px] md:tracking-[1px] leading-[1.3]' : 'md:text-[12px] md:tracking-[2px] uppercase'} font-bold rounded-full relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.97] h-[48px] md:h-[52px] cursor-pointer btn-shimmer pulse-glow-accent shadow-[0_4px_20px_rgba(251,146,60,0.35)]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? '৳৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳999 Trial'}
+              {isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}
             </span>
           </MagneticButton>
 
