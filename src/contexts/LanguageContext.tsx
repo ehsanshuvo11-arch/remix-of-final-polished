@@ -222,21 +222,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Floating language toggle — steps aside while the mobile menu is open */}
-      {!showPopup && !transitioning && !mobileMenuOpen && (
-
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.4 }}
-          onClick={toggleLanguageWithCurtain}
-          disabled={curtain}
-          className="fixed bottom-[calc(env(safe-area-inset-bottom)+5.5rem)] right-4 md:bottom-7 md:right-7 z-[450] min-h-[44px] bg-primary/90 md:bg-primary backdrop-blur-md text-primary-foreground border border-primary-foreground/15 rounded-full px-4 py-2 md:px-5 md:py-2.5 text-[11px] md:text-xs tracking-[2px] flex items-center gap-1.5 md:gap-2 transition-all duration-300 shadow-[0_6px_24px_rgba(15,30,74,0.45)] md:shadow-[0_4px_20px_rgba(30,58,138,0.3)] hover:bg-accent hover:border-accent hover:-translate-y-0.5 active:scale-95 disabled:opacity-70 disabled:cursor-wait"
-        >
-          <Globe className="w-4 h-4" strokeWidth={1.5} />
-          <span>{lang === 'en' ? 'বাংলা' : 'English'}</span>
-        </motion.button>
-      )}
     </LanguageContext.Provider>
   );
 }

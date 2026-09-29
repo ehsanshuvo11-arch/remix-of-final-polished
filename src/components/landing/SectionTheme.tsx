@@ -48,7 +48,7 @@ export default function SectionTheme() {
     const THEMES: Record<string, { bg: string; fg: string }> = {
       light: { bg: baseBg, fg: baseFg },
       // Brand Navy + Off-white text — same tokens used by the loader curtain.
-      navy: { bg: '224 65% 33%', fg: '210 20% 98%' },
+      navy: { bg: '224 64% 33%', fg: '210 20% 98%' },
     };
 
     const sections = Array.from(

@@ -17,18 +17,16 @@
     --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --primary: 224 64% 33%; /* #1e3a8a - Polished Navy-Blue 60% */
+    --primary-foreground: 210 20% 98%; /* #f9fafb - Polished Off-White */
 
-    --primary: 224 65% 33%;
-    --primary-foreground: 210 20% 98%;
-
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 210 20% 98%; /* #f9fafb - Polished Off-White 30% */
+    --secondary-foreground: 224 64% 33%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 28 96% 61%;
+    --accent: 28 96% 61%; /* #fb923c - Polished Orange 10% */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -36,7 +34,7 @@
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 224 65% 33%;
+    --ring: 224 64% 33%;
 
     --radius: 0.125rem;
 
@@ -49,11 +47,11 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Custom tokens */
-    --polished-blue: 224 65% 33%;
-    --polished-orange: 28 96% 61%;
+    /* Custom tokens matching exact Brand Brief */
+    --polished-blue: 224 64% 33%; /* #1e3a8a */
+    --polished-orange: 28 96% 61%; /* #fb923c */
     --polished-dark-blue: 224 70% 18%;
-    --polished-light: 210 20% 98%;
+    --polished-light: 210 20% 98%; /* #f9fafb */
     --polished-muted: 215 16% 47%;
     --polished-border: 214 32% 91%;
     --polished-process-bg: 224 50% 96%;
@@ -170,7 +168,7 @@
       letter-spacing: 0;
       word-spacing: 0.04em;
     }
-    [lang="bn"]h1, [lang="bn"]h2, [lang="bn"]h3 {
+    [lang="bn"] h1, [lang="bn"] h2, [lang="bn"] h3 {
       line-height: 1.5;
     }
     /* Eyebrow / kicker labels: never below readable size */
@@ -195,9 +193,9 @@
       font-size: clamp(18px, 4.8vw, 22px) !important;
       line-height: 1.22 !important;
     }
-    [lang="bn"]h1 { font-size: clamp(24px, 6.6vw, 32px) !important; line-height: 1.45 !important; }
-    [lang="bn"]h2 { font-size: clamp(20px, 5.4vw, 27px) !important; line-height: 1.45 !important; }
-    [lang="bn"]h3 { font-size: clamp(17px, 4.4vw, 20px) !important; line-height: 1.5 !important; }
+    [lang="bn"] h1 { font-size: clamp(24px, 6.6vw, 32px) !important; line-height: 1.45 !important; }
+    [lang="bn"] h2 { font-size: clamp(20px, 5.4vw, 27px) !important; line-height: 1.45 !important; }
+    [lang="bn"] h3 { font-size: clamp(17px, 4.4vw, 20px) !important; line-height: 1.5 !important; }
 
     /* ── Accessible contrast on navy surfaces ──
        Faded body copy at 40–50% opacity failed WCAG AA against #1e3a8a.
@@ -611,6 +609,42 @@ body.admin-panel textarea {
 .hint-glow-pulse {
   animation: hintGlowPulse 2s ease-in-out;
   border-radius: 8px;
+}
+
+/* Luxury Button Shimmer & Border Glow Pulse */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(251, 146, 60, 0.35); }
+  50% { box-shadow: 0 0 35px rgba(251, 146, 60, 0.7); }
+}
+
+.pulse-glow-accent {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.btn-shimmer:hover::before {
+  left: 100%;
 }
 
 /* ============================================

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { triggerInquiry } from '@/lib/inquiry-events';
+import { openAuditModal } from '@/components/landing/VisualAuditModal';
 
 export default function RoasCalculator() {
   const [isBn, setIsBn] = useState(false);
@@ -72,7 +74,7 @@ export default function RoasCalculator() {
       ? "ভিজ্যুয়াল আপগ্রেডের মাধ্যমে সম্ভাব্য ১.৫% কনভার্শন বৃদ্ধির গাণিতিক অনুমানের ওপর ভিত্তি করে এই প্রজেকশনটি তৈরি।" 
       : "Projection is based on a mathematical estimate of a potential 1.5% conversion lift via visual upgrades.",
     
-    btn: isBn ? "লোকসান বন্ধ করুন" : "Stop Losing Money",
+    btn: isBn ? "লোকসান বন্ধ করুন (ফ্রি অডিট নিন)" : "Recover Lost Revenue (Get Free Audit)",
     currency: isBn ? "টাকা" : "BDT"
   };
 
@@ -80,35 +82,58 @@ export default function RoasCalculator() {
   const fontBody = isBn ? '"Noto Serif Bengali", sans-serif' : 'inherit';
 
   return (
-    <section className="py-28 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden">
+    <section className="py-16 md:py-28 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden">
       
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#fb923c] opacity-[0.03] rounded-bl-full pointer-events-none"></div>
 
-      <div className="max-w-6xl mx-auto px-6 md:px-14 relative z-10">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 md:px-14 relative z-10">
         
         {/* Header Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <span className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] mb-4" style={{ fontFamily: fontBody }}>
             {t.subtitle}
           </span>
-          <h2 className="text-[#1e3a8a] text-4xl md:text-5xl font-medium mb-6 leading-tight" style={{ fontFamily: fontPrimary }}>
+          <h2 className="text-[#1e3a8a] text-3xl md:text-5xl font-medium mb-4 md:mb-6 leading-tight" style={{ fontFamily: fontPrimary }}>
             {isBn ? (
               <>সাধারণ ভিজ্যুয়াল কি আপনার অ্যাড বাজেট <span className="text-[#fb923c] font-bold">নষ্ট</span> করছে?</>
             ) : (
               <>Is Poor Design <span className="text-[#fb923c] font-bold">Bleeding</span> Your Ad Budget?</>
             )}
           </h2>
-          <p className="text-[#1e3a8a]/70 text-base max-w-2xl mx-auto font-light" style={{ fontFamily: fontBody }}>
+          <p className="text-[#1e3a8a]/70 text-sm md:text-base max-w-2xl mx-auto font-light" style={{ fontFamily: fontBody }}>
             {t.desc}
           </p>
         </div>
 
         {/* Quiet Luxury Calculator Layout */}
-        <div className="flex flex-col lg:flex-row shadow-lg border border-[#1e3a8a]/10 bg-white">
+        <div className="flex flex-col lg:flex-row shadow-xl rounded-2xl overflow-hidden border border-[#1e3a8a]/10 bg-white">
           
           {/* LEFT COLUMN: INPUTS */}
-          <div className="w-full lg:w-1/2 p-10 md:p-14 bg-white relative">
-            <div className="space-y-12 relative z-10">
+          <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-14 bg-white relative">
+            
+            {/* Live Mobile Revenue Projection Banner — sticky real-time feedback */}
+            <div className="flex lg:hidden items-center justify-between p-4 rounded-xl bg-[#1e3a8a] text-white shadow-md border border-[#fb923c]/30 mb-8">
+              <div>
+                <span className="text-[10px] uppercase tracking-wider text-white/70 block font-medium">
+                  {t.lostRev}
+                </span>
+                <span className="text-2xl font-bold text-[#fb923c] tracking-tight" style={{ fontFamily: fontPrimary }}>
+                  {formatCurrency(revenueLost)} <span className="text-xs font-normal text-white/80">{t.currency}/mo</span>
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const resEl = document.getElementById('roas-results-panel');
+                  resEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }}
+                className="px-3.5 py-1.5 rounded-full bg-[#fb923c] text-white text-[10px] font-bold tracking-wider uppercase active:scale-95 shadow-sm"
+              >
+                Breakdown ↓
+              </button>
+            </div>
+
+            <div className="space-y-10 md:space-y-12 relative z-10">
               
               {/* Input 1 */}
               <div className="group">
@@ -136,6 +161,30 @@ export default function RoasCalculator() {
                   onChange={(e) => setAdSpend(Number(e.target.value))}
                   className="w-full h-[3px] bg-[#1e3a8a]/10 appearance-none cursor-pointer accent-[#fb923c]"
                 />
+                {/* Budget Quick Preset Pills */}
+                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pt-2.5">
+                  <span className="text-[10px] text-muted-foreground mr-1 uppercase tracking-wider shrink-0">Preset:</span>
+                  {[
+                    { label: '৳100K', val: 100000 },
+                    { label: '৳300K', val: 300000 },
+                    { label: '৳500K', val: 500000 },
+                    { label: '৳1M', val: 1000000 },
+                    { label: '৳2.5M', val: 2500000 }
+                  ].map((preset) => (
+                    <button
+                      key={preset.val}
+                      type="button"
+                      onClick={() => setAdSpend(preset.val)}
+                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all shrink-0 ${
+                        adSpend === preset.val
+                          ? 'bg-[#1e3a8a] text-white shadow-sm'
+                          : 'bg-[#1e3a8a]/5 text-[#1e3a8a]/80 hover:bg-[#1e3a8a]/10'
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Input 2 */}
@@ -226,7 +275,7 @@ export default function RoasCalculator() {
           </div>
 
           {/* RIGHT COLUMN: RESULTS */}
-          <div className="w-full lg:w-1/2 p-10 md:p-14 bg-[#1e3a8a] text-[#f9fafb] flex flex-col justify-between relative overflow-hidden">
+          <div id="roas-results-panel" className="w-full lg:w-1/2 p-6 sm:p-10 md:p-14 bg-[#1e3a8a] text-[#f9fafb] flex flex-col justify-between relative overflow-hidden">
             
             <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#fb923c] opacity-[0.05] rounded-tl-full pointer-events-none"></div>
 
@@ -261,19 +310,21 @@ export default function RoasCalculator() {
               </p>
             </div>
 
-            {/* Accent Color Button */}
-            {/* Accent Color Button with Smooth Scroll */}
+            {/* Accent Color Button with Smooth Scroll and Lead Prefill */}
             <button 
+              type="button"
               onClick={() => {
-                const contactSection = document.getElementById('contact');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                  // Fallback: If contact section is not found, scroll to bottom
-                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                }
+                triggerInquiry({
+                  revenueLost: `${formatCurrency(revenueLost)} ${t.currency}`,
+                  budget: adSpend >= 300000 ? '50k-plus' : '20k-50k',
+                  note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}. Requesting a visual teardown & conversion upgrade plan.`
+                });
+                openAuditModal({
+                  source: 'ROAS Diagnostic Calculator',
+                  note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}.`
+                });
               }}
-              className="w-full bg-[#fb923c] hover:bg-[#e8812c] text-white py-5 px-8 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors flex items-center justify-center gap-3 relative z-10 shadow-[0_4px_20px_rgba(251,146,60,0.3)] hover:shadow-[0_8px_30px_rgba(251,146,60,0.5)] border border-[#fb923c]/50 cursor-pointer" 
+              className="w-full bg-[#fb923c] hover:bg-[#fb923c]/90 text-white py-4 md:py-5 px-6 md:px-8 rounded-full md:rounded-sm font-bold text-[11px] uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-3 relative z-10 shadow-[0_4px_20px_rgba(251,146,60,0.3)] hover:shadow-[0_8px_30px_rgba(251,146,60,0.5)] border border-[#fb923c]/50 cursor-pointer active:scale-[0.98] btn-shimmer" 
               style={{ fontFamily: fontBody }}
             >
               {t.btn}

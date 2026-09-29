@@ -334,6 +334,13 @@ export interface PricingTier {
   cta_en: string;
   cta_bn: string;
   featured?: boolean;
+  price_en?: string;
+  price_bn?: string;
+  outcome_tag_en?: string;
+  outcome_tag_bn?: string;
+  deliverables_en?: string[];
+  deliverables_bn?: string[];
+  whatsapp_url?: string;
 }
 
 export interface PricingContent {

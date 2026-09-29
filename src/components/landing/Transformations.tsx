@@ -83,12 +83,23 @@ interface SliderProps {
   afterLabel: string;
 }
 
+const SLIDER_SPRING = { type: 'spring', stiffness: 260, damping: 30, mass: 0.7 } as const;
+
 export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: SliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(50); // percentage 0-100
   const clipPath = useTransform(x, (v) => `inset(0 ${100 - v}% 0 0)`);
   const handleLeft = useTransform(x, (v) => `${v}%`);
   const [dragging, setDragging] = useState(false);
+  const [currentPct, setCurrentPct] = useState(50);
+
+  // Sync state for button highlight
+  useEffect(() => {
+    const unsub = x.on('change', (v) => {
+      setCurrentPct(Math.round(v));
+    });
+    return unsub;
+  }, [x]);
 
   const setFromClientX = useCallback((clientX: number) => {
     const el = containerRef.current;
@@ -98,97 +109,142 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
     x.set(Math.max(0, Math.min(100, pct)));
   }, [x]);
 
-  const startDrag = useCallback((clientX: number) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {}
     setDragging(true);
-    setFromClientX(clientX);
-  }, [setFromClientX]);
+    setFromClientX(e.clientX);
+  };
 
-  const stopDrag = useCallback(() => setDragging(false), []);
-
-  useEffect(() => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragging) return;
-    const onMove = (e: MouseEvent) => {
-      setFromClientX(e.clientX);
-    };
-    const onUp = () => stopDrag();
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-    };
-  }, [dragging, setFromClientX, stopDrag]);
+    setFromClientX(e.clientX);
+  };
 
-  // Subtle entrance teaser: animate from 60 -> 50 once visible
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {}
+    setDragging(false);
+  };
+
+  const animateTo = (val: number) => {
+    animate(x, val, SLIDER_SPRING);
+  };
+
+  // Subtle entrance teaser: animate from 62 -> 50 once visible
   useEffect(() => {
     const controls = animate(x, 50, { duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 });
     x.set(62);
     return controls.stop;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [x]);
 
   return (
-    <m.div
-      ref={containerRef}
-      onMouseDown={(e) => startDrag(e.clientX)}
-      style={{ touchAction: 'pan-y' }}
-      className="relative w-full overflow-hidden rounded-sm border border-primary/10 select-none touch-pan-y aspect-[16/10] cursor-ew-resize bg-primary/5"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '50px' }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {/* AFTER (base) */}
-      <img
-        src={after}
+    <div className="flex flex-col gap-3">
+      <m.div
+        ref={containerRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        style={{ touchAction: 'pan-y' }}
+        className="relative w-full overflow-hidden rounded-2xl md:rounded-sm border border-primary/10 select-none touch-pan-y aspect-[4/3] sm:aspect-[16/10] cursor-ew-resize bg-primary/5"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '50px' }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {/* AFTER (base) */}
+        <img
+          src={after}
           srcSet={buildSrcSet(after)}
           sizes="(max-width: 767px) 92vw, 1100px"
-        alt={`${afterLabel} — POLISHED premium brand transformation (after)`}
-        loading="lazy"
-        decoding="async"
-        draggable={false}
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-      />
-      {/* BEFORE (clipped overlay) */}
-      <m.div
-        style={{ clipPath }}
-        className="absolute inset-0"
-      >
-        <img
-          src={before}
-          srcSet={buildSrcSet(before)}
-          sizes="(max-width: 767px) 92vw, 1100px"
-          alt={`${beforeLabel} — original brand visual before POLISHED transformation`}
+          alt={`${afterLabel} — POLISHED premium brand transformation (after)`}
           loading="lazy"
           decoding="async"
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
+        {/* BEFORE (clipped overlay) */}
+        <m.div
+          style={{ clipPath }}
+          className="absolute inset-0"
+        >
+          <img
+            src={before}
+            srcSet={buildSrcSet(before)}
+            sizes="(max-width: 767px) 92vw, 1100px"
+            alt={`${beforeLabel} — original brand visual before POLISHED transformation`}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          />
+        </m.div>
+
+        {/* Labels */}
+        <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[2px] uppercase font-heading italic bg-primary/85 text-primary-foreground backdrop-blur-md rounded-full md:rounded-sm shadow-md">
+          {beforeLabel}
+        </span>
+        <span className="absolute top-4 right-4 px-3 py-1.5 text-[10px] tracking-[2px] uppercase font-heading italic bg-accent/90 text-accent-foreground backdrop-blur-md rounded-full md:rounded-sm shadow-md">
+          {afterLabel}
+        </span>
+
+        {/* Drag handle */}
+        <m.div
+          style={{ left: handleLeft }}
+          className="absolute top-0 bottom-0 w-0.5 bg-primary-foreground pointer-events-none -translate-x-1/2 shadow-[0_0_20px_rgba(255,255,255,0.8)]"
+        >
+          <div
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-primary-foreground/95 border border-primary/20 shadow-2xl flex items-center justify-center transition-transform duration-300 ${
+              dragging ? 'scale-115 shadow-[0_0_25px_rgba(251,146,60,0.5)]' : 'scale-100'
+            }`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary">
+              <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+            </svg>
+          </div>
+        </m.div>
       </m.div>
 
-      {/* Labels */}
-      <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-primary/80 text-primary-foreground md:backdrop-blur-sm rounded-sm">
-        {beforeLabel}
-      </span>
-      <span className="absolute top-4 right-4 px-3 py-1.5 text-[10px] tracking-[3px] uppercase font-heading italic bg-accent/90 text-accent-foreground md:backdrop-blur-sm rounded-sm">
-        {afterLabel}
-      </span>
-
-      {/* Drag handle */}
-      <m.div
-        style={{ left: handleLeft }}
-        className="absolute top-0 bottom-0 w-px bg-primary-foreground/90 pointer-events-none -translate-x-1/2 shadow-[0_0_20px_rgba(255,255,255,0.6)]"
-      >
-        <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary-foreground/95 border border-primary/20 shadow-xl flex items-center justify-center transition-transform duration-300 ${
-            dragging ? 'scale-110' : 'scale-100'
+      {/* Segmented Quick Comparison Switcher for Mobile */}
+      <div className="flex md:hidden items-center justify-between gap-2 p-1.5 rounded-full bg-primary/5 border border-primary/10 self-center mt-1">
+        <button
+          type="button"
+          onClick={() => animateTo(0)}
+          className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+            currentPct <= 10
+              ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-primary">
-            <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
-          </svg>
-        </div>
-      </m.div>
-    </m.div>
+          {beforeLabel}
+        </button>
+        <button
+          type="button"
+          onClick={() => animateTo(50)}
+          className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+            currentPct > 35 && currentPct < 65
+              ? 'bg-accent text-accent-foreground font-semibold shadow-[0_2px_10px_rgba(251,146,60,0.3)]'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          50 / 50 Split
+        </button>
+        <button
+          type="button"
+          onClick={() => animateTo(100)}
+          className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+            currentPct >= 90
+              ? 'bg-accent text-accent-foreground font-semibold shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          {afterLabel}
+        </button>
+      </div>
+    </div>
   );
 }

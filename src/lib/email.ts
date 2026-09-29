@@ -21,9 +21,12 @@ export interface InquiryEmailPayload {
   client_name: string;
   brand_name: string;
   email: string;
+  whatsapp?: string;
+  service_type?: string;
   store_url?: string | null;
   budget_range: string;
   project_details: string;
+  diagnosed_revenue_loss?: string;
 }
 
 /**
@@ -42,16 +45,27 @@ export async function sendInquiryEmail(
 ): Promise<{ ok: boolean; status?: number; text?: string; error?: unknown }> {
   ensureInit();
 
+  const metaSections: string[] = [];
+  if (payload.whatsapp) metaSections.push(`WhatsApp / Phone: ${payload.whatsapp}`);
+  if (payload.service_type) metaSections.push(`Selected Service: ${payload.service_type}`);
+  if (payload.diagnosed_revenue_loss) metaSections.push(`Diagnosed Revenue Loss: ${payload.diagnosed_revenue_loss}`);
+
+  const compiledDetails = metaSections.length > 0
+    ? `${metaSections.join('\n')}\n\nProject Scope & Notes:\n${payload.project_details}`
+    : payload.project_details;
+
   const templateParams: Record<string, string> = {
     client_name: payload.client_name,
     brand_name: payload.brand_name,
     email: payload.email,
+    whatsapp: payload.whatsapp || 'Not provided',
+    service_type: payload.service_type || 'General Inquiry',
     reply_to: payload.email,
     from_name: payload.client_name,
     from_email: payload.email,
     store_url: payload.store_url || 'Not provided',
     budget_range: payload.budget_range,
-    project_details: payload.project_details,
+    project_details: compiledDetails,
     submitted_at: new Date().toLocaleString(),
     to_email: 'polished.bd@gmail.com',
   };

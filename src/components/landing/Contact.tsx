@@ -72,7 +72,7 @@ export default function Contact({ contact }: ContactProps) {
       <div className="py-10 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
         <hr className="border-t border-white/10" />
       </div>
-      <div className="py-16 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
+      <div className="py-12 md:py-[110px] px-5 sm:px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
         <div>
           <MotionReveal>
             {isBn ? (
@@ -129,6 +129,60 @@ export default function Contact({ contact }: ContactProps) {
                 </a>
               </MotionReveal>
             ))}
+          </div>
+
+          {/* Partnership Process Roadmap */}
+          <div className="mt-12 pt-8 border-t border-white/10">
+            <p className="text-[10px] tracking-[2px] uppercase text-accent font-semibold mb-4">
+              {isBn ? 'ইনকোয়ারির পরবর্তী ৩টি ধাপ' : 'What Happens Next'}
+            </p>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  1
+                </span>
+                <div>
+                  <p className="text-xs font-medium text-primary-foreground">
+                    {isBn ? 'ব্যক্তিগত অ্যাসেট রিভিউ' : 'Store & Visual Audit'}
+                  </p>
+                  <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
+                    {isBn
+                      ? '২৪ ঘণ্টার মধ্যে ক্রিয়েটিভ ডিরেক্টর আপনার পেজ ও বিজ্ঞাপনের ভিজ্যুয়াল পর্যালোচনা করবেন।'
+                      : 'Our Creative Director personally audits your Instagram, store UI, and current creatives.'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  2
+                </span>
+                <div>
+                  <p className="text-xs font-medium text-primary-foreground">
+                    {isBn ? '৫-মিনিটের ফ্রি ভিডিও টিয়ারডাউন' : '5-Minute Custom Teardown'}
+                  </p>
+                  <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
+                    {isBn
+                      ? 'কোথায় গ্রাহক ড্রপ হচ্ছে এবং কীভাবে কনভার্শন বাড়ানো যায় তা ভিডিওতে দেখিয়ে দেওয়া হবে।'
+                      : 'We send you a custom video teardown via WhatsApp highlighting exact CAC bottlenecks.'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  3
+                </span>
+                <div>
+                  <p className="text-xs font-medium text-primary-foreground">
+                    {isBn ? 'টেইলার্ড স্প্রিন্ট প্রপোজাল' : 'Guaranteed Sprint Roadmap'}
+                  </p>
+                  <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
+                    {isBn
+                      ? 'নির্দিষ্ট ডেলিভারিবল, ৭ দিনের টাইমলাইন এবং ROI ফোকাসড বাজেট চূড়ান্ত করা হয়।'
+                      : 'Clear deliverables, transparent investment, and a 7-day sprint timeline.'}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

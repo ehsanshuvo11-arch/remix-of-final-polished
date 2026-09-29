@@ -35,6 +35,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       lerp: 0.16,
     });
     lenisInstance = lenis;
+    (window as any).__lenis = lenis;
 
     let frame = 0;
     function raf(time: number) {

@@ -349,17 +349,15 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
           className="absolute top-0 bottom-0 w-px bg-[#f9fafb] pointer-events-none -translate-x-1/2 md:backdrop-blur-[2px] shadow-[0_0_24px_rgba(249,250,251,0.55)]"
         >
           <div
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-accent flex items-center justify-center transition-all duration-300 ease-out ${
-              dragging
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-accent flex items-center justify-center transition-all duration-300 ease-out ${dragging
                 ? 'scale-110 shadow-[0_0_32px_rgba(251,146,60,0.75),0_10px_30px_rgba(251,146,60,0.35)]'
                 : 'scale-100 shadow-[0_8px_24px_rgba(251,146,60,0.45)] group-hover:scale-110 group-hover:shadow-[0_0_28px_rgba(251,146,60,0.65),0_10px_28px_rgba(251,146,60,0.35)]'
-            }`}
+              }`}
           >
             {/* Soft halo that breathes while the user drags */}
             <span
-              className={`absolute inset-0 rounded-full bg-accent/30 transition-transform duration-500 ease-out ${
-                dragging ? 'scale-[1.6] opacity-100' : 'scale-100 opacity-0'
-              }`}
+              className={`absolute inset-0 rounded-full bg-accent/30 transition-transform duration-500 ease-out ${dragging ? 'scale-[1.6] opacity-100' : 'scale-100 opacity-0'
+                }`}
             />
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="relative text-primary-foreground">
               <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
@@ -385,9 +383,8 @@ function EvolutionSlider({ before, after, beforeLabel, afterLabel, hint }: Slide
                 aria-pressed={active}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-                className={`relative min-h-[44px] px-4 md:px-5 rounded-full text-[9px] md:text-[10px] tracking-[1.5px] md:tracking-[2px] uppercase font-medium whitespace-nowrap transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                  active ? 'text-accent-foreground' : 'text-primary/60 hover:text-primary'
-                }`}
+                className={`relative min-h-[44px] px-4 md:px-5 rounded-full text-[9px] md:text-[10px] tracking-[1.5px] md:tracking-[2px] uppercase font-medium whitespace-nowrap transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${active ? 'text-accent-foreground' : 'text-primary/60 hover:text-primary'
+                  }`}
               >
                 {active && (
                   <m.span

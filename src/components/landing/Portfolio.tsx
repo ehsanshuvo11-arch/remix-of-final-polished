@@ -6,11 +6,8 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
-import PremiumImage from '@/components/landing/PremiumImage';
-import SwipeProgress from '@/components/landing/SwipeProgress';
 import PremiumSkeleton from '@/components/landing/Skeleton';
 import { buildSrcSet, resolveStorageUrl } from '@/lib/image';
-import { useDragScroll } from '@/hooks/use-drag-scroll';
 
 
 
@@ -29,8 +26,6 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
-  const trackRef = useRef<HTMLDivElement>(null);
-  useDragScroll(trackRef);
 
   const defaultProjects: PortfolioProject[] = [
     { id: '1', sort_order: 1, title_en: 'Add Your Featured Project', title_bn: 'ফিচার্ড প্রজেক্ট যোগ করুন', category_en: 'Social Media Design', category_bn: 'সোশ্যাল মিডিয়া ডিজাইন', image_url: '', case_study_en: '', case_study_bn: '', hook_en: '', hook_bn: '', pdf_url_en: '', pdf_url_bn: '' },
@@ -56,18 +51,28 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         )}
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
-          {isBn ? (
-            <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
-          ) : (
-            <>
-              <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
-              <em className="italic">
-                <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
-              </em>
-            </>
-          )}
-        </h2>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7">
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
+            {isBn ? (
+              <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
+            ) : (
+              <>
+                <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
+                <em className="italic">
+                  <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
+                </em>
+              </>
+            )}
+          </h2>
+
+          {/* Quick Counter for Mobile */}
+          <div className="flex md:hidden items-center gap-2 self-start">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] uppercase font-mono tracking-[2px] bg-accent/10 border border-accent/20 text-accent">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              {displayProjects.length} {isBn ? 'টি সিগনেচার প্রজেক্ট' : 'Curated Works'}
+            </span>
+          </div>
+        </div>
       </MotionReveal>
 
       <AnimatePresence mode="wait" initial={false}>
@@ -88,23 +93,21 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            ref={trackRef}
-            className="flex flex-col w-full max-w-full mt-10 md:items-stretch md:gap-24"
+            className="flex flex-col gap-12 md:gap-24 items-stretch"
           >
             {displayProjects.map((project, i) => (
-              <ProjectCard key={project.id} project={project} index={i} isBn={isBn} />
+              <ProjectCard key={project.id} project={project} index={i} isBn={isBn} totalCount={displayProjects.length} />
             ))}
           </m.div>
         )}
       </AnimatePresence>
-      {!isLoading && <SwipeProgress containerRef={trackRef} count={displayProjects.length} />}
 
 
     </section>
   );
 }
 
-function ProjectCard({ project, index, isBn }: { project: PortfolioProject; index: number; isBn: boolean }) {
+function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioProject; index: number; isBn: boolean; totalCount?: number }) {
   const { data: labels } = useUILabels();
   const cardRef = useRef<HTMLDivElement>(null);
   const isFirst = index === 0;
@@ -153,171 +156,180 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
   }, []);
 
   return (
-    <MotionReveal delay={0.12 * index} className={`w-full mb-16 md:mb-0 md:min-w-0 md:max-w-none md:shrink md:snap-align-none ${imageExpanded ? 'overflow-visible' : ''}`}>
-    <div
-      data-project-card={isFirst ? '' : undefined}
-      className={imageExpanded ? 'relative overflow-visible' : 'relative'}
-    >
-      {/* Aspect-ratio lock: the collapsed card reserves its exact box before the
-          mockup arrives, so the grid never shifts or jumps while loading. */}
+    <MotionReveal delay={0.12 * index} className={`w-full max-w-none ${imageExpanded ? 'overflow-visible' : ''}`}>
       <div
-        ref={cardRef}
-        className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${
-  imageExpanded ? 'h-auto' : 'aspect-[21/9] w-full h-auto md:h-[260px]'
-}`}
-
-
-        onClick={() => {
-          toggleImageExpand();
-          if (!imageExpanded && cardRef.current) {
-            setTimeout(() => {
-              cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-          }
-        }}
+        data-project-card-wrapper
+        data-project-card={isFirst ? '' : undefined}
+        className={`p-4 md:p-0 rounded-2xl md:rounded-none bg-white/70 md:bg-transparent border border-primary/10 md:border-none shadow-sm md:shadow-none flex flex-col justify-between ${
+          imageExpanded ? 'relative overflow-visible' : 'relative'
+        }`}
       >
-        {project.image_url ? (
-          imageExpanded ? (
-            <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
-              {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10"></div>
-              <PremiumImage
+        {/* Mobile top meta badge */}
+        <div className="flex md:hidden items-center justify-between gap-2 mb-3">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] tracking-[1.5px] uppercase font-medium bg-primary/5 border border-primary/10 text-accent">
+            {category}
+          </span>
+          <span className="text-[11px] font-mono text-muted-foreground/60">
+            0{index + 1} {totalCount ? `/ 0${totalCount}` : ''}
+          </span>
+        </div>
+
+        {/* Aspect-ratio lock: responsive ratio prevents squashed mockups on mobile while maintaining desktop ratio */}
+        <div
+          ref={cardRef}
+          className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${imageExpanded ? 'h-auto' : 'aspect-[16/10] sm:aspect-[16/9] w-full h-auto md:aspect-[21/9] md:h-[260px]'
+            }`}
+
+
+          onClick={() => {
+            toggleImageExpand();
+            if (!imageExpanded && cardRef.current) {
+              setTimeout(() => {
+                cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 100);
+            }
+          }}
+        >
+          {project.image_url ? (
+            imageExpanded ? (
+              <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
+                {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10"></div>
+                <PremiumImage
+                  src={project.image_url}
+                  alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
+                  containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
+                  className="object-contain transform-gpu"
+                  sizes="(max-width: 767px) 92vw, 800px"
+                  fadeDuration={0.8}
+                  loading="eager"
+                  fetchPriority="high"
+                  imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
+                />
+
+              </div>
+            ) : (
+              <TiltImage
                 src={project.image_url}
                 alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
-                containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
-                className="object-contain transform-gpu"
-                sizes="(max-width: 767px) 92vw, 800px"
-                fadeDuration={0.8}
-                loading="eager"
-                fetchPriority="high"
-                imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
+                /* Only the first two cards sit near the fold — eager + high priority.
+                   Everything below stays lazy to protect first-load bandwidth. */
+                priority={index < 2}
               />
+            )
 
-            </div>
           ) : (
-            <TiltImage
-              src={project.image_url}
-              alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
-              /* Only the first two cards sit near the fold — eager + high priority.
-                 Everything below stays lazy to protect first-load bandwidth. */
-              priority={index < 2}
-            />
-          )
+            <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
+              <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
+                <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
+                <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
+              </svg>
+              <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
+                {title}
+              </span>
+            </div>
+          )}
+        </div>
 
-        ) : (
-          <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
-            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-              <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-              <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-              <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
-            </svg>
-            <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
-              {title}
-            </span>
-          </div>
+        {/* Hook text — displayed between image and buttons */}
+        {hook && (
+          <div
+            className="mt-4 px-1 font-sans text-sm md:text-base font-medium text-foreground/90 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
+            style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
+          />
         )}
-      </div>
 
-      {/* Hook text — displayed between image and buttons */}
-      {hook && (
-        <div
-          className="mt-4 px-1 font-sans text-base font-medium text-foreground/90 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
-          style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
-        />
-      )}
-
-      {/* Controls — ALWAYS visible */}
-      <div className="mt-3 px-1 flex flex-wrap justify-center md:justify-start items-center gap-4">
-        <button
-          onClick={toggleImageExpand}
-          lang={isBn ? 'bn' : 'en'}
-          className={`inline-flex items-center min-h-[44px] md:min-h-0 text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
-          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
-        >
-          {imageExpanded
-            ? (isBn ? (labels?.portfolioClickCollapseBn ?? 'সংকুচিত করতে ক্লিক করুন') : (labels?.portfolioClickCollapseEn ?? 'Click to collapse'))
-            : (isBn ? (labels?.portfolioClickExpandBn ?? 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন') : (labels?.portfolioClickExpandEn ?? 'Click image for full view'))}
-        </button>
-
-        <button
-          onClick={toggleCaseStudy}
-          lang={isBn ? 'bn' : 'en'}
-          className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-6 py-2.5 bg-accent text-accent-foreground font-medium rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 ${isBn ? 'text-[14px] tracking-normal' : 'text-[11px] tracking-[2px] uppercase'}`}
-          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
-        >
-          <span className="relative z-10 text-primary-foreground">
-            {caseStudyOpen
-              ? (isBn ? (labels?.portfolioHideCaseStudyBn ?? 'কেস স্টাডি লুকান') : (labels?.portfolioHideCaseStudyEn ?? 'Hide case study'))
-              : (isBn ? (labels?.portfolioViewCaseStudyBn ?? 'সম্পূর্ণ কেস স্টাডি দেখুন') : (labels?.portfolioViewCaseStudyEn ?? 'View full case study'))}
-          </span>
-        </button>
-
-        {hasMockups && (
+        {/* Controls — ALWAYS visible */}
+        <div className="mt-4 px-1 flex flex-wrap justify-between md:justify-start items-center gap-2.5 md:gap-4">
           <button
-            onClick={openLightbox}
+            onClick={toggleImageExpand}
             lang={isBn ? 'bn' : 'en'}
-            className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-5 py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+            className={`inline-flex items-center min-h-[44px] md:min-h-0 text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
           >
-            <span>{isBn ? (labels?.portfolioViewMockupsBn ?? 'প্রোজেক্ট মকআপ দেখুন') : (labels?.portfolioViewMockupsEn ?? 'View project mockups')}</span>
+            {imageExpanded
+              ? (isBn ? (labels?.portfolioClickCollapseBn ?? 'সংকুচিত করতে ক্লিক করুন') : (labels?.portfolioClickCollapseEn ?? 'Click to collapse'))
+              : (isBn ? (labels?.portfolioClickExpandBn ?? 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন') : (labels?.portfolioClickExpandEn ?? 'Click image for full view'))}
           </button>
-        )}
-      </div>
 
-      {/* Case study content */}
-      <AnimatePresence>
-        {caseStudyOpen && (
-          <m.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
+          <button
+            onClick={toggleCaseStudy}
+            lang={isBn ? 'bn' : 'en'}
+            className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-5 md:px-6 py-2 md:py-2.5 bg-accent text-accent-foreground font-medium rounded-full md:rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 ${isBn ? 'text-[14px] tracking-normal' : 'text-[11px] tracking-[2px] uppercase'}`}
+            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
           >
-            <div className="mt-4 pt-4 border-t border-border px-1">
-              <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
-                <p className="text-[11px] tracking-[2px] uppercase text-accent font-medium">
-                  Case Study
-                </p>
-                {/* Premium segmented pill toggle — quiet luxury */}
-                <div
-                  role="group"
-                  aria-label="Case study language"
-                  className="inline-flex items-center gap-1 p-1 rounded-full border border-white/10 bg-white/5 md:backdrop-blur-sm md:shadow-sm select-none"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setCaseStudyLang('en')}
-                    aria-pressed={!csIsBn}
-                    className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${
-                      !csIsBn
-                        ? 'bg-accent/15 text-accent font-semibold'
-                        : 'text-muted-foreground/70 hover:text-foreground'
-                    }`}
+            <span className="relative z-10 text-primary-foreground">
+              {caseStudyOpen
+                ? (isBn ? (labels?.portfolioHideCaseStudyBn ?? 'কেস স্টাডি লুকান') : (labels?.portfolioHideCaseStudyEn ?? 'Hide case study'))
+                : (isBn ? (labels?.portfolioViewCaseStudyBn ?? 'সম্পূর্ণ কেস স্টাডি দেখুন') : (labels?.portfolioViewCaseStudyEn ?? 'View full case study'))}
+            </span>
+          </button>
+
+          {hasMockups && (
+            <button
+              onClick={openLightbox}
+              lang={isBn ? 'bn' : 'en'}
+              className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-4 md:px-5 py-2 md:py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-full md:rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
+            >
+              <span>{isBn ? (labels?.portfolioViewMockupsBn ?? 'প্রোজেক্ট মকআপ দেখুন') : (labels?.portfolioViewMockupsEn ?? 'View project mockups')}</span>
+            </button>
+          )}
+        </div>
+
+        {/* Case study content */}
+        <AnimatePresence>
+          {caseStudyOpen && (
+            <m.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 pt-4 border-t border-border px-1">
+                <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
+                  <p className="text-[11px] tracking-[2px] uppercase text-accent font-medium">
+                    Case Study
+                  </p>
+                  {/* Premium segmented pill toggle — quiet luxury */}
+                  <div
+                    role="group"
+                    aria-label="Case study language"
+                    className="inline-flex items-center gap-1 p-1 rounded-full border border-primary/10 bg-primary/5 md:backdrop-blur-sm md:shadow-sm select-none"
                   >
-                    English
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCaseStudyLang('bn')}
-                    aria-pressed={csIsBn}
-                    lang="bn"
-                    style={{ fontFamily: "'Noto Serif Bengali', serif" }}
-                    className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${
-                      csIsBn
-                        ? 'bg-accent/15 text-accent font-semibold'
-                        : 'text-muted-foreground/70 hover:text-foreground'
-                    }`}
-                  >
-                    বাংলা
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setCaseStudyLang('en')}
+                      aria-pressed={!csIsBn}
+                      className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${!csIsBn
+                          ? 'bg-accent/15 text-accent font-semibold'
+                          : 'text-muted-foreground/70 hover:text-foreground'
+                        }`}
+                    >
+                      English
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCaseStudyLang('bn')}
+                      aria-pressed={csIsBn}
+                      lang="bn"
+                      style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+                      className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${csIsBn
+                          ? 'bg-accent/15 text-accent font-semibold'
+                          : 'text-muted-foreground/70 hover:text-foreground'
+                        }`}
+                    >
+                      বাংলা
+                    </button>
+                  </div>
                 </div>
-              </div>
-              {caseStudy && (
-                <div
-                  lang={csIsBn ? 'bn' : 'en'}
-                  className="prose prose-lg prose-invert max-w-none
+                {caseStudy && (
+                  <div
+                    lang={csIsBn ? 'bn' : 'en'}
+                    className="prose prose-lg prose-invert max-w-none
                     font-sans tracking-normal antialiased
                     text-foreground font-medium leading-loose
 
@@ -342,49 +354,49 @@ function ProjectCard({ project, index, isBn }: { project: PortfolioProject; inde
                     prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
                     prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
                   "
-                  style={{ fontFamily: csIsBn ? "'Noto Serif Bengali', serif" : 'Arial, Helvetica, sans-serif' }}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
+                    style={{ fontFamily: csIsBn ? "'Noto Serif Bengali', serif" : 'Arial, Helvetica, sans-serif' }}
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
+                  </div>
+                )}
+                {pdfUrl && (
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:bg-accent/20 active:scale-[0.97]"
+                  >
+                    📄 Download PDF
+                  </a>
+                )}
+                <div className="mt-5">
+                  <button
+                    onClick={() => setCaseStudyOpen(false)}
+                    className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
+                  >
+                    Show less
+                  </button>
                 </div>
-              )}
-              {pdfUrl && (
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:bg-accent/20 active:scale-[0.97]"
-                >
-                  📄 Download PDF
-                </a>
-              )}
-              <div className="mt-5">
-                <button
-                  onClick={() => setCaseStudyOpen(false)}
-                  className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
-                >
-                  Show less
-                </button>
               </div>
-            </div>
-          </m.div>
-        )}
-      </AnimatePresence>
-
-      {/* Premium Swipeable Lightbox Gallery */}
-      {hasMockups && createPortal(
-        <AnimatePresence>
-          {lightboxOpen && (
-            <MockupLightbox
-              urls={mockupUrls}
-              initialIndex={lightboxIndex}
-              title={title}
-              onClose={() => setLightboxOpen(false)}
-            />
+            </m.div>
           )}
-        </AnimatePresence>,
-        document.body
-      )}
-    </div>
+        </AnimatePresence>
+
+        {/* Premium Swipeable Lightbox Gallery */}
+        {hasMockups && createPortal(
+          <AnimatePresence>
+            {lightboxOpen && (
+              <MockupLightbox
+                urls={mockupUrls}
+                initialIndex={lightboxIndex}
+                title={title}
+                onClose={() => setLightboxOpen(false)}
+              />
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
+      </div>
     </MotionReveal>
   );
 }
@@ -554,7 +566,7 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
           lightbox never resizes while a heavy mockup downloads. Fades are plain
           CSS opacity transitions (compositor-only, zero main-thread work). */}
       <div className="relative flex items-center justify-center w-full flex-1 h-[80vh] px-4 md:px-12 transform-gpu will-change-transform [transform:translateZ(0)]">
-       <div className="relative flex items-center justify-center w-full h-full transform-gpu will-change-transform [transform:translateZ(0)]">
+        <div className="relative flex items-center justify-center w-full h-full transform-gpu will-change-transform [transform:translateZ(0)]">
           <div
             aria-hidden
             className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out"
@@ -630,11 +642,10 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
                 key={cleanUrl + i}
                 src={cleanUrl}
                 alt={`Project Mockup ${i + 1}`}
-                 loading="lazy"
-                 decoding="async"
-                 className={`absolute inset-0 w-full h-full object-contain transform-gpu will-change-transform [transform:translateZ(0)] transition-[opacity,transform] duration-500 ease-out ${
-                  isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
-                }`}
+                loading="lazy"
+                decoding="async"
+                className={`absolute inset-0 w-full h-full object-contain transform-gpu will-change-transform [transform:translateZ(0)] transition-[opacity,transform] duration-500 ease-out ${isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
+                  }`}
                 onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
                 onError={() => console.error('Portfolio lightbox image failed:', { raw: url, resolved: cleanUrl })}
               />
@@ -656,9 +667,8 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
               aria-label={`Go to mockup ${i + 1}`}
             >
               <span
-                className={`block h-2 rounded-full transition-all duration-300 ${
-                  i === current ? 'bg-accent w-6' : 'bg-primary-foreground/30 hover:bg-primary-foreground/50 w-2'
-                }`}
+                className={`block h-2 rounded-full transition-all duration-300 ${i === current ? 'bg-accent w-6' : 'bg-primary-foreground/30 hover:bg-primary-foreground/50 w-2'
+                  }`}
               />
             </button>
           ))}

@@ -5,6 +5,8 @@ import { getLenis } from '@/components/landing/SmoothScroll';
 import type { HeroContent } from '@/types/database';
 import RevealText from '@/components/landing/RevealText';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
+import { openAuditModal } from '@/components/landing/VisualAuditModal';
+import { Sparkles, ArrowRight } from 'lucide-react';
 
 interface HeroProps {
   content: HeroContent | null;
@@ -23,10 +25,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     title2En: '*Unmissable!*',
     titleBn: 'আপনার কালেকশন হোক',
     title2Bn: '*অনবদ্য!*',
-    eyebrowEn: 'Graphics Design Agency · Bangladesh',
-    eyebrowBn: 'গ্রাফিক্স ডিজাইন এজেন্সি · বাংলাদেশ',
-    subEn: 'We craft refined, trust-driven visual identities for skincare & self-care brands that deserve to be seen — and remembered.',
-    subBn: 'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা দেখা এবং মনে রাখার যোগ্য।',
+    eyebrowEn: 'Performance & Meta Ad Creative Agency · Bangladesh',
+    eyebrowBn: 'পার্ফরম্যান্স ও মেটা অ্যাড ক্রিয়েটিভ এজেন্সি · বাংলাদেশ',
+    subEn: "We don't just design aesthetic banners. We build high-converting Meta Ad creatives that slash your CPR and eliminate COD return risks for your skincare brand.",
+    subBn: "সুন্দর ডিজাইন অনেকেই দেয়, কিন্তু সেলস আনা সহজ নয়। আমাদের ডেটা-ড্রিভেন ডিজাইন আপনার মেটা অ্যাডের খরচ কমাবে এবং ক্যাশ-অন-ডেলিভারি (COD) রিটার্ন ঝুঁকি জিরো করবে।",
   };
 
   // Parallax on orbs — scroll + a whisper of pointer drift (desktop only)
@@ -85,7 +87,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
   return (
     <section
-      className="h-[100svh] min-h-[100svh] flex items-center justify-center relative overflow-hidden px-6 pt-0 pb-0 sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
+      className="min-h-[100svh] py-14 px-5 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
       {/* Animated grid */}
       <div
@@ -100,7 +102,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
       {/* Orbs — scroll + pointer parallax (transform driven from JS) */}
       <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.06) 0%, rgba(251,146,60,0.025) 35%, rgba(251,146,60,0) 70%)' }} />
-      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, rgba(99,102,241,0.02) 40%, rgba(99,102,241,0) 70%)' }} />
+      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(30,58,138,0.25) 0%, rgba(30,58,138,0.08) 40%, rgba(30,58,138,0) 70%)' }} />
 
       <div className="max-w-[900px] text-center relative z-10">
         <img
@@ -109,7 +111,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           width={100}
           height={100}
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="sync"
           className="hero-logo-breath w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{
@@ -118,10 +120,24 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both, heroLogoBreath 9s ease-in-out 1.4s infinite',
           }}
         />
-       <div className="w-full flex justify-center mt-4 mb-8 md:mt-0 md:mb-5">
+        <div className="w-full flex flex-col items-center justify-center mt-3 mb-6 md:mt-0 md:mb-5 gap-2.5">
+          {/* Subtle live availability pill */}
+          <div
+            className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-white/[0.06] border border-white/12 text-[10px] md:text-[11px] tracking-[1.5px] uppercase text-primary-foreground/90 font-medium"
+            style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s both' }}
+          >
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+            </span>
+            <span>
+              {isBn ? '৩টি পার্টনার স্লট বাকি • মার্চ স্প্রিন্ট' : '3 Partner Slots Remaining • March Sprint'}
+            </span>
+          </div>
+
           <p
             lang="en"
-            className="font-sans-eyebrow text-[8px] tracking-[0.35em] -mr-[0.35em] text-accent md:text-[11px] md:tracking-[4px] md:-mr-[4px] uppercase font-normal"
+            className="font-sans-eyebrow text-[9px] tracking-[0.3em] -mr-[0.3em] text-accent md:text-[11px] md:tracking-[4px] md:-mr-[4px] uppercase font-semibold"
             style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: '"Inter", sans-serif' }}
           >
             {hero.eyebrowEn}
@@ -172,24 +188,33 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-primary-foreground/55 leading-[1.65] md:leading-[1.7] tracking-[0.3px] max-w-[310px] md:max-w-[520px] mx-auto mb-8 md:mb-8 text-[13px] md:text-[15px] px-1 md:px-0"
+          className="block font-sans-body text-primary-foreground/75 leading-[1.65] md:leading-[1.7] tracking-[0.3px] max-w-[340px] md:max-w-[580px] mx-auto mb-8 md:mb-8 text-[13px] md:text-[15px] px-1 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
             animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both',
           }}
         >
-          {isBn
-            ? (hero.subBn ||
-              'আমরা প্রিমিয়াম স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ডের জন্য পরিশীলিত, বিশ্বাসযোগ্য ভিজ্যুয়াল আইডেন্টিটি তৈরি করি — যা আলাদাভাবে নজর কাড়ে এবং মানুষের মনে গেঁথে থাকে।')
-            : (hero.subEn ||
-              'We craft refined, trust-driven visual identities for skincare & self-care brands that deserve to be seen — and remembered.')}
+          {isBn ? hero.subBn : hero.subEn}
         </p>
 
-        <div className="flex flex-col-reverse w-full max-w-[300px] mx-auto gap-2.5 mt-0 mb-2 [&>div]:w-full md:[&>div]:w-auto md:flex-row md:w-auto md:max-w-none md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
+        <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
+          <MagneticButton
+            as="a"
+            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B3999%20Skincare%20Trial%20Pack!"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`w-full py-3.5 text-xs tracking-[1.5px] uppercase flex justify-center items-center bg-accent text-accent-foreground border border-accent md:inline-flex md:w-auto md:px-10 md:py-4 md:min-w-[240px] ${isBn ? 'md:text-[16px] md:tracking-[1px] leading-[1.3]' : 'md:text-[12px] md:tracking-[2px] uppercase'} font-bold rounded-full relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.97] h-[48px] md:h-[52px] cursor-pointer btn-shimmer pulse-glow-accent shadow-[0_4px_20px_rgba(251,146,60,0.35)]`}
+          >
+            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+              {isBn ? '৳৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳999 Trial'}
+            </span>
+          </MagneticButton>
+
           <MagneticButton
             as="a"
             href="#work"
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               const el = document.getElementById('work');
               if (el) {
                 const lenis = getLenis();
@@ -197,30 +222,35 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`w-full py-2.5 text-[11px] tracking-widest uppercase flex justify-center items-center bg-transparent border-[1.5px] border-accent/50 text-accent md:text-xs md:tracking-[0.1em] md:py-4 md:bg-accent md:border-0 md:text-primary md:inline-flex md:w-auto md:px-11 md:py-4 md:min-w-[220px] ${isBn ? 'md:text-[17px] md:tracking-[1.5px] uppercase leading-[1.3]' : 'md:text-[13px] md:tracking-[2.5px] uppercase'} font-medium rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 md:hover:shadow-[0_12px_32px_rgba(251,146,60,0.4),inset_0_1px_0_rgba(255,255,255,0.35)] active:scale-[0.97] md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
+            className={`w-full py-3.5 text-xs tracking-[1.5px] uppercase flex justify-center items-center bg-white/5 backdrop-blur-sm border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-9 md:py-4 md:min-w-[200px] ${isBn ? 'md:text-[16px] md:tracking-[1px] leading-[1.3]' : 'md:text-[12px] md:tracking-[2px] uppercase'} font-semibold rounded-full relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 active:scale-[0.97] h-[48px] md:h-[52px]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'এক্সপ্লোর করুন' : (hero.viewWorkEn ?? 'View Our Work')}
+              {isBn ? 'অ্যাড প্রোটোটাইপ দেখুন' : 'View Ad Prototypes'}
             </span>
           </MagneticButton>
+        </div>
 
-          <MagneticButton
-            as="a"
-            href="#contact"
-            onClick={() => {
-              const el = document.getElementById('contact');
-              if (el) {
-                const lenis = getLenis();
-                if (lenis) lenis.scrollTo(el, { duration: 1.8, offset: 0 });
-                else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
-            className={`w-full py-2.5 text-[11px] tracking-widest uppercase flex justify-center items-center bg-accent text-primary border-0 md:text-xs md:tracking-[0.1em] md:py-4 md:bg-transparent md:text-accent md:border-[1.5px] md:border-accent/50 md:inline-flex md:w-auto md:px-11 md:py-4 md:min-w-[220px] ${isBn ? 'md:text-[17px] md:tracking-[1.5px] uppercase font-medium leading-[1.3]' : 'md:text-[13px] md:tracking-[2.5px] uppercase font-normal'} rounded-sm relative overflow-hidden transition-all duration-700 ease-out hover:-translate-y-1 md:hover:text-primary-foreground md:hover:border-accent md:hover:shadow-[0_8px_28px_rgba(251,146,60,0.3)] active:scale-[0.97] md:h-[52px] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 md:before:bg-accent before:scale-x-0 before:origin-left before:transition-transform before:duration-700 hover:before:scale-x-100`}
-          >
-            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'প্রজেক্ট শুরু করুন' : (hero.startProjectEn ?? 'Start a Project')}
+        {/* Social Proof & Metrics Strip */}
+        <div
+          className="w-full max-w-[700px] mx-auto mt-7 md:mt-9 pt-5 border-t border-primary-foreground/10 text-primary-foreground/75"
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.35s both' }}
+        >
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] md:text-xs">
+            <span className="flex items-center gap-1.5 font-medium text-primary-foreground/90">
+              <span className="text-accent font-bold">★</span>
+              <span>{isBn ? 'গড় ৩.২x ROAS বৃদ্ধি' : '3.2x Avg. ROAS Lift'}</span>
             </span>
-          </MagneticButton>
+            <span className="text-primary-foreground/20 hidden sm:inline">•</span>
+            <span className="flex items-center gap-1.5 font-medium text-primary-foreground/90">
+              <span className="text-accent font-bold">✦</span>
+              <span>{isBn ? '৩০+ প্রিমিয়াম D2C ব্র্যান্ড' : '30+ Premium Brands Scaled'}</span>
+            </span>
+            <span className="text-primary-foreground/20 hidden sm:inline">•</span>
+            <span className="flex items-center gap-1.5 font-medium text-primary-foreground/90">
+              <span className="text-accent font-bold">⚡</span>
+              <span>{isBn ? '৭ দিনে স্প্রিন্ট ডেলিভারি' : '7-Day Sprint Delivery'}</span>
+            </span>
+          </div>
         </div>
       </div>
 

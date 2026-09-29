@@ -11,7 +11,7 @@ interface SectionDividerProps {
  */
 function SectionDivider({ className = '' }: SectionDividerProps) {
   return (
-    <div className={`bg-primary ${className}`} aria-hidden>
+    <div className={`bg-transparent ${className}`} aria-hidden>
       <div className="max-w-[1200px] mx-auto px-6 md:px-14">
         <m.div
           initial={{ opacity: 0, scaleX: 0.4 }}
@@ -19,7 +19,7 @@ function SectionDivider({ className = '' }: SectionDividerProps) {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformOrigin: 'center' }}
-          className="h-px w-full bg-gradient-to-r from-transparent via-primary-foreground/15 to-transparent"
+          className="h-px w-full bg-gradient-to-r from-transparent via-primary/15 to-transparent"
         />
       </div>
     </div>

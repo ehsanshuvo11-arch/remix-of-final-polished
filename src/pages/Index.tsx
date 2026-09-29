@@ -4,6 +4,7 @@ import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
+import MarketGap from '@/components/landing/MarketGap';
 import Services from '@/components/landing/Services';
 const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
 const Pricing = lazy(() => import('@/components/landing/Pricing'));
@@ -12,15 +13,16 @@ const Contact = lazy(() => import('@/components/landing/Contact'));
 const Footer = lazy(() => import('@/components/landing/Footer'));
 const Evolution = lazy(() => import('@/components/landing/Evolution'));
 const Testimonials = lazy(() => import('@/components/landing/Testimonials'));
+const Transformations = lazy(() => import('@/components/landing/Transformations'));
+const RoasCalculator = lazy(() => import('@/components/landing/RoasCalculator'));
+import StickyConversionBar from '@/components/landing/StickyConversionBar';
+import VisualAuditModal from '@/components/landing/VisualAuditModal';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 import MobileActionBar from '@/components/landing/MobileActionBar';
-
 
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
 import SectionDivider from '@/components/landing/SectionDivider';
-const Transformations = lazy(() => import('@/components/landing/Transformations'));
-const RoasCalculator = lazy(() => import('@/components/landing/RoasCalculator'));
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
 import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent } from '@/types/database';
@@ -81,6 +83,8 @@ export default function Index() {
       <Marquee items={marqueeData?.items ?? []} />
       <About content={aboutContent ?? null} stats={stats} />
       <SectionDivider className="py-4" />
+      <MarketGap />
+      <SectionDivider className="py-4" />
       <Services services={services} content={servicesMeta ?? null} />
       <SectionDivider className="py-4" />
       <Suspense fallback={<SectionFallback />}>
@@ -97,6 +101,8 @@ export default function Index() {
         <Contact contact={contactContent ?? null} />
         <Footer footer={footerContent ?? null} />
       </Suspense>
+      <StickyConversionBar />
+      <VisualAuditModal />
       <MobileActionBar />
 
     </main>

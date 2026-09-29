@@ -9,7 +9,7 @@ interface ProcessProps {
 }
 
 export default function Process({ steps, content }: ProcessProps) {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
   const defaultSteps: ProcessStep[] = [
@@ -20,6 +20,8 @@ export default function Process({ steps, content }: ProcessProps) {
   ];
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
+
+
 
   // Process headings/labels locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
@@ -54,12 +56,68 @@ export default function Process({ steps, content }: ProcessProps) {
           )}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-10 mt-10 md:mt-14">
+        {/* Mobile Vertical Connected Timeline (100% Frictionless & Minimalist) */}
+        <div className="flex md:hidden flex-col gap-8 relative pl-6 border-l-2 border-primary/20 ml-3 my-8">
+          {displaySteps.map((step, i) => (
+            <MobileTimelineStep
+              key={step.id}
+              step={step}
+              index={i}
+              total={displaySteps.length}
+            />
+          ))}
+        </div>
+
+        {/* Desktop 4-column Grid */}
+        <div className="hidden md:grid md:grid-cols-4 gap-6 md:gap-10 mt-10 md:mt-14">
           {displaySteps.map((step, i) => (
             <StepCard key={step.id} step={step} index={i} />
           ))}
         </div>
       </section>
+    </div>
+  );
+}
+
+function MobileTimelineStep({ step, index, total }: { step: ProcessStep; index: number; total: number }) {
+  const { lang } = useLanguage();
+  const isBn = lang === 'bn';
+  const title = isBn ? (step.title_bn?.trim() || step.title_en) : step.title_en;
+  const desc = isBn ? (step.desc_bn?.trim() || step.desc_en) : step.desc_en;
+
+  const phaseLabels = [
+    { en: 'Phase 01 • Deep Audit', bn: 'পর্যায় ০১ • ব্র্যান্ড অডিট' },
+    { en: 'Phase 02 • Aesthetic System', bn: 'পর্যায় ০২ • ভিজ্যুয়াল সিস্টেম' },
+    { en: 'Phase 03 • Pixel Crafting', bn: 'পর্যায় ০৩ • হাই-কনভার্শন ডিজাইন' },
+    { en: 'Phase 04 • Multi-format Deploy', bn: 'পর্যায় ০৪ • রেডি ফাইল ডেলিভারি' },
+  ];
+  const phase = phaseLabels[index] || { en: `Phase 0${index + 1}`, bn: `পর্যায় ০${index + 1}` };
+
+  return (
+    <div className="relative group">
+      {/* Node indicator sitting on the timeline */}
+      <div className="absolute -left-[37px] top-0 w-6 h-6 rounded-full bg-primary border-2 border-accent text-accent text-[10px] font-mono font-bold flex items-center justify-center shadow-sm">
+        0{index + 1}
+      </div>
+
+      <div className="bg-white/80 rounded-xl p-5 border border-primary/10 shadow-sm transition-all duration-300">
+        <span className="inline-block text-[10px] tracking-[2px] uppercase text-accent font-semibold mb-2">
+          {isBn ? phase.bn : phase.en}
+        </span>
+        <h3
+          lang={isBn ? 'bn' : 'en'}
+          className="font-heading text-xl font-medium text-primary mb-2 leading-snug"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+        >
+          {title}
+        </h3>
+        <p
+          lang={isBn ? 'bn' : 'en'}
+          className={`text-[13px] leading-[1.75] text-muted-foreground ${isBn ? 'leading-[1.8]' : ''}`}
+        >
+          {desc}
+        </p>
+      </div>
     </div>
   );
 }

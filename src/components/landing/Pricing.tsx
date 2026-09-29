@@ -1,21 +1,16 @@
-import { useRef } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
-import SwipeProgress from '@/components/landing/SwipeProgress';
-import { useDragScroll } from '@/hooks/use-drag-scroll';
 import { PricingSkeleton } from '@/components/landing/Skeleton';
-import { ArrowRight } from 'lucide-react';
+import { triggerInquiry } from '@/lib/inquiry-events';
+import { ArrowRight, Check } from 'lucide-react';
 import { useSiteSetting } from '@/hooks/use-site-content';
 import { DEFAULT_PRICING } from '@/lib/pricing-defaults';
 import type { PricingContent, PricingTier } from '@/types/database';
 
-
 export default function Pricing({ isLoading = false }: { isLoading?: boolean }) {
   const { lang } = useLanguage();
-  const trackRef = useRef<HTMLDivElement>(null);
-  useDragScroll(trackRef);
   const { data: cms } = useSiteSetting<PricingContent>('pricing');
 
   const content: PricingContent = { ...DEFAULT_PRICING, ...(cms ?? {}) };
@@ -41,13 +36,25 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
   const isBn = lang === 'bn';
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
 
-
-
-  const scrollToContact = () => {
-    const el = document.getElementById('contact');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleTierClick = (tier: PricingTier) => {
+    if (tier.whatsapp_url) {
+      window.open(tier.whatsapp_url, '_blank', 'noopener,noreferrer');
+      return;
     }
+    const budget = tier.id === 'trial-pack' ? 'under-20k' : '20k-50k';
+    triggerInquiry({
+      service: tier.title_en,
+      budget,
+      note: `Interested in the ${tier.title_en} (${tier.target_en}) package.`
+    });
+  };
+
+  const handleCustomQuote = () => {
+    triggerInquiry({
+      service: 'Custom Bespoke Solution',
+      budget: '50k-plus',
+      note: 'Inquiry for a bespoke visual strategy and dedicated design partnership.'
+    });
   };
 
   return (
@@ -75,11 +82,10 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
         <h2
           lang={isBn ? 'bn' : 'en'}
-          className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${
-            isBn
+          className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn
               ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]'
               : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'
-          }`}
+            }`}
         >
           {isBn ? (
             <>
@@ -119,25 +125,8 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* Mobile-only: native horizontal swipe carousel */}
-              <div
-                ref={trackRef}
-                 className="flex md:hidden w-full max-w-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory scrollbar-hide cursor-grab touch-auto gap-4 pb-6 -mx-6 px-6 mt-10 [-webkit-overflow-scrolling:touch]"
-              >
-                {pricingTiers.map((tier, index) => (
-                  <TierCard
-                    key={tier.id}
-                    tier={tier}
-                    index={index}
-                    isBn={isBn}
-                    variant="mobile"
-                    onCtaClick={scrollToContact}
-                  />
-                ))}
-              </div>
-
-              {/* Desktop: unchanged three-column grid */}
-              <div className="hidden md:grid md:grid-cols-3 md:gap-8 md:mt-14">
+              {/* Responsive Pricing Grid: Clean Vertical Stack on Mobile, 3-Col Grid on Desktop */}
+              <div className={`grid grid-cols-1 md:gap-8 mt-8 md:mt-14 gap-6 ${pricingTiers.length === 2 ? 'md:grid-cols-2 max-w-[940px] mx-auto' : 'md:grid-cols-3'}`}>
                 {pricingTiers.map((tier, index) => (
                   <TierCard
                     key={tier.id}
@@ -145,29 +134,48 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
                     index={index}
                     isBn={isBn}
                     variant="desktop"
-                    onCtaClick={scrollToContact}
+                    onCtaClick={() => handleTierClick(tier)}
                   />
                 ))}
               </div>
             </m.div>
           )}
         </AnimatePresence>
-        {!isLoading && (
-          <SwipeProgress containerRef={trackRef} count={pricingTiers.length} tone="light" />
-        )}
-
-
-
 
         <div className="mt-10 md:mt-20">
           <MotionReveal>
-            <CustomBanner isBn={isBn} onCtaClick={scrollToContact} customContent={customContent} />
+            <CustomBanner isBn={isBn} onCtaClick={handleCustomQuote} customContent={customContent} />
           </MotionReveal>
         </div>
       </div>
     </section>
   );
 }
+
+const TIER_FEATURES: Record<string, { en: string[]; bn: string[] }> = {
+  'trial-pack': {
+    en: [
+      '5 Premium Meta Ad Creatives',
+      'Bangla Sales Copy',
+    ],
+    bn: [
+      '৫টি প্রিমিয়াম মেটা অ্যাড ক্রিয়েটিভ',
+      'উচ্চ-কনভার্টিং বাংলা সেলস কপি',
+    ],
+  },
+  'growth-pack': {
+    en: [
+      '12 High-Converting Posts',
+      '1 Free Page Cover',
+      'Unlimited Minor Revisions',
+    ],
+    bn: [
+      '১২টি হাই-কনভার্টিং পোস্ট',
+      '১টি ফ্রি পেইজ কভার ডিজাইন',
+      'আনলিমিটেড মাইনর রিভিশন',
+    ],
+  },
+};
 
 function TierCard({
   tier,
@@ -186,58 +194,102 @@ function TierCard({
   const target = isBn ? tier.target_bn : tier.target_en;
   const desc = isBn ? tier.desc_bn : tier.desc_en;
   const cta = isBn ? tier.cta_bn : tier.cta_en;
+  const price = isBn ? (tier.price_bn ?? tier.price_en) : (tier.price_en ?? tier.price_bn);
+  const outcomeTag = isBn ? (tier.outcome_tag_bn ?? tier.outcome_tag_en) : (tier.outcome_tag_en ?? tier.outcome_tag_bn);
+
+  const deliverables = isBn
+    ? (tier.deliverables_bn ?? TIER_FEATURES[tier.id]?.bn ?? [])
+    : (tier.deliverables_en ?? TIER_FEATURES[tier.id]?.en ?? []);
 
   return (
     <MotionReveal
       delay={0.12 * (index + 1)}
-      className={variant === 'mobile' ? 'min-w-[85vw] max-w-[85vw] shrink-0 snap-center' : ''}
+      className={variant === 'mobile' ? 'snap-center shrink-0 w-[86vw] max-w-[345px]' : ''}
     >
       <div
-        className={`relative flex flex-col h-full p-6 md:p-10 transition-all duration-700 ease-out group hover:-translate-y-1 ${
-          tier.featured
-            ? 'bg-primary/80 border border-accent/40 ring-1 ring-accent/30 md:shadow-[0_0_60px_-12px_rgba(251,146,60,0.15)]'
-            : 'bg-primary/95 md:bg-primary/60 border border-primary-foreground/15 md:backdrop-blur-md hover:border-primary-foreground/25'
-        }`}
+        data-pricing-card
+        className={`relative flex flex-col h-full p-6 md:p-9 transition-all duration-700 ease-out group hover:-translate-y-1.5 ${
+          variant === 'mobile' ? 'rounded-2xl' : 'rounded-sm'
+        } ${tier.featured
+            ? 'bg-primary/90 border-2 border-accent/80 ring-1 ring-accent/40 shadow-[0_12px_40px_-12px_rgba(251,146,60,0.35)]'
+            : 'bg-primary/95 md:bg-primary/70 border border-primary-foreground/20 md:backdrop-blur-md hover:border-accent/50'
+          }`}
       >
         {tier.featured && (
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
+          <>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent/40 via-accent to-accent/40" />
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 bg-accent text-accent-foreground text-[9px] font-bold uppercase tracking-[2px] rounded-full shadow-md whitespace-nowrap">
+              {isBn ? 'সবচেয়ে জনপ্রিয়' : 'Most Popular'}
+            </div>
+          </>
         )}
-        <div className="mb-8">
+
+        {/* Business Outcome Tag */}
+        {outcomeTag && (
+          <div className="mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-accent/15 text-accent border border-accent/30 font-sans">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              {outcomeTag}
+            </span>
+          </div>
+        )}
+
+        <div className="mb-3">
           <div
-            className={`text-[10px] tracking-[2px] uppercase mb-3 font-medium ${
-              tier.featured ? 'text-accent' : 'text-primary-foreground/50'
-            }`}
+            className={`text-[10px] tracking-[2px] uppercase mb-1 font-semibold ${tier.featured ? 'text-accent' : 'text-primary-foreground/60'
+              }`}
           >
             {target}
           </div>
           <h3
             lang={isBn ? 'bn' : 'en'}
-            className={`font-heading text-2xl md:text-3xl font-normal text-primary-foreground leading-tight ${
-              isBn ? 'font-bangla' : ''
-            }`}
+            className={`font-heading text-2xl md:text-3xl font-bold text-primary-foreground leading-tight ${isBn ? 'font-bangla' : ''
+              }`}
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {title}
           </h3>
         </div>
+
+        {/* Price Display */}
+        {price && (
+          <div className="my-2 pb-4 border-b border-primary-foreground/10 flex items-baseline gap-2">
+            <span className="text-3xl md:text-4xl font-extrabold text-primary-foreground tracking-tight font-sans">
+              {price}
+            </span>
+          </div>
+        )}
+
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="text-[13px] leading-[1.75] text-primary-foreground/60 mb-8 flex-grow"
+          className="text-[13px] leading-[1.7] text-primary-foreground/70 mb-6 mt-2"
           style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }}
         >
           {desc}
         </p>
+
+        {/* Deliverables Check List */}
+        <ul className="space-y-3 mb-8 flex-grow">
+          {deliverables.map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2.5 text-xs text-primary-foreground/85 leading-relaxed font-medium">
+              <span className="text-accent font-bold mt-0.5 shrink-0 text-sm">✓</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+
         <button
           type="button"
           onClick={onCtaClick}
-          className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-sm text-[11px] font-medium transition-all duration-500 ease-out hover:-translate-y-0.5 active:scale-[0.97] ${
-            tier.featured
-              ? 'bg-accent text-accent-foreground tracking-[2px] uppercase hover:shadow-[0_10px_28px_rgba(251,146,60,0.35)]'
-              : 'border border-primary-foreground/20 text-primary-foreground tracking-[2px] uppercase hover:border-accent hover:bg-accent/10 hover:shadow-[0_6px_20px_rgba(251,146,60,0.2)]'
-          }`}
+          className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-4 ${
+            variant === 'mobile' ? 'rounded-full' : 'rounded-sm'
+          } text-[11px] font-bold cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.97] btn-shimmer ${tier.featured
+              ? 'bg-accent text-accent-foreground tracking-[2px] uppercase shadow-[0_4px_20px_rgba(251,146,60,0.35)] hover:shadow-[0_10px_32px_rgba(251,146,60,0.5)]'
+              : 'bg-accent/10 border border-accent/60 text-accent tracking-[2px] uppercase hover:bg-accent hover:text-accent-foreground hover:shadow-[0_6px_20px_rgba(251,146,60,0.3)]'
+            }`}
         >
           {cta}
-          <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+          <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
         </button>
       </div>
     </MotionReveal>
@@ -261,7 +313,7 @@ function CustomBanner({
   };
 }) {
   return (
-    <div className="relative overflow-hidden rounded-sm border border-primary-foreground/15 bg-primary p-8 md:p-12">
+    <div className="relative overflow-hidden rounded-2xl md:rounded-sm border border-primary-foreground/15 bg-primary p-8 md:p-12">
       {/* Subtle ambient orange glow — soft studio light */}
       <div
         aria-hidden
@@ -287,7 +339,7 @@ function CustomBanner({
         <button
           type="button"
           onClick={onCtaClick}
-          className="shrink-0 inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(251,146,60,0.35)] active:scale-[0.97]"
+          className="shrink-0 inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-full md:rounded-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(251,146,60,0.35)] active:scale-[0.97]"
         >
           {isBn ? customContent.cta_bn : customContent.cta_en}
           <ArrowRight className="w-4 h-4" strokeWidth={1.5} />

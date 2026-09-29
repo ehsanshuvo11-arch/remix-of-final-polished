@@ -181,7 +181,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-       className="relative bg-[#1e3a8a] text-primary-foreground overflow-x-clip py-24 md:py-32 px-6 md:px-14"
+      className="relative bg-[#1e3a8a] text-primary-foreground overflow-x-clip py-24 md:py-32 px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -211,8 +211,8 @@ export default function Testimonials() {
         {/* ── MOBILE: native scroll-snap swipe track ── */}
         <div
           ref={trackRef}
-           className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain touch-auto [scroll-padding-left:1.5rem]"
-           style={{ WebkitOverflowScrolling: 'touch' }}
+          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain touch-auto [scroll-padding-left:1.5rem]"
+          style={{ WebkitOverflowScrolling: 'touch' }}
         >
 
           {testimonials.map((t) => (
@@ -228,9 +228,8 @@ export default function Testimonials() {
             <span
               key={i}
               aria-hidden
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                i === mobileActive ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${i === mobileActive ? 'bg-accent w-5' : 'w-1.5 bg-primary-foreground/30'
+                }`}
               style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
             />
           ))}
@@ -240,7 +239,7 @@ export default function Testimonials() {
         <m.div
           ref={stageRef}
           drag="x"
-           dragDirectionLock={true}
+          dragDirectionLock={true}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.14}
           dragMomentum={false}
@@ -252,7 +251,7 @@ export default function Testimonials() {
           }}
           whileTap={{ cursor: 'grabbing' }}
           style={{ touchAction: 'pan-y' }}
-           className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu touch-pan-y">
+          className="hidden md:flex relative h-[340px] items-center justify-center overflow-visible cursor-grab active:cursor-grabbing select-none transform-gpu touch-pan-y">
           {testimonials.map((t, i) => {
             const offset = getOffset(i);
             const isActive = offset === 0;
@@ -301,9 +300,8 @@ export default function Testimonials() {
                 type="button"
                 onClick={() => goTo(i)}
                 aria-label={isBn ? `প্রশংসাপত্র ${i + 1}-এ যান` : `Go to testimonial ${i + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-500 ${
-                  i === active ? 'bg-accent w-8' : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
-                }`}
+                className={`h-2.5 rounded-full transition-all duration-500 ${i === active ? 'bg-accent w-8' : 'w-2.5 bg-primary-foreground/40 hover:bg-primary-foreground/70'
+                  }`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
               />
             ))}
@@ -336,11 +334,10 @@ function TestimonialCard({
 }) {
   return (
     <div
-      className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border md:backdrop-blur-md min-h-[260px] ${
-        dimmed
+      className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border md:backdrop-blur-md min-h-[260px] ${dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
           : 'bg-[#1e3a8a] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
-      }`}
+        }`}
     >
       <div className="flex items-center gap-1 mb-5">
         {Array.from({ length: 5 }).map((_, i) => (

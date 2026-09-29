@@ -1,24 +1,33 @@
 import { useEffect, useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { getLenis } from '@/components/landing/SmoothScroll';
+import { openAuditModal } from '@/components/landing/VisualAuditModal';
 
 export const MOBILE_MENU_EVENT = 'polished:toggle-menu';
 
 const LUXE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Thumb-zone dock for mobile only. Keeps the two actions people actually need
- * — navigation and "talk to us" — within one-handed reach at all times, so the
- * user never has to stretch to the top-right hamburger mid-page.
+ * Ultra-minimalist luxury thumb-zone conversion dock for mobile.
+ * Frictionless: Direct WhatsApp 1-tap + High-converting Free Audit CTA.
  */
 export default function MobileActionBar() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const [visible, setVisible] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Reveal once the hero is behind us; hide again at the very top.
+  // Listen for modal state to tuck dock away
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ open: boolean }>).detail;
+      if (detail) setIsModalOpen(detail.open);
+    };
+    window.addEventListener('polished:modal-state', handler);
+    return () => window.removeEventListener('polished:modal-state', handler);
+  }, []);
+
+  // Reveal once user scrolls past hero threshold; hide at very top.
   useEffect(() => {
     let frame = 0;
     let last = false;
@@ -26,7 +35,7 @@ export default function MobileActionBar() {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        const next = window.scrollY > window.innerHeight * 0.6;
+        const next = window.scrollY > window.innerHeight * 0.45;
         if (next !== last) {
           last = next;
           setVisible(next);
@@ -41,95 +50,63 @@ export default function MobileActionBar() {
     };
   }, []);
 
-  // Mirror the navbar's menu state so the dock icon reflects reality.
-  useEffect(() => {
-    const onState = (e: Event) => setMenuOpen((e as CustomEvent<boolean>).detail);
-    window.addEventListener('polished:menu-state', onState);
-    return () => window.removeEventListener('polished:menu-state', onState);
-  }, []);
-
   const tap = () => {
-    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate?.(8);
-  };
-
-  const scrollToId = (id: string) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const lenis = getLenis();
-    if (lenis) lenis.scrollTo(el, { duration: 1.6 });
-    else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate?.(10);
   };
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !isModalOpen && (
         <m.div
-          initial={{ y: 90, opacity: 0 }}
+          initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 90, opacity: 0 }}
-          transition={{ duration: 0.55, ease: LUXE }}
-          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-          className="md:hidden fixed bottom-0 inset-x-0 z-[400] px-4 pb-3 pt-2 pointer-events-none"
+          exit={{ y: 80, opacity: 0 }}
+          transition={{ duration: 0.45, ease: LUXE }}
+          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
+          className="md:hidden fixed bottom-0 inset-x-0 z-[400] px-4 pointer-events-none flex justify-center"
         >
-          <div className="pointer-events-auto mx-auto flex items-center gap-2 rounded-full border border-primary-foreground/12 bg-primary/95 p-1.5 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.55)]">
-            <button
-              type="button"
-              onClick={() => {
-                tap();
-                window.dispatchEvent(new Event(MOBILE_MENU_EVENT));
-              }}
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={menuOpen}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-primary-foreground/80 transition-colors duration-300 active:bg-primary-foreground/10 active:text-accent"
+          <div className="pointer-events-auto w-full max-w-[360px] mx-auto flex items-center justify-between gap-2.5 rounded-full border border-white/15 bg-primary/95 backdrop-blur-2xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.65)]">
+            {/* Direct WhatsApp Quick Chat */}
+            <a
+              href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20am%20interested%20in%20scaling%20my%20brand%27s%20visual%20identity."
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={tap}
+              aria-label="Direct WhatsApp"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30 transition-all duration-300 active:scale-95 hover:bg-[#25D366]/25"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                {menuOpen ? (
-                  <>
-                    <path d="M6 6l12 12" />
-                    <path d="M18 6L6 18" />
-                  </>
-                ) : (
-                  <>
-                    <path d="M4 7h16" />
-                    <path d="M4 12h16" />
-                    <path d="M4 17h16" />
-                  </>
-                )}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2a8 8 0 00-6.93 12L2 18l4.07-1.07A8 8 0 1010 2z" stroke="currentColor" strokeWidth="1.8"/>
+                <path d="M7.5 8.5s.5 1 1.5 2 2 1.5 2 1.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
               </svg>
-            </button>
+            </a>
 
+            {/* Primary Conversion Action: Claim Free Audit */}
             <button
               type="button"
               onClick={() => {
                 tap();
-                scrollToId('contact');
+                openAuditModal({ source: 'Mobile Action Bar' });
               }}
               lang={isBn ? 'bn' : 'en'}
-              className={`flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-accent px-4 font-medium text-accent-foreground transition-transform duration-200 active:scale-[0.97] ${
-                isBn ? 'text-[13px]' : 'text-[11px] uppercase tracking-[2px]'
-              }`}
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+              className="flex h-11 flex-1 items-center justify-between gap-2 rounded-full bg-accent px-4 text-accent-foreground font-bold tracking-wider uppercase transition-all duration-200 active:scale-[0.98] shadow-[0_4px_20px_rgba(251,146,60,0.4)] btn-shimmer"
             >
-              {isBn ? 'কথা বলুন' : "Let's Talk"}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </button>
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-85" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+                </span>
+                <span
+                  className={`text-[11px] font-extrabold truncate ${isBn ? 'text-[12px]' : ''}`}
+                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                >
+                  {isBn ? 'ফ্রি ক্রিয়েটিভ অডিট নিন' : 'CLAIM FREE AUDIT'}
+                </span>
+              </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                tap();
-                const lenis = getLenis();
-                if (lenis) lenis.scrollTo(0, { duration: 1.6 });
-                else window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              aria-label="Back to top"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-primary-foreground/80 transition-colors duration-300 active:bg-primary-foreground/10 active:text-accent"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 19V5M6 11l6-6 6 6" />
-              </svg>
+              <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs">
+                →
+              </span>
             </button>
           </div>
         </m.div>
