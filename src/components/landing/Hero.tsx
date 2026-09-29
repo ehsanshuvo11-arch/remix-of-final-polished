@@ -111,7 +111,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           width={100}
           height={100}
           loading="eager"
-          fetchpriority="high"
           decoding="sync"
           className="hero-logo-breath w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
           style={{

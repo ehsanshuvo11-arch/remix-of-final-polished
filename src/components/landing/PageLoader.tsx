@@ -71,7 +71,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
   if (gone) return null;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => setGone(true)}>
       {show && (
 
         <m.div

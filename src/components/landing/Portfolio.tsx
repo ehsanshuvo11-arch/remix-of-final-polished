@@ -7,6 +7,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import MagneticButton from '@/components/landing/MagneticButton';
 import PremiumSkeleton from '@/components/landing/Skeleton';
+import PremiumImage from '@/components/landing/PremiumImage';
 import { buildSrcSet, resolveStorageUrl } from '@/lib/image';
 
 

@@ -23,6 +23,7 @@ import MobileActionBar from '@/components/landing/MobileActionBar';
 import SmoothScroll from '@/components/landing/SmoothScroll';
 import SectionTheme from '@/components/landing/SectionTheme';
 import SectionDivider from '@/components/landing/SectionDivider';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
 import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent } from '@/types/database';
@@ -60,7 +61,7 @@ export default function Index() {
 
   return (
     <SmoothScroll>
-    <main className="font-body overflow-y-auto">
+    <main className="font-body relative min-h-screen">
       <PageLoader onComplete={() => setHeroReady(true)} />
       <SectionTheme />
       
@@ -88,17 +89,33 @@ export default function Index() {
       <Services services={services} content={servicesMeta ?? null} />
       <SectionDivider className="py-4" />
       <Suspense fallback={<SectionFallback />}>
-        <Evolution />
-        <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
-        <Transformations items={transformations} content={transformationsMeta ?? null} />
-        <Process steps={processSteps} content={processMeta ?? null} />
+        <ErrorBoundary isSection sectionName="Evolution">
+          <Evolution />
+        </ErrorBoundary>
+        <ErrorBoundary isSection sectionName="Portfolio">
+          <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
+        </ErrorBoundary>
+        <ErrorBoundary isSection sectionName="Transformations">
+          <Transformations items={transformations} content={transformationsMeta ?? null} />
+        </ErrorBoundary>
+        <ErrorBoundary isSection sectionName="Process">
+          <Process steps={processSteps} content={processMeta ?? null} />
+        </ErrorBoundary>
         <SectionDivider className="py-4" />
-        <Testimonials />
+        <ErrorBoundary isSection sectionName="Testimonials">
+          <Testimonials />
+        </ErrorBoundary>
         <SectionDivider className="py-4" />
-        <RoasCalculator />
+        <ErrorBoundary isSection sectionName="RoasCalculator">
+          <RoasCalculator />
+        </ErrorBoundary>
         <SectionDivider className="py-4" />
-        <Pricing />
-        <Contact contact={contactContent ?? null} />
+        <ErrorBoundary isSection sectionName="Pricing">
+          <Pricing />
+        </ErrorBoundary>
+        <ErrorBoundary isSection sectionName="Contact">
+          <Contact contact={contactContent ?? null} />
+        </ErrorBoundary>
         <Footer footer={footerContent ?? null} />
       </Suspense>
       <StickyConversionBar />

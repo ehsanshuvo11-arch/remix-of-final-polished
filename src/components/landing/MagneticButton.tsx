@@ -4,7 +4,7 @@ import { m, useMotionValue, useSpring } from 'framer-motion';
 interface MagneticButtonProps {
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<any>) => void;
   as?: 'button' | 'a';
   href?: string;
   target?: string;

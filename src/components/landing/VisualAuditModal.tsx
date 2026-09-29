@@ -89,13 +89,14 @@ export default function VisualAuditModal() {
       // Fire email notification
       try {
         await sendInquiryEmail({
-          clientName: formData.name,
-          brandName: formData.brand,
+          client_name: formData.name,
+          brand_name: formData.brand,
+          email: formData.whatsapp ? `${formData.whatsapp.replace(/\D/g, '')}@lead.polished.com` : 'audit-lead@polished.com',
           whatsapp: formData.whatsapp,
-          serviceType: `Free Audit: ${formData.objective}`,
-          budgetRange: 'Free Audit',
-          storeUrl: formData.url,
-          details: `Requested 5-Min Free Video Teardown. Objective: ${formData.objective}\nNotes: ${formData.notes}`,
+          service_type: `Free Audit: ${formData.objective}`,
+          budget_range: 'Free Audit',
+          store_url: formData.url,
+          project_details: `Requested 5-Min Free Video Teardown. Objective: ${formData.objective}\nNotes: ${formData.notes}`,
         });
       } catch (emailErr) {
         console.warn('Email dispatch warning:', emailErr);

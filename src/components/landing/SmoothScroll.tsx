@@ -25,14 +25,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
 
     const lenis = new Lenis({
-      // Ultra butter-smooth desktop wheel scrolling
-      duration: 0.9,
-      easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -8 * t)),
+      duration: 1.15,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: 1.5,
-      touchMultiplier: 2,
-      lerp: 0.16,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
     });
     lenisInstance = lenis;
     (window as any).__lenis = lenis;

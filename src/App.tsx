@@ -3,6 +3,7 @@ import { LazyMotion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 
 const Admin = lazy(() => import("./pages/Admin"));
@@ -87,27 +88,29 @@ const RouteCursorScope = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
-      <LazyMotion features={loadMotionFeatures}>
-        <BrowserRouter>
-          <RouteCursorScope />
-          <Suspense fallback={<div className="min-h-screen bg-background" />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/admin" element={<Admin />} />
+      <ErrorBoundary>
+        <LazyMotion features={loadMotionFeatures}>
+          <BrowserRouter>
+            <RouteCursorScope />
+            <Suspense fallback={<div className="min-h-screen bg-background" />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/admin" element={<Admin />} />
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <AfterPaint>
-            <Toaster />
-            <Sonner />
-            <FilmGrain />
-            <CustomCursor />
-            <Analytics />
-          </AfterPaint>
-        </BrowserRouter>
-      </LazyMotion>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+            <AfterPaint>
+              <Toaster />
+              <Sonner />
+              <FilmGrain />
+              <CustomCursor />
+              <Analytics />
+            </AfterPaint>
+          </BrowserRouter>
+        </LazyMotion>
+      </ErrorBoundary>
     </LanguageProvider>
   </QueryClientProvider>
 );
