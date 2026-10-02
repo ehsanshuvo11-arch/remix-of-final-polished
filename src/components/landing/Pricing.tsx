@@ -155,32 +155,50 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 const TIER_FEATURES: Record<string, { en: string[]; bn: string[] }> = {
   'trial-pack': {
     en: [
-      '5 Premium Meta Ad Creatives',
-      'High-Converting Bangla Sales Copy',
+      '5 High-Converting Meta Ad Creatives',
+      'Psychological Bengali Sales Copywriting',
       'Audience Hook Testing Strategy',
       '48-Hour Rapid Delivery',
+      '100% Meta Ad Policy Safe Guarantee',
     ],
     bn: [
-      '৫টি প্রিমিয়াম মেটা অ্যাড ক্রিয়েটিভ',
-      'উচ্চ-কনভার্টিং বাংলা সেলস কপি',
+      '৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ',
+      'মনস্তাত্ত্বিক বাংলা সেলস কপিরাইটিং',
       'অডিয়েন্স হুক টেস্টিং স্ট্র্যাটেজি',
       '৪৮ ঘণ্টার দ্রুত ডেলিভারি',
+      '১০০% মেটা পলিসি সেফ গ্যারান্টি',
     ],
   },
   'growth-pack': {
     en: [
-      '12 High-Converting Feed & Ad Creatives',
-      '1 Bespoke Storefront / Page Cover',
-      'Persuasive Bengali Sales Copy for Every Ad',
+      '15 High-Converting Feed & Ad Creatives / mo',
+      'High-Trust Storefront / PDP Conversion Graphics',
+      'Persuasive Bengali Sales Copy for Every Creative',
       'AOV-Maximizing Combo Offer Visuals',
       'Unlimited Minor Revisions & Priority Support',
     ],
     bn: [
-      '১২টি হাই-কনভার্টিং ফিড ও অ্যাড ক্রিয়েটিভ',
-      '১টি কাস্টম স্টোরফ্রন্ট / পেইজ কভার',
+      '১৫টি হাই-কনভার্টিং ফিড ও অ্যাড ক্রিয়েটিভ / মাস',
+      'হাই-ট্রাস্ট স্টোরফ্রন্ট / PDP কনভার্শন গ্রাফিক্স',
       'প্রতিটি অ্যাডের জন্য মনস্তাত্ত্বিক বাংলা সেলস কপি',
       'AOV বৃদ্ধিকারী কম্বো অফার ভিজ্যুয়াল',
       'আনলিমিটেড মাইনর রিভিশন ও প্রায়োরিটি সাপোর্ট',
+    ],
+  },
+  'agency-pack': {
+    en: [
+      'Up to 30 White-Label Client Creatives / mo',
+      'Strict 48-Hour Rapid Sprint Delivery SLA',
+      'White-Label Figma Workspace (Zero POLISHED Branding)',
+      'High ROAS Creatives to Maximize Client Retention',
+      'Direct WhatsApp / Slack Access with Creative Lead',
+    ],
+    bn: [
+      'মাসে সর্বোচ্চ ৩০টি হোয়াইট-লেবেল ক্লায়েন্ট ক্রিয়েটিভ',
+      'কঠোর ৪৮ ঘণ্টার র্যাপিড ডেলিভারি SLA',
+      'হোয়াইট-লেবেল ফিগমা/ড্রাইভ (আমাদের কোনো ব্র্যান্ডিং থাকবে না)',
+      'ক্লায়েন্ট রিটেনশন ও আরওএএস সর্বোচ্চ করার আর্কিটেকচার',
+      'ক্রিয়েটিভ লিডের সাথে ডিরেক্ট স্ল্যাক/হোয়াটসঅ্যাপ চ্যানেল',
     ],
   },
 };

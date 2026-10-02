@@ -13,10 +13,38 @@ export default function Process({ steps, content }: ProcessProps) {
   const isBn = lang === 'bn';
 
   const defaultSteps: ProcessStep[] = [
-    { id: '1', sort_order: 1, title_en: 'Discovery', title_bn: 'ডিসকভারি', desc_en: 'We learn your brand, your product, and your audience. No generic templates — everything starts with understanding.', desc_bn: 'আমরা আপনার ব্র্যান্ড, প্রোডাক্ট এবং অডিয়েন্সকে গভীরভাবে স্টাডি করি। কোনো জেনেরিক টেমপ্লেট নয়—আমাদের সবকিছুর শুরু হয় ব্র্যান্ডকে পুরোপুরি বোঝার মাধ্যমে।' },
-    { id: '2', sort_order: 2, title_en: 'Strategy', title_bn: 'স্ট্র্যাটেজি', desc_en: 'We decide the visual direction — tone, reference, aesthetic system — before a single pixel is placed.', desc_bn: 'ক্যানভাসে একটি পিক্সেল বসানোর আগেও আমরা ভিজ্যুয়াল ডিরেকশন—ব্র্যান্ড টোন, রেফারেন্স এবং ওভারঅল অ্যাসথেটিক্স (Aesthetics) চূড়ান্ত করি।' },
-    { id: '3', sort_order: 3, title_en: 'Design', title_bn: 'ডিজাইন', desc_en: 'Execution with precision. Clean, structured, intentional — every element earns its place in the composition.', desc_bn: 'নিখুঁত এক্সিকিউশন। ক্লিন, গোছানো এবং অর্থবহ—ডিজাইনের প্রতিটি এলিমেন্ট খুব ভেবেচিন্তে তার নির্দিষ্ট জায়গায় বসানো হয়।' },
-    { id: '4', sort_order: 4, title_en: 'Delivery', title_bn: 'ডেলিভারি', desc_en: 'Final files, ready to use. Organized, properly sized, and formatted for every platform you need.', desc_bn: 'রেডি-টু-ইউজ ফাইনাল ফাইল। আপনার প্রয়োজনীয় সব প্ল্যাটফর্মের জন্য একদম পারফেক্ট সাইজ, ফরম্যাট এবং ওয়েল-অর্গানাইজড অবস্থায় আমরা প্রোজেক্ট বুঝিয়ে দিই।' },
+    { 
+      id: '1', 
+      sort_order: 1, 
+      title_en: 'Audit & Hook Analysis', 
+      title_bn: 'অডিট ও হুক অ্যানালাইসিস', 
+      desc_en: 'We audit your ad account, flagship products, and CPR bottlenecks. We dissect what made past ads fail and map emotional hooks for local buyers.', 
+      desc_bn: 'আমরা আপনার অ্যাড অ্যাকাউন্ট, সেরা প্রোডাক্ট এবং বর্তমান CPR স্টাডি করি। পূর্বের ক্যাম্পেইন কেন ফেইল করেছে তা চিহ্নিত করে লোকাল ক্রেতাদের সাইকোলজি ম্যাপ করি।' 
+    },
+    { 
+      id: '2', 
+      sort_order: 2, 
+      title_en: 'Bangla Copy & Art Direction', 
+      title_bn: 'বাংলা কপি ও আর্ট ডিরেকশন', 
+      desc_en: 'We craft high-status Bengali copywriting and Quiet Luxury visual compositions. Zero generic templates — every element is designed to stop the scroll.', 
+      desc_bn: 'আমরা মার্জিত বাংলা সেলস কপি এবং শান্ত লাক্সারি ভিজ্যুয়াল কম্পোজিশন সাজাই। কোনো সস্তা ক্যানভা টেমপ্লেট নয়—প্রতিটি পিক্সেল প্রথম দেখাতেই বিশ্বাস অর্জনের জন্য তৈরি।' 
+    },
+    { 
+      id: '3', 
+      sort_order: 3, 
+      title_en: '48-Hour Rapid Sprint', 
+      title_bn: '৪৮ ঘণ্টার র্যাপিড স্প্রিন্ট প্রোডাকশন', 
+      desc_en: 'Precision production under strict turnaround. You receive 5-15 Meta-compliant statics, motion cutdowns, and bundle graphics ready for Ads Manager.', 
+      desc_bn: 'নিখুঁত ও দ্রুত প্রোডাকশন। মাত্র ৪৮ ঘণ্টায় আপনি পান মেটা-কমপ্লায়েন্ট স্ট্যাটিক্স, মোশন কাটডাউন এবং কম্বো গ্রাফিক্স—যা সরাসরি অ্যাড ম্যানেজারে ব্যবহারের উপযোগী।' 
+    },
+    { 
+      id: '4', 
+      sort_order: 4, 
+      title_en: 'Launch, Track & Scale', 
+      title_bn: 'মেটা অ্যাড লঞ্চ ও অপটিমাইজেশন', 
+      desc_en: 'Your team or agency launches the test angles. We analyze CTR, CPR, and AOV to double down on winning creatives and eliminate ad fatigue.', 
+      desc_bn: 'আপনার টিম বা এজেন্সি ক্যাম্পেইন লাইভ করে। আমরা CTR, CPR এবং AOV ডেটা ট্র্যাক করে উইনিং ক্রিয়েটিভ স্কেল করি এবং বিজ্ঞাপন খরচ সর্বনিম্ন রাখি।' 
+    },
   ];
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
@@ -86,10 +114,10 @@ function MobileTimelineStep({ step, index, total }: { step: ProcessStep; index: 
   const desc = isBn ? (step.desc_bn?.trim() || step.desc_en) : step.desc_en;
 
   const phaseLabels = [
-    { en: 'Phase 01 • Deep Audit', bn: 'পর্যায় ০১ • ব্র্যান্ড অডিট' },
-    { en: 'Phase 02 • Aesthetic System', bn: 'পর্যায় ০২ • ভিজ্যুয়াল সিস্টেম' },
-    { en: 'Phase 03 • Pixel Crafting', bn: 'পর্যায় ০৩ • হাই-কনভার্শন ডিজাইন' },
-    { en: 'Phase 04 • Multi-format Deploy', bn: 'পর্যায় ০৪ • রেডি ফাইল ডেলিভারি' },
+    { en: 'Phase 01 • Deep Audit & Analysis', bn: 'পর্যায় ০১ • অডিট ও হুক অ্যানালাইসিস' },
+    { en: 'Phase 02 • Copy & Art Direction', bn: 'পর্যায় ০২ • বাংলা কপি ও আর্ট ডিরেকশন' },
+    { en: 'Phase 03 • 48-Hour Rapid Sprint', bn: 'পর্যায় ০৩ • ৪৮ ঘণ্টার র্যাপিড স্প্রিন্ট' },
+    { en: 'Phase 04 • Launch, Track & Scale', bn: 'পর্যায় ০৪ • মেটা অ্যাড লঞ্চ ও অপটিমাইজেশন' },
   ];
   const phase = phaseLabels[index] || { en: `Phase 0${index + 1}`, bn: `পর্যায় ০${index + 1}` };
 
