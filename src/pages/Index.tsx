@@ -4,7 +4,6 @@ import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
-import MarketGap from '@/components/landing/MarketGap';
 import Services from '@/components/landing/Services';
 const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
 const Pricing = lazy(() => import('@/components/landing/Pricing'));
@@ -15,6 +14,7 @@ const Evolution = lazy(() => import('@/components/landing/Evolution'));
 const Testimonials = lazy(() => import('@/components/landing/Testimonials'));
 const Transformations = lazy(() => import('@/components/landing/Transformations'));
 const RoasCalculator = lazy(() => import('@/components/landing/RoasCalculator'));
+const StickyStorytelling = lazy(() => import('@/components/landing/StickyStorytelling'));
 import StickyConversionBar from '@/components/landing/StickyConversionBar';
 import VisualAuditModal from '@/components/landing/VisualAuditModal';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
@@ -82,9 +82,22 @@ export default function Index() {
         />
       </m.div>
       <Marquee items={marqueeData?.items ?? []} />
+
+      {/* Immediate High-Converting Diagnostic: Decision-makers test their ROAS lift right after the fold */}
+      <Suspense fallback={<SectionFallback minHeight="50vh" />}>
+        <ErrorBoundary isSection sectionName="RoasCalculator">
+          <RoasCalculator />
+        </ErrorBoundary>
+      </Suspense>
+
+      {/* Cinematic Pinned Storytelling: The Flawed Creative vs The POLISHED System */}
+      <Suspense fallback={<SectionFallback minHeight="80vh" />}>
+        <ErrorBoundary isSection sectionName="StickyStorytelling">
+          <StickyStorytelling />
+        </ErrorBoundary>
+      </Suspense>
+
       <About content={aboutContent ?? null} stats={stats} />
-      <SectionDivider className="py-4" />
-      <MarketGap />
       <SectionDivider className="py-4" />
       <Services services={services} content={servicesMeta ?? null} />
       <SectionDivider className="py-4" />
@@ -104,10 +117,6 @@ export default function Index() {
         <SectionDivider className="py-4" />
         <ErrorBoundary isSection sectionName="Testimonials">
           <Testimonials />
-        </ErrorBoundary>
-        <SectionDivider className="py-4" />
-        <ErrorBoundary isSection sectionName="RoasCalculator">
-          <RoasCalculator />
         </ErrorBoundary>
         <SectionDivider className="py-4" />
         <ErrorBoundary isSection sectionName="Pricing">

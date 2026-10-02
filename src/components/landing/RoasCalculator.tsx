@@ -289,26 +289,40 @@ export default function RoasCalculator() {
               </p>
             </div>
 
-            {/* Accent Color Button with Smooth Scroll and Lead Prefill */}
-            <button 
-              type="button"
-              onClick={() => {
-                triggerInquiry({
-                  revenueLost: `${formatCurrency(revenueLost)} ${t.currency}`,
-                  budget: adSpend >= 300000 ? '50k-plus' : '20k-50k',
-                  note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}. Requesting a visual teardown & conversion upgrade plan.`
-                });
-                openAuditModal({
-                  source: 'ROAS Diagnostic Calculator',
-                  note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}.`
-                });
-              }}
-              className="w-full bg-[#fb923c] hover:bg-[#fb923c]/90 text-white py-4 md:py-5 px-6 md:px-8 rounded-full md:rounded-sm font-bold text-[11px] uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-3 relative z-10 shadow-[0_4px_20px_rgba(251,146,60,0.3)] hover:shadow-[0_8px_30px_rgba(251,146,60,0.5)] border border-[#fb923c]/50 cursor-pointer active:scale-[0.98] btn-shimmer" 
-              style={{ fontFamily: fontBody }}
-            >
-              {t.btn}
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </button>
+            {/* Dual High-Converting Actions: WhatsApp Trial Booking + Free Audit Modal */}
+            <div className="flex flex-col sm:flex-row gap-3 relative z-10 w-full">
+              <a
+                href={`https://wa.me/8801346288210?text=${encodeURIComponent(
+                  `Hi POLISHED, I calculated ~৳${formatCurrency(revenueLost)}/mo in lost revenue on my ৳${formatCurrency(adSpend)} monthly ad spend. I want to recover this profit with the ৳3,999 Skincare Trial Pack!`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-[#fb923c] hover:bg-[#fb923c]/90 text-white py-4 px-6 rounded-xl font-bold text-[11px] md:text-xs uppercase tracking-[1px] transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_6px_25px_rgba(251,146,60,0.4)] hover:shadow-[0_10px_35px_rgba(251,146,60,0.6)] border border-[#fb923c]/50 cursor-pointer active:scale-[0.98] btn-shimmer"
+                style={{ fontFamily: fontBody }}
+              >
+                <span>{isBn ? '৳৩,৯৯৯ ট্রায়ালে লোকসান বন্ধ করুন' : 'Recover with ৳3,999 Trial'}</span>
+                <span className="text-base font-bold">→</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={() => {
+                  triggerInquiry({
+                    revenueLost: `${formatCurrency(revenueLost)} ${t.currency}`,
+                    budget: adSpend >= 300000 ? '50k-plus' : '20k-50k',
+                    note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}. Requesting a visual teardown & conversion upgrade plan.`
+                  });
+                  openAuditModal({
+                    source: 'ROAS Diagnostic Calculator',
+                    note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}.`
+                  });
+                }}
+                className="py-4 px-5 rounded-xl bg-white/10 hover:bg-white/15 text-white/90 hover:text-white border border-white/20 font-semibold text-[11px] md:text-xs uppercase tracking-[1px] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                style={{ fontFamily: fontBody }}
+              >
+                <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-Min Audit'}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
