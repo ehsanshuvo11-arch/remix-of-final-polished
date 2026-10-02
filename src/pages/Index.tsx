@@ -6,6 +6,7 @@ import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
 const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
+const Showcase3D = lazy(() => import('@/components/landing/Showcase3D'));
 const Pricing = lazy(() => import('@/components/landing/Pricing'));
 const Process = lazy(() => import('@/components/landing/Process'));
 const Contact = lazy(() => import('@/components/landing/Contact'));
@@ -34,8 +35,6 @@ const SectionFallback = ({ minHeight = '60vh' }: { minHeight?: string }) => (
 );
 
 export default function Index() {
-  // If the loader is going to show, hold the hero in its pre-entrance state.
-  // SSR-safe: defaults to "ready" on the server so prerendered HTML is visible.
   const [heroReady, setHeroReady] = useState(() => !shouldShowLoader());
 
   const fallbackLogoUrl = supabase.storage.from('polished-assets').getPublicUrl('logo/current').data.publicUrl;
@@ -58,80 +57,107 @@ export default function Index() {
   const { data: transformations = [] } = useTransformations();
   const { data: transformationsMeta } = useSiteSetting<TransformationsMetaContent>('transformations-meta');
 
-
   return (
     <SmoothScroll>
-    <main className="font-body relative min-h-screen">
-      <PageLoader onComplete={() => setHeroReady(true)} />
-      <SectionTheme />
-      
-      <Navbar content={navContent ?? null} />
-      <m.div
-        initial={false}
-        animate={
-          heroReady
-            ? { opacity: 1, scale: 1 }
-            : { opacity: 0, scale: 1.05 }
-        }
-        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformOrigin: '50% 50%', willChange: 'transform, opacity' }}
-      >
-        <Hero
-          content={heroContent ?? null}
-          logoUrl={logoData?.url ?? fallbackLogoUrl}
-        />
-      </m.div>
-      <Marquee items={marqueeData?.items ?? []} />
+      <main className="font-body relative min-h-screen">
+        <PageLoader onComplete={() => setHeroReady(true)} />
+        <SectionTheme />
+        
+        {/* 1. Brand Navigation */}
+        <Navbar content={navContent ?? null} />
 
-      {/* Immediate High-Converting Diagnostic: Decision-makers test their ROAS lift right after the fold */}
-      <Suspense fallback={<SectionFallback minHeight="50vh" />}>
-        <ErrorBoundary isSection sectionName="RoasCalculator">
-          <RoasCalculator />
-        </ErrorBoundary>
-      </Suspense>
+        {/* 2. Bold Hero with Quiet Luxury Aesthetics */}
+        <m.div
+          initial={false}
+          animate={
+            heroReady
+              ? { opacity: 1, scale: 1 }
+              : { opacity: 0, scale: 1.05 }
+          }
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          style={{ transformOrigin: '50% 50%', willChange: 'transform, opacity' }}
+        >
+          <Hero
+            content={heroContent ?? null}
+            logoUrl={logoData?.url ?? fallbackLogoUrl}
+          />
+        </m.div>
 
-      {/* Cinematic Pinned Storytelling: The Flawed Creative vs The POLISHED System */}
-      <Suspense fallback={<SectionFallback minHeight="80vh" />}>
-        <ErrorBoundary isSection sectionName="StickyStorytelling">
-          <StickyStorytelling />
-        </ErrorBoundary>
-      </Suspense>
+        {/* 3. Capability Ribbon */}
+        <Marquee items={marqueeData?.items ?? []} />
 
-      <About content={aboutContent ?? null} stats={stats} />
-      <SectionDivider className="py-4" />
-      <Services services={services} content={servicesMeta ?? null} />
-      <SectionDivider className="py-4" />
-      <Suspense fallback={<SectionFallback />}>
-        <ErrorBoundary isSection sectionName="Evolution">
-          <Evolution />
-        </ErrorBoundary>
-        <ErrorBoundary isSection sectionName="Portfolio">
-          <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
-        </ErrorBoundary>
-        <ErrorBoundary isSection sectionName="Transformations">
-          <Transformations items={transformations} content={transformationsMeta ?? null} />
-        </ErrorBoundary>
-        <ErrorBoundary isSection sectionName="Process">
-          <Process steps={processSteps} content={processMeta ?? null} />
-        </ErrorBoundary>
+        {/* 4. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies front-and-center */}
+        <Suspense fallback={<SectionFallback minHeight="80vh" />}>
+          <ErrorBoundary isSection sectionName="Portfolio">
+            <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 5. INTERACTIVE 3D LUXURY PACKAGING STUDIO: Tactile Physical WebGL Experience */}
+        <Suspense fallback={<SectionFallback minHeight="70vh" />}>
+          <ErrorBoundary isSection sectionName="Showcase3D">
+            <Showcase3D />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 6. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
+        <Suspense fallback={<SectionFallback minHeight="70vh" />}>
+          <ErrorBoundary isSection sectionName="StickyStorytelling">
+            <StickyStorytelling />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 7. CORE SERVICES & DELIVERABLES: 3 specialized systems with concrete checklists */}
+        <Services services={services} content={servicesMeta ?? null} />
+
+        {/* 8. VISUAL EVOLUTION & BEFORE/AFTER TRANSFORMATIONS */}
+        <Suspense fallback={<SectionFallback minHeight="60vh" />}>
+          <ErrorBoundary isSection sectionName="Evolution">
+            <Evolution />
+          </ErrorBoundary>
+          <ErrorBoundary isSection sectionName="Transformations">
+            <Transformations items={transformations} content={transformationsMeta ?? null} />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 9. BRAND PHILOSOPHY & PROVEN METRICS */}
+        <About content={aboutContent ?? null} stats={stats} />
         <SectionDivider className="py-4" />
-        <ErrorBoundary isSection sectionName="Testimonials">
-          <Testimonials />
-        </ErrorBoundary>
-        <SectionDivider className="py-4" />
-        <ErrorBoundary isSection sectionName="Pricing">
-          <Pricing />
-        </ErrorBoundary>
-        <ErrorBoundary isSection sectionName="Contact">
-          <Contact contact={contactContent ?? null} />
-        </ErrorBoundary>
-        <Footer footer={footerContent ?? null} />
-      </Suspense>
-      <StickyConversionBar />
-      <VisualAuditModal />
-      <MobileActionBar />
 
-    </main>
+        {/* 10. REVENUE DIAGNOSTIC: Calculate ROAS lift right before investment decision */}
+        <Suspense fallback={<SectionFallback minHeight="50vh" />}>
+          <ErrorBoundary isSection sectionName="RoasCalculator">
+            <RoasCalculator />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 11. TRANSPARENT PRICING & SPRINTS: ৳3,999 Trial, ৳32,299 Growth, ৳48,500 Agency */}
+        <Suspense fallback={<SectionFallback minHeight="60vh" />}>
+          <ErrorBoundary isSection sectionName="Pricing">
+            <Pricing />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 12. SPRINT PROCESS & HOW WE OPERATE */}
+        <Suspense fallback={<SectionFallback minHeight="50vh" />}>
+          <ErrorBoundary isSection sectionName="Process">
+            <Process steps={processSteps} content={processMeta ?? null} />
+          </ErrorBoundary>
+          <SectionDivider className="py-4" />
+          <ErrorBoundary isSection sectionName="Testimonials">
+            <Testimonials />
+          </ErrorBoundary>
+          <SectionDivider className="py-4" />
+          <ErrorBoundary isSection sectionName="Contact">
+            <Contact contact={contactContent ?? null} />
+          </ErrorBoundary>
+          <Footer footer={footerContent ?? null} />
+        </Suspense>
+
+        <StickyConversionBar />
+        <VisualAuditModal />
+        <MobileActionBar />
+      </main>
     </SmoothScroll>
   );
 }
