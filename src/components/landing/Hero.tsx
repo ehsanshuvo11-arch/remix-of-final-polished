@@ -98,12 +98,14 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     <section
       className="min-h-[100svh] py-14 px-5 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
-      {/* Subtle luxury static grid */}
+      {/* Subtle moving grid texture — exact match to brand aesthetic */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40"
+        className="hero-grid absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
           backgroundSize: '80px 80px',
+          animation: 'gridMove 20s linear infinite',
         }}
       />
 
@@ -126,10 +128,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both, heroLogoBreath 9s ease-in-out 1.4s infinite',
           }}
         />
-        <div className="w-full flex flex-col items-center justify-center mt-3 mb-6 md:mt-0 md:mb-5 gap-2.5">
+        <div className="w-full flex flex-col items-center justify-center mt-2 mb-4 md:mt-0 md:mb-5 gap-2">
           {/* Subtle live availability pill */}
           <div
-            className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-white/[0.06] border border-white/12 text-[10px] md:text-[11px] tracking-[1.5px] uppercase text-primary-foreground/90 font-medium"
+            className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-white/[0.07] border border-white/15 text-[10px] md:text-[11px] tracking-[1.5px] uppercase text-primary-foreground/95 font-medium shadow-sm"
             style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s both' }}
           >
             <span className="relative flex h-2 w-2 shrink-0">
@@ -143,47 +145,40 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
           <p
             lang="en"
-            className="font-sans-eyebrow text-[9px] tracking-[0.3em] -mr-[0.3em] text-accent md:text-[11px] md:tracking-[4px] md:-mr-[4px] uppercase font-semibold"
+            className="font-sans-eyebrow text-[9px] tracking-[0.28em] text-accent md:text-[11px] md:tracking-[4px] uppercase font-semibold"
             style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: '"Inter", sans-serif' }}
           >
             {hero.eyebrowEn}
           </p>
         </div>
+
         {(() => {
           const BASE = 0.4;
           const STAGGER = 0.15;
-          const line2Delay = BASE + 3 * STAGGER;
+          const line2Delay = BASE + 2 * STAGGER;
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-primary-foreground text-[36px] tracking-tight leading-[1.15] mx-auto mb-2 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
+              className="hero-headline font-heading font-light text-primary-foreground text-[34px] sm:text-[40px] tracking-tight leading-[1.12] mx-auto mb-3 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
-                letterSpacing: '0',
-                wordSpacing: 'normal',
+                letterSpacing: '-0.01em',
                 fontWeight: 400,
               }}
             >
               <RevealText
                 as="span"
                 delay={BASE}
-                className="block md:inline whitespace-nowrap"
+                className="inline md:inline whitespace-normal md:whitespace-nowrap"
                 stagger={STAGGER}
               >
-                Make
+                Make Your Collection
               </RevealText>
-              <RevealText
-                as="span"
-                delay={BASE + STAGGER}
-                className="block md:inline whitespace-nowrap"
-                stagger={STAGGER}
-              >
-                Your Collection
-              </RevealText>
+              <br className="hidden md:inline" />
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[32px] leading-tight mt-1 mb-4 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap [word-spacing:normal]"
+                className="hero-accent-line block text-[34px] sm:text-[40px] leading-[1.1] mt-1 mb-3 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap"
                 stagger={STAGGER}
               >
                 Unmissable!
@@ -194,67 +189,72 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-primary-foreground/75 leading-[1.65] md:leading-[1.7] tracking-[0.3px] max-w-[340px] md:max-w-[580px] mx-auto mb-8 md:mb-8 text-[13px] md:text-[15px] px-1 md:px-0"
+          className="block font-sans-body text-primary-foreground/85 leading-[1.6] md:leading-[1.7] max-w-[360px] md:max-w-[580px] mx-auto mb-6 md:mb-8 text-[14px] md:text-[15px] px-2 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
-            animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both',
+            animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.85s both',
           }}
         >
           {isBn ? hero.subBn : hero.subEn}
         </p>
 
-        <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}>
-          <MagneticButton
-            as="a"
+        {/* Mobile-First High-Converting Action Container */}
+        <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-2.5 md:flex-row md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
+          <a
             href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-full py-3.5 text-xs tracking-[1.5px] uppercase flex justify-center items-center bg-accent text-accent-foreground border border-accent md:inline-flex md:w-auto md:px-10 md:py-4 md:min-w-[240px] ${isBn ? 'md:text-[16px] md:tracking-[1px] leading-[1.3]' : 'md:text-[12px] md:tracking-[2px] uppercase'} font-bold rounded-full relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.97] h-[48px] md:h-[52px] cursor-pointer btn-shimmer pulse-glow-accent shadow-[0_4px_20px_rgba(251,146,60,0.35)]`}
+            className={`w-full h-[52px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[1px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[250px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}
             </span>
-          </MagneticButton>
+            <span className="text-base font-bold">→</span>
+          </a>
 
-          <MagneticButton
-            as="a"
+          <p className="text-[11px] text-primary-foreground/60 flex items-center justify-center gap-1.5 md:hidden -mt-0.5 mb-1">
+            <span>⚡ ৪৮ ঘণ্টায় ৫টি অ্যাড ক্রিয়েটিভ</span>
+            <span>•</span>
+            <span>কোনো সাবস্ক্রিপশন নেই</span>
+          </p>
+
+          <a
             href="#work"
             onClick={(e) => {
               e.preventDefault();
               const el = document.getElementById('work');
               if (el) {
                 const lenis = getLenis();
-                if (lenis) lenis.scrollTo(el, { duration: 1.8, offset: 0 });
+                if (lenis) lenis.scrollTo(el, { duration: 1.2, offset: -20 });
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`w-full py-3.5 text-xs tracking-[1.5px] uppercase flex justify-center items-center bg-white/5 backdrop-blur-sm border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-9 md:py-4 md:min-w-[200px] ${isBn ? 'md:text-[16px] md:tracking-[1px] leading-[1.3]' : 'md:text-[12px] md:tracking-[2px] uppercase'} font-semibold rounded-full relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 active:scale-[0.97] h-[48px] md:h-[52px]`}
+            className={`w-full h-[46px] md:h-[54px] px-6 text-[11px] md:text-[12px] tracking-[1.5px] uppercase flex justify-center items-center gap-2 bg-white/5 backdrop-blur-md border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-9 md:min-w-[200px] font-semibold rounded-xl transition-all duration-300 active:scale-[0.98]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'অ্যাড প্রোটোটাইপ দেখুন' : 'View Ad Prototypes'}
+              {isBn ? 'কেস স্টাডি ও প্রোটোটাইপ দেখুন' : 'View Ad Prototypes'}
             </span>
-          </MagneticButton>
+            <span>↓</span>
+          </a>
         </div>
 
-        {/* Social Proof & Metrics Strip */}
+        {/* Social Proof & Metrics Strip — Mobile Clean Chips */}
         <div
-          className="w-full max-w-[700px] mx-auto mt-7 md:mt-9 pt-5 border-t border-primary-foreground/10 text-primary-foreground/75"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.35s both' }}
+          className="w-full max-w-[700px] mx-auto mt-6 md:mt-9 pt-4 border-t border-primary-foreground/10 text-primary-foreground/75"
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}
         >
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] md:text-xs">
-            <span className="flex items-center gap-1.5 font-medium text-primary-foreground/90">
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-x-5 text-[11px] md:text-xs">
+            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
               <span className="text-accent font-bold">★</span>
               <span>{isBn ? 'গড় ৩.২x ROAS বৃদ্ধি' : '3.2x Avg. ROAS Lift'}</span>
             </span>
-            <span className="text-primary-foreground/20 hidden sm:inline">•</span>
-            <span className="flex items-center gap-1.5 font-medium text-primary-foreground/90">
+            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
               <span className="text-accent font-bold">✦</span>
               <span>{isBn ? '৩০+ প্রিমিয়াম D2C ব্র্যান্ড' : '30+ Premium Brands Scaled'}</span>
             </span>
-            <span className="text-primary-foreground/20 hidden sm:inline">•</span>
-            <span className="flex items-center gap-1.5 font-medium text-primary-foreground/90">
+            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
               <span className="text-accent font-bold">⚡</span>
-              <span>{isBn ? '৭ দিনে স্প্রিন্ট ডেলিভারি' : '7-Day Sprint Delivery'}</span>
+              <span>{isBn ? '৪৮ ঘণ্টা দ্রুত ডেলিভারি' : '48h Rapid Delivery'}</span>
             </span>
           </div>
         </div>
