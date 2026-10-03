@@ -38,7 +38,7 @@ export default function AccessibleTrustBar() {
   ];
 
   return (
-    <section className="relative z-20 py-6 md:py-8 bg-primary/98 text-primary-foreground border-y border-white/10">
+    <section className="relative z-20 py-6 md:py-8 bg-[#1e3a8a] text-[#f9fafb] border-y border-white/10">
       <div className="max-w-[1200px] mx-auto px-6 md:px-14">
         <MotionReveal>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 items-center divide-y md:divide-y-0 md:divide-x divide-white/10">
