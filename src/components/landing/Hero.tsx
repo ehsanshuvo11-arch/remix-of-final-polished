@@ -138,13 +138,13 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           {isBn ? hero.subBn : hero.subEn}
         </p>
 
-        {/* Mobile-First High-Converting Action Container */}
-        <div className="flex flex-col w-full max-w-[360px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-2 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
+        {/* Streamlined Action Container — 2 Clear Conversion Actions */}
+        <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-2 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
           <a
             href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20No-Risk%20Test%20Drive%20Sprint!"
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-full h-[52px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-9 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
+            className={`w-full h-[52px] md:h-[54px] px-8 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ শুরু করুন' : 'Start ৳3,999 Test Drive'}
@@ -156,106 +156,39 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20free%20advice%20regarding%20my%20brand%20design%20and%20ads."
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-full h-[52px] md:h-[54px] px-6 text-[12px] md:text-[13px] tracking-[0.5px] flex justify-center items-center gap-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 md:inline-flex md:w-auto md:px-8 md:min-w-[210px] font-semibold rounded-xl transition-all duration-300 hover:border-emerald-400 active:scale-[0.98] cursor-pointer`}
+            className={`w-full h-[52px] md:h-[54px] px-7 text-[12px] md:text-[13px] tracking-[0.5px] flex justify-center items-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 md:inline-flex md:w-auto md:px-8 font-medium rounded-xl transition-all duration-300 hover:border-accent active:scale-[0.98] cursor-pointer`}
           >
             <span>💬</span>
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'হোয়াটসঅ্যাপে ফ্রি পরামর্শ' : 'Free WhatsApp Advice'}
+              {isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}
             </span>
-          </a>
-
-          <a
-            href="#work"
-            onClick={(e) => {
-              e.preventDefault();
-              const el = document.getElementById('work');
-              if (el) {
-                const lenis = getLenis();
-                if (lenis) lenis.scrollTo(el, { duration: 1.2, offset: -20 });
-                else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
-            className={`w-full h-[46px] md:h-[54px] px-5 text-[11px] md:text-[12px] tracking-[1px] uppercase flex justify-center items-center gap-1.5 bg-white/5 backdrop-blur-md border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-6 font-semibold rounded-xl transition-all duration-300 active:scale-[0.98]`}
-          >
-            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'কাজের নমুনা দেখুন' : 'View Work'}
-            </span>
-            <span>↓</span>
           </a>
         </div>
 
-        {/* Local Assurance / Zero-Friction Trust Micro-Badges */}
+        {/* Minimalist Quiet Luxury Reassurance Strip */}
         <div 
-          className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mt-3 mb-1 text-[11px] sm:text-xs text-primary-foreground/75"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s both' }}
-        >
-          <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white/[0.06] border border-white/10">
-            <span>⚡</span>
-            <span>{isBn ? '৪৮ ঘণ্টায় ৫টি অ্যাড ক্রিয়েটিভ' : '48h Rapid Delivery (5 Ads)'}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white/[0.06] border border-white/10">
-            <span>💳</span>
-            <span>{isBn ? 'বিকাশ / নগদ / ব্যাংক সাপোর্ট' : 'bKash, Nagad & Bank Support'}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white/[0.06] border border-white/10">
-            <span>🛡️</span>
-            <span>{isBn ? 'কোনো চুক্তি নেই • ১০০% রিভিশন' : 'Zero Lock-in • Free Revisions'}</span>
-          </span>
-        </div>
-
-        {/* Dual Audience Clarity Cards: Immediately clarifies WHO we serve and WHAT we do */}
-        <div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-w-[820px] mx-auto mt-7 text-left"
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-8 md:mt-10 text-[12px] md:text-[13px] text-primary-foreground/75 font-sans tracking-wide"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.15s both' }}
         >
-          <div className="p-4 sm:p-4.5 rounded-xl bg-white/[0.05] border border-white/12 hover:border-accent/40 transition-all backdrop-blur-md">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-accent" />
-              <h3 className="text-[11px] sm:text-xs uppercase tracking-[2px] font-semibold text-accent font-sans">
-                {isBn ? '🌿 D2C স্কিনকেয়ার ও বিউটি ব্র্যান্ড' : '🌿 For D2C Skincare & Beauty Brands'}
-              </h3>
-            </div>
-            <p className="text-[12px] sm:text-[13px] text-white/85 leading-relaxed">
-              {isBn 
-                ? 'মেটা অ্যাড ক্রিয়েটিভ, লাক্সারি প্যাকেজিং ও শপিফাই স্টোরফ্রন্ট—বিজ্ঞাপনের খরচ (CPR) কমাতে ও নিশ্চিত অর্ডার বাড়াতে।'
-                : 'High-converting Meta Ad creatives, luxury packaging & PDP graphics that slash CPR and eliminate COD hesitation.'}
-            </p>
-          </div>
-
-          <div className="p-4 sm:p-4.5 rounded-xl bg-white/[0.05] border border-white/12 hover:border-accent/40 transition-all backdrop-blur-md">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-white/60" />
-              <h3 className="text-[11px] sm:text-xs uppercase tracking-[2px] font-semibold text-white/90 font-sans">
-                {isBn ? '⚡ মার্কেটিং ও পারফরম্যান্স এজেন্সি' : '⚡ For Marketing & Media Agencies'}
-              </h3>
-            </div>
-            <p className="text-[12px] sm:text-[13px] text-white/85 leading-relaxed">
-              {isBn 
-                ? '৪৮ ঘণ্টার SLA-তে হোয়াইট-লেবেল ক্রিয়েটিভ স্প্রিন্ট। ডিজাইনার হায়ার করার ঝামেলা ছাড়া ক্লায়েন্ট ক্যাম্পেইন স্কেল করুন।'
-                : 'White-label 48h turnaround creative sprints. Scale client retainers without the overhead of an in-house design team.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Social Proof & Metrics Strip — Mobile Clean Chips */}
-        <div
-          className="w-full max-w-[700px] mx-auto mt-6 md:mt-7 pt-4 border-t border-primary-foreground/10 text-primary-foreground/75"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}
-        >
-          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-x-5 text-[11px] md:text-xs">
-            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
-              <span className="text-accent font-bold">★</span>
-              <span>{isBn ? 'গড় ৩.২x ROAS বৃদ্ধি' : '3.2x Avg. ROAS Lift'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
-              <span className="text-accent font-bold">✦</span>
-              <span>{isBn ? '৩০+ প্রিমিয়াম D2C ব্র্যান্ড' : '30+ Premium Brands Scaled'}</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
-              <span className="text-accent font-bold">⚡</span>
-              <span>{isBn ? '৪৮ ঘণ্টা দ্রুত ডেলিভারি' : '48h Rapid Delivery'}</span>
-            </span>
-          </div>
+          <span className="flex items-center gap-1.5">
+            <span className="text-accent">⚡</span>
+            <span>{isBn ? '৪৮ ঘণ্টায় ৫টি অ্যাড' : '48h Rapid Delivery'}</span>
+          </span>
+          <span className="hidden sm:inline text-white/25">•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="text-accent">💳</span>
+            <span>{isBn ? 'বিকাশ ও নগদ পেমেন্ট' : 'bKash & Nagad'}</span>
+          </span>
+          <span className="hidden sm:inline text-white/25">•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="text-accent">🛡️</span>
+            <span>{isBn ? 'কোনো চুক্তি নেই • ফ্রি রিভিশন' : 'Zero Lock-in • Free Revisions'}</span>
+          </span>
+          <span className="hidden sm:inline text-white/25">•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="text-accent">★</span>
+            <span>{isBn ? 'গড় ৩.২x ROAS বৃদ্ধি' : '3.2x Avg. ROAS Lift'}</span>
+          </span>
         </div>
       </div>
 

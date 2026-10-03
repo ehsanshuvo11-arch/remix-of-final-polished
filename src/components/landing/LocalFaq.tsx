@@ -133,36 +133,21 @@ export default function LocalFaq() {
           })}
         </div>
 
-        {/* Reassuring WhatsApp CTA below FAQ */}
-        <MotionReveal delay={0.3}>
-          <div className="mt-12 p-6 md:p-8 rounded-2xl bg-[#1e3a8a] text-primary-foreground text-center relative overflow-hidden shadow-xl">
-            <div className="relative z-10 max-w-md mx-auto">
-              <h3 
-                className="text-lg md:text-xl font-heading font-medium text-white mb-2"
-                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-              >
-                {isBn ? 'আপনার ব্র্যান্ড নিয়ে কোনো নির্দিষ্ট প্রশ্ন আছে?' : 'Have a Specific Question About Your Brand?'}
-              </h3>
-              <p 
-                className="text-xs md:text-sm text-white/80 mb-5"
-                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-              >
-                {isBn 
-                  ? 'কোনো চাপ নেই। সরাসরি আমাদের ডিজাইনার টিমের সাথে হোয়াটসঅ্যাপে চ্যাট করে ফ্রিতে পরামর্শ নিন।' 
-                  : 'Zero pressure. Chat directly with our creative team on WhatsApp for free actionable advice.'}
-              </p>
-              <a
-                href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20have%20a%20question%20about%20working%20together."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-accent text-accent-foreground font-bold text-xs md:text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_25px_rgba(251,146,60,0.5)] active:scale-95"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-                  {isBn ? 'হোয়াটসঅ্যাপে চ্যাট করুন 💬' : 'Chat on WhatsApp 💬'}
-                </span>
-              </a>
-            </div>
+        {/* Minimal Reassuring WhatsApp Link below FAQ */}
+        <MotionReveal delay={0.2}>
+          <div className="mt-10 text-center">
+            <a
+              href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20have%20a%20question%20about%20working%20together."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-primary hover:text-accent transition-colors"
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+            >
+              <MessageCircle className="w-4 h-4 text-accent" />
+              <span>
+                {isBn ? 'অন্য কোনো প্রশ্ন বা দ্বিধা আছে? সরাসরি হোয়াটসঅ্যাপে কথা বলুন →' : 'Still have questions? Chat directly with our team on WhatsApp →'}
+              </span>
+            </a>
           </div>
         </MotionReveal>
       </div>
