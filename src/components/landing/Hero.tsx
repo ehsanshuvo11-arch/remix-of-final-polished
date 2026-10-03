@@ -6,6 +6,7 @@ import type { HeroContent } from '@/types/database';
 import RevealText from '@/components/landing/RevealText';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
+import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
 interface HeroProps {
@@ -140,17 +141,25 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
         {/* Streamlined Action Container — 2 Clear Conversion Actions */}
         <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-2 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
-          <a
-            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20No-Risk%20Test%20Drive%20Sprint!"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => openQuickBookingModal({
+              tierId: 'trial-pack',
+              tierTitle: 'No-Risk Test Drive Sprint',
+              tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
+              price: '৳3,999',
+              priceBn: '৳৩,৯৯৯',
+              delivery: '48-Hour Rapid Delivery',
+              deliveryBn: '৪৮ ঘণ্টায় দ্রুত ডেলিভারি',
+              source: 'Hero Primary CTA',
+            })}
             className={`w-full h-[52px] md:h-[54px] px-8 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ শুরু করুন' : 'Start ৳3,999 Test Drive'}
             </span>
             <span className="text-base font-bold">→</span>
-          </a>
+          </button>
 
           <a
             href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20free%20advice%20regarding%20my%20brand%20design%20and%20ads."

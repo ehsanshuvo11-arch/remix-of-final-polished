@@ -4,6 +4,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
 import { PricingSkeleton } from '@/components/landing/Skeleton';
 import { triggerInquiry } from '@/lib/inquiry-events';
+import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import { ArrowRight, Check } from 'lucide-react';
 import { useSiteSetting } from '@/hooks/use-site-content';
 import { DEFAULT_PRICING } from '@/lib/pricing-defaults';
@@ -37,23 +38,42 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
 
   const handleTierClick = (tier: PricingTier) => {
-    if (tier.whatsapp_url) {
-      window.open(tier.whatsapp_url, '_blank', 'noopener,noreferrer');
-      return;
-    }
-    const budget = tier.id === 'trial-pack' ? 'under-20k' : '20k-50k';
-    triggerInquiry({
-      service: tier.title_en,
-      budget,
-      note: `Interested in the ${tier.title_en} (${tier.target_en}) package.`
+    openQuickBookingModal({
+      tierId: tier.id,
+      tierTitle: tier.title_en,
+      tierTitleBn: tier.title_bn,
+      price: tier.price_en,
+      priceBn: tier.price_bn,
+      delivery: tier.id === 'trial-pack' ? '48-Hour Rapid Delivery' : '7-Day Dedicated Sprint',
+      deliveryBn: tier.id === 'trial-pack' ? '৪৮ ঘণ্টায় দ্রুত ডেলিভারি' : '৭ দিনের ডেডিকেটেড স্প্রিন্ট',
+      deliverables: tier.features_en,
+      deliverablesBn: tier.features_bn,
+      source: `Pricing Card: ${tier.title_en}`,
     });
   };
 
   const handleCustomQuote = () => {
-    triggerInquiry({
-      service: 'Custom Bespoke Solution',
-      budget: '50k-plus',
-      note: 'Inquiry for a bespoke visual strategy and dedicated design partnership.'
+    openQuickBookingModal({
+      tierId: 'bespoke',
+      tierTitle: 'Custom Bespoke Visual Partnership',
+      tierTitleBn: 'কাস্টম বেসপোক ভিজ্যুয়াল পার্টনারশিপ',
+      price: 'Custom Quote',
+      priceBn: 'আলোচনা সাপেক্ষে',
+      delivery: 'Ongoing Monthly Partnership',
+      deliveryBn: 'মাসিক ডেডিকেটেড পার্টনারশিপ',
+      deliverables: [
+        'Dedicated Creative Director & Senior Brand Designer',
+        'Unlimited Monthly Meta Ads, Packaging & Landing Page Systems',
+        'Real-time private Slack/WhatsApp communication channel',
+        'Priority 24-48h turnaround for high-velocity ad scaling',
+      ],
+      deliverablesBn: [
+        'ডেডিকেটেড ক্রিয়েটিভ ডিরেক্টর ও সিনিয়র ব্র্যান্ড ডিজাইনার',
+        'আনলিমিটেড মাসিক মেটা অ্যাডস, প্যাকেজিং ও স্টোরফ্রন্ট ভিজ্যুয়াল',
+        'রিয়েল-টাইম প্রাইভেট স্ল্যাক/হোয়াটসঅ্যাপ ডিরেক্ট কমিউনিকেশন',
+        'দ্রুততম ২৪-৪৮ ঘণ্টার মধ্যে প্রায়োরিটি ডেলিভারি',
+      ],
+      source: 'Custom Quote CTA',
     });
   };
 

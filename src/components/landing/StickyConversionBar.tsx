@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, MessageCircle, X } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
+import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 
 export default function StickyConversionBar() {
   const { lang } = useLanguage();
@@ -70,11 +71,11 @@ export default function StickyConversionBar() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
-                onClick={() => openAuditModal({ source: 'Sticky Conversion Bar' })}
+                onClick={() => openQuickBookingModal({ source: 'Sticky Conversion Bar' })}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[10px] sm:text-xs uppercase tracking-wider rounded-full transition-all duration-300 shadow-[0_2px_12px_rgba(251,146,60,0.4)] hover:shadow-[0_4px_18px_rgba(251,146,60,0.6)] cursor-pointer active:scale-95 btn-shimmer"
               >
                 <Sparkles className="w-3 h-3 hidden sm:inline" />
-                <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-Min Teardown'}</span>
+                <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ' : 'Start ৳3,999 Sprint'}</span>
                 <ArrowRight className="w-3 h-3" />
               </button>
 

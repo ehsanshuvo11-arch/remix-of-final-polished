@@ -20,6 +20,7 @@ const StickyStorytelling = lazy(() => import('@/components/landing/StickyStoryte
 import StickyConversionBar from '@/components/landing/StickyConversionBar';
 import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import VisualAuditModal from '@/components/landing/VisualAuditModal';
+import QuickBookingModal from '@/components/landing/QuickBookingModal';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 import MobileActionBar from '@/components/landing/MobileActionBar';
 
@@ -158,6 +159,7 @@ export default function Index() {
         <FloatingWhatsApp />
         <StickyConversionBar />
         <VisualAuditModal />
+        <QuickBookingModal />
         <MobileActionBar />
       </main>
     </SmoothScroll>
