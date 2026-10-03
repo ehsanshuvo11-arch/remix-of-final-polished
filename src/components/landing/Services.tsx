@@ -1,410 +1,437 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Sparkles, ArrowRight, CheckCircle2, Target, Clock, TrendingUp, ShoppingBag, Zap, Palette, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowRight, Check, Clock, TrendingUp, Palette, ShoppingBag, Zap, ChevronDown, Sparkles, ShieldCheck, CreditCard } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
 import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
-import type { Service, ServicesMetaContent } from '@/types/database';
+import { useSiteSetting } from '@/hooks/use-site-content';
+import { DEFAULT_PRICING } from '@/lib/pricing-defaults';
+import type { Service, ServicesMetaContent, PricingContent, PricingTier } from '@/types/database';
 
 interface ServicesProps {
   services: Service[];
   content: ServicesMetaContent | null;
 }
 
-export default function Services({ services, content }: ServicesProps) {
+/**
+ * Service-level details layered on top of each CMS pricing tier.
+ * Keyed by tier id so Services + Pricing live in ONE section:
+ * "what we do" and "what it costs" are read together, never twice.
+ */
+const SERVICE_META: Record<
+  string,
+  {
+    icon: typeof Palette;
+    tabEn: string;
+    tabBn: string;
+    turnaroundEn: string;
+    turnaroundBn: string;
+    roiEn: string;
+    roiBn: string;
+  }
+> = {
+  'trial-pack': {
+    icon: Palette,
+    tabEn: 'Test Drive',
+    tabBn: '৳৩,৯৯৯ ট্রায়াল',
+    turnaroundEn: '48 hours',
+    turnaroundBn: '৪৮ ঘণ্টা',
+    roiEn: 'Avg. −42% cost per result',
+    roiBn: 'বিজ্ঞাপন খরচ গড়ে ৪২% কম',
+  },
+  'growth-pack': {
+    icon: ShoppingBag,
+    tabEn: 'D2C Growth',
+    tabBn: 'D2C গ্রোথ',
+    turnaroundEn: 'Monthly sprint',
+    turnaroundBn: 'মাসিক স্প্রিন্ট',
+    roiEn: '3.2x avg. ROAS lift',
+    roiBn: 'গড়ে ৩.২x ROAS বৃদ্ধি',
+  },
+  'agency-pack': {
+    icon: Zap,
+    tabEn: 'Agency',
+    tabBn: 'এজেন্সি',
+    turnaroundEn: '48h SLA',
+    turnaroundBn: '৪৮ ঘণ্টা SLA',
+    roiEn: 'Scale clients 3x, zero hiring',
+    roiBn: 'নিয়োগ ছাড়াই ৩ গুণ ক্লায়েন্ট',
+  },
+};
+
+const FALLBACK_META = SERVICE_META['trial-pack'];
+const bnFont = { fontFamily: "'Noto Serif Bengali', serif" } as const;
+const serifFont = { fontFamily: "'Cormorant Garamond', serif" } as const;
+
+const toBnDigits = (n: number) => String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[+d]);
+
+/** Splits "৳32,299 / month" → { amount: "৳32,299", period: "month" } */
+function splitPrice(price?: string) {
+  if (!price) return { amount: '', period: '' };
+  const [amount, period] = price.split('/').map((s) => s.trim());
+  return { amount, period: period ?? '' };
+}
+
+export default function Services(_props: ServicesProps) {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
-  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
-  const [expandedDeliverables, setExpandedDeliverables] = useState<Record<string, boolean>>({});
+  const { data: cms } = useSiteSetting<PricingContent>('pricing');
 
-  const toggleDeliverables = (id: string) => {
-    setExpandedDeliverables((prev) => ({ ...prev, [id]: !prev[id] }));
+  const content: PricingContent = { ...DEFAULT_PRICING, ...(cms ?? {}) };
+  const tiers: PricingTier[] = content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers!;
+
+  const [activeTier, setActiveTier] = useState(0);
+
+  const bookTier = (tier: PricingTier) => {
+    const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
+    openQuickBookingModal({
+      tierId: tier.id,
+      tierTitle: tier.title_en,
+      tierTitleBn: tier.title_bn,
+      price: tier.price_en,
+      priceBn: tier.price_bn,
+      delivery: meta.turnaroundEn,
+      deliveryBn: meta.turnaroundBn,
+      deliverables: tier.deliverables_en,
+      deliverablesBn: tier.deliverables_bn,
+      source: `Services & Pricing: ${tier.title_en}`,
+    });
   };
 
-  const servicesData = [
-    {
-      id: 'social-media-design',
-      num: '01',
-      titleEn: 'High-Conversion Social Media Design',
-      titleBn: 'হাই-কনভার্শন সোশ্যাল মিডিয়া ডিজাইন',
-      targetEn: 'For D2C Skincare, Haircare & Wellness Brands',
-      targetBn: 'ডি২সি স্কিনকেয়ার, হেয়ারকেয়ার ও ওয়েলনেস ব্র্যান্ডের জন্য',
-      turnaroundEn: '48-Hour Rapid Sprint',
-      turnaroundBn: '৪৮ ঘণ্টার দ্রুত স্প্রিন্ট',
-      icon: Palette,
-      descEn:
-        'Feed posts, carousels, reels covers, and ad funnels using our signature "Premium Bengali" approach. Specifically engineered to stop the frantic scroll within 0.8 seconds and convert scrollers into high-value buyers.',
-      descBn:
-        'ফিড পোস্ট, ক্যারোসেল, রিলস কভার এবং অ্যাড ফানেল ক্রিয়েটিভ। আমদের সিগনেচার "প্রিমিয়াম বেঙ্গলি" আর্ট ডিরেকশনে তৈরি, যা সোশ্যাল মিডিয়া স্ক্রোল থামিয়ে নিশ্চিত বিক্রয় বৃদ্ধি করে।',
-      deliverablesEn: [
-        '5 to 15 High-Converting Feed & Meta Ad Creatives (Statics + Motion Cutdowns)',
-        'Culturally Intelligent, Sophisticated Bengali Copywriting & Emotional Hooks',
-        '100% Meta Ad Policy Compliance Audit (Guaranteed protection against ad bans)',
-        'Multiple Audience Testing Angles (A/B testing ready for ads manager)',
-        'Full Source Files (Figma / Canva / PSD) + Optimized WebP/PNG Exports',
-      ],
-      deliverablesBn: [
-        '৫ থেকে ১৫টি হাই-কনভার্টিং ফিড ও মেটা অ্যাড ক্রিয়েটিভ (স্ট্যাটিক্স ও মোশন কাটস)',
-        'মনস্তাত্ত্বিক বাংলা সেলস কপিরাইটিং ও স্ক্রল-স্টপিং ইমোশনাল হুক',
-        '১০০% মেটা পলিসি কমপ্লায়েন্স অডিট (অ্যাকাউন্ট ব্যান ও রেস্ট্রিকশন মুক্ত)',
-        'মাল্টিপল অডিয়েন্স টেস্টিং অ্যাঙ্গেলস (Ads Manager-এ টেস্ট করার জন্য রেডি)',
-        'পূর্ণাঙ্গ সোর্স ফাইল (Figma / Canva) + অপটিমাইজড এক্সপোর্টস',
-      ],
-      roiOutcomeEn: 'Direct CPR Reduction (Avg. -42%) & 3.2x ROAS Lift',
-      roiOutcomeBn: 'বিজ্ঞাপনের সিপিআর গড়ে ৪২% পর্যন্ত হ্রাস এবং ৩.২x আরওএএস বৃদ্ধি',
-    },
-    {
-      id: 'ecommerce-visuals',
-      num: '02',
-      titleEn: 'E-commerce Visual Strategy & Storefronts',
-      titleBn: 'ই-কমার্স ভিজ্যুয়াল স্ট্র্যাটেজি ও স্টোরফ্রন্ট',
-      targetEn: 'For High-Growth E-Commerce Storefronts & Shopify/Custom Stores',
-      targetBn: 'গ্রোথ-ফোকাসড ই-কমার্স স্টোরফ্রন্ট ও অনলাইন শপের জন্য',
-      turnaroundEn: '3 - 5 Business Days',
-      turnaroundBn: '৩ - ৫ কর্মদিবস',
-      icon: ShoppingBag,
-      descEn:
-        'Crafting trust-building visual assets for storefronts, product detail pages (PDP), and checkout funnels. Ensuring your brand looks unapologetically luxurious, highly authoritative, and engineered to eliminate Cash-on-Delivery (COD) hesitation.',
-      descBn:
-        'স্টোরফ্রন্ট, প্রোডাক্ট পেজ (PDP) এবং চেকআউট ফানেলের জন্য ট্রাস্ট-বিল্ডিং ভিজ্যুয়াল আর্কিটেকচার। যা ব্র্যান্ডকে আন্তর্জাতিক মানের প্রিমিয়াম লুক দেয় এবং ক্যাশ-অন-ডেলিভারি (COD) নিয়ে গ্রাহকের দ্বিধা দূর করে।',
-      deliverablesEn: [
-        'High-Status Storefront Hero Banners & Strategic Category Navigators',
-        'Product Detail Page (PDP) Conversion Infographics & Feature Callouts',
-        'AOV-Maximizing Combo, Bundle & Seasonal Gift Framing',
-        'Trust & Legitimacy Badges (Dermatologist tested, COD guarantee, Organic seals)',
-        'Mobile-First Responsive Layout Assets Optimized for 0.5s Load Time',
-      ],
-      deliverablesBn: [
-        'হাই-স্ট্যাটাস স্টোরফ্রন্ট ব্যানার ও স্ট্র্যাটেজিক কালেকশন নেভিগেটর',
-        'প্রোডাক্ট পেজ (PDP) কনভার্শন ইনফোগ্রাফিক্স ও বেনিফিট হাইলাইটস',
-        'গড় অর্ডার ভ্যালু (AOV) বৃদ্ধিকারী কম্বো ও বান্ডেল অফার গ্রাফিক্স',
-        'আস্থা বৃদ্ধিকারী ট্রাস্ট ব্যাজ (COD গ্যারান্টি, ডার্মাটোলজিক্যালি টেস্টেড সিল)',
-        'মোবাইল-ফার্স্ট রেসপন্সিভ অ্যাসেটস (সুপারফাস্ট লোডিংয়ের জন্য অপটিমাইজড)',
-      ],
-      roiOutcomeEn: 'Aggressive AOV Increase & Drastic COD Cancellation Drop',
-      roiOutcomeBn: 'গড় অর্ডার ভ্যালু (AOV) বৃদ্ধি এবং সিওডি রিটার্ন ঝুঁকি হ্রাস',
-    },
-    {
-      id: 'white-label-agency',
-      num: '03',
-      titleEn: 'White-Label Agency Partnership',
-      titleBn: 'হোয়াইট-লেবেল এজেন্সি পার্টনারশিপ',
-      targetEn: 'For Performance Marketing & Media Buying Agencies',
-      targetBn: 'পারফরম্যান্স মার্কেটিং ও মিডিয়া বায়িং এজেন্সির জন্য',
-      turnaroundEn: 'Strict 48-Hour Turnaround SLA',
-      turnaroundBn: 'কঠোর ৪৮ ঘণ্টার র্যাপিড SLA',
-      icon: Zap,
-      descEn:
-        'Acting as the invisible creative powerhouse for marketing agencies. We deliver high-converting "Premium Bengali" visual assets to lower CAC and maximize ROAS for your clients, without the friction, payroll, and bottleneck of an in-house design team.',
-      descBn:
-        'মার্কেটিং এজেন্সির ইনভিজিবল ব্যাকএন্ড ক্রিয়েটিভ পাওয়ারহাউস। ইন-হাউস ডিজাইনারের মাসিক বেতন এবং দীর্ঘসূত্রিতা ছাড়াই আপনার ক্লায়েন্টদের জন্য হাই-কনভার্টিং ক্রিয়েটিভ ডেলিভারি নিশ্চিত করুন।',
-      deliverablesEn: [
-        'Dedicated On-Demand Creative Capacity (Up to 30 assets/mo per client tier)',
-        'Strict 48-Hour Rapid Sprint Delivery SLA for Fast Campaign Iterations',
-        '100% White-Label Delivery via Unbranded Figma Workspaces or Google Drive',
-        'High-Performing Visual Frameworks Designed to Maximize Agency Client Retention',
-        'Direct Slack / WhatsApp Channel with Dedicated Senior Creative Director',
-      ],
-      deliverablesBn: [
-        'অন-ডিমান্ড ডেডিকেটেড ক্রিয়েটিভ ব্যান্ডউইথ (ক্লায়েন্ট স্কেলিংয়ের জন্য প্রস্তুত)',
-        'কঠোর ৪৮ ঘণ্টার র্যাপিড ডেলিভারি SLA (ক্যাম্পেইনে কোনো দেরি নয়)',
-        '১০০% হোয়াইট-লেবেল ডেলিভারি (আমাদের কোনো ব্র্যান্ডিং থাকবে না)',
-        'ক্লায়েন্ট রিটেনশন ও ক্যাম্পেইন আরওএএস বাড়ানোর প্রুভেন ফ্রেমওয়ার্ক',
-        'সিনিয়র ক্রিয়েটিভ ডিরেক্টরের সাথে ডিরেক্ট স্ল্যাক / হোয়াটসঅ্যাপ সাপোর্ট',
-      ],
-      roiOutcomeEn: 'Scale Client Roster 3x Faster Without In-House Overhead',
-      roiOutcomeBn: 'টিম খরচ ছাড়াই ৩ গুণ বেশি ক্লায়েন্ট পরিচালনা ও স্কেল করার সুবিধা',
-    },
-  ];
+  const requestCustomQuote = () =>
+    openQuickBookingModal({
+      tierId: 'bespoke',
+      tierTitle: 'Custom Bespoke Visual Partnership',
+      tierTitleBn: 'কাস্টম বেসপোক ভিজ্যুয়াল পার্টনারশিপ',
+      price: 'Custom Quote',
+      priceBn: 'আলোচনা সাপেক্ষে',
+      source: 'Services & Pricing: Custom Quote',
+    });
 
   return (
-    <section id="services" className="bg-[#f9fafb] text-primary py-12 md:py-28 px-5 sm:px-8 md:px-14 relative overflow-hidden border-t border-b border-[#1e3a8a]/10">
-      <div className="max-w-[1240px] mx-auto relative z-10">
-        
-        {/* Section Header */}
-        <div className="max-w-3xl mb-8 md:mb-16">
+    <section
+      id="services"
+      aria-labelledby="services-pricing-heading"
+      className="relative bg-[#f9fafb] text-primary border-y border-primary/10 scroll-mt-20"
+    >
+      {/* Legacy anchors so any #pricing / #investment link still lands here */}
+      <span id="pricing" className="absolute -top-20" aria-hidden="true" />
+      <span id="investment" className="absolute -top-20" aria-hidden="true" />
+
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 md:px-14 py-14 md:py-28">
+        {/* ── Header ── */}
+        <header className="max-w-[820px] mb-8 md:mb-14">
           <MotionReveal>
-            <span 
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 text-accent border border-accent/25 text-[11px] font-semibold uppercase mb-3.5 shadow-sm ${
-                isBn ? 'tracking-normal' : 'tracking-[0.25em]'
-              }`}
+            <p
+              className={`text-accent font-semibold mb-4 ${isBn ? 'text-[14px] tracking-normal' : 'text-[10px] tracking-[4px] uppercase'}`}
+              style={isBn ? bnFont : undefined}
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{isBn ? 'আমাদের মূল সেবা ও ডেলিভারেবলস' : 'Core Services & Deliverables'}</span>
-            </span>
+              {isBn ? 'সার্ভিস ও প্রাইসিং' : 'Services & Pricing'}
+            </p>
           </MotionReveal>
 
-          <h2 
-            className="text-2xl sm:text-4xl md:text-5xl font-heading font-normal text-primary tracking-tight leading-[1.15] mb-4"
-            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+          <h2
+            id="services-pricing-heading"
+            className={`font-normal text-primary leading-[1.12] tracking-tight mb-4 ${
+              isBn ? 'text-[26px] sm:text-4xl md:text-[46px]' : 'text-[32px] sm:text-5xl md:text-[58px]'
+            }`}
+            style={isBn ? bnFont : serifFont}
           >
             {isBn ? (
               <>
-                আস্থা ও বিক্রয় বৃদ্ধির জন্য তৈরি <span className="text-accent italic font-semibold">আমাদের ৩টি ক্রিয়েটিভ সিস্টেম</span>
+                পারফরম্যান্স ক্রিয়েটিভ সিস্টেম।
+                <br />
+                <em className="italic text-accent">বিক্রি বাড়াতে তৈরি, স্বচ্ছ দামে।</em>
               </>
             ) : (
               <>
-                Performance Creative Systems <span className="text-accent italic font-semibold">Engineered to Convert & Scale</span>
+                Performance Creative Systems.
+                <br />
+                <em className="italic text-accent">Engineered to scale. Priced transparently.</em>
               </>
             )}
           </h2>
 
-          <p 
-            className="text-primary/75 text-[13px] sm:text-[15px] md:text-[16px] leading-relaxed font-light"
-            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+          <p
+            className="text-primary/65 text-[14px] md:text-[16px] leading-relaxed"
+            style={isBn ? bnFont : undefined}
           >
             {isBn
-              ? 'আমরা কোনো গড়পড়তা জেনেরিক ব্যানার অফার করি না। আমরা তৈরি করি বাস্তব ফলাফলভিত্তিক ভিজ্যুয়াল আর্কিটেকচার—যা প্রিমিয়াম D2C ব্র্যান্ড ও মার্কেটিং এজেন্সির সেলস ও আরওএএস বাড়াতে কার্যকর।'
-              : 'We do not sell generic freelance hours or templated banners. We deliver specialized, high-converting visual systems engineered specifically for premium skincare brands and marketing agencies.'
-            }
+              ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ডেলিভারেবলস, নির্ধারিত দাম, পরিমাপযোগ্য ফলাফল। কোনো লুকানো খরচ নেই।'
+              : 'Three focused sprints — clear deliverables, fixed prices, measurable ROI. No hourly billing, no hidden fees.'}
           </p>
-        </div>
+        </header>
 
-        {/* MOBILE VIEW: Modern Swipeable Card Carousel with Dot Indicators */}
-        <div className="lg:hidden">
-          <div 
-            className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar -mx-5 px-5"
-            onScroll={(e) => {
-              const target = e.currentTarget;
-              const scrollLeft = target.scrollLeft;
-              const cardWidth = target.offsetWidth * 0.85;
-              const index = Math.round(scrollLeft / cardWidth);
-              setActiveMobileIndex(Math.min(Math.max(0, index), servicesData.length - 1));
-            }}
+        {/* ── MOBILE: segmented switcher + one focused card ── */}
+        <div className="md:hidden">
+          <div
+            role="tablist"
+            aria-label={isBn ? 'প্যাকেজ নির্বাচন করুন' : 'Choose a package'}
+            className="grid grid-cols-3 gap-1 p-1 rounded-full bg-primary/[0.06] mb-5"
           >
-            {servicesData.map((svc) => {
-              const IconComponent = svc.icon;
-              const isExpanded = !!expandedDeliverables[svc.id];
+            {tiers.map((tier, idx) => {
+              const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
+              const active = activeTier === idx;
               return (
-                <div 
-                  key={svc.id}
-                  className="w-[86vw] max-w-[335px] shrink-0 snap-center rounded-2xl border border-primary/15 bg-white p-5 shadow-sm flex flex-col justify-between"
+                <button
+                  key={tier.id}
+                  id={`services-tab-${tier.id}`}
+                  role="tab"
+                  type="button"
+                  aria-selected={active}
+                  onClick={() => setActiveTier(idx)}
+                  className={`relative h-10 rounded-full text-[12px] font-semibold transition-colors duration-300 ${
+                    active ? 'text-white' : 'text-primary/60'
+                  }`}
+                  style={isBn ? bnFont : undefined}
                 >
-                  <div>
-                    {/* Header */}
-                    <div className="flex items-center justify-between border-b border-primary/10 pb-3 mb-3.5">
-                      <div className="flex items-center gap-2">
-                        <span className="font-heading text-xl font-light text-accent">{svc.num}</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-primary/60">
-                          {isBn ? 'স্পেশালাইজড সিস্টেম' : 'System'}
-                        </span>
-                      </div>
-                      <div className="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center">
-                        <IconComponent className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    <h3 
-                      className="text-lg font-bold text-primary leading-snug mb-2"
-                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
-                    >
-                      {isBn ? svc.titleBn : svc.titleEn}
-                    </h3>
-
-                    {/* Target & Turnaround */}
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/15 text-accent text-[10px] font-medium">
-                        <Target className="w-3 h-3" />
-                        <span className="truncate max-w-[190px]">{isBn ? svc.targetBn : svc.targetEn}</span>
-                      </span>
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/10 text-primary/80 text-[10px] font-medium">
-                        <Clock className="w-3 h-3 text-accent" />
-                        <span>{isBn ? svc.turnaroundBn : svc.turnaroundEn}</span>
-                      </span>
-                    </div>
-
-                    <p 
-                      className="text-xs text-primary/70 leading-relaxed font-light mb-4"
-                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                    >
-                      {isBn ? svc.descBn : svc.descEn}
-                    </p>
-
-                    {/* Compact Deliverables Accordion */}
-                    <div className="rounded-xl border border-primary/10 bg-primary/[0.03] p-3 mb-4">
-                      <button
-                        type="button"
-                        onClick={() => toggleDeliverables(svc.id)}
-                        className="w-full flex items-center justify-between text-[11px] font-bold text-primary/90"
-                      >
-                        <span className="flex items-center gap-1.5 text-accent">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>{isBn ? 'কী কী পাবেন (৫টি ডেলিভারেবলস)' : 'Deliverables (5 Items)'}</span>
-                        </span>
-                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-primary/50" /> : <ChevronDown className="w-3.5 h-3.5 text-primary/50" />}
-                      </button>
-
-                      {isExpanded ? (
-                        <ul className="mt-2.5 pt-2.5 border-t border-primary/10 space-y-2 text-[11px] text-primary/80">
-                          {(isBn ? svc.deliverablesBn : svc.deliverablesEn).map((item, dIdx) => (
-                            <li key={dIdx} className="flex items-start gap-2">
-                              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1" />
-                              <span className="leading-snug">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p className="text-[10px] text-primary/60 mt-1.5 truncate">
-                          {(isBn ? svc.deliverablesBn : svc.deliverablesEn)[0]}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Single Clean Conversion Button (No Duplicate Clutter) */}
-                  <div className="pt-2 border-t border-primary/10 space-y-2">
-                    <button
-                      type="button"
-                      onClick={() => openQuickBookingModal({
-                        tierId: svc.id,
-                        tierTitle: svc.titleEn,
-                        tierTitleBn: svc.titleBn,
-                        source: `Service Card: ${svc.titleEn}`,
-                      })}
-                      className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
-                    >
-                      <span>{isBn ? 'এই সার্ভিসটি বুক করুন' : 'Book This Service'}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => openAuditModal({ service: svc.titleEn, source: `Service Card: ${svc.titleEn}` })}
-                      className="w-full py-1.5 text-center text-[11px] text-primary/65 hover:text-accent font-medium flex items-center justify-center gap-1 transition-colors"
-                    >
-                      <Sparkles className="w-3 h-3 text-accent" />
-                      <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট নিন' : 'Free 5-Min Audit'}</span>
-                    </button>
-                  </div>
-                </div>
+                  {active && (
+                    <m.span
+                      layoutId="services-tab-pill"
+                      className="absolute inset-0 rounded-full bg-primary shadow-sm"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                    />
+                  )}
+                  <span className="relative z-10 truncate px-1">{isBn ? meta.tabBn : meta.tabEn}</span>
+                  {tier.featured && !active && (
+                    <span className="absolute top-1.5 right-2.5 w-1.5 h-1.5 rounded-full bg-accent z-10" />
+                  )}
+                </button>
               );
             })}
           </div>
 
-          {/* Swipe Pagination Dots */}
-          <div className="flex items-center justify-center gap-1.5 mt-3">
-            {servicesData.map((_, dotIdx) => (
-              <span
-                key={dotIdx}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeMobileIndex === dotIdx ? 'w-5 bg-accent' : 'w-1.5 bg-primary/20'
-                }`}
-              />
-            ))}
+          <AnimatePresence mode="wait" initial={false}>
+            {tiers[activeTier] && (
+              <m.div
+                key={`${tiers[activeTier].id}-${lang}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <ServiceCard tier={tiers[activeTier]} isBn={isBn} compact onBook={() => bookTier(tiers[activeTier])} />
+              </m.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* ── DESKTOP: 3 columns with middle featured card ── */}
+        <div className={`hidden md:grid gap-6 lg:gap-7 items-start ${tiers.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+          {tiers.map((tier, idx) => (
+            <MotionReveal key={tier.id} delay={0.08 * (idx + 1)} className="h-full">
+              <ServiceCard tier={tier} isBn={isBn} compact onBook={() => bookTier(tier)} />
+            </MotionReveal>
+          ))}
+        </div>
+
+        {/* ── Reassurance + secondary paths (quiet, single line) ── */}
+        <MotionReveal delay={0.15}>
+          <div className="mt-8 md:mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6 pt-6 md:pt-8 border-t border-primary/10">
+            <ul
+              className="flex flex-col sm:flex-row gap-2.5 sm:gap-6 text-[12.5px] md:text-[13px] text-primary/65"
+              style={isBn ? bnFont : undefined}
+            >
+              <li className="flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                {isBn ? 'বিকাশ, নগদ ও ব্যাংক ট্রান্সফার' : 'bKash, Nagad & bank transfer'}
+              </li>
+              <li className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                {isBn ? 'সন্তুষ্ট না হওয়া পর্যন্ত ফ্রি রিভিশন' : 'Free revisions until approved'}
+              </li>
+            </ul>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]" style={isBn ? bnFont : undefined}>
+              <button
+                id="services-custom-quote"
+                type="button"
+                onClick={requestCustomQuote}
+                className="group inline-flex items-center gap-1.5 font-semibold text-primary hover:text-accent transition-colors"
+              >
+                {isBn ? content.customCtaBn || 'কাস্টম কোটেশন নিন' : content.customCtaEn || 'Request a custom quote'}
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              </button>
+              <span className="hidden sm:block w-px h-4 bg-primary/15" aria-hidden />
+              <button
+                id="services-free-audit"
+                type="button"
+                onClick={() => openAuditModal({ source: 'Services & Pricing' })}
+                className="inline-flex items-center gap-1.5 text-primary/60 hover:text-accent transition-colors"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-accent" />
+                {isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-min audit'}
+              </button>
+            </div>
           </div>
-        </div>
-
-        {/* DESKTOP VIEW: Pristine 3-Column Luxury Architecture */}
-        <div className="hidden lg:grid lg:grid-cols-3 gap-8">
-          {servicesData.map((svc, idx) => {
-            const IconComponent = svc.icon;
-            return (
-              <MotionReveal key={svc.id} delay={0.1 * (idx + 1)} className="h-full">
-                <div className="h-full rounded-2xl border border-primary/15 bg-white p-7 sm:p-8 flex flex-col justify-between group shadow-sm hover:shadow-xl hover:border-accent/40 transition-all duration-500 relative overflow-hidden">
-                  
-                  {/* Top Meta Strip */}
-                  <div>
-                    <div className="flex items-center justify-between border-b border-primary/10 pb-4 mb-5">
-                      <div className="flex items-center gap-2">
-                        <span className="font-heading text-2xl font-light text-accent">{svc.num}</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
-                        <span className="text-[11px] font-mono uppercase tracking-wider text-primary/60">
-                          {isBn ? 'স্পেশালাইজড সিস্টেম' : 'Specialized System'}
-                        </span>
-                      </div>
-                      <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-                        <IconComponent className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    {/* Service Title */}
-                    <h3 
-                      className="text-xl sm:text-2xl font-heading text-primary leading-snug mb-3 group-hover:text-accent transition-colors"
-                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
-                    >
-                      {isBn ? svc.titleBn : svc.titleEn}
-                    </h3>
-
-                    {/* Target Audience & Turnaround Badges */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-accent/10 text-accent text-[11px] font-medium border border-accent/20">
-                        <Target className="w-3 h-3" />
-                        <span>{isBn ? svc.targetBn : svc.targetEn}</span>
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/5 text-primary/80 text-[11px] font-medium border border-primary/10">
-                        <Clock className="w-3 h-3 text-accent" />
-                        <span>{isBn ? svc.turnaroundBn : svc.turnaroundEn}</span>
-                      </span>
-                    </div>
-
-                    {/* Core Narrative */}
-                    <p 
-                      className="text-xs sm:text-[13px] text-primary/70 leading-relaxed font-light mb-6"
-                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                    >
-                      {isBn ? svc.descBn : svc.descEn}
-                    </p>
-
-                    {/* What's Included / Concrete Deliverables Checklist */}
-                    <div className="bg-[#f3f4f6] rounded-xl p-4 sm:p-5 border border-primary/10 mb-6">
-                      <p className="text-[11px] font-mono uppercase tracking-widest text-accent font-semibold mb-3 flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>{isBn ? 'এই সার্ভিসে আপনি ঠিক কী কী পাবেন:' : "What's Included in the Deliverables:"}</span>
-                      </p>
-                      <ul className="space-y-2.5">
-                        {(isBn ? svc.deliverablesBn : svc.deliverablesEn).map((item, dIdx) => (
-                          <li key={dIdx} className="flex items-start gap-2.5 text-[12px] sm:text-[13px] text-primary/85 leading-snug">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Bottom Action & Verified Outcome */}
-                  <div>
-                    {/* ROI Tag */}
-                    <div className="mb-5 flex items-center gap-2 text-[11px] font-medium text-accent bg-accent/5 px-3 py-2 rounded-lg border border-accent/15">
-                      <TrendingUp className="w-3.5 h-3.5 shrink-0" />
-                      <span>{isBn ? svc.roiOutcomeBn : svc.roiOutcomeEn}</span>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="space-y-2.5">
-                      <button
-                        type="button"
-                        onClick={() => openQuickBookingModal({
-                          tierId: svc.id,
-                          tierTitle: svc.titleEn,
-                          tierTitleBn: svc.titleBn,
-                          source: `Service Card: ${svc.titleEn}`,
-                        })}
-                        className="w-full py-3 px-4 rounded-xl bg-accent text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-accent/90 transition-all shadow-sm cursor-pointer"
-                      >
-                        <span>{isBn ? 'এই সার্ভিসটি বুক করুন' : 'Book This Service'}</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => openAuditModal({ service: svc.titleEn, source: `Service Card: ${svc.titleEn}` })}
-                        className="w-full py-2 px-4 rounded-xl bg-primary/5 hover:bg-primary/10 border border-primary/15 text-primary text-xs font-semibold tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <Sparkles className="w-3 h-3 text-accent" />
-                        <span>{isBn ? 'ফ্রি ৫-মিনিট ভিজ্যুয়াল অডিট' : 'Free 5-Min Visual Audit'}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-              </MotionReveal>
-            );
-          })}
-        </div>
-
+        </MotionReveal>
       </div>
     </section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────── */
+
+function ServiceCard({
+  tier,
+  isBn,
+  compact = false,
+  onBook,
+}: {
+  tier: PricingTier;
+  isBn: boolean;
+  compact?: boolean;
+  onBook: () => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
+  const Icon = meta.icon;
+  const featured = !!tier.featured;
+
+  const { amount, period } = splitPrice(isBn ? tier.price_bn ?? tier.price_en : tier.price_en ?? tier.price_bn);
+  const deliverables = (isBn ? tier.deliverables_bn : tier.deliverables_en) ?? [];
+  const visibleCount = compact && !expanded ? 3 : deliverables.length;
+  const hiddenCount = deliverables.length - visibleCount;
+
+  // Featured card is inverted (navy) — creates clear visual depth without 3D gimmicks.
+  const tone = featured
+    ? {
+        card: 'bg-primary text-white border-primary/40 shadow-[0_20px_50px_-15px_rgba(30,58,138,0.45)] md:scale-[1.02] md:z-10',
+        muted: 'text-white/70',
+        soft: 'text-white/90',
+        divider: 'border-white/15',
+        chip: 'bg-white/10 text-white/90',
+        iconBox: 'bg-accent text-white shadow-sm',
+      }
+    : {
+        card: 'bg-white text-primary border-primary/15 shadow-[0_4px_20px_-4px_rgba(30,58,138,0.06)] hover:border-primary/30 hover:shadow-[0_14px_36px_-12px_rgba(30,58,138,0.15)]',
+        muted: 'text-primary/60',
+        soft: 'text-primary/85',
+        divider: 'border-primary/10',
+        chip: 'bg-primary/[0.05] text-primary/75',
+        iconBox: 'bg-primary/[0.06] text-primary',
+      };
+
+  return (
+    <article
+      data-service-card={tier.id}
+      className={`relative h-full flex flex-col rounded-2xl border p-5 md:p-6 transition-all duration-300 ${tone.card} md:hover:-translate-y-1`}
+    >
+      {featured && (
+        <span
+          className="absolute -top-3 left-6 px-3.5 py-1 rounded-full bg-accent text-white text-[10px] font-bold tracking-[1.5px] uppercase shadow-sm"
+          style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
+        >
+          {isBn ? 'সবচেয়ে জনপ্রিয়' : 'Most popular'}
+        </span>
+      )}
+
+      {/* Top row: icon + turnaround */}
+      <div className="flex items-center justify-between mb-4">
+        <span className={`w-9 h-9 rounded-xl flex items-center justify-center ${tone.iconBox}`}>
+          <Icon className="w-4 h-4" strokeWidth={1.75} />
+        </span>
+        <span
+          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${tone.chip}`}
+          style={isBn ? bnFont : undefined}
+        >
+          <Clock className="w-3 h-3 text-accent" />
+          {isBn ? meta.turnaroundBn : meta.turnaroundEn}
+        </span>
+      </div>
+
+      {/* Who + what */}
+      <p
+        className={`text-[10.5px] font-semibold mb-1 ${featured ? 'text-accent' : tone.muted} ${isBn ? '' : 'uppercase tracking-[1.5px]'}`}
+        style={isBn ? bnFont : undefined}
+      >
+        {isBn ? tier.target_bn : tier.target_en}
+      </p>
+      <h3
+        className={`leading-tight mb-3.5 ${isBn ? 'text-[20px] font-semibold' : 'text-[24px] md:text-[25px] font-medium'}`}
+        style={isBn ? bnFont : serifFont}
+      >
+        {isBn ? tier.title_bn : tier.title_en}
+      </h3>
+
+      {/* Price */}
+      {amount && (
+        <div className={`flex items-baseline gap-1.5 pb-3.5 mb-3.5 border-b ${tone.divider}`}>
+          <span className="text-[32px] md:text-[36px] font-bold tracking-tight leading-none font-sans">
+            {amount.startsWith('৳') ? (
+              <>
+                <span className="text-[0.55em] font-semibold align-[0.55em] mr-0.5 opacity-70">৳</span>
+                {amount.slice(1)}
+              </>
+            ) : (
+              amount
+            )}
+          </span>
+          {period && (
+            <span className={`text-[12.5px] ${tone.muted}`} style={isBn ? bnFont : undefined}>
+              / {period}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* One-line value statement */}
+      <p className={`text-[13px] leading-relaxed mb-3.5 ${tone.muted}`} style={isBn ? bnFont : undefined}>
+        {isBn ? tier.desc_bn : tier.desc_en}
+      </p>
+
+      {/* Deliverables */}
+      <ul className="space-y-2 mb-1 flex-grow">
+        {deliverables.slice(0, visibleCount).map((item, i) => (
+          <li
+            key={i}
+            className={`flex items-start gap-2 text-[12.5px] leading-snug ${tone.soft}`}
+            style={isBn ? bnFont : undefined}
+          >
+            <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-[2px]" strokeWidth={2.5} />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      {compact && deliverables.length > 3 && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          className={`self-start inline-flex items-center gap-1 text-[11.5px] font-semibold mt-1 mb-1.5 cursor-pointer ${featured ? 'text-accent hover:underline' : 'text-primary/70 hover:text-primary'}`}
+          style={isBn ? bnFont : undefined}
+        >
+          {expanded ? (isBn ? 'কম দেখুন' : 'Show less') : isBn ? `আরও ${toBnDigits(hiddenCount)}টি দেখুন` : `+${hiddenCount} more`}
+          <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+        </button>
+      )}
+
+      {/* ROI outcome */}
+      <div
+        className={`flex items-center gap-1.5 text-[11.5px] font-medium mt-3 mb-4 text-accent`}
+        style={isBn ? bnFont : undefined}
+      >
+        <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+        {isBn ? meta.roiBn : meta.roiEn}
+      </div>
+
+      {/* Single CTA */}
+      <button
+        id={`services-book-${tier.id}`}
+        type="button"
+        onClick={onBook}
+        className={`w-full h-11 rounded-full inline-flex items-center justify-center gap-2 text-[12.5px] font-semibold transition-all duration-300 active:scale-[0.98] cursor-pointer ${
+          featured
+            ? 'bg-accent text-white hover:brightness-105 shadow-[0_6px_20px_-6px_rgba(251,146,60,0.55)]'
+            : 'bg-primary text-white hover:bg-primary/90'
+        }`}
+        style={isBn ? bnFont : undefined}
+      >
+        {isBn ? tier.cta_bn : tier.cta_en}
+        <ArrowRight className="w-4 h-4" />
+      </button>
+    </article>
   );
 }
