@@ -38,7 +38,7 @@ export default function StickyConversionBar() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="hidden md:block fixed md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:max-w-4xl z-40"
         >
-          <div className="bg-primary/95 backdrop-blur-xl border border-[#fb923c]/40 text-white rounded-full p-2 pl-4 pr-3 sm:px-6 sm:py-3 shadow-[0_16px_40px_rgba(0,0,0,0.45)] flex items-center justify-between gap-3 sm:gap-6">
+          <div className="bg-[#1e3a8a]/95 backdrop-blur-xl border border-[#fb923c]/40 text-white rounded-full p-2 pl-4 pr-3 sm:px-6 sm:py-3 shadow-[0_16px_40px_rgba(30,58,138,0.45)] flex items-center justify-between gap-3 sm:gap-6">
             {/* Scarcity & Capacity signal */}
             <div className="flex items-center gap-2.5 min-w-0">
               <span className="relative flex h-2.5 w-2.5 shrink-0">

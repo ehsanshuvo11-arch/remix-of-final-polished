@@ -70,14 +70,14 @@ export default function Process({ steps, content }: ProcessProps) {
             </p>
           )}
         </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
+        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-[#1e3a8a] mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
           {isBn ? (
             <WordReveal delay={0.1}>নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।</WordReveal>
           ) : (
             <>
               <WordReveal delay={0.1}>{line1}</WordReveal>
               <br />
-              <em className="italic">
+              <em className="italic text-accent">
                 <WordReveal delay={0.25}>{line2}</WordReveal>
               </em>
             </>
@@ -85,7 +85,7 @@ export default function Process({ steps, content }: ProcessProps) {
         </h2>
 
         {/* Mobile Vertical Connected Timeline (100% Frictionless & Minimalist) */}
-        <div className="flex md:hidden flex-col gap-8 relative pl-6 border-l-2 border-primary/20 ml-3 my-8">
+        <div className="flex md:hidden flex-col gap-8 relative pl-6 border-l-2 border-[#1e3a8a]/20 ml-3 my-8">
           {displaySteps.map((step, i) => (
             <MobileTimelineStep
               key={step.id}
@@ -124,17 +124,17 @@ function MobileTimelineStep({ step, index, total }: { step: ProcessStep; index: 
   return (
     <div className="relative group">
       {/* Node indicator sitting on the timeline */}
-      <div className="absolute -left-[37px] top-0 w-6 h-6 rounded-full bg-primary border-2 border-accent text-accent text-[10px] font-mono font-bold flex items-center justify-center shadow-sm">
+      <div className="absolute -left-[37px] top-0 w-6 h-6 rounded-full bg-[#1e3a8a] border-2 border-accent text-accent text-[10px] font-mono font-bold flex items-center justify-center shadow-sm">
         0{index + 1}
       </div>
 
-      <div className="bg-white/80 rounded-xl p-5 border border-primary/10 shadow-sm transition-all duration-300">
+      <div className="bg-white/80 rounded-xl p-5 border border-[#1e3a8a]/10 shadow-sm transition-all duration-300">
         <span className="inline-block text-[10px] tracking-[2px] uppercase text-accent font-semibold mb-2">
           {isBn ? phase.bn : phase.en}
         </span>
         <h3
           lang={isBn ? 'bn' : 'en'}
-          className="font-heading text-xl font-medium text-primary mb-2 leading-snug"
+          className="font-heading text-xl font-medium text-[#1e3a8a] mb-2 leading-snug"
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
         >
           {title}
@@ -161,10 +161,10 @@ function StepCard({ step, index }: { step: ProcessStep; index: number }) {
       <div
         className="relative pt-5 transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,0,0,0.05)] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-border before:transition-colors before:duration-700 hover:before:bg-accent"
       >
-        <div className="font-heading text-[40px] font-light text-primary/20 mb-4">
+        <div className="font-heading text-[40px] font-light text-[#1e3a8a]/20 mb-4">
           {String(index + 1).padStart(2, '0')}
         </div>
-        <div lang={isBn ? 'bn' : 'en'} className={`font-heading text-xl font-medium text-primary mb-2.5 ${isBn ? 'leading-snug' : ''}`}>
+        <div lang={isBn ? 'bn' : 'en'} className={`font-heading text-xl font-medium text-[#1e3a8a] mb-2.5 ${isBn ? 'leading-snug' : ''}`}>
           {title}
         </div>
         <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }} className={`text-[13px] leading-[1.75] text-muted-foreground ${isBn ? 'leading-[1.85]' : ''}`}>

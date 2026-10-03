@@ -57,20 +57,20 @@ export default function About({ content, stats }: AboutProps) {
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)] leading-[1.4]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.2]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-[#1e3a8a] mb-7 ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)] leading-[1.4]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.2]'}`}>
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>
                   {(about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই')}
                 </RevealText>
-                <RevealText as="span" className="block italic" stagger={0} delay={0}>
+                <RevealText as="span" className="block italic text-accent" stagger={0} delay={0}>
                   {(about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।')}
                 </RevealText>
               </>
             ) : (
               <>
                 <RevealText as="span" className="block">{line1}</RevealText>
-                <RevealText as="span" delay={0.15} className="block italic">{line2}</RevealText>
+                <RevealText as="span" delay={0.15} className="block italic text-accent">{line2}</RevealText>
               </>
             )}
           </h2>
@@ -88,11 +88,11 @@ export default function About({ content, stats }: AboutProps) {
           </MotionReveal>
           <MotionReveal delay={0.5}>
             {isBn ? (
-              <p lang="bn" className="text-[14px] md:text-[15px] leading-[1.8] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              <p lang="bn" className="text-[14px] md:text-[15px] leading-[1.8] text-[#1e3a8a] font-medium" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                 — আমাদের সিগনেচার: পার্ফরম্যান্স-ফার্স্ট ক্রিয়েটিভস — কনভার্ট করতে, স্কেল করতে।
               </p>
             ) : (
-              <p lang="en" style={enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-primary italic">
+              <p lang="en" style={enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-[#1e3a8a] italic font-medium">
                 {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
               </p>
             )}
@@ -103,9 +103,9 @@ export default function About({ content, stats }: AboutProps) {
           {displayStats.map((stat, i) => (
             <MotionReveal key={stat.id} delay={0.15 * (i + 1)}>
               <div
-                className="stat-box bg-background p-5 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-primary/[0.03] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
+                className="stat-box bg-background p-5 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-[#1e3a8a]/[0.03] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(30,58,138,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
               >
-                <div className="font-heading text-[40px] md:text-[52px] font-light text-primary leading-none mb-1.5 md:mb-2">
+                <div className="font-heading text-[40px] md:text-[52px] font-light text-[#1e3a8a] leading-none mb-1.5 md:mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
                 {isBn ? (

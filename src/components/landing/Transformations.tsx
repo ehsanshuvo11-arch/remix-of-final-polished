@@ -26,11 +26,11 @@ export default function Transformations({ items, content }: TransformationsProps
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang="en" className="font-heading font-normal text-primary mb-12 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang="en" className="font-heading font-normal text-[#1e3a8a] mb-12 text-[clamp(36px,5vw,60px)] leading-[1.1]">
           <WordReveal delay={0.1}>
             {content?.titleLine1En ?? 'Before'}
           </WordReveal>{' '}
-          <em className="italic">
+          <em className="italic text-accent">
             <WordReveal delay={0.25}>
               {content?.titleLine2En ?? '& after.'}
             </WordReveal>
@@ -62,7 +62,7 @@ function TransformationCard({
   return (
     <div>
       {item.project_name && (
-        <p className="text-[11px] tracking-[3px] uppercase text-primary/50 mb-4 font-medium">
+        <p className="text-[11px] tracking-[3px] uppercase text-[#1e3a8a]/60 mb-4 font-medium">
           {item.project_name}
         </p>
       )}

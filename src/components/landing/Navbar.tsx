@@ -103,8 +103,8 @@ export default function Navbar({ content }: NavbarProps) {
 
       <nav
         className={`fixed top-0 left-0 right-0 ${open ? 'z-[120]' : 'z-[100]'} flex justify-between items-center transition-all duration-500 ${scrolled && !open
-          ? 'py-3.5 px-6 md:px-14 bg-[#f9fafb]/95 md:backdrop-blur-2xl border-b border-primary/10 shadow-[0_4px_24px_rgba(0,0,0,0.08)] text-primary'
-          : 'py-[20px] px-6 md:px-14 bg-gradient-to-b from-primary/80 via-primary/30 to-transparent border-b border-transparent text-primary-foreground'
+          ? 'py-3.5 px-6 md:px-14 bg-[#f9fafb]/95 md:backdrop-blur-2xl border-b border-[#1e3a8a]/10 shadow-[0_4px_24px_rgba(30,58,138,0.06)] text-[#1e3a8a]'
+          : 'py-[20px] px-6 md:px-14 bg-[#f9fafb]/80 backdrop-blur-md border-b border-[#1e3a8a]/5 text-[#1e3a8a]'
           }`}
       >
         <div className="flex items-center gap-4 md:gap-6">
@@ -117,18 +117,14 @@ export default function Navbar({ content }: NavbarProps) {
               else window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             lang="en"
-            className={`brand-wordmark font-heading text-[20px] md:text-[24px] font-bold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center ${scrolled && !open ? 'text-primary hover:text-accent' : 'text-primary-foreground hover:text-accent'
-              }`}
+            className="brand-wordmark font-heading text-[20px] md:text-[24px] font-bold tracking-[4px] transition-colors duration-400 min-h-[44px] min-w-[44px] flex items-center text-[#1e3a8a] hover:text-accent"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             POLISHED<span className="text-accent">.</span>
           </a>
 
           {/* Availability Status Badge */}
-          <div className={`hidden lg:flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wide border ${scrolled && !open
-            ? 'bg-accent/10 border-accent/40 text-accent'
-            : 'bg-accent/15 border-accent/30 text-accent'
-            }`}>
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wide border bg-[#1e3a8a]/5 border-[#1e3a8a]/15 text-[#1e3a8a]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
@@ -148,8 +144,7 @@ export default function Navbar({ content }: NavbarProps) {
                   scrollTo(item.href);
                 }}
                 lang={isBn ? 'bn' : 'en'}
-                className={`${isBn ? 'text-[15px] tracking-[0.3px] normal-case font-medium' : 'text-[12px] tracking-[0.22em] uppercase font-normal'} relative transition-colors duration-200 ${scrolled && !open ? 'text-primary/85 hover:text-accent font-normal' : 'text-primary-foreground/90 hover:text-accent font-normal'
-                  } after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
+                className={`${isBn ? 'text-[15px] tracking-[0.3px] normal-case font-medium' : 'text-[12px] tracking-[0.22em] uppercase font-normal'} relative transition-colors duration-200 text-[#1e3a8a]/80 hover:text-accent font-normal after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-px after:bg-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100`}
                 style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
               >
                 {item.label}
@@ -163,10 +158,7 @@ export default function Navbar({ content }: NavbarProps) {
           <button
             type="button"
             onClick={() => toggleLanguage()}
-            className={`inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wider px-3 py-1.5 rounded-full border transition-all duration-300 ${scrolled && !open
-              ? 'border-primary/20 bg-primary/5 text-primary hover:border-accent hover:text-accent'
-              : 'border-primary-foreground/20 bg-white/5 text-primary-foreground hover:border-accent hover:text-accent'
-              } cursor-pointer active:scale-95`}
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wider px-3 py-1.5 rounded-full border transition-all duration-300 border-[#1e3a8a]/20 bg-white text-[#1e3a8a] hover:border-accent hover:text-accent cursor-pointer active:scale-95 shadow-sm"
             title={isBn ? 'Switch to English' : 'বাংলা ভার্সন দেখুন'}
           >
             <Globe className="w-3.5 h-3.5 opacity-80 text-accent" />
@@ -189,8 +181,7 @@ export default function Navbar({ content }: NavbarProps) {
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
-          className={`md:hidden relative w-11 h-11 flex flex-col items-center justify-center gap-[6px] z-[110] transition-colors duration-500 ${open ? 'text-primary-foreground' : scrolled ? 'text-primary' : 'text-primary-foreground'
-            }`}
+          className={`md:hidden relative w-11 h-11 flex flex-col items-center justify-center gap-[6px] z-[110] transition-colors duration-500 ${open ? 'text-white' : 'text-[#1e3a8a]'}`}
         >
           <span
             className="block h-px w-6 bg-current transition-all duration-500"

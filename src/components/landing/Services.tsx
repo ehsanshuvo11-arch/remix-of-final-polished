@@ -128,15 +128,15 @@ export default function Services({ content }: ServicesProps) {
   ];
 
   return (
-    <section id="services" className="bg-primary text-[#f9fafb] py-20 md:py-32 px-5 sm:px-8 md:px-14 relative overflow-hidden border-t border-b border-white/10">
+    <section id="services" className="bg-[#f9fafb] text-[#1e3a8a] py-20 md:py-32 px-5 sm:px-8 md:px-14 relative overflow-hidden border-t border-b border-[#1e3a8a]/10">
       
       {/* Background Subtle Moving Grid Texture matching brand aesthetic */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-30" 
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px)
+            linear-gradient(to right, rgba(30, 58, 138, 0.035) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(30, 58, 138, 0.035) 1px, transparent 1px)
           `,
           backgroundSize: '80px 80px',
         }}
@@ -148,7 +148,7 @@ export default function Services({ content }: ServicesProps) {
         <div className="max-w-3xl mb-12 md:mb-16">
           <MotionReveal>
             <span 
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#fb923c]/15 text-[#fb923c] border border-[#fb923c]/30 text-[11px] font-semibold uppercase mb-4 shadow-sm ${
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/25 text-[11px] font-semibold uppercase mb-4 shadow-sm ${
                 isBn ? 'tracking-normal' : 'tracking-[0.25em]'
               }`}
             >
@@ -158,7 +158,7 @@ export default function Services({ content }: ServicesProps) {
           </MotionReveal>
 
           <h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-heading font-normal text-[#f9fafb] tracking-tight leading-[1.15] mb-5"
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-normal text-[#1e3a8a] tracking-tight leading-[1.15] mb-5"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
           >
             {isBn ? (
@@ -173,7 +173,7 @@ export default function Services({ content }: ServicesProps) {
           </h2>
 
           <p 
-            className="text-[#f9fafb]/80 text-[14px] sm:text-[15px] md:text-[16px] leading-relaxed font-light"
+            className="text-[#1e3a8a]/75 text-[14px] sm:text-[15px] md:text-[16px] leading-relaxed font-light"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {isBn
@@ -189,28 +189,28 @@ export default function Services({ content }: ServicesProps) {
             const IconComponent = svc.icon;
             return (
               <MotionReveal key={svc.id} delay={0.1 * (idx + 1)} className="h-full">
-                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/[0.08] hover:border-[#fb923c]/40 transition-all duration-500 backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between group shadow-xl relative overflow-hidden">
+                <div className="h-full rounded-2xl border border-[#1e3a8a]/15 bg-white hover:border-[#fb923c] hover:shadow-[0_20px_50px_rgba(30,58,138,0.12)] transition-all duration-500 p-6 sm:p-8 flex flex-col justify-between group shadow-sm relative overflow-hidden">
                   
                   {/* Top Meta Strip */}
                   <div>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+                    <div className="flex items-center justify-between border-b border-[#1e3a8a]/10 pb-4 mb-5">
                       <div className="flex items-center gap-2">
                         <span className="font-heading text-2xl font-light text-[#fb923c]">
                           {svc.num}
                         </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-                        <span className="text-[11px] font-mono uppercase tracking-wider text-white/60">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#1e3a8a]/20" />
+                        <span className="text-[11px] font-mono uppercase tracking-wider text-[#1e3a8a]/60">
                           {isBn ? 'স্পেশালাইজড সার্ভিস' : 'Specialized System'}
                         </span>
                       </div>
-                      <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#fb923c] group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-xl bg-[#1e3a8a]/5 border border-[#1e3a8a]/10 flex items-center justify-center text-[#fb923c] group-hover:scale-110 transition-transform">
                         <IconComponent className="w-4 h-4" />
                       </div>
                     </div>
 
                     {/* Service Title */}
                     <h3 
-                      className="text-xl sm:text-2xl font-heading text-white leading-snug mb-3 group-hover:text-[#fb923c] transition-colors"
+                      className="text-xl sm:text-2xl font-heading text-[#1e3a8a] leading-snug mb-3 group-hover:text-[#fb923c] transition-colors"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
                     >
                       {isBn ? svc.titleBn : svc.titleEn}
@@ -218,11 +218,11 @@ export default function Services({ content }: ServicesProps) {
 
                     {/* Target Audience & Turnaround Badges */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#fb923c]/15 text-[#fb923c] text-[10px] sm:text-[11px] font-medium border border-[#fb923c]/25">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#fb923c]/10 text-[#fb923c] text-[10px] sm:text-[11px] font-medium border border-[#fb923c]/25">
                         <Target className="w-3 h-3" />
                         <span>{isBn ? svc.targetBn : svc.targetEn}</span>
                       </span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 text-white/80 text-[10px] sm:text-[11px] font-medium border border-white/15">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#1e3a8a]/5 text-[#1e3a8a]/80 text-[10px] sm:text-[11px] font-medium border border-[#1e3a8a]/10">
                         <Clock className="w-3 h-3 text-[#fb923c]" />
                         <span>{isBn ? svc.turnaroundBn : svc.turnaroundEn}</span>
                       </span>
@@ -230,21 +230,21 @@ export default function Services({ content }: ServicesProps) {
 
                     {/* Core Narrative */}
                     <p 
-                      className="text-xs sm:text-[13px] text-white/70 leading-relaxed font-light mb-6"
+                      className="text-xs sm:text-[13px] text-[#1e3a8a]/70 leading-relaxed font-light mb-6"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? svc.descBn : svc.descEn}
                     </p>
 
                     {/* What's Included / Concrete Deliverables Checklist */}
-                    <div className="bg-black/20 rounded-xl p-4 sm:p-5 border border-white/10 mb-6">
+                    <div className="bg-[#1e3a8a]/[0.03] rounded-xl p-4 sm:p-5 border border-[#1e3a8a]/10 mb-6">
                       <p className="text-[11px] font-mono uppercase tracking-widest text-[#fb923c] font-semibold mb-3 flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>{isBn ? 'এই সার্ভিসে আপনি ঠিক কী কী পাবেন:' : "What's Included in the Deliverables:"}</span>
                       </p>
                       <ul className="space-y-2.5">
                         {(isBn ? svc.deliverablesBn : svc.deliverablesEn).map((item, dIdx) => (
-                          <li key={dIdx} className="flex items-start gap-2.5 text-[12px] sm:text-[13px] text-white/85 leading-snug">
+                          <li key={dIdx} className="flex items-start gap-2.5 text-[12px] sm:text-[13px] text-[#1e3a8a]/85 leading-snug">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#fb923c] shrink-0 mt-1.5" />
                             <span>{item}</span>
                           </li>
@@ -256,8 +256,8 @@ export default function Services({ content }: ServicesProps) {
                   {/* Bottom Action & Verified Outcome */}
                   <div>
                     {/* ROI Tag */}
-                    <div className="mb-5 flex items-center gap-2 text-[11px] font-medium text-[#fb923c] bg-white/[0.03] px-3 py-2 rounded-lg border border-white/5">
-                      <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+                    <div className="mb-5 flex items-center gap-2 text-[11px] font-medium text-[#1e3a8a] bg-[#fb923c]/10 px-3 py-2 rounded-lg border border-[#fb923c]/20">
+                      <TrendingUp className="w-3.5 h-3.5 shrink-0 text-[#fb923c]" />
                       <span>{isBn ? svc.roiOutcomeBn : svc.roiOutcomeEn}</span>
                     </div>
 
@@ -267,7 +267,7 @@ export default function Services({ content }: ServicesProps) {
                         href={`https://wa.me/8801346288210?text=${encodeURIComponent(svc.whatsappText)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full py-3 px-4 rounded-xl bg-[#fb923c] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#f97316] transition-all hover:scale-[1.01] active:scale-[0.99] shadow-md"
+                        className="w-full py-3 px-4 rounded-xl bg-[#fb923c] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#fb923c]/90 transition-all hover:scale-[1.01] active:scale-[0.99] shadow-md"
                       >
                         <span>{isBn ? 'হোয়াটসঅ্যাপে বুকিং করুন' : 'Book on WhatsApp'}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -276,7 +276,7 @@ export default function Services({ content }: ServicesProps) {
                       <button
                         type="button"
                         onClick={() => openAuditModal({ service: svc.titleEn, source: `Service Card: ${svc.titleEn}` })}
-                        className="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white/90 text-xs font-semibold tracking-wider transition-all flex items-center justify-center gap-2"
+                        className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-[#1e3a8a]/5 border border-[#1e3a8a]/20 text-[#1e3a8a] text-xs font-semibold tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
                       >
                         <Sparkles className="w-3 h-3 text-[#fb923c]" />
                         <span>{isBn ? 'ফ্রি ৫-মিনিট ভিজ্যুয়াল অডিট' : 'Free 5-Min Visual Audit'}</span>

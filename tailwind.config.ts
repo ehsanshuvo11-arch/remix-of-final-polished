@@ -62,7 +62,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        navy: "#1e3a8a",
+        offwhite: "#f9fafb",
+        orange: "#fb923c",
         polished: {
+          offwhite: "hsl(var(--polished-offwhite))",
+          navy: "hsl(var(--polished-navy))",
           blue: "hsl(var(--polished-blue))",
           orange: "hsl(var(--polished-orange))",
           "dark-blue": "hsl(var(--polished-dark-blue))",
