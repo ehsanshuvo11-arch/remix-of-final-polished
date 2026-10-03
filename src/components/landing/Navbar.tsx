@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { m, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { m, AnimatePresence, useScroll } from 'framer-motion';
 import { Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getLenis } from '@/components/landing/SmoothScroll';
@@ -22,7 +22,6 @@ export default function Navbar({ content }: NavbarProps) {
   const { t, lang, toggleLanguage } = useLanguage();
   const isBn = lang === 'bn';
   const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.4 });
 
 
   useEffect(() => {
@@ -97,7 +96,7 @@ export default function Navbar({ content }: NavbarProps) {
       {/* Mobile reading-progress hairline — orientation without extra chrome */}
       <m.div
         aria-hidden
-        style={{ scaleX: progress }}
+        style={{ scaleX: scrollYProgress }}
         className="md:hidden fixed top-0 left-0 right-0 z-[130] h-[2px] origin-left bg-accent pointer-events-none"
       />
 

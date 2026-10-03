@@ -457,78 +457,41 @@ html[data-lang="bn"] .brand-wordmark {
   font-style: normal;
 }
 
-/* Scroll reveal */
-/* Scroll reveal — luxury easing (long decelerating settle, optical blur) */
+/* Scroll reveal — pure compositor-accelerated (transform + opacity) */
 .reveal-element {
   opacity: 0;
-  transform: translate3d(0, 28px, 0) scale(0.985);
-  will-change: opacity, transform;
+  transform: translate3d(0, 24px, 0);
   transition:
-    opacity 1s linear,
-    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@media (min-width: 768px) {
-  .reveal-element {
-    filter: blur(6px);
-    will-change: opacity, transform, filter;
-    transition:
-      opacity 1s linear,
-      transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
-      filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+    opacity 0.6s linear,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-element.visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
-  filter: blur(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .reveal-left {
   opacity: 0;
-  transform: translate3d(-40px, 0, 0);
-  will-change: opacity, transform;
+  transform: translate3d(-30px, 0, 0);
   transition:
-    opacity 1s linear,
-    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@media (min-width: 768px) {
-  .reveal-left {
-    filter: blur(6px);
-    will-change: opacity, transform, filter;
-    transition:
-      opacity 1s linear,
-      transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
-      filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+    opacity 0.6s linear,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-left.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  filter: blur(0);
 }
 
 .reveal-right {
   opacity: 0;
-  transform: translate3d(40px, 0, 0);
-  will-change: opacity, transform;
+  transform: translate3d(30px, 0, 0);
   transition:
-    opacity 1s linear,
-    transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@media (min-width: 768px) {
-  .reveal-right {
-    filter: blur(6px);
-    will-change: opacity, transform, filter;
-    transition:
-      opacity 1s linear,
-      transform 1.5s cubic-bezier(0.16, 1, 0.3, 1),
-      filter 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+    opacity 0.6s linear,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-right.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  filter: blur(0);
 }
 
 /* Global interactive motion layer — every clickable element settles

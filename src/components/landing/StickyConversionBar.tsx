@@ -11,20 +11,23 @@ export default function StickyConversionBar() {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
+    if (isDismissed) return;
+    let ticking = false;
     const handleScroll = () => {
-      if (isDismissed) return;
-      const scrollY = window.scrollY;
-      const threshold = 550;
-      if (scrollY > threshold && !isVisible) {
-        setIsVisible(true);
-      } else if (scrollY <= threshold && isVisible) {
-        setIsVisible(false);
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const scrollY = window.scrollY;
+        const threshold = 550;
+        setIsVisible(scrollY > threshold);
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isVisible, isDismissed]);
+  }, [isDismissed]);
 
   if (isDismissed) return null;
 

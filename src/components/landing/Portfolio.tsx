@@ -242,8 +242,11 @@ function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioP
           {project.image_url ? (
             imageExpanded ? (
               <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
-                {/* Premium subtle orange aura — ultra-soft breathing glow on white */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10"></div>
+                {/* Premium subtle orange aura — precomputed radial gradient for zero GPU blur cost */}
+                <div 
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] rounded-full pointer-events-none -z-10"
+                  style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.08) 0%, rgba(251,146,60,0) 70%)' }}
+                />
                 <PremiumImage
                   src={project.image_url}
                   alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
@@ -491,8 +494,11 @@ function TiltImage({ src, alt, priority = false }: { src: string; alt: string; p
 
   return (
     <div className="group relative z-[60] w-full h-full overflow-visible isolate">
-      {/* Premium subtle orange aura — static (no pulse) to keep paint cost at zero */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-[#fb923c]/[0.06] blur-[90px] rounded-full pointer-events-none -z-10" />
+      {/* Premium subtle orange aura — precomputed radial gradient for zero GPU paint cost */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] rounded-full pointer-events-none -z-10"
+        style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.08) 0%, rgba(251,146,60,0) 70%)' }}
+      />
 
       <div
         ref={wrapperRef}

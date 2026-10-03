@@ -7,31 +7,9 @@ const SVG = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><f
 const DATA_URL = `url("data:image/svg+xml;utf8,${SVG}")`;
 
 function FilmGrain() {
-  const location = useLocation();
-  const isMobile = useIsMobileDevice();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) return null;
-  // Performance: SVG turbulence filters are expensive on mobile GPUs.
-  // We disable the grain overlay on mobile to ensure smooth 60fps scrolling.
-  if (isMobile || location.pathname.startsWith("/admin")) return null;
-
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 50,
-        pointerEvents: "none",
-        backgroundImage: DATA_URL,
-        backgroundRepeat: "repeat",
-        opacity: 0.035,
-      }}
-    />
-  );
+  // Performance: Full-screen SVG turbulence filters cause significant GPU compositor jank
+  // during scroll. Disabling this overlay ensures native 60/120fps hardware acceleration.
+  return null;
 }
 
 export default memo(FilmGrain);

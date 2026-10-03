@@ -31,69 +31,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     subBn: "আমরা সাধারণ ক্যানভা ব্যানার বানাই না। আমরা তৈরি করি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ, লাক্সারি প্যাকেজিং ও ই-কমার্স ভিজ্যুয়াল—যা আপনার বিজ্ঞাপনের খরচ (CPR) কমায় এবং সেলস ৩.২ গুণ বৃদ্ধি করে।",
   };
 
-  // Parallax on orbs — scroll + pointer drift with viewport-culled RAF
-  useEffect(() => {
-    if (isMobile) return;
-
-    let scrollY = 0;
-    let px = 0;
-    let py = 0;
-    let targetX = 0;
-    let targetY = 0;
-    let raf = 0;
-    let isVisible = true;
-
-    const apply = () => {
-      if (!isVisible) return;
-      if (orb1Ref.current) {
-        orb1Ref.current.style.transform = `translate3d(${px}px, ${scrollY * 0.25 + py}px, 0)`;
-      }
-      if (orb2Ref.current) {
-        orb2Ref.current.style.transform = `translate3d(${px * -0.7}px, ${scrollY * -0.15 + py * -0.7}px, 0)`;
-      }
-    };
-
-    const onScroll = () => {
-      scrollY = window.scrollY;
-      isVisible = scrollY < window.innerHeight * 1.2;
-      if (isVisible) apply();
-    };
-
-    const tick = () => {
-      if (isVisible) {
-        const dx = targetX - px;
-        const dy = targetY - py;
-        if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05) {
-          px += dx * 0.05;
-          py += dy * 0.05;
-          apply();
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    const onPointerMove = (e: PointerEvent) => {
-      if (!isVisible) return;
-      targetX = (e.clientX / window.innerWidth - 0.5) * 26;
-      targetY = (e.clientY / window.innerHeight - 0.5) * 18;
-    };
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const fine = window.matchMedia('(pointer: fine)').matches;
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    if (!reduced && fine) {
-      window.addEventListener('pointermove', onPointerMove, { passive: true });
-      raf = requestAnimationFrame(tick);
-    }
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('pointermove', onPointerMove);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [isMobile]);
-
   return (
     <section
       className="min-h-[100svh] py-14 px-5 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
@@ -106,9 +43,9 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         }}
       />
 
-      {/* Orbs — scroll + pointer parallax (transform driven from JS) */}
-      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.07) 0%, rgba(251,146,60,0.02) 40%, rgba(251,146,60,0) 70%)' }} />
-      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(30,58,138,0.3) 0%, rgba(30,58,138,0.08) 40%, rgba(30,58,138,0) 70%)' }} />
+      {/* Static ambient orbs with zero JS runtime / rAF cost */}
+      <div className="absolute w-[800px] h-[800px] rounded-full pointer-events-none" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.07) 0%, rgba(251,146,60,0.02) 40%, rgba(251,146,60,0) 70%)' }} />
+      <div className="absolute w-[600px] h-[600px] rounded-full pointer-events-none" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(30,58,138,0.3) 0%, rgba(30,58,138,0.08) 40%, rgba(30,58,138,0) 70%)' }} />
 
       <div className="max-w-[960px] text-center relative z-10 pt-4 md:pt-8">
         <div className="w-full flex flex-col items-center justify-center mb-6 md:mb-8 gap-3">
