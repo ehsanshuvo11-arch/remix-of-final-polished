@@ -85,11 +85,11 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-            আমাদের সিগনেচার কাজ
+            আমাদের ক্লায়েন্টদের জন্য করা কাজ ও কেস স্টাডি
           </p>
         ) : (
           <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {content?.labelEn ?? 'Selected Work'}
+            {content?.labelEn ?? 'Client Case Studies & Proven Results'}
           </p>
         )}
       </MotionReveal>
@@ -97,12 +97,12 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7">
           <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
             {isBn ? (
-              <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
+              <WordReveal delay={0.1}>বাস্তব ব্র্যান্ডের রূপান্তর ও সেলস গ্রোথ।</WordReveal>
             ) : (
               <>
-                <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
-                <em className="italic">
-                  <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
+                <WordReveal delay={0.1}>Transforming Brands.</WordReveal>{' '}
+                <em className="italic text-accent">
+                  <WordReveal delay={0.25}>Proven Results.</WordReveal>
                 </em>
               </>
             )}
@@ -207,11 +207,17 @@ function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioP
           imageExpanded ? 'relative overflow-visible' : 'relative'
         }`}
       >
-        {/* Mobile top meta badge */}
-        <div className="flex md:hidden items-center justify-between gap-2 mb-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] tracking-[1.5px] uppercase font-medium bg-primary/5 border border-primary/10 text-accent">
-            {category}
-          </span>
+        {/* Top meta badge: clearly announces that this is a client project designed by POLISHED */}
+        <div className="flex items-center justify-between gap-3 mb-3 md:mb-4">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-[11px] tracking-[1.5px] uppercase font-semibold bg-primary/5 border border-primary/10 text-accent">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              {category}
+            </span>
+            <span className="hidden sm:inline-block text-[11px] font-mono uppercase tracking-wider text-muted-foreground/70">
+              {isBn ? '• ক্লায়েন্ট কেস স্টাডি' : '• Client Case Study'}
+            </span>
+          </div>
           <span className="text-[11px] font-mono text-muted-foreground/60">
             0{index + 1} {totalCount ? `/ 0${totalCount}` : ''}
           </span>
@@ -275,10 +281,18 @@ function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioP
           )}
         </div>
 
-        {/* Hook text — displayed between image and buttons */}
+        {/* Project Title */}
+        <h3 
+          className="mt-5 px-1 font-heading text-xl sm:text-2xl md:text-3xl text-primary font-normal leading-snug tracking-tight"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+        >
+          {title}
+        </h3>
+
+        {/* Hook text — displayed between title/image and buttons */}
         {hook && (
           <div
-            className="mt-4 px-1 font-sans text-sm md:text-base font-medium text-foreground/90 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
+            className="mt-2.5 px-1 font-sans text-sm md:text-base font-medium text-foreground/80 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
             style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
           />

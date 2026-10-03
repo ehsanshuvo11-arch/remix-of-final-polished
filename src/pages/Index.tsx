@@ -85,22 +85,22 @@ export default function Index() {
         {/* 3. Capability Ribbon */}
         <Marquee items={marqueeData?.items ?? []} />
 
-        {/* 4. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies front-and-center */}
+        {/* 4. CORE SERVICES & DELIVERABLES: What We Do & Deliver for D2C Brands & Agencies */}
+        <Services services={services} content={servicesMeta ?? null} />
+
+        {/* 5. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies with ROAS Results */}
         <Suspense fallback={<SectionFallback minHeight="80vh" />}>
           <ErrorBoundary isSection sectionName="Portfolio">
             <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
           </ErrorBoundary>
         </Suspense>
 
-        {/* 5. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
+        {/* 6. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
         <Suspense fallback={<SectionFallback minHeight="70vh" />}>
           <ErrorBoundary isSection sectionName="StickyStorytelling">
             <StickyStorytelling />
           </ErrorBoundary>
         </Suspense>
-
-        {/* 7. CORE SERVICES & DELIVERABLES: 3 specialized systems with concrete checklists */}
-        <Services services={services} content={servicesMeta ?? null} />
 
         {/* 8. VISUAL EVOLUTION & BEFORE/AFTER TRANSFORMATIONS */}
         <Suspense fallback={<SectionFallback minHeight="60vh" />}>

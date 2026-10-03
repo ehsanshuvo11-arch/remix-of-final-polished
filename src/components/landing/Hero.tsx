@@ -25,10 +25,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     title2En: '*Unmissable!*',
     titleBn: 'আপনার কালেকশন হোক',
     title2Bn: '*অনবদ্য!*',
-    eyebrowEn: 'Performance & Meta Ad Creative Agency · Bangladesh',
-    eyebrowBn: 'পার্ফরম্যান্স ও মেটা অ্যাড ক্রিয়েটিভ এজেন্সি · বাংলাদেশ',
-    subEn: "We don't just design aesthetic banners. We build high-converting Meta Ad creatives that slash your CPR and eliminate COD return risks for your skincare brand.",
-    subBn: "সুন্দর ডিজাইন অনেকেই দেয়, কিন্তু সেলস আনা সহজ নয়। আমাদের ডেটা-ড্রিভেন ডিজাইন আপনার মেটা অ্যাডের খরচ কমাবে এবং ক্যাশ-অন-ডেলিভারি (COD) রিটার্ন ঝুঁকি জিরো করবে।",
+    eyebrowEn: 'Performance Visual Identity & High-Conversion Design Agency',
+    eyebrowBn: 'পারফরম্যান্স ভিজ্যুয়াল আইডেন্টিটি ও হাই-কনভার্শন ডিজাইন স্টুডিও',
+    subEn: "We don't design generic Canva banners. We build high-converting Meta Ad creatives, luxury packaging, and high-trust storefront visuals that slash your CPR and drive 3.2x average ROAS for ambitious skincare brands.",
+    subBn: "আমরা সাধারণ ক্যানভা ব্যানার বানাই না। আমরা তৈরি করি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ, লাক্সারি প্যাকেজিং ও ই-কমার্স ভিজ্যুয়াল—যা আপনার বিজ্ঞাপনের খরচ (CPR) কমায় এবং সেলস ৩.২ গুণ বৃদ্ধি করে।",
   };
 
   // Parallax on orbs — scroll + pointer drift with viewport-culled RAF
@@ -221,9 +221,43 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           </a>
         </div>
 
+        {/* Dual Audience Clarity Cards: Immediately clarifies WHO we serve and WHAT we do */}
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-w-[820px] mx-auto mt-7 text-left"
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.15s both' }}
+        >
+          <div className="p-4 sm:p-4.5 rounded-xl bg-white/[0.05] border border-white/12 hover:border-accent/40 transition-all backdrop-blur-md">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="w-2 h-2 rounded-full bg-accent" />
+              <h3 className="text-[11px] sm:text-xs uppercase tracking-[2px] font-semibold text-accent font-sans">
+                {isBn ? '🌿 D2C স্কিনকেয়ার ও বিউটি ব্র্যান্ড' : '🌿 For D2C Skincare & Beauty Brands'}
+              </h3>
+            </div>
+            <p className="text-[12px] sm:text-[13px] text-white/85 leading-relaxed">
+              {isBn 
+                ? 'মেটা অ্যাড ক্রিয়েটিভ, লাক্সারি প্যাকেজিং ও শপিফাই স্টোরফ্রন্ট—বিজ্ঞাপনের খরচ (CPR) কমাতে ও নিশ্চিত অর্ডার বাড়াতে।'
+                : 'High-converting Meta Ad creatives, luxury packaging & PDP graphics that slash CPR and eliminate COD hesitation.'}
+            </p>
+          </div>
+
+          <div className="p-4 sm:p-4.5 rounded-xl bg-white/[0.05] border border-white/12 hover:border-accent/40 transition-all backdrop-blur-md">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="w-2 h-2 rounded-full bg-white/60" />
+              <h3 className="text-[11px] sm:text-xs uppercase tracking-[2px] font-semibold text-white/90 font-sans">
+                {isBn ? '⚡ মার্কেটিং ও পারফরম্যান্স এজেন্সি' : '⚡ For Marketing & Media Agencies'}
+              </h3>
+            </div>
+            <p className="text-[12px] sm:text-[13px] text-white/85 leading-relaxed">
+              {isBn 
+                ? '৪৮ ঘণ্টার SLA-তে হোয়াইট-লেবেল ক্রিয়েটিভ স্প্রিন্ট। ডিজাইনার হায়ার করার ঝামেলা ছাড়া ক্লায়েন্ট ক্যাম্পেইন স্কেল করুন।'
+                : 'White-label 48h turnaround creative sprints. Scale client retainers without the overhead of an in-house design team.'}
+            </p>
+          </div>
+        </div>
+
         {/* Social Proof & Metrics Strip — Mobile Clean Chips */}
         <div
-          className="w-full max-w-[700px] mx-auto mt-6 md:mt-9 pt-4 border-t border-primary-foreground/10 text-primary-foreground/75"
+          className="w-full max-w-[700px] mx-auto mt-6 md:mt-7 pt-4 border-t border-primary-foreground/10 text-primary-foreground/75"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}
         >
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-x-5 text-[11px] md:text-xs">
