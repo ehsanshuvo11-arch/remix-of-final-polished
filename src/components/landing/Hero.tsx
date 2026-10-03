@@ -96,47 +96,30 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
   return (
     <section
-      className="min-h-[100svh] py-14 px-5 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-[#f9fafb]"
+      className="min-h-[100svh] py-14 px-5 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:h-auto md:min-h-screen md:px-14 md:pt-20 md:pb-36 lg:pb-40 bg-primary"
     >
-      {/* Subtle moving grid texture — luxury navy lines on off-white */}
+      {/* Elegant quiet luxury ambient lighting without harsh blueprint lines */}
       <div
-        className="hero-grid absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage:
-            'linear-gradient(rgba(30,58,138,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(30,58,138,0.035) 1px, transparent 1px)',
-          backgroundSize: '80px 80px',
-          animation: 'gridMove 20s linear infinite',
+          background: 'radial-gradient(ellipse at 50% 15%, rgba(251,146,60,0.08) 0%, rgba(30,58,138,0.2) 50%, rgba(30,58,138,0) 80%)',
         }}
       />
 
-      {/* Orbs — soft luxury radiance */}
-      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.08) 0%, rgba(251,146,60,0.03) 35%, rgba(251,146,60,0) 70%)' }} />
-      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(30,58,138,0.06) 0%, rgba(30,58,138,0.02) 40%, rgba(30,58,138,0) 70%)' }} />
+      {/* Orbs — scroll + pointer parallax (transform driven from JS) */}
+      <div ref={orb1Ref} className="absolute w-[800px] h-[800px] rounded-full pointer-events-none will-change-transform" style={{ top: '-200px', right: '-200px', background: 'radial-gradient(circle, rgba(251,146,60,0.07) 0%, rgba(251,146,60,0.02) 40%, rgba(251,146,60,0) 70%)' }} />
+      <div ref={orb2Ref} className="absolute w-[600px] h-[600px] rounded-full pointer-events-none will-change-transform" style={{ bottom: '-150px', left: '-150px', background: 'radial-gradient(circle, rgba(30,58,138,0.3) 0%, rgba(30,58,138,0.08) 40%, rgba(30,58,138,0) 70%)' }} />
 
-      <div className="max-w-[900px] text-center relative z-10">
-        <img
-          src="/logo.svg"
-          alt="POLISHED Logo"
-          width={100}
-          height={100}
-          loading="eager"
-          decoding="sync"
-          className="hero-logo-breath w-12 h-12 mb-4 md:w-[100px] md:h-[100px] md:mb-9 mx-auto"
-          style={{
-            filter: 'drop-shadow(0 4px 20px rgba(30,58,138,0.15))',
-            animation:
-              'logoReveal 1s cubic-bezier(0.22,1,0.36,1) both, heroLogoBreath 9s ease-in-out 1.4s infinite',
-          }}
-        />
-        <div className="w-full flex flex-col items-center justify-center mt-2 mb-4 md:mt-0 md:mb-5 gap-2">
+      <div className="max-w-[960px] text-center relative z-10 pt-4 md:pt-8">
+        <div className="w-full flex flex-col items-center justify-center mb-6 md:mb-8 gap-3">
           {/* Subtle live availability pill */}
           <div
-            className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-[#1e3a8a]/[0.05] border border-[#1e3a8a]/15 text-[10px] md:text-[11px] tracking-[1.5px] uppercase text-[#1e3a8a] font-semibold shadow-sm"
+            className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-white/[0.07] border border-white/15 text-[10px] md:text-[11px] tracking-[1.5px] uppercase text-primary-foreground/95 font-medium shadow-sm"
             style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s both' }}
           >
             <span className="relative flex h-2 w-2 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#fb923c] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#fb923c]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
             <span>
               {isBn ? '৩টি পার্টনার স্লট বাকি • মার্চ স্প্রিন্ট' : '3 Partner Slots Remaining • March Sprint'}
@@ -145,7 +128,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
           <p
             lang="en"
-            className="font-sans-eyebrow text-[9px] tracking-[0.28em] text-[#fb923c] md:text-[11px] md:tracking-[4px] uppercase font-semibold"
+            className="font-sans-eyebrow text-[9px] tracking-[0.28em] text-accent md:text-[11px] md:tracking-[4px] uppercase font-semibold"
             style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: '"Inter", sans-serif' }}
           >
             {hero.eyebrowEn}
@@ -159,7 +142,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           return (
             <h1
               lang="en"
-              className="hero-headline font-heading font-light text-[#1e3a8a] text-[34px] sm:text-[40px] tracking-tight leading-[1.12] mx-auto mb-3 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
+              className="hero-headline font-heading font-light text-primary-foreground text-[34px] sm:text-[40px] tracking-tight leading-[1.12] mx-auto mb-3 md:max-w-none md:tracking-normal md:leading-[1.08] md:mb-6 md:text-[clamp(48px,8vw,96px)] md:whitespace-nowrap text-center"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '-0.01em',
@@ -178,7 +161,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               <RevealText
                 as="span"
                 delay={line2Delay}
-                className="hero-accent-line block text-[34px] sm:text-[40px] leading-[1.1] mt-1 mb-3 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-[#fb923c] md:whitespace-nowrap"
+                className="hero-accent-line block text-[34px] sm:text-[40px] leading-[1.1] mt-1 mb-3 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap"
                 stagger={STAGGER}
               >
                 Unmissable!
@@ -189,7 +172,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-[#1e3a8a]/75 leading-[1.6] md:leading-[1.7] max-w-[360px] md:max-w-[580px] mx-auto mb-6 md:mb-8 text-[14px] md:text-[15px] px-2 md:px-0"
+          className="block font-sans-body text-primary-foreground/85 leading-[1.6] md:leading-[1.7] max-w-[360px] md:max-w-[580px] mx-auto mb-6 md:mb-8 text-[14px] md:text-[15px] px-2 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
             animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.85s both',
@@ -204,7 +187,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full h-[52px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[1px] uppercase flex justify-center items-center gap-2 bg-[#fb923c] text-white border border-[#fb923c]/80 md:inline-flex md:w-auto md:px-10 md:min-w-[250px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.45)] hover:bg-[#fb923c]/90 active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.3)]"
+            className={`w-full h-[52px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[1px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[250px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}
@@ -212,7 +195,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             <span className="text-base font-bold">→</span>
           </a>
 
-          <p className="text-[11px] text-[#1e3a8a]/70 flex items-center justify-center gap-1.5 md:hidden -mt-0.5 mb-1 font-medium">
+          <p className="text-[11px] text-primary-foreground/60 flex items-center justify-center gap-1.5 md:hidden -mt-0.5 mb-1">
             <span>⚡ ৪৮ ঘণ্টায় ৫টি অ্যাড ক্রিয়েটিভ</span>
             <span>•</span>
             <span>কোনো সাবস্ক্রিপশন নেই</span>
@@ -229,7 +212,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className="w-full h-[46px] md:h-[54px] px-6 text-[11px] md:text-[12px] tracking-[1.5px] uppercase flex justify-center items-center gap-2 bg-white border border-[#1e3a8a]/20 text-[#1e3a8a] hover:border-[#fb923c] hover:text-[#fb923c] hover:bg-[#fb923c]/5 md:inline-flex md:w-auto md:px-9 md:min-w-[200px] font-semibold rounded-xl transition-all duration-300 active:scale-[0.98] shadow-sm"
+            className={`w-full h-[46px] md:h-[54px] px-6 text-[11px] md:text-[12px] tracking-[1.5px] uppercase flex justify-center items-center gap-2 bg-white/5 backdrop-blur-md border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-9 md:min-w-[200px] font-semibold rounded-xl transition-all duration-300 active:scale-[0.98]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'কেস স্টাডি ও প্রোটোটাইপ দেখুন' : 'View Ad Prototypes'}
@@ -240,32 +223,32 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
         {/* Social Proof & Metrics Strip — Mobile Clean Chips */}
         <div
-          className="w-full max-w-[700px] mx-auto mt-6 md:mt-9 pt-4 border-t border-[#1e3a8a]/10 text-[#1e3a8a]/70"
+          className="w-full max-w-[700px] mx-auto mt-6 md:mt-9 pt-4 border-t border-primary-foreground/10 text-primary-foreground/75"
           style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.25s both' }}
         >
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-x-5 text-[11px] md:text-xs">
-            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white border border-[#1e3a8a]/10 font-medium text-[#1e3a8a] shadow-sm">
-              <span className="text-[#fb923c] font-bold">★</span>
+            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
+              <span className="text-accent font-bold">★</span>
               <span>{isBn ? 'গড় ৩.২x ROAS বৃদ্ধি' : '3.2x Avg. ROAS Lift'}</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white border border-[#1e3a8a]/10 font-medium text-[#1e3a8a] shadow-sm">
-              <span className="text-[#fb923c] font-bold">✦</span>
+            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
+              <span className="text-accent font-bold">✦</span>
               <span>{isBn ? '৩০+ প্রিমিয়াম D2C ব্র্যান্ড' : '30+ Premium Brands Scaled'}</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white border border-[#1e3a8a]/10 font-medium text-[#1e3a8a] shadow-sm">
-              <span className="text-[#fb923c] font-bold">⚡</span>
+            <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-white/[0.05] border border-white/10 font-medium text-primary-foreground/90">
+              <span className="text-accent font-bold">⚡</span>
               <span>{isBn ? '৪৮ ঘণ্টা দ্রুত ডেলিভারি' : '48h Rapid Delivery'}</span>
             </span>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex md:hidden md:[@media(min-height:720px)]:flex flex-col items-center gap-2 text-[#1e3a8a]/40 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.45s both' }}>
+      <div className="absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex md:hidden md:[@media(min-height:720px)]:flex flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.45s both' }}>
         {hero.scrollEn ?? 'Scroll'}
-        <span className="w-px bg-[#1e3a8a]/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.7s both' }} />
+        <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.7s both' }} />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-px bg-[#1e3a8a]/10" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-accent/40" />
     </section>
   );
 }

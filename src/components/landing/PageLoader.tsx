@@ -76,7 +76,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 
         <m.div
           key="cinematic-loader"
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#f9fafb]"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-primary"
           initial={{ y: 0 }}
           exit={{ y: '-100%' }}
           transition={{ duration: EXIT_S, ease: [0.76, 0, 0.24, 1] }}
@@ -87,23 +87,33 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
             }
           }}
         >
-          {/* Soft ambient radiance */}
+          {/* Soft corner glows — adds depth so the curtain doesn't read as flat navy */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               background: [
-                'radial-gradient(ellipse 60% 55% at 0% 0%, rgba(251,146,60,0.12), transparent 60%)',
-                'radial-gradient(ellipse 55% 50% at 100% 100%, rgba(30,58,138,0.06), transparent 65%)',
-                'radial-gradient(ellipse 50% 45% at 0% 100%, rgba(251,146,60,0.06), transparent 70%)',
+                'radial-gradient(ellipse 60% 55% at 0% 0%, hsl(var(--accent) / 0.18), transparent 60%)',
+                'radial-gradient(ellipse 55% 50% at 100% 100%, hsl(var(--primary-foreground) / 0.12), transparent 65%)',
+                'radial-gradient(ellipse 45% 40% at 100% 0%, hsl(var(--primary-foreground) / 0.06), transparent 70%)',
+                'radial-gradient(ellipse 50% 45% at 0% 100%, hsl(var(--accent) / 0.08), transparent 70%)',
               ].join(', '),
+            }}
+          />
+          {/* Subtle center vignette to keep wordmark in focus */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse at 50% 50%, transparent 40%, hsl(var(--primary) / 0.45) 100%)',
             }}
           />
 
           <div className="relative overflow-hidden px-6">
             <div
               lang="en"
-              className="brand-wordmark font-heading uppercase text-[#1e3a8a]"
+              className="brand-wordmark font-heading uppercase text-primary-foreground"
               style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 letterSpacing: '4px',
@@ -138,7 +148,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                 style={{ paddingBottom: '0.12em' }}
               >
                 <m.span
-                  className="inline-block text-[#fb923c]"
+                  className="inline-block text-accent"
                   initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
                   animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
                   transition={{
@@ -153,7 +163,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
             </div>
 
             <m.div
-              className="absolute bottom-0 left-0 h-0.5 w-full bg-[#fb923c]"
+              className="absolute bottom-0 left-0 h-px w-full bg-primary-foreground/30"
               initial={{ scaleX: 0, transformOrigin: '0% 50%' }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}

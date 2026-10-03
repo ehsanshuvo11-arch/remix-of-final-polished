@@ -65,7 +65,7 @@ export default function MobileActionBar() {
           style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
           className="md:hidden fixed bottom-0 inset-x-0 z-[400] px-4 pointer-events-none flex justify-center"
         >
-          <div className="pointer-events-auto w-full max-w-[360px] mx-auto flex items-center justify-between gap-2.5 rounded-full border border-white/15 bg-[#1e3a8a]/95 backdrop-blur-2xl p-1.5 shadow-[0_16px_40px_rgba(30,58,138,0.5)]">
+          <div className="pointer-events-auto w-full max-w-[360px] mx-auto flex items-center justify-between gap-2.5 rounded-full border border-white/15 bg-primary/95 backdrop-blur-2xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.65)]">
             {/* Direct WhatsApp Quick Chat */}
             <a
               href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20am%20interested%20in%20scaling%20my%20brand%27s%20visual%20identity."

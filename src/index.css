@@ -6,34 +6,32 @@
 
 @layer base {
   :root {
-    /* 60-30-10 Luxury Skincare Brand Palette */
-    --background: 210 20% 98%; /* #f9fafb - Primary 60% */
-    --foreground: 224 64% 33%; /* #1e3a8a - Secondary 30% */
+    /* Old Money Palette */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 64% 33%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 64% 33%;
+    --primary: 224 64% 33%; /* #1e3a8a - Polished Navy-Blue 60% */
+    --primary-foreground: 210 20% 98%; /* #f9fafb - Polished Off-White */
 
-    --primary: 210 20% 98%; /* #f9fafb - Primary (60%) Off-white */
-    --primary-foreground: 224 64% 33%; /* #1e3a8a - Secondary (30%) Navy-blue */
+    --secondary: 210 20% 98%; /* #f9fafb - Polished Off-White 30% */
+    --secondary-foreground: 224 64% 33%;
 
-    --secondary: 224 64% 33%; /* #1e3a8a - Secondary (30%) Navy-blue */
-    --secondary-foreground: 210 20% 98%; /* #f9fafb - Primary (60%) Off-white */
-
-    --muted: 210 25% 95%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 28 96% 61%; /* #fb923c - Accent (10%) Orange */
+    --accent: 28 96% 61%; /* #fb923c - Polished Orange 10% */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 224 64% 33% / 0.12;
-    --input: 224 64% 33% / 0.15;
-    --ring: 28 96% 61%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 224 64% 33%;
 
     --radius: 0.125rem;
 
@@ -47,14 +45,12 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Custom tokens matching exact Brand Brief */
-    --polished-offwhite: 210 20% 98%; /* #f9fafb (Primary 60%) */
-    --polished-navy: 224 64% 33%;     /* #1e3a8a (Secondary 30%) */
-    --polished-orange: 28 96% 61%;    /* #fb923c (Accent 10%) */
-    --polished-blue: 224 64% 33%;     /* alias */
+    --polished-blue: 224 64% 33%; /* #1e3a8a */
+    --polished-orange: 28 96% 61%; /* #fb923c */
     --polished-dark-blue: 224 70% 18%;
-    --polished-light: 210 20% 98%;    /* alias */
+    --polished-light: 210 20% 98%; /* #f9fafb */
     --polished-muted: 215 16% 47%;
-    --polished-border: 224 64% 33% / 0.12;
+    --polished-border: 214 32% 91%;
     --polished-process-bg: 224 50% 96%;
   }
 

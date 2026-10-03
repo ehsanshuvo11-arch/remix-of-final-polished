@@ -6,7 +6,6 @@ import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
 const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
-const Showcase3D = lazy(() => import('@/components/landing/Showcase3D'));
 const Pricing = lazy(() => import('@/components/landing/Pricing'));
 const Process = lazy(() => import('@/components/landing/Process'));
 const Contact = lazy(() => import('@/components/landing/Contact'));
@@ -93,14 +92,7 @@ export default function Index() {
           </ErrorBoundary>
         </Suspense>
 
-        {/* 5. INTERACTIVE 3D LUXURY PACKAGING STUDIO: Tactile Physical WebGL Experience */}
-        <Suspense fallback={<SectionFallback minHeight="70vh" />}>
-          <ErrorBoundary isSection sectionName="Showcase3D">
-            <Showcase3D />
-          </ErrorBoundary>
-        </Suspense>
-
-        {/* 6. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
+        {/* 5. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
         <Suspense fallback={<SectionFallback minHeight="70vh" />}>
           <ErrorBoundary isSection sectionName="StickyStorytelling">
             <StickyStorytelling />

@@ -58,7 +58,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
   };
 
   return (
-    <section id="pricing" className="bg-[#f9fafb] relative scroll-mt-20 border-t border-[#1e3a8a]/10">
+    <section id="pricing" className="bg-primary relative scroll-mt-20">
       <div id="investment" className="absolute -top-20" aria-hidden="true" />
       <div className="py-20 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
@@ -83,7 +83,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
         <h2
           lang={isBn ? 'bn' : 'en'}
-          className={`font-heading font-normal text-[#1e3a8a] mb-7 leading-[1.1] ${isBn
+          className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn
               ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]'
               : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'
             }`}
@@ -100,7 +100,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
             <>
               <WordReveal delay={0.1}>{sectionHeader.title_en}</WordReveal>
               <br />
-              <em className="italic text-accent">
+              <em className="italic">
                 <WordReveal delay={0.25}>{sectionHeader.title_em_en}</WordReveal>
               </em>
             </>
@@ -238,8 +238,8 @@ function TierCard({
         className={`relative flex flex-col h-full p-6 md:p-9 transition-all duration-700 ease-out group hover:-translate-y-1.5 ${
           variant === 'mobile' ? 'rounded-2xl' : 'rounded-sm'
         } ${tier.featured
-            ? 'bg-[#1e3a8a] text-white border-2 border-accent ring-1 ring-accent/40 shadow-[0_20px_50px_rgba(30,58,138,0.35)]'
-            : 'bg-white border border-[#1e3a8a]/15 text-[#1e3a8a] shadow-[0_8px_30px_rgba(30,58,138,0.06)] hover:border-accent/60'
+            ? 'bg-primary/90 border-2 border-accent/80 ring-1 ring-accent/40 shadow-[0_12px_40px_-12px_rgba(251,146,60,0.35)]'
+            : 'bg-primary/95 md:bg-primary/70 border border-primary-foreground/20 md:backdrop-blur-md hover:border-accent/50'
           }`}
       >
         {tier.featured && (
@@ -254,11 +254,7 @@ function TierCard({
         {/* Business Outcome Tag */}
         {outcomeTag && (
           <div className="mb-4">
-            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide font-sans ${
-              tier.featured 
-                ? 'bg-accent/20 text-accent border border-accent/40' 
-                : 'bg-accent/10 text-accent border border-accent/25'
-            }`}>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-accent/15 text-accent border border-accent/30 font-sans">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               {outcomeTag}
             </span>
@@ -267,16 +263,15 @@ function TierCard({
 
         <div className="mb-3">
           <div
-            className={`text-[10px] tracking-[2px] uppercase mb-1 font-semibold ${tier.featured ? 'text-accent' : 'text-[#1e3a8a]/60'
+            className={`text-[10px] tracking-[2px] uppercase mb-1 font-semibold ${tier.featured ? 'text-accent' : 'text-primary-foreground/60'
               }`}
           >
             {target}
           </div>
           <h3
             lang={isBn ? 'bn' : 'en'}
-            className={`font-heading text-2xl md:text-3xl font-bold leading-tight ${
-              tier.featured ? 'text-white' : 'text-[#1e3a8a]'
-            } ${isBn ? 'font-bangla' : ''}`}
+            className={`font-heading text-2xl md:text-3xl font-bold text-primary-foreground leading-tight ${isBn ? 'font-bangla' : ''
+              }`}
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {title}
@@ -285,12 +280,8 @@ function TierCard({
 
         {/* Price Display */}
         {price && (
-          <div className={`my-2 pb-4 border-b flex items-baseline gap-2 ${
-            tier.featured ? 'border-white/15' : 'border-[#1e3a8a]/10'
-          }`}>
-            <span className={`text-3xl md:text-4xl font-extrabold tracking-tight font-sans ${
-              tier.featured ? 'text-white' : 'text-[#1e3a8a]'
-            }`}>
+          <div className="my-2 pb-4 border-b border-primary-foreground/10 flex items-baseline gap-2">
+            <span className="text-3xl md:text-4xl font-extrabold text-primary-foreground tracking-tight font-sans">
               {price}
             </span>
           </div>
@@ -298,9 +289,7 @@ function TierCard({
 
         <p
           lang={isBn ? 'bn' : 'en'}
-          className={`text-[13px] leading-[1.7] mb-6 mt-2 ${
-            tier.featured ? 'text-white/80' : 'text-[#1e3a8a]/70'
-          }`}
+          className="text-[13px] leading-[1.7] text-primary-foreground/70 mb-6 mt-2"
           style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }}
         >
           {desc}
@@ -309,9 +298,7 @@ function TierCard({
         {/* Deliverables Check List */}
         <ul className="space-y-3 mb-8 flex-grow">
           {deliverables.map((item, idx) => (
-            <li key={idx} className={`flex items-start gap-2.5 text-xs leading-relaxed font-medium ${
-              tier.featured ? 'text-white/90' : 'text-[#1e3a8a]/85'
-            }`}>
+            <li key={idx} className="flex items-start gap-2.5 text-xs text-primary-foreground/85 leading-relaxed font-medium">
               <span className="text-accent font-bold mt-0.5 shrink-0 text-sm">✓</span>
               <span>{item}</span>
             </li>
@@ -325,7 +312,7 @@ function TierCard({
             variant === 'mobile' ? 'rounded-full' : 'rounded-sm'
           } text-[11px] font-bold cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-[0.97] btn-shimmer ${tier.featured
               ? 'bg-accent text-accent-foreground tracking-[2px] uppercase shadow-[0_4px_20px_rgba(251,146,60,0.35)] hover:shadow-[0_10px_32px_rgba(251,146,60,0.5)]'
-              : 'bg-accent text-accent-foreground tracking-[2px] uppercase hover:bg-accent/90 hover:shadow-[0_6px_20px_rgba(251,146,60,0.3)]'
+              : 'bg-accent/10 border border-accent/60 text-accent tracking-[2px] uppercase hover:bg-accent hover:text-accent-foreground hover:shadow-[0_6px_20px_rgba(251,146,60,0.3)]'
             }`}
         >
           {cta}
@@ -353,7 +340,7 @@ function CustomBanner({
   };
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl md:rounded-sm border border-[#1e3a8a]/15 bg-white p-8 md:p-12 shadow-md">
+    <div className="relative overflow-hidden rounded-2xl md:rounded-sm border border-primary-foreground/15 bg-primary p-8 md:p-12">
       {/* Subtle ambient orange glow — soft studio light */}
       <div
         aria-hidden
@@ -363,14 +350,14 @@ function CustomBanner({
         <div className="max-w-2xl">
           <h3
             lang={isBn ? 'bn' : 'en'}
-            className="font-heading text-3xl md:text-[40px] font-normal text-[#1e3a8a] mb-3 leading-tight"
+            className="font-heading text-3xl md:text-[40px] font-normal text-primary-foreground mb-3 leading-tight"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {isBn ? customContent.heading_bn : customContent.heading_en}
           </h3>
           <p
             lang={isBn ? 'bn' : 'en'}
-            className="text-[13px] md:text-[14px] leading-[1.75] text-[#1e3a8a]/70"
+            className="text-[13px] md:text-[14px] leading-[1.75] text-primary-foreground/60"
             style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }}
           >
             {isBn ? customContent.desc_bn : customContent.desc_en}
@@ -379,7 +366,7 @@ function CustomBanner({
         <button
           type="button"
           onClick={onCtaClick}
-          className="shrink-0 inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-bold rounded-full md:rounded-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(251,146,60,0.35)] active:scale-[0.97]"
+          className="shrink-0 inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-accent-foreground text-[11px] tracking-[2px] uppercase font-medium rounded-full md:rounded-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(251,146,60,0.35)] active:scale-[0.97]"
         >
           {isBn ? customContent.cta_bn : customContent.cta_en}
           <ArrowRight className="w-4 h-4" strokeWidth={1.5} />

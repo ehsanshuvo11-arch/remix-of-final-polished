@@ -95,13 +95,13 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       </MotionReveal>
       <MotionReveal delay={0.1}>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7">
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-[#1e3a8a] leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
             {isBn ? (
               <WordReveal delay={0.1}>আমাদের সিগনেচার প্রজেক্টসমূহ।</WordReveal>
             ) : (
               <>
                 <WordReveal delay={0.1}>{content?.titleLine1En ?? 'Recent'}</WordReveal>{' '}
-                <em className="italic text-accent">
+                <em className="italic">
                   <WordReveal delay={0.25}>{content?.titleLine2En ?? 'projects.'}</WordReveal>
                 </em>
               </>
@@ -220,7 +220,7 @@ function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioP
         {/* Aspect-ratio lock: responsive ratio prevents squashed mockups on mobile while maintaining desktop ratio */}
         <div
           ref={cardRef}
-          className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${imageExpanded ? 'h-auto' : 'aspect-[16/10] sm:aspect-[16/9] w-full h-auto md:aspect-[21/9] md:h-[260px]'
+          className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${imageExpanded ? 'h-auto' : 'aspect-[16/10] sm:aspect-[16/9] w-full h-auto md:aspect-[16/10] md:h-[540px] lg:h-[620px]'
             }`}
 
 
