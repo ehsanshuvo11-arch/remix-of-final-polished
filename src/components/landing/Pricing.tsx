@@ -143,7 +143,25 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
           )}
         </AnimatePresence>
 
-        <div className="mt-10 md:mt-20">
+        {/* Local Payment & Peace of Mind Assurance */}
+        <MotionReveal delay={0.2}>
+          <div className="mt-8 p-4 md:p-5 rounded-2xl bg-white/[0.05] border border-white/12 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs md:text-sm text-primary-foreground/85 text-center sm:text-left">
+            <div className="flex items-center gap-2.5">
+              <span className="text-accent text-base">💳</span>
+              <span style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+                {isBn ? 'সহজ পেমেন্ট: বিকাশ, নগদ, রকেট ও দেশি ব্যাংক ট্রান্সফার (কোনো ডলার কার্ড লাগে না)' : 'Accepted Payments: bKash, Nagad, Rocket & Local Bank Transfer.'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="text-emerald-400 text-base">🛡️</span>
+              <span style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+                {isBn ? '১০০% ফ্রি রিভিশন: সম্পূর্ণ সন্তুষ্ট না হওয়া পর্যন্ত ফাইন-টিউনিং' : '100% Satisfaction: Unlimited free fine-tuning until approved.'}
+              </span>
+            </div>
+          </div>
+        </MotionReveal>
+
+        <div className="mt-8 md:mt-14">
           <MotionReveal>
             <CustomBanner isBn={isBn} onCtaClick={handleCustomQuote} customContent={customContent} />
           </MotionReveal>

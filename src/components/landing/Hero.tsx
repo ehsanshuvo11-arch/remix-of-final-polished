@@ -64,11 +64,15 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           </div>
 
           <p
-            lang="en"
+            lang={isBn ? 'bn' : 'en'}
             className="font-sans-eyebrow text-[9px] tracking-[0.28em] text-accent md:text-[11px] md:tracking-[4px] uppercase font-semibold"
-            style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', fontFamily: '"Inter", sans-serif' }}
+            style={{ 
+              animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', 
+              fontFamily: isBn ? "'Noto Serif Bengali', serif" : '"Inter", sans-serif',
+              letterSpacing: isBn ? '1px' : undefined
+            }}
           >
-            {hero.eyebrowEn}
+            {isBn ? hero.eyebrowBn : hero.eyebrowEn}
           </p>
         </div>
 
@@ -76,6 +80,22 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           const BASE = 0.4;
           const STAGGER = 0.15;
           const line2Delay = BASE + 2 * STAGGER;
+          if (isBn) {
+            return (
+              <h1
+                lang="bn"
+                className="hero-headline font-heading font-normal text-primary-foreground text-[32px] sm:text-[38px] tracking-normal leading-[1.2] mx-auto mb-3 md:max-w-none md:leading-[1.15] md:mb-6 md:text-[clamp(40px,6.2vw,74px)] text-center"
+                style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+              >
+                <RevealText as="span" delay={BASE} className="inline block whitespace-normal" stagger={STAGGER}>
+                  {hero.titleBn || 'আপনার ব্র্যান্ডের আসল রূপ,'}
+                </RevealText>
+                <RevealText as="span" delay={line2Delay} className="hero-accent-line block text-[32px] sm:text-[38px] leading-[1.2] mt-1 md:mt-2 text-[clamp(36px,6vw,70px)] italic text-accent" stagger={STAGGER}>
+                  {hero.title2Bn || 'বিজ্ঞাপনে ৩.২x বেশি সেলস!'}
+                </RevealText>
+              </h1>
+            );
+          }
           return (
             <h1
               lang="en"
@@ -92,7 +112,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="inline md:inline whitespace-normal md:whitespace-nowrap"
                 stagger={STAGGER}
               >
-                Make Your Collection
+                {hero.titleEn}
               </RevealText>
               <br className="hidden md:inline" />
               <RevealText
@@ -101,7 +121,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="hero-accent-line block text-[34px] sm:text-[40px] leading-[1.1] mt-1 mb-3 md:mt-0 md:mb-0 md:pt-4 md:text-[clamp(42px,7vw,84px)] md:leading-[1.08] italic text-accent md:whitespace-nowrap"
                 stagger={STAGGER}
               >
-                Unmissable!
+                {hero.title2En}
               </RevealText>
             </h1>
           );
@@ -109,7 +129,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
         <p
           lang={isBn ? 'bn' : 'en'}
-          className="block font-sans-body text-primary-foreground/85 leading-[1.6] md:leading-[1.7] max-w-[360px] md:max-w-[580px] mx-auto mb-6 md:mb-8 text-[14px] md:text-[15px] px-2 md:px-0"
+          className="block font-sans-body text-primary-foreground/90 leading-[1.65] md:leading-[1.75] max-w-[380px] md:max-w-[620px] mx-auto mb-6 md:mb-8 text-[14px] md:text-[16px] px-2 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
             animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.85s both',
@@ -119,24 +139,30 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         </p>
 
         {/* Mobile-First High-Converting Action Container */}
-        <div className="flex flex-col w-full max-w-[340px] md:max-w-none mx-auto gap-2.5 md:flex-row md:gap-4 md:mt-8 md:mb-0 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
+        <div className="flex flex-col w-full max-w-[360px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-2 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
           <a
-            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
+            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20No-Risk%20Test%20Drive%20Sprint!"
             target="_blank"
             rel="noopener noreferrer"
-            className={`w-full h-[52px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[1px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[250px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
+            className={`w-full h-[52px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-9 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}
+              {isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ শুরু করুন' : 'Start ৳3,999 Test Drive'}
             </span>
             <span className="text-base font-bold">→</span>
           </a>
 
-          <p className="text-[11px] text-primary-foreground/60 flex items-center justify-center gap-1.5 md:hidden -mt-0.5 mb-1">
-            <span>⚡ ৪৮ ঘণ্টায় ৫টি অ্যাড ক্রিয়েটিভ</span>
-            <span>•</span>
-            <span>কোনো সাবস্ক্রিপশন নেই</span>
-          </p>
+          <a
+            href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20free%20advice%20regarding%20my%20brand%20design%20and%20ads."
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`w-full h-[52px] md:h-[54px] px-6 text-[12px] md:text-[13px] tracking-[0.5px] flex justify-center items-center gap-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 md:inline-flex md:w-auto md:px-8 md:min-w-[210px] font-semibold rounded-xl transition-all duration-300 hover:border-emerald-400 active:scale-[0.98] cursor-pointer`}
+          >
+            <span>💬</span>
+            <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+              {isBn ? 'হোয়াটসঅ্যাপে ফ্রি পরামর্শ' : 'Free WhatsApp Advice'}
+            </span>
+          </a>
 
           <a
             href="#work"
@@ -149,13 +175,32 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className={`w-full h-[46px] md:h-[54px] px-6 text-[11px] md:text-[12px] tracking-[1.5px] uppercase flex justify-center items-center gap-2 bg-white/5 backdrop-blur-md border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-9 md:min-w-[200px] font-semibold rounded-xl transition-all duration-300 active:scale-[0.98]`}
+            className={`w-full h-[46px] md:h-[54px] px-5 text-[11px] md:text-[12px] tracking-[1px] uppercase flex justify-center items-center gap-1.5 bg-white/5 backdrop-blur-md border border-white/20 text-white/90 hover:border-accent hover:text-accent hover:bg-accent/10 md:inline-flex md:w-auto md:px-6 font-semibold rounded-xl transition-all duration-300 active:scale-[0.98]`}
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'কেস স্টাডি ও প্রোটোটাইপ দেখুন' : 'View Ad Prototypes'}
+              {isBn ? 'কাজের নমুনা দেখুন' : 'View Work'}
             </span>
             <span>↓</span>
           </a>
+        </div>
+
+        {/* Local Assurance / Zero-Friction Trust Micro-Badges */}
+        <div 
+          className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mt-3 mb-1 text-[11px] sm:text-xs text-primary-foreground/75"
+          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.1s both' }}
+        >
+          <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white/[0.06] border border-white/10">
+            <span>⚡</span>
+            <span>{isBn ? '৪৮ ঘণ্টায় ৫টি অ্যাড ক্রিয়েটিভ' : '48h Rapid Delivery (5 Ads)'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white/[0.06] border border-white/10">
+            <span>💳</span>
+            <span>{isBn ? 'বিকাশ / নগদ / ব্যাংক সাপোর্ট' : 'bKash, Nagad & Bank Support'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white/[0.06] border border-white/10">
+            <span>🛡️</span>
+            <span>{isBn ? 'কোনো চুক্তি নেই • ১০০% রিভিশন' : 'Zero Lock-in • Free Revisions'}</span>
+          </span>
         </div>
 
         {/* Dual Audience Clarity Cards: Immediately clarifies WHO we serve and WHAT we do */}

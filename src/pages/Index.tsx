@@ -5,8 +5,10 @@ import Hero from '@/components/landing/Hero';
 import Marquee from '@/components/landing/Marquee';
 import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
+import AccessibleTrustBar from '@/components/landing/AccessibleTrustBar';
 const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
 const Pricing = lazy(() => import('@/components/landing/Pricing'));
+const LocalFaq = lazy(() => import('@/components/landing/LocalFaq'));
 const Process = lazy(() => import('@/components/landing/Process'));
 const Contact = lazy(() => import('@/components/landing/Contact'));
 const Footer = lazy(() => import('@/components/landing/Footer'));
@@ -16,6 +18,7 @@ const Transformations = lazy(() => import('@/components/landing/Transformations'
 const RoasCalculator = lazy(() => import('@/components/landing/RoasCalculator'));
 const StickyStorytelling = lazy(() => import('@/components/landing/StickyStorytelling'));
 import StickyConversionBar from '@/components/landing/StickyConversionBar';
+import FloatingWhatsApp from '@/components/landing/FloatingWhatsApp';
 import VisualAuditModal from '@/components/landing/VisualAuditModal';
 import PageLoader, { shouldShowLoader } from '@/components/landing/PageLoader';
 import MobileActionBar from '@/components/landing/MobileActionBar';
@@ -82,6 +85,9 @@ export default function Index() {
           />
         </m.div>
 
+        {/* 2.5 ACCESSIBLE LUXURY: Trust & Reassurance Bar for Bangladeshi Brands */}
+        <AccessibleTrustBar />
+
         {/* 3. Capability Ribbon */}
         <Marquee items={marqueeData?.items ?? []} />
 
@@ -128,6 +134,9 @@ export default function Index() {
           <ErrorBoundary isSection sectionName="Pricing">
             <Pricing />
           </ErrorBoundary>
+          <ErrorBoundary isSection sectionName="LocalFaq">
+            <LocalFaq />
+          </ErrorBoundary>
         </Suspense>
 
         {/* 12. SPRINT PROCESS & HOW WE OPERATE */}
@@ -146,6 +155,7 @@ export default function Index() {
           <Footer footer={footerContent ?? null} />
         </Suspense>
 
+        <FloatingWhatsApp />
         <StickyConversionBar />
         <VisualAuditModal />
         <MobileActionBar />
