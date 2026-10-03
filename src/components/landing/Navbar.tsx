@@ -64,20 +64,20 @@ export default function Navbar({ content }: NavbarProps) {
 
   const { data: labels } = useUILabels();
 
-  // EN: keep English wordmark feel matching reference font. BN: localized labels.
+  // Match physical page sequence: About -> Showcase -> Evolution -> Services & Pricing -> Contact
   const navItems = isBn
     ? [
       { label: labels?.navAboutBn ?? 'পরিচিতি', href: '#about' },
-      { label: labels?.navServicesBn ?? 'এক্সপার্টিজ', href: '#services' },
-      { label: labels?.navEvolutionBn ?? 'বিবর্তন', href: '#evolution' },
       { label: labels?.navWorkBn ?? 'শোকেস', href: '#work' },
+      { label: labels?.navEvolutionBn ?? 'বিবর্তন', href: '#evolution' },
+      { label: labels?.navServicesBn ?? 'সার্ভিস ও প্রাইসিং', href: '#services' },
       { label: labels?.navContactBn ?? 'যোগাযোগ', href: '#contact' },
     ]
     : [
       { label: 'ABOUT', href: '#about' },
-      { label: 'SERVICES', href: '#services' },
-      { label: 'THE EVOLUTION', href: '#evolution' },
       { label: 'SHOWCASE', href: '#work' },
+      { label: 'THE EVOLUTION', href: '#evolution' },
+      { label: 'SERVICES & PRICING', href: '#services' },
       { label: 'CONTACT', href: '#contact' },
     ];
 

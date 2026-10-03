@@ -7,7 +7,6 @@ import About from '@/components/landing/About';
 import Services from '@/components/landing/Services';
 import AccessibleTrustBar from '@/components/landing/AccessibleTrustBar';
 const Portfolio = lazy(() => import('@/components/landing/Portfolio'));
-const Pricing = lazy(() => import('@/components/landing/Pricing'));
 const LocalFaq = lazy(() => import('@/components/landing/LocalFaq'));
 const Process = lazy(() => import('@/components/landing/Process'));
 const Contact = lazy(() => import('@/components/landing/Contact'));
@@ -92,24 +91,25 @@ export default function Index() {
         {/* 3. Capability Ribbon */}
         <Marquee items={marqueeData?.items ?? []} />
 
-        {/* 4. CORE SERVICES & DELIVERABLES: What We Do & Deliver for D2C Brands & Agencies */}
-        <Services services={services} content={servicesMeta ?? null} />
-
-        {/* 5. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies with ROAS Results */}
-        <Suspense fallback={<SectionFallback minHeight="80vh" />}>
-          <ErrorBoundary isSection sectionName="Portfolio">
-            <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
-          </ErrorBoundary>
-        </Suspense>
-
-        {/* 6. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
+        {/* 4. STRATEGIC POSITIONING: The "Premium Bengali" Aesthetic vs Cheap Canva Templates */}
         <Suspense fallback={<SectionFallback minHeight="70vh" />}>
           <ErrorBoundary isSection sectionName="StickyStorytelling">
             <StickyStorytelling />
           </ErrorBoundary>
         </Suspense>
 
-        {/* 8. VISUAL EVOLUTION & BEFORE/AFTER TRANSFORMATIONS */}
+        {/* 5. BRAND PHILOSOPHY & PROVEN METRICS */}
+        <About content={aboutContent ?? null} stats={stats} />
+        <SectionDivider className="py-4" />
+
+        {/* 6. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies with ROAS Results */}
+        <Suspense fallback={<SectionFallback minHeight="80vh" />}>
+          <ErrorBoundary isSection sectionName="Portfolio">
+            <Portfolio projects={projects} content={portfolioMeta ?? null} isLoading={projectsLoading} />
+          </ErrorBoundary>
+        </Suspense>
+
+        {/* 7. VISUAL EVOLUTION & BEFORE/AFTER TRANSFORMATIONS */}
         <Suspense fallback={<SectionFallback minHeight="60vh" />}>
           <ErrorBoundary isSection sectionName="Evolution">
             <Evolution />
@@ -119,8 +119,20 @@ export default function Index() {
           </ErrorBoundary>
         </Suspense>
 
-        {/* 9. BRAND PHILOSOPHY & PROVEN METRICS */}
-        <About content={aboutContent ?? null} stats={stats} />
+        {/* 8. SPRINT PROCESS & HOW WE OPERATE (48-Hour Zero-Friction Delivery) */}
+        <Suspense fallback={<SectionFallback minHeight="50vh" />}>
+          <ErrorBoundary isSection sectionName="Process">
+            <Process steps={processSteps} content={processMeta ?? null} />
+          </ErrorBoundary>
+        </Suspense>
+        <SectionDivider className="py-4" />
+
+        {/* 9. TESTIMONIALS & CLIENT ENDORSEMENTS */}
+        <Suspense fallback={<SectionFallback minHeight="50vh" />}>
+          <ErrorBoundary isSection sectionName="Testimonials">
+            <Testimonials />
+          </ErrorBoundary>
+        </Suspense>
         <SectionDivider className="py-4" />
 
         {/* 10. REVENUE DIAGNOSTIC: Calculate ROAS lift right before investment decision */}
@@ -130,26 +142,18 @@ export default function Index() {
           </ErrorBoundary>
         </Suspense>
 
-        {/* 11. TRANSPARENT PRICING & SPRINTS: ৳3,999 Trial, ৳32,299 Growth, ৳48,500 Agency */}
-        <Suspense fallback={<SectionFallback minHeight="60vh" />}>
-          <ErrorBoundary isSection sectionName="Pricing">
-            <Pricing />
-          </ErrorBoundary>
+        {/* 11. THE OFFER: SERVICES & PRICING (Transparent Sprints, ৳3,999 No-Risk Trial) */}
+        <Services services={services} content={servicesMeta ?? null} />
+
+        {/* 12. LOCAL FAQ & PAYMENT ASSURANCE (bKash/Nagad, 100% Free Revisions) */}
+        <Suspense fallback={<SectionFallback minHeight="40vh" />}>
           <ErrorBoundary isSection sectionName="LocalFaq">
             <LocalFaq />
           </ErrorBoundary>
         </Suspense>
 
-        {/* 12. SPRINT PROCESS & HOW WE OPERATE */}
+        {/* 13. FINAL DIRECT CONVERSION / STRATEGY CONSULTATION */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>
-          <ErrorBoundary isSection sectionName="Process">
-            <Process steps={processSteps} content={processMeta ?? null} />
-          </ErrorBoundary>
-          <SectionDivider className="py-4" />
-          <ErrorBoundary isSection sectionName="Testimonials">
-            <Testimonials />
-          </ErrorBoundary>
-          <SectionDivider className="py-4" />
           <ErrorBoundary isSection sectionName="Contact">
             <Contact contact={contactContent ?? null} />
           </ErrorBoundary>
