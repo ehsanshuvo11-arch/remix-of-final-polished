@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
@@ -36,6 +37,7 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
 
   const isBn = lang === 'bn';
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
+  const [activeMobileTier, setActiveMobileTier] = useState(0);
 
   const handleTierClick = (tier: PricingTier) => {
     openQuickBookingModal({
@@ -146,8 +148,50 @@ export default function Pricing({ isLoading = false }: { isLoading?: boolean }) 
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* Responsive Pricing Grid: Clean Vertical Stack on Mobile, 3-Col Grid on Desktop */}
-              <div className={`grid grid-cols-1 md:gap-8 mt-8 md:mt-14 gap-6 ${pricingTiers.length === 2 ? 'md:grid-cols-2 max-w-[940px] mx-auto' : 'md:grid-cols-3'}`}>
+              {/* MOBILE VIEW: Interactive Tab Switcher & Single High-Impact Active Card */}
+              <div className="md:hidden mt-6">
+                {/* 3 Tier Pills */}
+                <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.07] border border-white/12 mb-5">
+                  {pricingTiers.map((tier, idx) => {
+                    const isActive = activeMobileTier === idx;
+                    return (
+                      <button
+                        key={tier.id}
+                        type="button"
+                        onClick={() => setActiveMobileTier(idx)}
+                        className={`flex-1 py-2 px-1 text-center rounded-lg text-[11px] font-bold transition-all ${
+                          isActive
+                            ? 'bg-accent text-accent-foreground shadow-sm'
+                            : 'text-white/70 hover:text-white'
+                        }`}
+                      >
+                        <span className="block truncate">
+                          {isBn ? (idx === 0 ? '৳৩,৯৯৯ ট্রায়াল' : idx === 1 ? 'গ্রোথ স্প্রিন্ট' : 'এজেন্সি') : tier.title_en.split(' ')[0]}
+                        </span>
+                        {tier.badge && (
+                          <span className="block text-[8.5px] uppercase font-mono tracking-wider opacity-90">
+                            ★ {tier.badge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Mobile Tier Card */}
+                {pricingTiers[activeMobileTier] && (
+                  <TierCard
+                    tier={pricingTiers[activeMobileTier]}
+                    index={activeMobileTier}
+                    isBn={isBn}
+                    variant="desktop"
+                    onCtaClick={() => handleTierClick(pricingTiers[activeMobileTier])}
+                  />
+                )}
+              </div>
+
+              {/* DESKTOP VIEW: Clean 3-Column Grid */}
+              <div className={`hidden md:grid md:gap-8 mt-8 md:mt-14 gap-6 ${pricingTiers.length === 2 ? 'md:grid-cols-2 max-w-[940px] mx-auto' : 'md:grid-cols-3'}`}>
                 {pricingTiers.map((tier, index) => (
                   <TierCard
                     key={tier.id}

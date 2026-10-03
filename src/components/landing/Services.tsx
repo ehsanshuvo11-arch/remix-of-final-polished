@@ -1,48 +1,41 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Sparkles, ArrowRight, CheckCircle2, Target, Clock, TrendingUp, ShoppingBag, Zap, Palette, ChevronDown, ChevronUp } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
-import WordReveal from '@/components/landing/WordReveal';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
-import { 
-  Sparkles, 
-  ArrowRight, 
-  CheckCircle2, 
-  Clock, 
-  Target, 
-  TrendingUp, 
-  Layers, 
-  ShieldCheck, 
-  Zap,
-  ShoppingBag,
-  Share2
-} from 'lucide-react';
-import type { ServicesMetaContent } from '@/types/database';
+import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
+import type { Service, ServicesMetaContent } from '@/types/database';
 
 interface ServicesProps {
-  services?: any[];
-  content?: ServicesMetaContent | null;
+  services: Service[];
+  content: ServicesMetaContent | null;
 }
 
-export default function Services({ content }: ServicesProps) {
+export default function Services({ services, content }: ServicesProps) {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+  const [expandedDeliverables, setExpandedDeliverables] = useState<Record<string, boolean>>({});
+
+  const toggleDeliverables = (id: string) => {
+    setExpandedDeliverables((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const servicesData = [
     {
-      id: 'social-media',
+      id: 'social-media-design',
       num: '01',
       titleEn: 'High-Conversion Social Media Design',
       titleBn: 'হাই-কনভার্শন সোশ্যাল মিডিয়া ডিজাইন',
       targetEn: 'For D2C Skincare, Haircare & Wellness Brands',
       targetBn: 'ডি২সি স্কিনকেয়ার, হেয়ারকেয়ার ও ওয়েলনেস ব্র্যান্ডের জন্য',
       turnaroundEn: '48-Hour Rapid Sprint',
-      turnaroundBn: '৪৮ ঘণ্টার র্যাপিড স্প্রিন্ট',
-      icon: Share2,
+      turnaroundBn: '৪৮ ঘণ্টার দ্রুত স্প্রিন্ট',
+      icon: Palette,
       descEn:
         'Feed posts, carousels, reels covers, and ad funnels using our signature "Premium Bengali" approach. Specifically engineered to stop the frantic scroll within 0.8 seconds and convert scrollers into high-value buyers.',
       descBn:
-        'ফিড পোস্ট, ক্যারোসেল, রিলস কভার এবং সম্পূর্ণ মেটা অ্যাড ফানেল—আমাদের সিগনেচার "প্রিমিয়াম বাংলা" মেথডে তৈরি। যা প্রথম ০.৮ সেকেন্ডেই স্ক্রলিং থামিয়ে সাধারণ স্ক্রোলারদের উচ্চমূল্যের বিশ্বস্ত ক্রেতায় রূপান্তর করে।',
+        'ফিড পোস্ট, ক্যারোসেল, রিলস কভার এবং অ্যাড ফানেল ক্রিয়েটিভ। আমদের সিগনেচার "প্রিমিয়াম বেঙ্গলি" আর্ট ডিরেকশনে তৈরি, যা সোশ্যাল মিডিয়া স্ক্রোল থামিয়ে নিশ্চিত বিক্রয় বৃদ্ধি করে।',
       deliverablesEn: [
         '5 to 15 High-Converting Feed & Meta Ad Creatives (Statics + Motion Cutdowns)',
         'Culturally Intelligent, Sophisticated Bengali Copywriting & Emotional Hooks',
@@ -59,7 +52,6 @@ export default function Services({ content }: ServicesProps) {
       ],
       roiOutcomeEn: 'Direct CPR Reduction (Avg. -42%) & 3.2x ROAS Lift',
       roiOutcomeBn: 'বিজ্ঞাপনের সিপিআর গড়ে ৪২% পর্যন্ত হ্রাস এবং ৩.২x আরওএএস বৃদ্ধি',
-      whatsappText: 'Hi POLISHED, I am interested in the High-Conversion Social Media Design service for my brand.',
     },
     {
       id: 'ecommerce-visuals',
@@ -74,7 +66,7 @@ export default function Services({ content }: ServicesProps) {
       descEn:
         'Crafting trust-building visual assets for storefronts, product detail pages (PDP), and checkout funnels. Ensuring your brand looks unapologetically luxurious, highly authoritative, and engineered to eliminate Cash-on-Delivery (COD) hesitation.',
       descBn:
-        'স্টোরফ্রন্ট, প্রোডাক্ট পেজ (PDP) এবং চেকআউট ফানেলের জন্য ট্রাস্ট-বিল্ডিং ভিজ্যুয়াল আর্কিটেকচার। যা ব্র্যান্ডকে আন্তর্জাতিক মানের প্রিমিয়াম লুক দেয় এবং ক্যাশ-অন-ডেলিভারি (COD) নিয়ে গ্রাহকের দ্বিধা দূর করে নিশ্চিত অর্ডার নিশ্চিত করে।',
+        'স্টোরফ্রন্ট, প্রোডাক্ট পেজ (PDP) এবং চেকআউট ফানেলের জন্য ট্রাস্ট-বিল্ডিং ভিজ্যুয়াল আর্কিটেকচার। যা ব্র্যান্ডকে আন্তর্জাতিক মানের প্রিমিয়াম লুক দেয় এবং ক্যাশ-অন-ডেলিভারি (COD) নিয়ে গ্রাহকের দ্বিধা দূর করে।',
       deliverablesEn: [
         'High-Status Storefront Hero Banners & Strategic Category Navigators',
         'Product Detail Page (PDP) Conversion Infographics & Feature Callouts',
@@ -91,7 +83,6 @@ export default function Services({ content }: ServicesProps) {
       ],
       roiOutcomeEn: 'Aggressive AOV Increase & Drastic COD Cancellation Drop',
       roiOutcomeBn: 'গড় অর্ডার ভ্যালু (AOV) বৃদ্ধি এবং সিওডি রিটার্ন ঝুঁকি হ্রাস',
-      whatsappText: 'Hi POLISHED, I am interested in the E-commerce Visual Strategy & Storefronts service.',
     },
     {
       id: 'white-label-agency',
@@ -106,7 +97,7 @@ export default function Services({ content }: ServicesProps) {
       descEn:
         'Acting as the invisible creative powerhouse for marketing agencies. We deliver high-converting "Premium Bengali" visual assets to lower CAC and maximize ROAS for your clients, without the friction, payroll, and bottleneck of an in-house design team.',
       descBn:
-        'মার্কেটিং এজেন্সির ইনভিজিবল ব্যাকএন্ড ক্রিয়েটিভ পাওয়ারহাউস। ইন-হাউস ডিজাইনার হায়ার করার ঝামেলা, মাসিক বেতন এবং দীর্ঘসূত্রিতা ছাড়াই আপনার ক্লায়েন্টদের জন্য হাই-কনভার্টিং ক্রিয়েটিভ ডেলিভারি নিশ্চিত করুন।',
+        'মার্কেটিং এজেন্সির ইনভিজিবল ব্যাকএন্ড ক্রিয়েটিভ পাওয়ারহাউস। ইন-হাউস ডিজাইনারের মাসিক বেতন এবং দীর্ঘসূত্রিতা ছাড়াই আপনার ক্লায়েন্টদের জন্য হাই-কনভার্টিং ক্রিয়েটিভ ডেলিভারি নিশ্চিত করুন।',
       deliverablesEn: [
         'Dedicated On-Demand Creative Capacity (Up to 30 assets/mo per client tier)',
         'Strict 48-Hour Rapid Sprint Delivery SLA for Fast Campaign Iterations',
@@ -123,32 +114,18 @@ export default function Services({ content }: ServicesProps) {
       ],
       roiOutcomeEn: 'Scale Client Roster 3x Faster Without In-House Overhead',
       roiOutcomeBn: 'টিম খরচ ছাড়াই ৩ গুণ বেশি ক্লায়েন্ট পরিচালনা ও স্কেল করার সুবিধা',
-      whatsappText: 'Hi POLISHED, I run an agency and want to discuss the White-Label Agency Partnership.',
     },
   ];
 
   return (
-    <section id="services" className="bg-primary text-[#f9fafb] py-20 md:py-32 px-5 sm:px-8 md:px-14 relative overflow-hidden border-t border-b border-white/10">
-      
-      {/* Background Subtle Moving Grid Texture matching brand aesthetic */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-30" 
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '80px 80px',
-        }}
-      />
-
+    <section id="services" className="bg-[#f9fafb] text-primary py-12 md:py-28 px-5 sm:px-8 md:px-14 relative overflow-hidden border-t border-b border-[#1e3a8a]/10">
       <div className="max-w-[1240px] mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-12 md:mb-16">
+        <div className="max-w-3xl mb-8 md:mb-16">
           <MotionReveal>
             <span 
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#fb923c]/15 text-[#fb923c] border border-[#fb923c]/30 text-[11px] font-semibold uppercase mb-4 shadow-sm ${
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 text-accent border border-accent/25 text-[11px] font-semibold uppercase mb-3.5 shadow-sm ${
                 isBn ? 'tracking-normal' : 'tracking-[0.25em]'
               }`}
             >
@@ -158,59 +135,192 @@ export default function Services({ content }: ServicesProps) {
           </MotionReveal>
 
           <h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-heading font-normal text-[#f9fafb] tracking-tight leading-[1.15] mb-5"
+            className="text-2xl sm:text-4xl md:text-5xl font-heading font-normal text-primary tracking-tight leading-[1.15] mb-4"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
           >
             {isBn ? (
               <>
-                আস্থা ও বিক্রয় বৃদ্ধির জন্য তৈরি <span className="text-[#fb923c] italic font-semibold">আমাদের ৩টি ক্রিয়েটিভ সিস্টেম</span>
+                আস্থা ও বিক্রয় বৃদ্ধির জন্য তৈরি <span className="text-accent italic font-semibold">আমাদের ৩টি ক্রিয়েটিভ সিস্টেম</span>
               </>
             ) : (
               <>
-                Performance Creative Systems <span className="text-[#fb923c] italic font-semibold">Engineered to Convert & Scale</span>
+                Performance Creative Systems <span className="text-accent italic font-semibold">Engineered to Convert & Scale</span>
               </>
             )}
           </h2>
 
           <p 
-            className="text-[#f9fafb]/80 text-[14px] sm:text-[15px] md:text-[16px] leading-relaxed font-light"
+            className="text-primary/75 text-[13px] sm:text-[15px] md:text-[16px] leading-relaxed font-light"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {isBn
-              ? 'আমরা কোনো গড়পড়তা জেনেরিক ডিজাইন প্যাকেজ অফার করি না। আমরা তৈরি করি বাস্তব ফলাফলভিত্তিক ভিজ্যুয়াল অ্যাসেট—যা প্রিমিয়াম D2C ব্র্যান্ড ও মার্কেটিং এজেন্সির সেলস ও আরওএএস বাড়াতে বিশেষভাবে কার্যকর।'
+              ? 'আমরা কোনো গড়পড়তা জেনেরিক ব্যানার অফার করি না। আমরা তৈরি করি বাস্তব ফলাফলভিত্তিক ভিজ্যুয়াল আর্কিটেকচার—যা প্রিমিয়াম D2C ব্র্যান্ড ও মার্কেটিং এজেন্সির সেলস ও আরওএএস বাড়াতে কার্যকর।'
               : 'We do not sell generic freelance hours or templated banners. We deliver specialized, high-converting visual systems engineered specifically for premium skincare brands and marketing agencies.'
             }
           </p>
         </div>
 
-        {/* 3 Core Services Deep-Dive Architecture */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* MOBILE VIEW: Modern Swipeable Card Carousel with Dot Indicators */}
+        <div className="lg:hidden">
+          <div 
+            className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar -mx-5 px-5"
+            onScroll={(e) => {
+              const target = e.currentTarget;
+              const scrollLeft = target.scrollLeft;
+              const cardWidth = target.offsetWidth * 0.85;
+              const index = Math.round(scrollLeft / cardWidth);
+              setActiveMobileIndex(Math.min(Math.max(0, index), servicesData.length - 1));
+            }}
+          >
+            {servicesData.map((svc) => {
+              const IconComponent = svc.icon;
+              const isExpanded = !!expandedDeliverables[svc.id];
+              return (
+                <div 
+                  key={svc.id}
+                  className="w-[86vw] max-w-[335px] shrink-0 snap-center rounded-2xl border border-primary/15 bg-white p-5 shadow-sm flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-primary/10 pb-3 mb-3.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-heading text-xl font-light text-accent">{svc.num}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-primary/60">
+                          {isBn ? 'স্পেশালাইজড সিস্টেম' : 'System'}
+                        </span>
+                      </div>
+                      <div className="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center">
+                        <IconComponent className="w-4 h-4" />
+                      </div>
+                    </div>
+
+                    <h3 
+                      className="text-lg font-bold text-primary leading-snug mb-2"
+                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+                    >
+                      {isBn ? svc.titleBn : svc.titleEn}
+                    </h3>
+
+                    {/* Target & Turnaround */}
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-accent/15 text-accent text-[10px] font-medium">
+                        <Target className="w-3 h-3" />
+                        <span className="truncate max-w-[190px]">{isBn ? svc.targetBn : svc.targetEn}</span>
+                      </span>
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/10 text-primary/80 text-[10px] font-medium">
+                        <Clock className="w-3 h-3 text-accent" />
+                        <span>{isBn ? svc.turnaroundBn : svc.turnaroundEn}</span>
+                      </span>
+                    </div>
+
+                    <p 
+                      className="text-xs text-primary/70 leading-relaxed font-light mb-4"
+                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                    >
+                      {isBn ? svc.descBn : svc.descEn}
+                    </p>
+
+                    {/* Compact Deliverables Accordion */}
+                    <div className="rounded-xl border border-primary/10 bg-primary/[0.03] p-3 mb-4">
+                      <button
+                        type="button"
+                        onClick={() => toggleDeliverables(svc.id)}
+                        className="w-full flex items-center justify-between text-[11px] font-bold text-primary/90"
+                      >
+                        <span className="flex items-center gap-1.5 text-accent">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>{isBn ? 'কী কী পাবেন (৫টি ডেলিভারেবলস)' : 'Deliverables (5 Items)'}</span>
+                        </span>
+                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5 text-primary/50" /> : <ChevronDown className="w-3.5 h-3.5 text-primary/50" />}
+                      </button>
+
+                      {isExpanded ? (
+                        <ul className="mt-2.5 pt-2.5 border-t border-primary/10 space-y-2 text-[11px] text-primary/80">
+                          {(isBn ? svc.deliverablesBn : svc.deliverablesEn).map((item, dIdx) => (
+                            <li key={dIdx} className="flex items-start gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1" />
+                              <span className="leading-snug">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-[10px] text-primary/60 mt-1.5 truncate">
+                          {(isBn ? svc.deliverablesBn : svc.deliverablesEn)[0]}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Single Clean Conversion Button (No Duplicate Clutter) */}
+                  <div className="pt-2 border-t border-primary/10 space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => openQuickBookingModal({
+                        tierId: svc.id,
+                        tierTitle: svc.titleEn,
+                        tierTitleBn: svc.titleBn,
+                        source: `Service Card: ${svc.titleEn}`,
+                      })}
+                      className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
+                    >
+                      <span>{isBn ? 'এই সার্ভিসটি বুক করুন' : 'Book This Service'}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => openAuditModal({ service: svc.titleEn, source: `Service Card: ${svc.titleEn}` })}
+                      className="w-full py-1.5 text-center text-[11px] text-primary/65 hover:text-accent font-medium flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <Sparkles className="w-3 h-3 text-accent" />
+                      <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট নিন' : 'Free 5-Min Audit'}</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Swipe Pagination Dots */}
+          <div className="flex items-center justify-center gap-1.5 mt-3">
+            {servicesData.map((_, dotIdx) => (
+              <span
+                key={dotIdx}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  activeMobileIndex === dotIdx ? 'w-5 bg-accent' : 'w-1.5 bg-primary/20'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW: Pristine 3-Column Luxury Architecture */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-8">
           {servicesData.map((svc, idx) => {
             const IconComponent = svc.icon;
             return (
               <MotionReveal key={svc.id} delay={0.1 * (idx + 1)} className="h-full">
-                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.05] hover:bg-white/[0.08] hover:border-[#fb923c]/40 transition-all duration-500 backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between group shadow-xl relative overflow-hidden">
+                <div className="h-full rounded-2xl border border-primary/15 bg-white p-7 sm:p-8 flex flex-col justify-between group shadow-sm hover:shadow-xl hover:border-accent/40 transition-all duration-500 relative overflow-hidden">
                   
                   {/* Top Meta Strip */}
                   <div>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+                    <div className="flex items-center justify-between border-b border-primary/10 pb-4 mb-5">
                       <div className="flex items-center gap-2">
-                        <span className="font-heading text-2xl font-light text-[#fb923c]">
-                          {svc.num}
-                        </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-                        <span className="text-[11px] font-mono uppercase tracking-wider text-white/60">
-                          {isBn ? 'স্পেশালাইজড সার্ভিস' : 'Specialized System'}
+                        <span className="font-heading text-2xl font-light text-accent">{svc.num}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+                        <span className="text-[11px] font-mono uppercase tracking-wider text-primary/60">
+                          {isBn ? 'স্পেশালাইজড সিস্টেম' : 'Specialized System'}
                         </span>
                       </div>
-                      <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-[#fb923c] group-hover:scale-110 transition-transform">
+                      <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
                         <IconComponent className="w-4 h-4" />
                       </div>
                     </div>
 
                     {/* Service Title */}
                     <h3 
-                      className="text-xl sm:text-2xl font-heading text-white leading-snug mb-3 group-hover:text-[#fb923c] transition-colors"
+                      className="text-xl sm:text-2xl font-heading text-primary leading-snug mb-3 group-hover:text-accent transition-colors"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
                     >
                       {isBn ? svc.titleBn : svc.titleEn}
@@ -218,34 +328,34 @@ export default function Services({ content }: ServicesProps) {
 
                     {/* Target Audience & Turnaround Badges */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#fb923c]/15 text-[#fb923c] text-[10px] sm:text-[11px] font-medium border border-[#fb923c]/25">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-accent/10 text-accent text-[11px] font-medium border border-accent/20">
                         <Target className="w-3 h-3" />
                         <span>{isBn ? svc.targetBn : svc.targetEn}</span>
                       </span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 text-white/80 text-[10px] sm:text-[11px] font-medium border border-white/15">
-                        <Clock className="w-3 h-3 text-[#fb923c]" />
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary/5 text-primary/80 text-[11px] font-medium border border-primary/10">
+                        <Clock className="w-3 h-3 text-accent" />
                         <span>{isBn ? svc.turnaroundBn : svc.turnaroundEn}</span>
                       </span>
                     </div>
 
                     {/* Core Narrative */}
                     <p 
-                      className="text-xs sm:text-[13px] text-white/70 leading-relaxed font-light mb-6"
+                      className="text-xs sm:text-[13px] text-primary/70 leading-relaxed font-light mb-6"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? svc.descBn : svc.descEn}
                     </p>
 
                     {/* What's Included / Concrete Deliverables Checklist */}
-                    <div className="bg-black/20 rounded-xl p-4 sm:p-5 border border-white/10 mb-6">
-                      <p className="text-[11px] font-mono uppercase tracking-widest text-[#fb923c] font-semibold mb-3 flex items-center gap-1.5">
+                    <div className="bg-[#f3f4f6] rounded-xl p-4 sm:p-5 border border-primary/10 mb-6">
+                      <p className="text-[11px] font-mono uppercase tracking-widest text-accent font-semibold mb-3 flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>{isBn ? 'এই সার্ভিসে আপনি ঠিক কী কী পাবেন:' : "What's Included in the Deliverables:"}</span>
                       </p>
                       <ul className="space-y-2.5">
                         {(isBn ? svc.deliverablesBn : svc.deliverablesEn).map((item, dIdx) => (
-                          <li key={dIdx} className="flex items-start gap-2.5 text-[12px] sm:text-[13px] text-white/85 leading-snug">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#fb923c] shrink-0 mt-1.5" />
+                          <li key={dIdx} className="flex items-start gap-2.5 text-[12px] sm:text-[13px] text-primary/85 leading-snug">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
                             <span>{item}</span>
                           </li>
                         ))}
@@ -256,29 +366,33 @@ export default function Services({ content }: ServicesProps) {
                   {/* Bottom Action & Verified Outcome */}
                   <div>
                     {/* ROI Tag */}
-                    <div className="mb-5 flex items-center gap-2 text-[11px] font-medium text-[#fb923c] bg-white/[0.03] px-3 py-2 rounded-lg border border-white/5">
+                    <div className="mb-5 flex items-center gap-2 text-[11px] font-medium text-accent bg-accent/5 px-3 py-2 rounded-lg border border-accent/15">
                       <TrendingUp className="w-3.5 h-3.5 shrink-0" />
                       <span>{isBn ? svc.roiOutcomeBn : svc.roiOutcomeEn}</span>
                     </div>
 
                     {/* Action Buttons */}
                     <div className="space-y-2.5">
-                      <a
-                        href={`https://wa.me/8801346288210?text=${encodeURIComponent(svc.whatsappText)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-3 px-4 rounded-xl bg-[#fb923c] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#f97316] transition-all hover:scale-[1.01] active:scale-[0.99] shadow-md"
+                      <button
+                        type="button"
+                        onClick={() => openQuickBookingModal({
+                          tierId: svc.id,
+                          tierTitle: svc.titleEn,
+                          tierTitleBn: svc.titleBn,
+                          source: `Service Card: ${svc.titleEn}`,
+                        })}
+                        className="w-full py-3 px-4 rounded-xl bg-accent text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-accent/90 transition-all shadow-sm cursor-pointer"
                       >
-                        <span>{isBn ? 'হোয়াটসঅ্যাপে বুকিং করুন' : 'Book on WhatsApp'}</span>
+                        <span>{isBn ? 'এই সার্ভিসটি বুক করুন' : 'Book This Service'}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
-                      </a>
+                      </button>
 
                       <button
                         type="button"
                         onClick={() => openAuditModal({ service: svc.titleEn, source: `Service Card: ${svc.titleEn}` })}
-                        className="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white/90 text-xs font-semibold tracking-wider transition-all flex items-center justify-center gap-2"
+                        className="w-full py-2 px-4 rounded-xl bg-primary/5 hover:bg-primary/10 border border-primary/15 text-primary text-xs font-semibold tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
                       >
-                        <Sparkles className="w-3 h-3 text-[#fb923c]" />
+                        <Sparkles className="w-3 h-3 text-accent" />
                         <span>{isBn ? 'ফ্রি ৫-মিনিট ভিজ্যুয়াল অডিট' : 'Free 5-Min Visual Audit'}</span>
                       </button>
                     </div>

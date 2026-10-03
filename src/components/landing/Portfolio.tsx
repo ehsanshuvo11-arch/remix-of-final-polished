@@ -80,8 +80,10 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
     ? projects 
     : [...projects, ...defaultProjects.slice(projects.length)];
 
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+
   return (
-    <section id="work" className="py-24 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="work" className="py-14 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
       <MotionReveal>
         {isBn ? (
           <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
@@ -136,11 +138,42 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-12 md:gap-24 items-stretch"
           >
-            {displayProjects.map((project, i) => (
-              <ProjectCard key={project.id} project={project} index={i} isBn={isBn} totalCount={displayProjects.length} />
-            ))}
+            <div>
+              <div 
+                className="flex md:flex-col overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-5 md:gap-24 items-stretch no-scrollbar -mx-6 px-6 md:mx-0 md:px-0 pb-4 md:pb-0"
+                onScroll={(e) => {
+                  const target = e.currentTarget;
+                  const scrollLeft = target.scrollLeft;
+                  const cardWidth = target.offsetWidth * 0.85;
+                  const index = Math.round(scrollLeft / cardWidth);
+                  setActiveProjectIndex(Math.min(Math.max(0, index), displayProjects.length - 1));
+                }}
+              >
+                {displayProjects.map((project, i) => (
+                  <div key={project.id} className="w-[88vw] max-w-[340px] shrink-0 snap-center md:w-auto md:shrink md:snap-align-none">
+                    <ProjectCard project={project} index={i} isBn={isBn} totalCount={displayProjects.length} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Mobile pagination dots and swipe hint */}
+              <div className="flex md:hidden flex-col items-center gap-2 mt-4">
+                <div className="flex items-center gap-1.5">
+                  {displayProjects.map((_, dotIdx) => (
+                    <span
+                      key={dotIdx}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        activeProjectIndex === dotIdx ? 'w-5 bg-accent' : 'w-1.5 bg-primary/20'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-[11px] font-mono text-muted-foreground/70">
+                  {isBn ? '← সোয়াইপ করে অন্যান্য কাজ দেখুন →' : '← Swipe to explore cases →'}
+                </span>
+              </div>
+            </div>
           </m.div>
         )}
       </AnimatePresence>

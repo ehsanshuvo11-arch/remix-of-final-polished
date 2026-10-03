@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
+import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import { 
   Check, 
   ArrowRight, 
@@ -232,10 +233,105 @@ export default function StickyStorytelling() {
           </p>
         </div>
 
-        {/* Quiet Luxury Interactive Chapter Tabs */}
-        <div className="flex justify-center mb-8 md:mb-14 px-1">
-          <div className="grid grid-cols-3 p-1 sm:p-1.5 rounded-2xl bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-lg w-full max-w-md sm:max-w-2xl">
-            {chapters.map((ch, idx) => (
+        {/* MOBILE VIEW: Ultra-Clean High-Impact 2-Column Comparison Matrix */}
+        <div className="block lg:hidden mb-4">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.06] border border-white/12 shadow-xl backdrop-blur-md">
+            <div className="text-center mb-4">
+              <span className="text-[10px] font-mono uppercase tracking-[2px] text-accent font-semibold">
+                {isBn ? 'বাস্তব তুলনামূলক পার্থক্য' : 'Side-by-Side Reality'}
+              </span>
+              <h3 
+                className="text-lg font-bold text-white mt-1"
+                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                {isBn ? 'ক্যানভা টেমপ্লেট ❌ বনাম POLISHED ✨' : 'Generic Canva ❌ vs POLISHED Standard ✨'}
+              </h3>
+            </div>
+
+            {/* 2-Column Side-by-Side Matrix */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 text-left">
+              {/* Left Column: Canva / Typical */}
+              <div className="p-3 rounded-xl bg-red-950/25 border border-red-500/25 flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider block mb-2">
+                    {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
+                  </span>
+                  <ul className="space-y-2 text-[10.5px] text-white/70">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-red-400">✕</span>
+                      <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল ইংরেজি' : 'Recycled templated visuals'}</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-red-400">✕</span>
+                      <span>{isBn ? '০.৯x - ১.৩x গড় ROAS' : '0.9x - 1.3x Avg ROAS'}</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-red-400">✕</span>
+                      <span>{isBn ? '৩০-৪০% COD রিটার্ন ঝুঁকি' : '30-40% COD return rate'}</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-red-400">✕</span>
+                      <span>{isBn ? 'বারবার ডিসকাউন্টের চাপ' : 'Forced heavy discounting'}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="mt-3 pt-2 border-t border-red-500/15 text-[9.5px] text-red-300/80 font-mono">
+                  {isBn ? 'সিপিআর বৃদ্ধি ও ক্ষতি' : 'High CAC & Budget Drain'}
+                </div>
+              </div>
+
+              {/* Right Column: POLISHED */}
+              <div className="p-3 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-bold text-accent uppercase tracking-wider block mb-2">
+                    {isBn ? 'POLISHED স্ট্যান্ডার্ড ✨' : 'POLISHED Standard ✨'}
+                  </span>
+                  <ul className="space-y-2 text-[10.5px] text-white/95">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-accent font-bold">✓</span>
+                      <span>{isBn ? 'আভিজাত্যময় বাংলা কপি ও আর্ট' : 'Custom high-status visuals'}</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-accent font-bold">✓</span>
+                      <span>{isBn ? '৩.২x - ৪.৫x গড় ROAS' : '3.2x - 4.5x Avg ROAS'}</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-accent font-bold">✓</span>
+                      <span>{isBn ? 'COD রিটার্নে বড় পতন' : 'Drastic drop in returns'}</span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-accent font-bold">✓</span>
+                      <span>{isBn ? 'কোনো ছাড় ছাড়াই হাই AOV' : 'Zero discounts required'}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="mt-3 pt-2 border-t border-accent/20 text-[9.5px] text-accent font-mono font-bold">
+                  {isBn ? 'গড় ৩.২x সেলস গ্রোথ' : '3.2x Validated Scaling'}
+                </div>
+              </div>
+            </div>
+
+            {/* Single High-Converting CTA */}
+            <div className="mt-4 pt-3 border-t border-white/10">
+              <button
+                type="button"
+                onClick={() => openQuickBookingModal({
+                  source: 'Mobile Comparison Card',
+                })}
+                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
+              >
+                <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভে তফাত দেখুন' : 'Experience ৳3,999 Sprint'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW: Quiet Luxury Interactive Chapter Tabs & Showcase */}
+        <div className="hidden lg:block">
+          <div className="flex justify-center mb-8 md:mb-14 px-1">
+            <div className="grid grid-cols-3 p-1 sm:p-1.5 rounded-2xl bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-lg w-full max-w-md sm:max-w-2xl">
+              {chapters.map((ch, idx) => (
               <button
                 key={ch.id}
                 type="button"
@@ -429,6 +525,7 @@ export default function StickyStorytelling() {
             </motion.div>
           </AnimatePresence>
 
+        </div>
         </div>
 
       </div>
