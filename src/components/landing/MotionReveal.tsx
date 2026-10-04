@@ -66,7 +66,6 @@ export default function MotionReveal({
       style={{
         opacity: initial.opacity,
         transform: `translate3d(${initial.x ?? 0}px, ${initial.y ?? 0}px, 0) scale(${initial.scale ?? 1})`,
-        filter: initial.filter,
         willChange: settled ? 'auto' : 'transform, opacity',
         backfaceVisibility: 'hidden',
       }}

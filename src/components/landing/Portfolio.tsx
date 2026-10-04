@@ -285,6 +285,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'visual' | 'impact'>('visual');
   const [visibleCount, setVisibleCount] = useState<number>(() => Math.max(8, validProjects.length || 8));
+  const [selectedModalProject, setSelectedModalProject] = useState<PortfolioProject | null>(null);
 
   // Auto-expand visible count when new projects are loaded/added from Admin
   useEffect(() => {
@@ -482,9 +483,10 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
    Format Rich / Plain Text Content (Preserves HTML, Headings, Lists, Paragraphs)
 ───────────────────────────────────────────────────────────────────────────── */
 
-function formatRichContent(content: string | null | undefined): string {
+function formatRichContent(content: unknown): string {
   if (!content) return '';
-  const trimmed = content.replace(/\r\n/g, '\n').trim();
+  const str = typeof content === 'string' ? content : String(content);
+  const trimmed = str.replace(/\r\n/g, '\n').trim();
   if (!trimmed) return '';
 
   // Check if content already contains HTML tags (e.g. from TipTap rich editor, Google Docs paste)
@@ -527,9 +529,9 @@ function ProjectCard({
       : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  const pick = (bn: string | null | undefined, en: string | null | undefined) => {
-    const cleanBn = bn?.trim() ?? '';
-    const cleanEn = en?.trim() ?? '';
+  const pick = (bn: unknown, en: unknown): string => {
+    const cleanBn = typeof bn === 'string' ? bn.trim() : (bn ? String(bn).trim() : '');
+    const cleanEn = typeof en === 'string' ? en.trim() : (en ? String(en).trim() : '');
     if (isBn) {
       return cleanBn || cleanEn;
     }
@@ -543,7 +545,7 @@ function ProjectCard({
   const pdfUrl = isBn
     ? (project.pdf_url_bn || project.pdf_url_en)
     : (project.pdf_url_en || project.pdf_url_bn);
-  const hasPdf = Boolean(pdfUrl && pdfUrl.trim());
+  const hasPdf = Boolean(pdfUrl && typeof pdfUrl === 'string' && pdfUrl.trim());
 
   const heroImage = (typeof project.image_url === 'string' && project.image_url.trim())
     ? resolveStorageUrl(project.image_url)
@@ -730,9 +732,9 @@ function CaseStudyDrawer({
   const [localLang, setLocalLang] = useState<'bn' | 'en'>(globalIsBn ? 'bn' : 'en');
   const isBn = localLang === 'bn';
 
-  const pick = (bn: string | null | undefined, en: string | null | undefined) => {
-    const cleanBn = bn?.trim() ?? '';
-    const cleanEn = en?.trim() ?? '';
+  const pick = (bn: unknown, en: unknown): string => {
+    const cleanBn = typeof bn === 'string' ? bn.trim() : (bn ? String(bn).trim() : '');
+    const cleanEn = typeof en === 'string' ? en.trim() : (en ? String(en).trim() : '');
     if (isBn) {
       return cleanBn || cleanEn;
     }
@@ -743,9 +745,10 @@ function CaseStudyDrawer({
   const category = pick(project.category_bn, project.category_en) || (isBn ? 'ডিজাইন' : 'Creative Design');
   const caseStudy = pick(project.case_study_bn, project.case_study_en);
   const hook = pick(project.hook_bn, project.hook_en);
-  const pdfUrl = isBn
+  const rawPdf = isBn
     ? (project.pdf_url_bn || project.pdf_url_en)
     : (project.pdf_url_en || project.pdf_url_bn);
+  const pdfUrl = (rawPdf && typeof rawPdf === 'string' && rawPdf.trim()) ? rawPdf.trim() : '';
 
   const mockupUrls = useMemo(() => {
     const list: string[] = [];

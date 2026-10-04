@@ -30,6 +30,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
     eyebrowBn: 'পারফরম্যান্স ভিজ্যুয়াল আইডেন্টিটি ও হাই-কনভার্শন ডিজাইন স্টুডিও',
     subEn: 'Your Ads Manager charges you every morning. Meanwhile, people comment "Price please?" and vanish. We build high-converting ad visuals and psychological copy that build instant trust—so shoppers buy at full price without begging for discounts.',
     subBn: 'প্রতিদিন ডলার কাটছে, অথচ ইনবক্সে "দাম কত" বলে মানুষ উধাও। ক্যানভা টেমপ্লেটের দিন শেষ। আমরা এমন পারফরম্যান্স ক্রিয়েটিভ আর বাংলা সেলস কপি তৈরি করি—যা কাস্টমারের মনে খাঁটি বিশ্বাস এনে দেয়, যাতে তারা ডিসকাউন্ট ছাড়াই অর্ডার করে।',
+    scrollEn: 'Scroll',
+    scrollBn: 'স্ক্রল',
   };
 
   return (
