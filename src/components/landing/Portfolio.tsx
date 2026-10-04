@@ -525,10 +525,10 @@ function ProjectCard({
           </span>
         </div>
 
-        {/* Hero Image Container with aspect ratio lock */}
+        {/* Hero Image Container with 1:1 aspect ratio lock for Meta ad designs */}
         <div 
           onClick={onOpenCaseStudy}
-          className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-xl overflow-hidden cursor-pointer bg-primary/5 transition-transform duration-500 group-hover:scale-[1.01]"
+          className="relative w-full aspect-square rounded-xl overflow-hidden cursor-pointer bg-primary/5 transition-transform duration-500 group-hover:scale-[1.01]"
         >
           <PremiumImage
             src={heroImage}
@@ -769,12 +769,12 @@ function CaseStudyDrawer({
 
           {/* Scrollable Content Body */}
           <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6">
-            {/* Featured Image */}
-            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-primary/5 shadow-md">
+            {/* Featured Image — 1:1 Ratio */}
+            <div className="relative w-full aspect-square max-h-[60vh] rounded-2xl overflow-hidden bg-primary/5 shadow-md flex items-center justify-center">
               <img
                 src={heroImage}
                 alt={title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
               />
             </div>
 
