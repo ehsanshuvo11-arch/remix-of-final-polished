@@ -30,7 +30,6 @@ import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useUILabels } from '@/hooks/use-site-content';
-import { DEFAULT_PORTFOLIO_PROJECTS } from '@/lib/default-projects';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
@@ -71,10 +70,8 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
-  const defaultProjects: PortfolioProject[] = DEFAULT_PORTFOLIO_PROJECTS;
-
   // Filter out any empty projects without images or content to prevent broken skeleton cards
-  const validProjects = projects.filter((p) => {
+  const validProjects = (projects || []).filter((p) => {
     const hasImg = typeof p.image_url === 'string' && p.image_url.trim().length > 0;
     const hasMock = typeof p.mockup_url === 'string' && p.mockup_url.trim().length > 0;
     const hasMockList = Array.isArray(p.mockup_urls) && p.mockup_urls.length > 0;
@@ -89,15 +86,19 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
     return hasImg || hasMock || hasMockList || hasContent;
   });
 
-  // If database has projects, show ONLY actual database projects from Admin!
-  // Fall back to default placeholders ONLY if database has 0 projects.
-  const displayProjects = validProjects.length > 0 ? validProjects : defaultProjects;
+  // Display ONLY live projects from the database
+  const displayProjects = validProjects;
 
   // Active filters and views
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'visual' | 'impact'>('visual');
   const [visibleCount, setVisibleCount] = useState<number>(() => Math.max(8, validProjects.length || 8));
-  const [selectedModalProject, setSelectedModalProject] = useState<PortfolioProject | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+
+  const selectedModalProject = useMemo(() => {
+    if (!selectedProjectId) return null;
+    return displayProjects.find((p) => p.id === selectedProjectId) || null;
+  }, [displayProjects, selectedProjectId]);
 
   // Auto-expand visible count when new projects are loaded/added from Admin
   useEffect(() => {
@@ -239,7 +240,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
                   index={idx}
                   isBn={isBn}
                   viewMode={viewMode}
-                  onOpenCaseStudy={() => setSelectedModalProject(project)}
+                  onOpenCaseStudy={() => setSelectedProjectId(project.id)}
                 />
               ))}
             </div>
@@ -284,7 +285,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         <CaseStudyDrawer
           project={selectedModalProject}
           isBn={isBn}
-          onClose={() => setSelectedModalProject(null)}
+          onClose={() => setSelectedProjectId(null)}
         />
       )}
     </section>
@@ -302,7 +303,7 @@ function formatRichContent(content: unknown): string {
   if (!trimmed) return '';
 
   // Check if content already contains HTML tags (e.g. from TipTap rich editor, Google Docs paste)
-  const hasHtml = /<\/?(p|div|h[1-6]|ul|ol|li|blockquote|strong|b|em|i|u|s|a|table|tr|td|br|span)\b/i.test(trimmed);
+  const hasHtml = /<\/?(p|div|h[1-6]|ul|ol|li|blockquote|strong|b|em|i|u|s|a|table|tr|td|br|span|hr)\b/i.test(trimmed);
   if (hasHtml) {
     return trimmed;
   }
@@ -341,19 +342,44 @@ function ProjectCard({
       : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  const pick = (bn: unknown, en: unknown): string => {
-    const cleanBn = typeof bn === 'string' ? bn.trim() : (bn ? String(bn).trim() : '');
-    const cleanEn = typeof en === 'string' ? en.trim() : (en ? String(en).trim() : '');
-    if (isBn) {
-      return cleanBn || cleanEn;
-    }
-    return cleanEn || cleanBn;
-  };
+  // Direct mapping to database rich text fields
+  const rawBnCaseStudy = (typeof project.case_study_bn === 'string' && project.case_study_bn.trim())
+    ? project.case_study_bn
+    : (project as any).case_study || (project as any).description || '';
 
-  const title = pick(project.title_bn, project.title_en) || (isBn ? 'কেস স্টাডি' : 'Case Study');
-  const category = pick(project.category_bn, project.category_en) || (isBn ? 'ডিজাইন' : 'Creative Design');
-  const hook = pick(project.hook_bn, project.hook_en);
-  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const rawEnCaseStudy = (typeof project.case_study_en === 'string' && project.case_study_en.trim())
+    ? project.case_study_en
+    : (project as any).case_study || (project as any).description || '';
+
+  const caseStudy = isBn
+    ? (rawBnCaseStudy || rawEnCaseStudy)
+    : (rawEnCaseStudy || rawBnCaseStudy);
+
+  const rawBnHook = (typeof project.hook_bn === 'string' && project.hook_bn.trim())
+    ? project.hook_bn
+    : (project as any).hook || '';
+
+  const rawEnHook = (typeof project.hook_en === 'string' && project.hook_en.trim())
+    ? project.hook_en
+    : (project as any).hook || '';
+
+  const hook = isBn
+    ? (rawBnHook || rawEnHook)
+    : (rawEnHook || rawBnHook);
+
+  const rawBnTitle = (typeof project.title_bn === 'string' && project.title_bn.trim())
+    ? project.title_bn
+    : (project as any).title || '';
+
+  const rawEnTitle = (typeof project.title_en === 'string' && project.title_en.trim())
+    ? project.title_en
+    : (project as any).title || '';
+
+  const title = isBn
+    ? (rawBnTitle || rawEnTitle || 'কেস স্টাডি')
+    : (rawEnTitle || rawBnTitle || 'Case Study');
+
+  const category = (isBn ? (project.category_bn || project.category_en) : (project.category_en || project.category_bn)) || (isBn ? 'ডিজাইন' : 'Creative Design');
   const pdfUrl = isBn
     ? (project.pdf_url_bn || project.pdf_url_en)
     : (project.pdf_url_en || project.pdf_url_bn);
@@ -542,21 +568,49 @@ function CaseStudyDrawer({
   onClose: () => void;
 }) {
   const [localLang, setLocalLang] = useState<'bn' | 'en'>(globalIsBn ? 'bn' : 'en');
+  useEffect(() => {
+    setLocalLang(globalIsBn ? 'bn' : 'en');
+  }, [globalIsBn]);
   const isBn = localLang === 'bn';
 
-  const pick = (bn: unknown, en: unknown): string => {
-    const cleanBn = typeof bn === 'string' ? bn.trim() : (bn ? String(bn).trim() : '');
-    const cleanEn = typeof en === 'string' ? en.trim() : (en ? String(en).trim() : '');
-    if (isBn) {
-      return cleanBn || cleanEn;
-    }
-    return cleanEn || cleanBn;
-  };
+  // Direct mapping to database rich text HTML fields with fallbacks
+  const rawBnCaseStudy = (typeof project.case_study_bn === 'string' && project.case_study_bn.trim())
+    ? project.case_study_bn
+    : (project as any).case_study || (project as any).description || '';
 
-  const title = pick(project.title_bn, project.title_en) || (isBn ? 'কেস স্টাডি' : 'Case Study');
-  const category = pick(project.category_bn, project.category_en) || (isBn ? 'ডিজাইন' : 'Creative Design');
-  const caseStudy = pick(project.case_study_bn, project.case_study_en);
-  const hook = pick(project.hook_bn, project.hook_en);
+  const rawEnCaseStudy = (typeof project.case_study_en === 'string' && project.case_study_en.trim())
+    ? project.case_study_en
+    : (project as any).case_study || (project as any).description || '';
+
+  const caseStudy = isBn
+    ? (rawBnCaseStudy || rawEnCaseStudy)
+    : (rawEnCaseStudy || rawBnCaseStudy);
+
+  const rawBnHook = (typeof project.hook_bn === 'string' && project.hook_bn.trim())
+    ? project.hook_bn
+    : (project as any).hook || '';
+
+  const rawEnHook = (typeof project.hook_en === 'string' && project.hook_en.trim())
+    ? project.hook_en
+    : (project as any).hook || '';
+
+  const hook = isBn
+    ? (rawBnHook || rawEnHook)
+    : (rawEnHook || rawBnHook);
+
+  const rawBnTitle = (typeof project.title_bn === 'string' && project.title_bn.trim())
+    ? project.title_bn
+    : (project as any).title || '';
+
+  const rawEnTitle = (typeof project.title_en === 'string' && project.title_en.trim())
+    ? project.title_en
+    : (project as any).title || '';
+
+  const title = isBn
+    ? (rawBnTitle || rawEnTitle || 'কেস স্টাডি')
+    : (rawEnTitle || rawBnTitle || 'Case Study');
+
+  const category = (isBn ? (project.category_bn || project.category_en) : (project.category_en || project.category_bn)) || (isBn ? 'ডিজাইন' : 'Creative Design');
   const rawPdf = isBn
     ? (project.pdf_url_bn || project.pdf_url_en)
     : (project.pdf_url_en || project.pdf_url_bn);
@@ -791,6 +845,7 @@ function CaseStudyDrawer({
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(formatRichContent(caseStudy), {
                       ADD_ATTR: ['target', 'rel'],
+                      ADD_TAGS: ['hr', 'br', 'iframe'],
                     }),
                   }}
                 />
