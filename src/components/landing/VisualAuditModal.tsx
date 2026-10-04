@@ -160,13 +160,13 @@ export default function VisualAuditModal() {
                 {isBn ? (
                   <>৫-মিনিটের ফ্রি <span className="text-[#fb923c] italic font-normal">ভিডিও টিয়ারডাউন</span> বুক করুন</>
                 ) : (
-                  <>Claim Your 5-Minute <span className="text-[#fb923c] italic font-normal">Creative & ROAS Audit</span></>
+                  <>Claim Your 5-Minute <span className="text-[#fb923c] italic font-normal">Ad Creative Teardown</span></>
                 )}
               </h3>
               <p className="text-white/70 text-xs md:text-sm mt-1.5 font-light leading-relaxed">
                 {isBn
-                  ? 'আমাদের ক্রিয়েটিভ ডিরেক্টর ব্যক্তিগতভাবে আপনার ব্র্যান্ডের বর্তমান ভিজ্যুয়াল ও বিজ্ঞাপন পর্যালোচনা করে দেখাবেন কীভাবে কনভার্শন দ্বিগুণ করবেন।'
-                  : 'Our Creative Director will personally analyze your storefront & social ads, revealing exact drop-off points and how to unlock a 3.2x ROAS.'}
+                  ? 'আমরা আপনার বর্তমান বিজ্ঞাপন ও পেজ পর্যালোচনা করে সরাসরি ভিডিওতে দেখিয়ে দেব বিজ্ঞাপনে কোথায় টাকা নষ্ট হচ্ছে এবং কীভাবে সেলস রিকভার করবেন।'
+                  : 'We personally analyze your live ads and page, showing you the exact bottlenecks bleeding your budget and how to fix your conversions.'}
               </p>
 
               {/* Trust Indicators */}
@@ -177,11 +177,11 @@ export default function VisualAuditModal() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#fb923c]" />
-                  <span>{isBn ? '১০০% গোপনীয়তা গ্যারান্টি' : '100% Confidential NDA'}</span>
+                  <span>{isBn ? '১০০% গোপনীয়তা' : '100% Confidential'}</span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-[#fb923c]" />
-                  <span>{isBn ? 'কোনো লুকানো খরচ নেই' : 'Zero Obligation'}</span>
+                  <span>{isBn ? 'কোনো হিডেন চার্জ নেই' : 'Zero Hidden Charges'}</span>
                 </span>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function VisualAuditModal() {
                         type="text"
                         value={formData.brand}
                         onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                        placeholder={isBn ? 'যেমন: গ্লো অ্যান্ড কোয়ে' : 'e.g., Silk & Skin BD'}
+                        placeholder={isBn ? 'যেমন: স্কিন কেয়ার বিডি' : 'e.g., Silk & Skin BD'}
                         className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#1e3a8a]/20 rounded-sm focus:outline-none focus:border-[#fb923c] focus:ring-1 focus:ring-[#fb923c]"
                       />
                     </div>
@@ -234,13 +234,13 @@ export default function VisualAuditModal() {
                     </div>
                     <div>
                       <label className="block text-[11px] uppercase tracking-wider text-[#1e3a8a] font-semibold mb-1.5">
-                        {isBn ? 'স্টোর লিংক অথবা ইনস্টাগ্রাম হ্যান্ডেল' : 'Storefront URL or Instagram @'}
+                        {isBn ? 'ফেসবুক পেজ লিংক বা ওয়েবসাইট' : 'Facebook Page Link or Store URL'}
                       </label>
                       <input
                         type="text"
                         value={formData.url}
                         onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                        placeholder="e.g., instagram.com/mybrand"
+                        placeholder="e.g., facebook.com/mybrand"
                         className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#1e3a8a]/20 rounded-sm focus:outline-none focus:border-[#fb923c] focus:ring-1 focus:ring-[#fb923c]"
                       />
                     </div>
@@ -248,24 +248,24 @@ export default function VisualAuditModal() {
 
                   <div>
                     <label className="block text-[11px] uppercase tracking-wider text-[#1e3a8a] font-semibold mb-1.5">
-                      {isBn ? 'প্রধান সমস্যা বা লক্ষ্য' : 'Primary Growth Bottleneck'}
+                      {isBn ? 'বিজ্ঞাপনের প্রধান সমস্যা' : 'Primary Ad Bottleneck'}
                     </label>
                     <select
                       value={formData.objective}
                       onChange={(e) => setFormData({ ...formData, objective: e.target.value })}
                       className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#1e3a8a]/20 rounded-sm focus:outline-none focus:border-[#fb923c] focus:ring-1 focus:ring-[#fb923c] text-[#1e3a8a]"
                     >
-                      <option value="Lower CAC on Meta Ads">
-                        {isBn ? 'মেটা ও টিকটক বিজ্ঞাপনে CAC কমানো' : 'Lower CAC on Meta & TikTok Ads'}
+                      <option value="Lower CPR on Meta Ads">
+                        {isBn ? 'বিজ্ঞাপনে টাকা যাচ্ছে কিন্তু সেলস কম (উচ্চ CPR)' : 'High Ad Spend, Low Conversions (High CPR)'}
                       </option>
-                      <option value="Elevate Brand Perceived Value">
-                        {isBn ? 'ব্র্যান্ডের লাক্সারি লুক ও প্রিমিয়াম প্রাইজ নিশ্চিত করা' : 'Elevate Brand Perceived Value & Pricing Power'}
+                      <option value="Stop Price-Ghosting">
+                        {isBn ? 'ইনবক্সে দাম জিজ্ঞেস করে উধাও হওয়া কমানো' : 'Stop Price-Ghosting in Comments & Inbox'}
                       </option>
-                      <option value="E-Commerce Storefront Redesign">
-                        {isBn ? 'ই-কমার্স স্টোরফ্রন্ট ও প্রোডাক্ট পেজ অপ্টিমাইজেশন' : 'E-Commerce Storefront & High-AOV Visual Strategy'}
+                      <option value="Full Price Sales">
+                        {isBn ? 'ডিসকাউন্ট নির্ভরতা এড়িয়ে পুরো দামে বিক্রি করা' : 'Sell at Full Price Without Heavy Discounts'}
                       </option>
                       <option value="White-Label Agency Backend">
-                        {isBn ? 'মার্কেটিং এজেন্সির জন্য হোয়াইট-লেবেল ক্রিয়েটিভ টিম' : 'White-Label Agency Creative Engine (Scale Without Hiring)'}
+                        {isBn ? 'মার্কেটিং এজেন্সির জন্য নির্ভরযোগ্য ডিজাইন পার্টনার' : 'White-Label Creative Engine for Marketing Agencies'}
                       </option>
                     </select>
                   </div>

@@ -16,45 +16,43 @@ export default function Process({ steps, content }: ProcessProps) {
     { 
       id: '1', 
       sort_order: 1, 
-      title_en: 'Audit & Hook Analysis', 
-      title_bn: 'অডিট ও হুক অ্যানালাইসিস', 
-      desc_en: 'We audit your ad account, flagship products, and CPR bottlenecks. We dissect what made past ads fail and map emotional hooks for local buyers.', 
-      desc_bn: 'আমরা আপনার অ্যাড অ্যাকাউন্ট, সেরা প্রোডাক্ট এবং বর্তমান CPR স্টাডি করি। পূর্বের ক্যাম্পেইন কেন ফেইল করেছে তা চিহ্নিত করে লোকাল ক্রেতাদের সাইকোলজি ম্যাপ করি।' 
+      title_en: '1. Audit Leaking Ad Spend', 
+      title_bn: '১. প্রোডাক্ট ও ব্যথার জায়গা খোঁজা', 
+      desc_en: 'We diagnose why your past ads bled cash. We identify the exact doubts stopping local buyers and map emotional angles to overcome them.', 
+      desc_bn: 'আমরা দেখি আপনার আগের বিজ্ঞাপনে কেন মানুষ অর্ডার করেনি। কোথায় ডলার অপচয় হচ্ছিল এবং ক্রেতাদের খাঁটি বিশ্বাস অর্জনের জন্য কোন হুক কাজ করবে—তা ঠিক করি।' 
     },
     { 
       id: '2', 
       sort_order: 2, 
-      title_en: 'Bangla Copy & Art Direction', 
-      title_bn: 'বাংলা কপি ও আর্ট ডিরেকশন', 
-      desc_en: 'We craft high-status Bengali copywriting and Quiet Luxury visual compositions. Zero generic templates — every element is designed to stop the scroll.', 
-      desc_bn: 'আমরা মার্জিত বাংলা সেলস কপি এবং শান্ত লাক্সারি ভিজ্যুয়াল কম্পোজিশন সাজাই। কোনো সস্তা ক্যানভা টেমপ্লেট নয়—প্রতিটি পিক্সেল প্রথম দেখাতেই বিশ্বাস অর্জনের জন্য তৈরি।' 
+      title_en: '2. Sharp Bangla Copy & Visual Craft', 
+      title_bn: '২. বাংলা কপি ও বিশ্বাসযোগ্য আর্ট', 
+      desc_en: 'Zero generic templates. We write persuasive Bengali sales copy and build clean, high-status visuals that command full price without discounts.', 
+      desc_bn: 'কোনো সস্তা ক্যানভা টেমপ্লেট নয়। আমরা প্রতিটি ক্রিয়েটিভের জন্য লিখি খাঁটি বাংলা সেলস কপি এবং সাজাই এমন পরিচ্ছন্ন ডিজাইন যা দেখে মানুষ বিশ্বাস পায়।' 
     },
     { 
       id: '3', 
       sort_order: 3, 
-      title_en: '48-Hour Rapid Sprint', 
-      title_bn: '৪৮ ঘণ্টার র্যাপিড স্প্রিন্ট প্রোডাকশন', 
-      desc_en: 'Precision production under strict turnaround. You receive 5-15 Meta-compliant statics, motion cutdowns, and bundle graphics ready for Ads Manager.', 
-      desc_bn: 'নিখুঁত ও দ্রুত প্রোডাকশন। মাত্র ৪৮ ঘণ্টায় আপনি পান মেটা-কমপ্লায়েন্ট স্ট্যাটিক্স, মোশন কাটডাউন এবং কম্বো গ্রাফিক্স—যা সরাসরি অ্যাড ম্যানেজারে ব্যবহারের উপযোগী।' 
+      title_en: '3. 48-Hour Rapid Turnaround', 
+      title_bn: '৩. ৪৮ ঘণ্টার দ্রুত ডেলিভারি', 
+      desc_en: 'Strict turnaround. Within 48 hours, you receive ready-to-launch Meta statics and bundle graphics with zero back-and-forth delays.', 
+      desc_bn: 'সময়ের কোনো অপচয় নেই। মাত্র ৪৮ ঘণ্টায় আপনি ফিড ও স্টোরি সাইজের মেটা-কমপ্লায়েন্ট রেডি ক্রিয়েটিভ পেয়ে যাবেন—যা সরাসরি অ্যাডম্যানেজারে চালানোর উপযোগী।' 
     },
     { 
       id: '4', 
       sort_order: 4, 
-      title_en: 'Launch, Track & Scale', 
-      title_bn: 'মেটা অ্যাড লঞ্চ ও অপটিমাইজেশন', 
-      desc_en: 'Your team or agency launches the test angles. We analyze CTR, CPR, and AOV to double down on winning creatives and eliminate ad fatigue.', 
-      desc_bn: 'আপনার টিম বা এজেন্সি ক্যাম্পেইন লাইভ করে। আমরা CTR, CPR এবং AOV ডেটা ট্র্যাক করে উইনিং ক্রিয়েটিভ স্কেল করি এবং বিজ্ঞাপন খরচ সর্বনিম্ন রাখি।' 
+      title_en: '4. Launch, Cut CPR & Scale', 
+      title_bn: '৪. লঞ্চ ও লাভজনক সেলস স্কেলিং', 
+      desc_en: 'Launch the tested angles. We analyze performance data to scale winning creatives and keep your cost-per-order predictably low.', 
+      desc_bn: 'আপনি বা আপনার এজেন্সি অ্যাড লাইভ করবেন। আমরা রেজাল্ট দেখে উইনিং অ্যাডের ওপর জোর দিই, যাতে কম খরচে প্রতিদিন বেশি ফুল-প্রাইস সেলস নিশ্চিত হয়।' 
     },
   ];
 
   const displaySteps = steps.length > 0 ? steps : defaultSteps;
 
-
-
   // Process headings/labels locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = content?.titleLine1En ?? 'A process built on';
-  const line2 = content?.titleLine2En ?? 'precision.';
+  const line1 = content?.titleLine1En ?? 'No endless meetings.';
+  const line2 = content?.titleLine2En ?? 'Fresh creatives in 48 hours.';
 
   return (
     <div className="bg-secondary">
@@ -62,17 +60,17 @@ export default function Process({ steps, content }: ProcessProps) {
         <MotionReveal>
           {isBn ? (
             <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-              আমাদের কাজের প্রসেস
+              জিরো-প্যারা ডেলিভারি
             </p>
           ) : (
             <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {content?.labelEn ?? 'How It Works'}
+              {content?.labelEn ?? 'Zero-Friction Execution'}
             </p>
           )}
         </MotionReveal>
         <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
           {isBn ? (
-            <WordReveal delay={0.1}>নিখুঁত কাজের পেছনের মাস্টারপ্ল্যান।</WordReveal>
+            <WordReveal delay={0.1}>কোনো লম্বা মিটিং নেই। ৪৮ ঘণ্টার স্প্রিন্ট।</WordReveal>
           ) : (
             <>
               <WordReveal delay={0.1}>{line1}</WordReveal>

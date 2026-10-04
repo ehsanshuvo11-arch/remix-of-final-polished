@@ -24,145 +24,145 @@ export default function StickyStorytelling() {
     {
       id: 'trap',
       num: isBn ? '০১' : '01',
-      tabLabelEn: 'The Industry Flaw',
-      tabLabelBn: 'বাজারের সাধারণ ভুল',
-      eyebrowEn: 'The Common Misconception',
-      eyebrowBn: 'বাংলাদেশের ই-কমার্সের বড় ভুল',
-      titleEn: 'Broken English & Cheap Templated Visuals',
-      titleBn: 'জেনেরিক ক্যানভা টেমপ্লেট ও দুর্বল কমিউনিকেশন',
+      tabLabelEn: '1. The Real Trap',
+      tabLabelBn: '১. আসল ফাঁদ',
+      eyebrowEn: 'Where Your Budget Disappears',
+      eyebrowBn: 'বিজ্ঞাপনের টাকা যেভাবে নষ্ট হয়',
+      titleEn: 'Inbox Full of "Price Please?" and Zero Sales',
+      titleBn: 'ইনবক্সে "দাম কত" বলে মানুষ উধাও?',
       descEn:
-        'In the Bangladeshi e-commerce space, there is a massive misconception that using Bengali automatically lowers a brand’s perceived value. As a result, brands resort to broken, generic English that fails to connect emotionally, or cheap Canva templates that destroy luxury perception and force endless discounting.',
+        'Meta charges your credit card every morning. Hundreds of comments ask "Price please?"—and then vanish. To force sales, you slash prices by 30%. Then comes the 35% COD return rate. After delivery fees, your net profit is zero. Sound familiar?',
       descBn:
-        'বাংলাদেশের ই-কমার্সে একটি প্রচলিত ভুল ধারণা রয়েছে—বাংলা ব্যবহার করলে নাকি ব্র্যান্ডের আভিজাত্য কমে যায়। ফলে বেশিরভাগ ব্র্যান্ড দুর্বল ইংরেজি কপি ব্যবহার করে যা ক্রেতার আবেগে পৌঁছায় না, অথবা সস্তা ক্যানভা টেমপ্লেটে ডিজাইন করে যা ব্র্যান্ডের মর্যাদা নষ্ট করে এবং গ্রাহককে শুধু ডিসকাউন্টের পেছনে দৌড়ায়।',
+        'অ্যাডম্যানেজারে প্রতিদিন ডলার কাটছে। শত শত মানুষ কমেন্টে "দাম কত" লিখে উধাও হয়ে যাচ্ছে। কাস্টমার ধরে রাখতে আপনি বারবার ২০%-৩০% ছাড় দিচ্ছেন। কিন্তু দিনশেষে ডেলিভারি আর ৩৫% রিটার্ন চার্জের পর আপনার ক্যাশে কোনো লাভই থাকছে না।',
       bulletPoints: [
         {
-          en: 'Uninspiring generic English that fails to trigger emotional buying impulses in local shoppers',
-          bn: 'অপ্রাসঙ্গিক ইংরেজি টেক্সট যা সাধারণ বাংলাদেশি ক্রেতার আবেগ বা কেনার তাড়না জাগায় না',
+          en: 'Recycled Canva templates that make customers scroll past without thinking',
+          bn: 'ক্যানভার চেনা টেমপ্লেট দেখে কাস্টমার চোখ বন্ধ করে স্ক্রোল করে চলে যায়',
           negative: true,
         },
         {
-          en: 'Recycled Canva templates that make a ৳2,000 skincare product look like a ৳200 cheap commodity',
-          bn: 'ক্যানভা-লেভেল চেনা টেমপ্লেট—যা প্রিমিয়াম প্রোডাক্টকে সস্তা সাধারণ পণ্যের মতো দেখায়',
+          en: 'Zero visual credibility—local shoppers assume your product is cheap or fake',
+          bn: 'অনলাইন শপিংয়ে মানুষের চরম অবিশ্বাস—তারা ভাবছে আপনিও ভূয়া বা সস্তা পণ্য বিক্রি করছেন',
           negative: true,
         },
         {
-          en: 'Aggressive discount-chasing and policy violations that lead to frequent Meta ad bans',
-          bn: 'অতিরিক্ত ছাড়ের ফাঁদ এবং মেটা পলিসি না মেনে অ্যাড দেওয়ায় অ্যাকাউন্ট ব্যানের ঝুঁকি',
+          en: 'Heavy discount traps that destroy profit margins after COD return losses',
+          bn: 'বাধ্য হয়ে অতিরিক্ত ছাড় দেওয়ার ফাঁদ—যা রিটার্ন চার্জের পর পুরো ব্যবসাই লোকসানে ফেলে',
           negative: true,
         },
       ],
       showcase: {
-        badgeEn: 'Typical Ad Performance',
-        badgeBn: 'সাধারণ অ্যাডের বাস্তব চিত্র',
-        cardTitleEn: 'Average Generic Approach',
+        badgeEn: 'Typical Meta Ad Performance',
+        badgeBn: 'সাধারণ বিজ্ঞাপনের বাস্তব চিত্র',
+        cardTitleEn: 'Generic Template Approach',
         cardTitleBn: 'সাধারণ ফেসবুক বিজ্ঞাপন',
-        headlineEn: '"50% MEGA SALE - BEST WHITENING CREAM"',
-        headlineBn: '"৫০% মেগা ডিসকাউন্ট! সেরা ক্রিম অর্ডার করুন"',
-        sublineEn: 'Disjointed messaging, low brand trust, and heavy customer skepticism.',
-        sublineBn: 'আস্থার চরম অভাব, মাত্রাতিরিক্ত ডিসকাউন্ট নির্ভরতা ও ক্রেতার অনীহা।',
+        headlineEn: '"50% MEGA DISCOUNT - BEST WHITENING CREAM"',
+        headlineBn: '"৫০% মেগা ডিসকাউন্ট! সেরা ক্রিম এখনই অর্ডার করুন"',
+        sublineEn: 'Bargain hunters flood comments, but nobody completes checkout.',
+        sublineBn: 'ডিসকাউন্ট চেয়ে কাস্টমার ইনবক্স ভাসাবে, কিন্তু কেউ অর্ডার নেবে না।',
         metrics: [
-          { label: isBn ? 'গড় আরওএএস (ROAS)' : 'Average ROAS', val: '0.9x - 1.3x', alert: true },
-          { label: isBn ? 'সিওডি রিটার্ন হার' : 'COD Return Risk', val: '30% - 40%', alert: true },
-          { label: isBn ? 'ব্র্যান্ড পারসেপশন' : 'Brand Perception', val: isBn ? 'কমোডিটি / সস্তা' : 'Low Status', alert: true },
+          { label: isBn ? 'গড় আরওএএস (ROAS)' : 'Average ROAS', val: '0.8x - 1.2x', alert: true },
+          { label: isBn ? 'সিওডি রিটার্ন হার' : 'COD Return Rate', val: '35% - 45%', alert: true },
+          { label: isBn ? 'দিনশেষে লাভ' : 'Net Business Profit', val: isBn ? 'পকেট খালি' : 'Zero Cash', alert: true },
         ],
-        footerNoteEn: 'Result: Ad spend is wasted while customer acquisition costs spiral out of control.',
-        footerNoteBn: 'ফলাফল: বিজ্ঞাপনের টাকা অপচয় হয় এবং দিনশেষে ক্যাশ-অন-ডেলিভারি রিটার্নে বড় ক্ষতি হয়।',
+        footerNoteEn: 'Ad spend is wasted while customer acquisition costs spiral out of control.',
+        footerNoteBn: 'বিজ্ঞাপনের টাকা পানিতে যায় এবং দিনশেষে ক্যাশ-অন-ডেলিভারি রিটার্নে আসল পুঁজি ক্ষতিগ্রস্ত হয়।',
       },
     },
     {
       id: 'solution',
       num: isBn ? '০২' : '02',
-      tabLabelEn: 'The POLISHED Solution',
-      tabLabelBn: 'POLISHED সমাধান',
-      eyebrowEn: 'The Strategic Distinction',
-      eyebrowBn: 'আমাদের সিগনেচার মেথডলজি',
-      titleEn: "Pioneering the 'Premium Bengali' Aesthetic",
-      titleBn: 'পরিশীলিত বাংলা ও শান্ত লাক্সারি ভিজ্যুয়াল',
+      tabLabelEn: '2. The Fix',
+      tabLabelBn: '২. আসল সমাধান',
+      eyebrowEn: 'The Conversion Engine',
+      eyebrowBn: 'আমাদের সিগনেচার সিস্টেম',
+      titleEn: 'Visuals That Command Full Price',
+      titleBn: 'এমন ডিজাইন যা কাস্টমারকে বিশ্বাস করতে বাধ্য করে',
       descEn:
-        'We pioneer the "Premium Bengali" aesthetic. We pair world-class, clean Quiet Luxury visual design with deeply evocative, sophisticated Bengali copywriting. The result: maximum relatability for the Bangladeshi demographic, combined with unquestioned prestige and buying conviction.',
+        'We do not draw pretty pictures. We engineer performance creatives with local consumer psychology. Clean framing, crisp typography, and persuasive Bengali copy that answer customer doubts instantly. When trust is high, price resistance vanishes.',
       descBn:
-        'আমরা তৈরি করেছি "প্রিমিয়াম বাংলা" নান্দনিক ধারা। আন্তর্জাতিক মানের শান্ত লাক্সারি (Quiet Luxury) ভিজ্যুয়ালের সাথে আমরা যুক্ত করি মার্জিত ও আভিজাত্যপূর্ণ বাংলা কপিরাইটিং। এর ফলে ক্রেতা প্রথম দেখাতেই ব্র্যান্ডটিকে বিশ্বাস করে এবং নিশ্চিন্তে উচ্চমূল্যের অর্ডার প্লেস করে।',
+        'আমরা শুধু সুন্দর ছবি আঁকি না। আমরা বাংলাদেশি কাস্টমারের মনস্তত্ত্ব বুঝে এমন পারফরম্যান্স ক্রিয়েটিভ তৈরি করি, যা প্রথম দেখাতেই প্রোডাক্টকে খাঁটি ও নির্ভরতার জায়গায় বসিয়ে দেয়। যখন কাস্টমার চোখে বিশ্বাস পায়, তখন সে ছাড় খোঁজে না—পুরো টাকা দিয়ে অর্ডার করে।',
       bulletPoints: [
         {
-          en: 'Psychological visual hierarchy designed to stop the frantic scroll within 0.8 seconds',
-          bn: 'সাইকোলজিক্যাল ভিজ্যুয়াল হায়ারার্কি যা প্রথম ০.৮ সেকেন্ডেই স্ক্রলিং থামিয়ে নজরে আটকে রাখে',
+          en: 'Thumb-stopping visual hooks engineered to halt the scroll within 0.8 seconds',
+          bn: 'প্রথম ০.৮ সেকেন্ডেই কাস্টমারের আঙুলের স্ক্রলিং থামিয়ে দেওয়ার মতো ভিজ্যুয়াল হুক',
           negative: false,
         },
         {
-          en: 'Sophisticated cultural copywriting that communicates exclusivity and genuine care',
-          bn: 'মার্জিত ও আত্মবিশ্বাসী বাংলা ভাষা—যা ব্র্যান্ডকে সম্মানজনক ও নির্ভরযোগ্য অবস্থানে রাখে',
+          en: 'Culturally sharp Bengali sales copy that speaks directly to genuine desires',
+          bn: 'মার্জিত বাংলা সেলস কপি যা কাস্টমারের ভেতরে খাঁটি বিশ্বাস ও কেনার তাগিদ তৈরি করে',
           negative: false,
         },
         {
-          en: '100% Meta Ad Policy Compliant creatives engineered to protect ad accounts from bans',
-          bn: '১০০% মেটা অ্যাড পলিসি কমপ্লায়েন্ট—অ্যাকাউন্ট রেস্ট্রিকশন বা পলিসি ভায়োলেশনের ভয় নেই',
+          en: '100% Meta Ad Policy Safe—protect your ad account from sudden restrictions',
+          bn: '১০০% মেটা পলিসি সুরক্ষিত—অ্যাকাউন্ট রেস্ট্রিকশন বা পলিসি ভায়োলেশনের কোনো ভয় নেই',
           negative: false,
         },
       ],
       showcase: {
-        badgeEn: 'POLISHED Quiet Luxury Creative',
-        badgeBn: 'POLISHED সিগনেচার ক্রিয়েটিভ',
+        badgeEn: 'POLISHED Signature Creative',
+        badgeBn: 'POLISHED পারফরম্যান্স আর্ট',
         cardTitleEn: 'Premium Bengali Standard',
-        cardTitleBn: 'পরিশীলিত বাংলা আর্কিটেকচার',
-        headlineEn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় আভিজাত্য।”',
-        headlineBn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় আভিজাত্য।”',
-        sublineEn: 'Crafted for discerning Bangladeshi buyers who value genuine prestige over cheap gimmicks.',
-        sublineBn: 'অভিজাত ক্রেতাদের মনের মতো করে তৈরি—যেখানে প্রতিটি শব্দ ও ফ্রেম আস্থা ও প্রিমিয়াম ফিল নিশ্চিত করে।',
+        cardTitleBn: 'পরিশীলিত বাংলা স্ট্যান্ডার্ড',
+        headlineEn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন।”',
+        headlineBn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন।”',
+        sublineEn: 'High-status framing that justifies a premium price tag instantly.',
+        sublineBn: 'এমন পরিচ্ছন্ন ফিনিশ যা দেখে কাস্টমার বুঝতে পারে এই প্রোডাক্টের কোয়ালিটি সেরা।',
         metrics: [
-          { label: isBn ? 'মেটা পলিসি গ্রেড' : 'Meta Policy Grade', val: '100% Safe', alert: false },
-          { label: isBn ? 'ভিজ্যুয়াল ক্যাটাগরি' : 'Visual Category', val: 'Quiet Luxury', alert: false },
-          { label: isBn ? 'কমিউনিকেশন টোন' : 'Brand Voice', val: isBn ? 'মার্জিত ও প্রাজ্ঞ' : 'Classy & Confident', alert: false },
+          { label: isBn ? 'আস্থার মাত্রা' : 'Trust Level', val: isBn ? 'হাই-স্ট্যাটাস' : 'High-Status', alert: false },
+          { label: isBn ? 'মেটা পলিসি' : 'Meta Policy', val: '100% Safe', alert: false },
+          { label: isBn ? 'কমিউনিকেশন' : 'Brand Tone', val: isBn ? 'মার্জিত বাংলা' : 'Persuasive', alert: false },
         ],
-        footerNoteEn: 'Engineered specifically for premium skincare, haircare, and wellness D2C brands.',
-        footerNoteBn: 'প্রিমিয়াম স্কিনকেয়ার, হেয়ারকেয়ার ও ওয়েলনেস ব্র্যান্ডের জন্য বিশেষভাবে উপযোগী।',
+        footerNoteEn: 'Engineered specifically for ambitious skincare and lifestyle brands.',
+        footerNoteBn: 'প্রিমিয়াম স্কিনকেয়ার ও লাইফস্টাইল ব্র্যান্ডের জন্য বিশেষভাবে তৈরি।',
       },
     },
     {
       id: 'payoff',
       num: isBn ? '০৩' : '03',
-      tabLabelEn: 'Commercial Payoff',
-      tabLabelBn: 'পরিমাপযোগ্য ফলাফল',
+      tabLabelEn: '3. Real Profit',
+      tabLabelBn: '৩. আসল লাভ',
       eyebrowEn: 'Verified Business Impact',
-      eyebrowBn: 'বাণিজ্যিক সাফল্য ও আরওএএস',
-      titleEn: 'Slashing CPR & Scaling Net Profit Margin',
-      titleBn: 'বিজ্ঞাপনের খরচ হ্রাস ও বিক্রির নতুন গতি',
+      eyebrowBn: 'বাস্তব বাণিজ্যিক ফলাফল',
+      titleEn: 'Lower CPR. Real Profit in Your Bank.',
+      titleBn: 'বিজ্ঞাপন খরচ কমবে, আসল লাভ পকেটে থাকবে',
       descEn:
-        'When your creatives look 10x more authoritative than the market standard, ad relevance scores surge, Cost Per Result (CPR) plunges, and Cash-on-Delivery (COD) return risks drop to near zero. We empower both D2C brands and marketing agencies to scale sustainably.',
+        'When your creatives look 10x more trustworthy than your competitors, Meta rewards you with cheaper reach. Return rates drop because customers are proud of what they ordered. Real profit stays in your bank account.',
       descBn:
-        'প্রতিযোগীদের চেয়ে আপনার ডিজাইন যখন ১০ গুণ বেশি বিশ্বাসযোগ্য ও অভিজাত দেখায়, তখন মেটা অ্যালগরিদম আপনাকে সবচেয়ে কম খরচে সর্বোচ্চ কোয়ালিটির ক্রেতা এনে দেয়। ক্যাশ-অন-ডেলিভারি রিটার্ন ঝুঁকি কমে প্রায় শূন্যে নেমে আসে এবং আরওএএস বহুগুণ বৃদ্ধি পায়।',
+        'প্রতিযোগীদের চেয়ে আপনার ডিজাইন যখন ১০ গুণ বেশি বিশ্বাসযোগ্য দেখায়, তখন মেটা কম খরচে সঠিক ক্রেতা এনে দেয়। মানুষ মন থেকে ভালোবেসে অর্ডার করে, ফলে ডেলিভারি নেওয়ার হার বাড়ে এবং রিটার্ন কমে যায়। বিজ্ঞাপনের টাকা আর জলে যায় না।',
       bulletPoints: [
         {
           en: 'Average 3.2x ROAS lift demonstrated across 30+ premium Bangladeshi D2C stores',
-          bn: '৩০+ বাংলাদেশি স্কিনকেয়ার ব্র্যান্ডে পরীক্ষিত: গড়ে ৩.২x পর্যন্ত আরওএএস (ROAS) বৃদ্ধি',
+          bn: '৩০+ বাংলাদেশি ব্র্যান্ডে পরীক্ষিত: গড়ে ৩.২x পর্যন্ত আরওএএস (ROAS) বৃদ্ধি',
           negative: false,
         },
         {
-          en: 'Up to 42% reduction in Cost Per Result (CPR) through superior creative engagement',
-          bn: 'উচ্চমানের ক্রিয়েটিভের কারণে বিজ্ঞাপন খরচ (CPR) গড়ে ৪২% পর্যন্ত কমে আসে',
+          en: 'Up to 42% reduction in Cost Per Result (CPR) through higher click-through trust',
+          bn: 'উচ্চমানের আস্থার কারণে বিজ্ঞাপনের খরচ (CPR) গড়ে ৪২% পর্যন্ত কমে আসে',
           negative: false,
         },
         {
-          en: 'White-label agency partnership: The invisible backend creative engine for marketing agencies',
-          bn: 'মার্কেটিং এজেন্সিগুলোর জন্য হোয়াইট-লেবেল সুবিধা—টিম খরচ ছাড়াই ক্লায়েন্টের ফলাফল স্কেল করুন',
+          en: 'White-label agency partnership: Scaled output without designer hiring headaches',
+          bn: 'মার্কেটিং এজেন্সি পার্টনারশিপ: ইন-হাউস ডিজাইনারের প্যারা ছাড়াই ক্লায়েন্টের ফলাফল স্কেল করুন',
           negative: false,
         },
       ],
       showcase: {
         badgeEn: 'Performance Benchmark',
         badgeBn: 'বাস্তব পারফরম্যান্স মেট্রিক্স',
-        cardTitleEn: 'The Scaled Enterprise Result',
+        cardTitleEn: 'Verified Growth Metrics',
         cardTitleBn: 'ভেরিফায়েড গ্রোথ মেট্রিক্স',
-        headlineEn: '3.2x Average ROAS Lift',
-        headlineBn: 'গড় ৩.২x ROAS ও ৪২% কম CPR',
-        sublineEn: 'Transforming marketing spend from a bleeding expense into a predictable revenue engine.',
-        sublineBn: 'বিজ্ঞাপনের ব্যয়কে অনিশ্চিত খরচ থেকে একটি প্রেডিক্টেবল প্রফিট ইঞ্জিনে রূপান্তর করুন।',
+        headlineEn: '3.2x Average ROAS & 42% Lower CPR',
+        headlineBn: 'গড় ৩.২x ROAS ও ৪২% কম বিজ্ঞাপন খরচ',
+        sublineEn: 'Turning daily ad spend from a bleeding expense into predictable profit.',
+        sublineBn: 'বিজ্ঞাপনের ব্যয়কে প্রতিদিনের লোকসান থেকে একটি স্থায়ী লাভের ইঞ্জিনে রূপান্তর করুন।',
         metrics: [
-          { label: isBn ? 'গড় ROAS বৃদ্ধি' : 'Avg. ROAS Lift', val: '3.2x - 3.8x', alert: false },
+          { label: isBn ? 'গড় ROAS বৃদ্ধি' : 'Avg. ROAS Lift', val: '3.2x - 4.5x', alert: false },
           { label: isBn ? 'বিজ্ঞাপন খরচ (CPR)' : 'CPR Reduction', val: '-42%', alert: false },
-          { label: isBn ? 'ডেলিভারি স্প্রিন্ট' : 'Turnaround', val: isBn ? '৪৮ ঘণ্টা' : '48 Hours', alert: false },
+          { label: isBn ? 'ডেলিভারি স্প্রিন্ট' : 'Delivery Sprint', val: isBn ? '৪৮ ঘণ্টা' : '48 Hours', alert: false },
         ],
-        footerNoteEn: 'Start with 5 conversion creatives for ৳3,999 — no long-term contracts required.',
-        footerNoteBn: 'কোনো দীর্ঘমেয়াদী চুক্তি ছাড়াই মাত্র ৳৩,৯৯৯-তে ৫টি প্রিমিয়াম ক্রিয়েটিভ দিয়ে ট্রায়াল শুরু করুন।',
+        footerNoteEn: 'Start with 5 conversion creatives for ৳3,999 — zero long-term lock-in.',
+        footerNoteBn: 'কোনো দীর্ঘমেয়াদী চুক্তি ছাড়াই মাত্র ৳৩,৯৯৯-তে ৫টি ক্রিয়েটিভ দিয়ে ট্রায়াল শুরু করুন।',
       },
     },
   ];
@@ -204,7 +204,7 @@ export default function StickyStorytelling() {
             }`}
           >
             <Compass className="w-3.5 h-3.5" />
-            <span>{isBn ? 'স্ট্র্যাটেজিক পজিশনিং ও আর্কিটেকচার' : 'The Strategic Advantage'}</span>
+            <span>{isBn ? 'কেন বেশিরভাগ বিজ্ঞাপন ফেইল করে?' : 'Why Most Meta Ads Bleed Money'}</span>
           </span>
 
           <h2 
@@ -213,11 +213,11 @@ export default function StickyStorytelling() {
           >
             {isBn ? (
               <>
-                পরিশীলিত বাংলা ও <span className="text-[#fb923c] italic font-semibold">শান্ত লাক্সারির</span> মেলবন্ধন
+                সমস্যা আপনার প্রোডাক্টে না, সমস্যা <span className="text-[#fb923c] italic font-semibold">বিজ্ঞাপনের চেহারায়</span>
               </>
             ) : (
               <>
-                Pioneering the <span className="text-[#fb923c] italic font-semibold">"Premium Bengali"</span> Aesthetic
+                The Problem Isn't Your Product. It’s <span className="text-[#fb923c] italic font-semibold">How It Looks.</span>
               </>
             )}
           </h2>
@@ -227,8 +227,8 @@ export default function StickyStorytelling() {
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {isBn 
-              ? 'আমরা বিশ্বাস করি বাংলাদেশের স্কিনকেয়ার ও D2C ব্র্যান্ডগুলোর জন্য আন্তর্জাতিক মানের আভিজাত্য এবং স্থানীয় সাংস্কৃতিক সংযোগ—দুটোই একসাথে নিশ্চিত করা সম্ভব।'
-              : 'Bridging the gap between world-class Quiet Luxury design and deep cultural resonance to unlock record-breaking conversions for skincare brands.'
+              ? 'ভালো প্রোডাক্ট বানিয়েও লাভ নেই, যদি বিজ্ঞাপনে সেটাকে সাধারণ ক্যানভা টেমপ্লেট মনে হয়। মানুষ চোখে বিশ্বাস না পেলে কখনো ফুল প্রাইস দিয়ে অর্ডার করে না।'
+              : 'You can make the finest product in Bangladesh. But if your ad looks like a 10-minute Canva template, people assume it is cheap. Trust drives orders. Not discounts.'
             }
           </p>
         </div>
@@ -244,7 +244,7 @@ export default function StickyStorytelling() {
                 className="text-base font-bold text-white mt-0.5"
                 style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
               >
-                {isBn ? 'ক্যানভা টেমপ্লেট ❌ বনাম POLISHED ✨' : 'Generic Canva ❌ vs POLISHED Standard ✨'}
+                {isBn ? 'সস্তা ক্যানভা টেমপ্লেট ❌ বনাম POLISHED সিস্টেম ✨' : 'Cheap Canva Ads ❌ vs POLISHED System ✨'}
               </h3>
             </div>
 
@@ -259,24 +259,24 @@ export default function StickyStorytelling() {
                   <ul className="space-y-1.5 text-[10px] text-white/70">
                     <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
-                      <span>{isBn ? 'চেনা টেমপ্লেট ও সাধারণ কপি' : 'Recycled templated visuals'}</span>
+                      <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল কপি' : 'Recycled template, weak copy'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
-                      <span>{isBn ? '০.৯x - ১.৩x গড় ROAS' : '0.9x - 1.3x Avg ROAS'}</span>
+                      <span>{isBn ? '০.৮x - ১.২x ROAS (লস)' : '0.8x - 1.2x ROAS (Losing money)'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
-                      <span>{isBn ? '৩০-৪০% COD রিটার্ন ঝুঁকি' : '30-40% COD return rate'}</span>
+                      <span>{isBn ? '৩৫% - ৪৫% COD রিটার্ন' : '35% - 45% COD returns'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
-                      <span>{isBn ? 'বারবার ডিসকাউন্টের চাপ' : 'Forced heavy discounting'}</span>
+                      <span>{isBn ? 'ইনবক্সে "দাম কত" বলে উধাও' : 'Inbox "Price please?" ghosting'}</span>
                     </li>
                   </ul>
                 </div>
                 <div className="mt-2.5 pt-1.5 border-t border-red-500/15 text-[9px] text-red-300/80 font-mono">
-                  {isBn ? 'সিপিআর বৃদ্ধি ও বাজেট অপচয়' : 'High CAC & Budget Drain'}
+                  {isBn ? 'ডলার অপচয় ও শূন্য লাভ' : 'Budget Drain & Zero Profit'}
                 </div>
               </div>
 
@@ -284,29 +284,29 @@ export default function StickyStorytelling() {
               <div className="p-2.5 sm:p-3 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
                 <div>
                   <span className="text-[9.5px] font-bold text-accent uppercase tracking-wider block mb-1.5">
-                    {isBn ? 'POLISHED স্ট্যান্ডার্ড ✨' : 'POLISHED Standard ✨'}
+                    {isBn ? 'POLISHED সিস্টেম ✨' : 'POLISHED System ✨'}
                   </span>
                   <ul className="space-y-1.5 text-[10px] text-white/95">
                     <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
-                      <span>{isBn ? 'আভিজাত্যময় বাংলা কপি ও আর্ট' : 'Custom high-status visuals'}</span>
+                      <span>{isBn ? 'আস্থার প্রতীক বাংলা সেলস আর্ট' : 'Authority visual & copy'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
-                      <span>{isBn ? '৩.২x - ৪.৫x গড় ROAS' : '3.2x - 4.5x Avg ROAS'}</span>
+                      <span>{isBn ? '৩.২x - ৪.৫x গড় ROAS' : '3.2x - 4.5x average ROAS'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
-                      <span>{isBn ? 'COD রিটার্নে বড় পতন' : 'Drastic drop in returns'}</span>
+                      <span>{isBn ? 'COD রিটার্ন এক ধাক্কায় কমে' : 'Dramatic drop in returns'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
-                      <span>{isBn ? 'কোনো ছাড় ছাড়াই হাই AOV' : 'Zero discounts required'}</span>
+                      <span>{isBn ? 'ছাড় ছাড়াই নিশ্চিন্ত অর্ডার' : 'Full-price orders without discounts'}</span>
                     </li>
                   </ul>
                 </div>
                 <div className="mt-2.5 pt-1.5 border-t border-accent/20 text-[9px] text-accent font-mono font-bold">
-                  {isBn ? 'গড় ৩.২x সেলস গ্রোথ' : '3.2x Validated Scaling'}
+                  {isBn ? 'গড় ৩.২x ভেরিফায়েড সেলস' : '3.2x Scaled Revenue'}
                 </div>
               </div>
             </div>

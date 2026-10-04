@@ -127,7 +127,7 @@ export default function Services(_props: ServicesProps) {
               className={`text-accent font-semibold mb-4 ${isBn ? 'text-[14px] tracking-normal' : 'text-[10px] tracking-[4px] uppercase'}`}
               style={isBn ? bnFont : undefined}
             >
-              {isBn ? 'সার্ভিস ও প্রাইসিং' : 'Services & Pricing'}
+              {isBn ? 'স্বচ্ছ বিনিয়োগ ও আসল লাভ' : 'Direct Investment & Profit'}
             </p>
           </MotionReveal>
 
@@ -140,15 +140,15 @@ export default function Services(_props: ServicesProps) {
           >
             {isBn ? (
               <>
-                পারফরম্যান্স ক্রিয়েটিভ সিস্টেম।
+                বিজ্ঞাপনে আর লস নয়।
                 <br />
-                <em className="italic text-accent">বিক্রি বাড়াতে তৈরি, স্বচ্ছ দামে।</em>
+                <em className="italic text-accent">আসল সেলস আনার সিস্টেমে আসুন।</em>
               </>
             ) : (
               <>
-                Performance Creative Systems.
+                Stop Guessing on Ads.
                 <br />
-                <em className="italic text-accent">Engineered to scale. Priced transparently.</em>
+                <em className="italic text-accent">Pay for creatives that actually convert.</em>
               </>
             )}
           </h2>
@@ -158,8 +158,8 @@ export default function Services(_props: ServicesProps) {
             style={isBn ? bnFont : undefined}
           >
             {isBn
-              ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ডেলিভারেবলস, নির্ধারিত দাম, পরিমাপযোগ্য ফলাফল। কোনো লুকানো খরচ নেই।'
-              : 'Three focused sprints — clear deliverables, fixed prices, measurable ROI. No hourly billing, no hidden fees.'}
+              ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ফলাফল, নির্ধারিত বিনিয়োগ, কোনো লুকানো চার্জ নেই। আজই পরীক্ষা করে দেখুন।'
+              : 'Three focused sprints — clear deliverables, fixed investment, real sales. No hidden fees. Test our quality today.'}
           </p>
         </header>
 

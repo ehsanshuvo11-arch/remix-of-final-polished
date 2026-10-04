@@ -20,19 +20,19 @@ const DEFAULT_ITEMS: TestimonialItem[] = [
   {
     id: '1',
     quote_en:
-      'POLISHED transformed our entire visual identity. The packaging now feels like a luxury object before anyone even opens the box. Our repeat purchase rate climbed within weeks.',
+      'Before POLISHED, people commented "Price please?" and vanished. Now shoppers actually trust our skincare line and checkout at full price. Our ROAS tripled in the very first sprint.',
     quote_bn:
-      'POLISHED আমাদের পুরো ভিজ্যুয়াল আইডেন্টিটি বদলে দিয়েছে। প্যাকেজিংটা এখন বক্স খোলার আগেই একটা লাক্সারি অবজেক্টের মতো ফিল দেয়। কয়েক সপ্তাহের মধ্যেই আমাদের রিপিট পারচেস রেট চোখে পড়ার মতো বেড়েছে।',
+      'POLISHED-এর ক্রিয়েটিভ নেওয়ার পর ইনবক্সে "দাম কত" বলে উধাও হওয়া মানুষ কমে গেছে। কাস্টমাররা এখন পুরো দাম দিয়ে নিশ্চিন্তে অর্ডার করে। প্রথম মাসেই আমাদের ROAS ৩ গুণের বেশি বেড়েছে।',
     name: 'Aisha Rahman',
-    role_en: 'Founder, Organic Skincare',
-    role_bn: 'ফাউন্ডার, অর্গানিক স্কিনকেয়ার',
+    role_en: 'Founder, Organic Skincare BD',
+    role_bn: 'ফাউন্ডার, অর্গানিক স্কিনকেয়ার বিডি',
   },
   {
     id: '2',
     quote_en:
-      'They understood the soul of our brand instantly. Every touchpoint — from the site to the unboxing — now whispers premium. It is the best investment we have made.',
+      'We used to cut prices by 30% just to get orders, which destroyed our margins after returns. Now we sell at full price with zero discounts. Best creative partner in Bangladesh.',
     quote_bn:
-      'তারা মুহূর্তেই আমাদের ব্র্যান্ডের মূল সত্তা বুঝতে পেরেছিল। সাইট থেকে শুরু করে আনবক্সিং—প্রতিটি টাচপয়েন্ট এখন প্রিমিয়াম ফিল দেয়। এটি আমাদের করা অন্যতম সেরা ইনভেস্টমেন্ট।',
+      'আগে সেলস পেতে ২০%-৩০% ডিসকাউন্ট দিতে হতো, দিনশেষে লস হতো। এখন কোনো ছাড় ছাড়াই পুরো দামে প্রোডাক্ট বিক্রি হচ্ছে। ডেলিভারি রিটার্ন রেটও অনেক কমে গেছে।',
     name: 'Leila Noor',
     role_en: 'Founder, Glow Essentials',
     role_bn: 'ফাউন্ডার, গ্লো এসেনশিয়ালস',
@@ -40,9 +40,9 @@ const DEFAULT_ITEMS: TestimonialItem[] = [
   {
     id: '3',
     quote_en:
-      'The new identity commands attention on shelf and screen. Customers constantly tell us our brand looks expensive, trustworthy, and unforgettable.',
+      'The difference between a 10-minute Canva flyer and POLISHED performance art is night and day. Cost per result dropped by 44% on our Meta campaigns within 3 weeks.',
     quote_bn:
-      'নতুন ভিজ্যুয়াল আইডেন্টিটি শেলফ এবং স্ক্রিন—সব জায়গায় নজর কাড়ে। কাস্টমাররা প্রতিনিয়ত আমাদের জানায় যে ব্র্যান্ডটিকে এখন অনেক এক্সপেন্সিভ, বিশ্বস্ত এবং আইকনিক মনে হয়।',
+      'ক্যানভা টেমপ্লেটের সস্তা অ্যাড আর POLISHED-এর পারফরম্যান্স ক্রিয়েটিভের তফাত আকাশ-পাতাল। আমাদের মেটা বিজ্ঞাপনে প্রতিটি অর্ডারের খরচ ৪৪% কমে গেছে।',
     name: 'Sarah Hossain',
     role_en: 'Founder, Pure Radiance Co.',
     role_bn: 'ফাউন্ডার, পিওর রেডিয়ান্স কোং',
@@ -50,22 +50,12 @@ const DEFAULT_ITEMS: TestimonialItem[] = [
   {
     id: '4',
     quote_en:
-      "POLISHED didn't just design our visuals; they engineered our brand's trust. Their 'Premium Bengali' approach dropped our Customer Acquisition Cost (CAC) significantly within the first month.",
+      'Managing in-house designers for our marketing agency was an expensive headache. POLISHED handles our client creatives white-label in 48 hours. Client retention is at an all-time high.',
     quote_bn:
-      "POLISHED শুধু আমাদের ভিজ্যুয়াল ডিজাইন করেনি; তারা আমাদের ব্র্যান্ডের ট্রাস্ট ইঞ্জিনিয়ারিং করেছে। তাদের 'প্রিমিয়াম বাংলা' অ্যাপ্রোচ প্রথম মাসেই আমাদের কাস্টমার একুইজিশন কস্ট (CAC) অনেক কমিয়ে দিয়েছে।",
-    name: 'Zara Islam',
-    role_en: 'Founder, Botanica Blends',
-    role_bn: 'ফাউন্ডার, বোটানিকা ব্লেন্ডস',
-  },
-  {
-    id: '5',
-    quote_en:
-      'Their understanding of the local D2C skincare market is unmatched. The aesthetic is purely international, yet deeply relatable to our core demographic. A flawless execution.',
-    quote_bn:
-      'লোকাল D2C মার্কেটের ওপর তাদের বোঝাপড়া সত্যিই অতুলনীয়। তাদের ডিজাইন সম্পূর্ণ ইন্টারন্যাশনাল, কিন্তু আমাদের লোকাল কাস্টমারদের সাথে দারুণভাবে কানেক্ট করে। এককথায় নিখুঁত এক্সিকিউশন।',
+      'মার্কেটিং এজেন্সিতে ইন-হাউস ডিজাইনার রাখার খরচ ও প্যারা অনেক বেশি ছিল। POLISHED এখন আমাদের ক্লায়েন্টদের হোয়াইট-লেবেল ক্রিয়েটিভ ৪৮ ঘণ্টায় সাপ্লাই দেয়। ক্লায়েন্টরা অনেক খুশি।',
     name: 'Fahim Rahman',
-    role_en: 'CMO, Luxe Derma BD',
-    role_bn: 'সিএমও, লাক্স ডার্মা বিডি',
+    role_en: 'Managing Partner, Scale Media',
+    role_bn: 'ম্যানেজিং পার্টনার, স্কেল মিডিয়া',
   },
 ];
 
@@ -85,14 +75,14 @@ export default function Testimonials() {
   }));
 
   const label = isBn
-    ? (content?.labelBn ?? 'পার্টনারশিপ')
-    : (content?.labelEn ?? 'Partnerships');
+    ? (content?.labelBn ?? 'বাস্তব প্রমাণ')
+    : (content?.labelEn ?? 'Client Proof');
   const heading = isBn
-    ? (content?.headingBn ?? 'যাদের আস্থায় আমরা।')
-    : (content?.headingEn ?? 'Trusted by Visionaries.');
+    ? (content?.headingBn ?? 'বিজ্ঞাপনে লস বন্ধ করে যারা লাভ করছেন।')
+    : (content?.headingEn ?? 'From Wasting Ad Budget to Real Profit.');
   const sub = isBn
-    ? (content?.subBn ?? 'প্রিমিয়াম ই-কমার্স ব্র্যান্ড এবং মার্কেটিং ভিশনারিদের কিছু কথা।')
-    : (content?.subEn ?? 'Words from the visionaries behind premium e-commerce brands and marketing agencies.');
+    ? (content?.subBn ?? 'আমাদের পার্টনার ব্র্যান্ড ওনারদের বাস্তব অভিজ্ঞতা—যেখানে ক্যানভার চেনা লস থেকে বেরিয়ে সেলস বহুগুণ বেড়েছে।')
+    : (content?.subEn ?? 'Real words from Bangladeshi brand founders who stopped losing money on cheap ads and scaled.');
 
   const [active, setActive] = useState(0);
   const isMobile = useIsMobile();

@@ -22,14 +22,14 @@ export default function Hero({ content, logoUrl }: HeroProps) {
   const orb2Ref = useRef<HTMLDivElement>(null);
 
   const hero = content ?? {
-    titleEn: 'Make Your Collection',
-    title2En: '*Unmissable!*',
-    titleBn: 'আপনার কালেকশন হোক',
-    title2Bn: '*অনবদ্য!*',
-    eyebrowEn: 'Performance Visual Identity & High-Conversion Design Agency',
-    eyebrowBn: 'পারফরম্যান্স ভিজ্যুয়াল আইডেন্টিটি ও হাই-কনভার্শন ডিজাইন স্টুডিও',
-    subEn: "We don't design generic Canva banners. We build high-converting Meta Ad creatives, luxury packaging, and high-trust storefront visuals that slash your CPR and drive 3.2x average ROAS for ambitious skincare brands.",
-    subBn: "আমরা সাধারণ ক্যানভা ব্যানার বানাই না। আমরা তৈরি করি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ, লাক্সারি প্যাকেজিং ও ই-কমার্স ভিজ্যুয়াল—যা আপনার বিজ্ঞাপনের খরচ (CPR) কমায় এবং সেলস ৩.২ গুণ বৃদ্ধি করে।",
+    titleEn: 'Stop Burning Cash on Ads',
+    title2En: 'People Just Scroll Past.',
+    titleBn: 'বিজ্ঞাপনে টাকা ঢালছেন,',
+    title2Bn: 'কিন্তু সেলস আসছে না?',
+    eyebrowEn: 'Stop Burning Ad Budget on Meta',
+    eyebrowBn: 'ফেসবুক বিজ্ঞাপনে বাজেট অপচয় বন্ধ করুন',
+    subEn: 'Your Ads Manager charges you every morning. Meanwhile, people comment "Price please?" and vanish. We build high-converting ad visuals and psychological copy that build instant trust—so shoppers buy at full price without begging for discounts.',
+    subBn: 'প্রতিদিন ডলার কাটছে, অথচ ইনবক্সে "দাম কত" বলে মানুষ উধাও। ক্যানভা টেমপ্লেটের দিন শেষ। আমরা এমন পারফরম্যান্স ক্রিয়েটিভ আর বাংলা সেলস কপি তৈরি করি—যা কাস্টমারের মনে খাঁটি বিশ্বাস এনে দেয়, যাতে তারা ডিসকাউন্ট ছাড়াই অর্ডার করে।',
   };
 
   return (
@@ -89,10 +89,10 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 style={{ fontFamily: "'Noto Serif Bengali', serif" }}
               >
                 <RevealText as="span" delay={BASE} triggerOnMount={true} className="block whitespace-normal" stagger={STAGGER}>
-                  {hero.titleBn || 'আপনার কালেকশন হোক'}
+                  {hero.titleBn || 'বিজ্ঞাপনে টাকা ঢালছেন,'}
                 </RevealText>
                 <RevealText as="span" delay={line2Delay} triggerOnMount={true} className="hero-accent-line block leading-[1.15] mt-1 md:mt-2 italic text-accent" stagger={STAGGER}>
-                  {hero.title2Bn || 'অনবদ্য!'}
+                  {hero.title2Bn || 'কিন্তু সেলস আসছে না?'}
                 </RevealText>
               </h1>
             );

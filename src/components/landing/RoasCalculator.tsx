@@ -73,16 +73,16 @@ export default function RoasCalculator() {
             className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] mb-3" 
             style={{ fontFamily: fontBody }}
           >
-            {isBn ? "রেভিনিউ ডায়াগনস্টিক" : "Revenue Diagnostic"}
+            {isBn ? "বিজ্ঞাপনের অপচয় নির্ণয়" : "Revenue Diagnostic"}
           </span>
           <h2 
             className="text-[#1e3a8a] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 leading-tight" 
             style={{ fontFamily: fontPrimary }}
           >
             {isBn ? (
-              <>সাধারণ ভিজ্যুয়াল কি আপনার অ্যাড বাজেট <span className="text-[#fb923c] font-bold">নষ্ট</span> করছে?</>
+              <>দুর্বল ডিজাইনের কারণে বিজ্ঞাপনে কত টাকা <span className="text-[#fb923c] font-bold">অপচয়</span> হচ্ছে?</>
             ) : (
-              <>Is Poor Design <span className="text-[#fb923c] font-bold">Bleeding</span> Your Ad Budget?</>
+              <>How Much Ad Spend Is Leaking From <span className="text-[#fb923c] font-bold">Weak Creatives</span>?</>
             )}
           </h2>
           <p 
@@ -90,8 +90,8 @@ export default function RoasCalculator() {
             style={{ fontFamily: fontBody }}
           >
             {isBn 
-              ? "আপনার ব্যবসার বর্তমান সংখ্যাগুলো পরিবর্তন করে দেখুন—ডিজাইন দুর্বলতার কারণে প্রতি মাসে ঠিক কত টাকা সম্ভাব্য সেলস হারাচ্ছেন।"
-              : "Adjust your metrics to calculate how much revenue you are leaving on the table every month due to average visuals."}
+              ? "আপনার মাসিক বাজেট ও ডেটা বসিয়ে দেখুন—সস্তা টেমপ্লেটের কারণে প্রতি মাসে কত নিশ্চিত সেলস হাতছাড়া হচ্ছে।"
+              : "Adjust your metrics to calculate how much sales revenue is slipping away every month from low-trust, scroll-past visuals."}
           </p>
         </div>
 
@@ -256,7 +256,7 @@ export default function RoasCalculator() {
                 </div>
                 <div className="border-l border-white/10 pl-2">
                   <p className="text-[#fb923c] text-[10px] uppercase font-bold tracking-wider mb-0.5" style={{ fontFamily: fontBody }}>
-                    {isBn ? "POLISHED অপ্টিমাইজেশনে (+১.৫%)" : "With POLISHED (+1.5%)"}
+                    {isBn ? "POLISHED ক্রিয়েটিভে (+১.৫%)" : "With POLISHED (+1.5%)"}
                   </p>
                   <p className="text-base sm:text-lg font-bold text-[#fb923c] font-mono">
                     ৳{formatCurrency(projectedRevenue)}
@@ -268,7 +268,7 @@ export default function RoasCalculator() {
               <div className="text-center my-auto py-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[#fb923c] text-[11px] font-bold uppercase tracking-wider mb-2" style={{ fontFamily: fontBody }}>
                   <span className="w-2 h-2 rounded-full bg-[#fb923c] animate-pulse" />
-                  <span>{isBn ? "সম্ভাব্য মাসিক লোকসান" : "Revenue Left on Table"}</span>
+                  <span>{isBn ? "বিজ্ঞাপনে প্রতি মাসে অপচয়" : "Revenue Leaking Monthly"}</span>
                 </div>
 
                 <div className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none mb-2 font-mono">
@@ -280,8 +280,8 @@ export default function RoasCalculator() {
 
                 <p className="text-[11px] sm:text-xs text-white/60 font-light max-w-sm mx-auto leading-relaxed" style={{ fontFamily: fontBody }}>
                   {isBn 
-                    ? "ভিজ্যুয়াল কোয়ালিটি ও ল্যান্ডিং পেজ আপগ্রেডে মাত্র ১.৫% কনভার্শন বৃদ্ধি পেলেই এই বাড়তি টাকা সরাসরি আপনার একাউন্টে আসত।"
-                    : "Based on a 1.5% conversion lift benchmark achieved through high-converting creative upgrades."}
+                    ? "ডিজাইনে বিশ্বাসযোগ্যতা এনে কনভার্শন মাত্র ১.৫% বাড়ালেই এই পুরো টাকাটা প্রতি মাসে সরাসরি আপনার নিট লাভ হিসেবে জমা থাকবে।"
+                    : "Lifting conversion by just 1.5% through high-trust visual proof reclaims this entire amount directly into net profit."}
                 </p>
               </div>
 
@@ -289,14 +289,14 @@ export default function RoasCalculator() {
               <div className="flex flex-col gap-2.5 pt-2">
                 <a
                   href={`https://wa.me/8801346288210?text=${encodeURIComponent(
-                    `Hi POLISHED, I calculated ~৳${formatCurrency(revenueLost)}/mo in lost revenue on my ৳${formatCurrency(adSpend)} monthly ad spend. I want to recover this profit with the ৳3,999 Skincare Trial Pack!`
+                    `Hi POLISHED, I ran the numbers. Losing around ৳${formatCurrency(revenueLost)}/mo on weak ads with a ৳${formatCurrency(adSpend)} budget. I want to test the ৳3,999 sprint to stop the leak!`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 bg-[#fb923c] hover:bg-[#fb923c]/95 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-200 active:scale-[0.98] btn-shimmer"
                   style={{ fontFamily: fontBody }}
                 >
-                  <span>{isBn ? "৳৩,৯৯৯ ট্রায়ালে লোকসান বন্ধ করুন" : "Recover with ৳3,999 Trial"}</span>
+                  <span>{isBn ? "৳৩,৯৯৯ স্প্রিন্টে অপচয় বন্ধ করুন" : "Stop The Leak With ৳3,999 Sprint"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
 
@@ -318,7 +318,7 @@ export default function RoasCalculator() {
                 >
                   <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
                   <span className="underline decoration-white/30 group-hover:decoration-white">
-                    {isBn ? "অথবা ৫ মিনিটের ফ্রি অডিট নিন" : "Or request a free 5-minute audit"}
+                    {isBn ? "অথবা ৫ মিনিটের ফ্রি ভিডিও অডিট নিন" : "Or request a free 5-minute video teardown"}
                   </span>
                 </button>
               </div>

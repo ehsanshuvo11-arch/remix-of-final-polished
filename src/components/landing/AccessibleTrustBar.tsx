@@ -9,31 +9,31 @@ export default function AccessibleTrustBar() {
   const pillars = [
     {
       icon: Zap,
-      titleBn: 'নো-রিস্ক টেস্ট ড্রাইভ',
+      titleBn: 'বিজ্ঞাপন টেস্ট ড্রাইভ',
       titleEn: 'No-Risk Test Drive',
-      subBn: '৳৩,৯৯৯ • ৪৮ ঘণ্টায় ৫টি অ্যাড',
-      subEn: '৳3,999 • 48h 5-Ad Sprint',
+      subBn: '৳৩,৯৯৯-তে ৪৮ ঘণ্টায় ৫টি অ্যাড',
+      subEn: '৳3,999 • 5 Creatives in 48h',
     },
     {
       icon: CreditCard,
       titleBn: 'বিকাশ ও নগদ সাপোর্ট',
-      titleEn: 'bKash & Nagad Payments',
+      titleEn: 'bKash & Nagad Accepted',
       subBn: 'ডলার কার্ড ছাড়াই সহজ পেমেন্ট',
-      subEn: 'No international cards needed',
+      subEn: 'No international card needed',
     },
     {
       icon: MessageCircle,
       titleBn: 'সরাসরি হোয়াটসঅ্যাপ',
       titleEn: 'Direct WhatsApp',
-      subBn: 'কোনো ফর্ম বা জটিল মিটিং নেই',
-      subEn: 'No forms, direct 1-on-1 chat',
+      subBn: 'কোনো লম্বা মিটিং নেই, সরাসরি চ্যাট',
+      subEn: 'Zero boring meetings. Instant chat',
     },
     {
       icon: ShieldCheck,
-      titleBn: '১০০% ফ্রি রিভিশন',
-      titleEn: '100% Free Revisions',
-      subBn: 'সম্পূর্ণ সন্তুষ্টি পর্যন্ত ফাইন-টিউনিং',
-      subEn: 'Unlimited fine-tuning guaranteed',
+      titleBn: 'ফ্রি রিভিশন গ্যারান্টি',
+      titleEn: 'Free Revision Guarantee',
+      subBn: 'মনমতো না হওয়া পর্যন্ত ঠিক করে দেব',
+      subEn: 'We adjust until you are happy',
     },
   ];
 

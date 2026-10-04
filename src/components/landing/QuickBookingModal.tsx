@@ -27,22 +27,22 @@ export function openQuickBookingModal(detail?: QuickBookingDetail) {
 
 const DEFAULT_DETAILS: QuickBookingDetail = {
   tierId: 'trial-pack',
-  tierTitle: 'No-Risk Test Drive Sprint',
-  tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
+  tierTitle: 'Ad Test Drive Sprint (Stop Budget Leak)',
+  tierTitleBn: 'বিজ্ঞাপন টেস্ট ড্রাইভ স্প্রিন্ট (বিজ্ঞাপনের টাকা অপচয় বন্ধের ট্রায়াল)',
   price: '৳3,999',
   priceBn: '৳৩,৯৯৯',
   delivery: '48-Hour Rapid Delivery',
   deliveryBn: '৪৮ ঘণ্টায় দ্রুত ডেলিভারি',
   deliverables: [
     '5 High-Converting Meta Ad Creatives (1:1 Feed & 9:16 Story/Reels)',
-    '3 Strategic Hook Angles tested for high CTR & lower CPR',
+    'Persuasive Bengali & English Ad Copy & Strategic Hooks',
     '100% Free Unlimited Revisions until fully satisfied',
     'bKash, Nagad & Local Bank Transfer supported',
   ],
   deliverablesBn: [
     '৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ (১:১ ফিড ও ৯:১৬ রিলস)',
-    '৩টি পরীক্ষিত হুক অ্যাঙ্গেল ও অডিয়েন্স স্ট্র্যাটেজি',
-    '১০০% ফ্রি আনলিমিটেড রিভিশন নিশ্চয়তা',
+    'অর্ডার বাড়ানোর ধারালো বাংলা ও ইংরেজি সেলস কপিরাইটিং',
+    '১০০% ফ্রি আনলিমিটেড রিভিশন নিশ্চয়তা',
     'বিকাশ, নগদ ও দেশি ব্যাংক ট্রান্সফারে সহজ পেমেন্ট',
   ],
 };

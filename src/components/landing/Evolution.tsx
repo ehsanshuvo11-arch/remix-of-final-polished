@@ -17,19 +17,19 @@ export default function Evolution() {
   const { data } = useSiteSetting<EvolutionContent>('evolution');
 
   const title = isBn
-    ? (data?.title_bn || 'দ্য ইভোলিউশন')
-    : (data?.title_en || 'The Evolution');
+    ? (data?.title_bn || 'একই প্রোডাক্ট। সম্পূর্ণ ভিন্ন বিক্রির ক্ষমতা।')
+    : (data?.title_en || 'Same Product. 10x More Sales Authority.');
   const subtitle = isBn
-    ? (data?.subtitle_bn || 'একটি প্রিমিয়াম আইডেন্টিটি কীভাবে ব্র্যান্ডের রূপ বদলে দেয়, তা নিজেই দেখুন।')
-    : (data?.subtitle_en || 'See the impact of a premium visual identity.');
-  const label = isBn ? 'বিবর্তন' : 'Evolution';
+    ? (data?.subtitle_bn || 'বাম পাশের চেনা ক্যানভা ডিজাইন দেখে মানুষ স্ক্রোল করে চলে যায়। ডান পাশের ক্রিয়েটিভ দেখে মানুষ ফুল প্রাইসে অর্ডার করে। স্লাইডারটি টেনে তফাত দেখুন।')
+    : (data?.subtitle_en || 'The left side looks like a cheap flyer people scroll past. The right side commands high trust and full-price orders. Drag to compare.');
+  const label = isBn ? 'বাস্তব তফাত' : 'Visual Proof';
   const beforeLabel = isBn
-    ? (data?.before_label_bn || 'পুরনো ধারণা')
-    : (data?.before_label_en || 'Old Concept');
+    ? (data?.before_label_bn || 'ক্যানভা টেমপ্লেট ❌')
+    : (data?.before_label_en || 'Cheap Canva Ad ❌');
   const afterLabel = isBn
-    ? (data?.after_label_bn || 'POLISHED মান')
-    : (data?.after_label_en || 'POLISHED Standard');
-  const hint = isBn ? 'তুলনা করতে টানুন' : 'Drag or tap to compare';
+    ? (data?.after_label_bn || 'POLISHED ক্রিয়েটিভ ✨')
+    : (data?.after_label_en || 'POLISHED Standard ✨');
+  const hint = isBn ? 'টেনে তুলনা দেখুন' : 'Drag slider to compare';
 
   const beforeSrc = resolveStorageUrl(data?.before_image_url) || beforeImg;
   const afterSrc = resolveStorageUrl(data?.after_image_url) || afterImg;

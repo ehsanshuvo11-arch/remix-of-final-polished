@@ -47,12 +47,12 @@ export default function Contact({ contact }: ContactProps) {
     wa: '+8801346288210',
     sectionLabelEn: 'Get In Touch',
     sectionLabelBn: 'যোগাযোগ করুন',
-    titleLine1En: "Let's build something",
-    titleLine1Bn: 'আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?',
-    titleLine2En: 'worth noticing.',
-    titleLine2Bn: 'আসুন কথা বলি।',
-    descEn: "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.",
-    descBn: 'আপনার স্কিনকেয়ার ব্র্যান্ড কি আরও ভালো ভিজ্যুয়াল পাওয়ার যোগ্য? যোগাযোগ করুন। আমরা সীমিত সংখ্যক প্রজেক্ট নিই।',
+    titleLine1En: 'Stop Burning Ad Spend on Weak Creatives.',
+    titleLine1Bn: 'বিজ্ঞাপনে টাকা অপচয় বন্ধ করতে প্রস্তুত?',
+    titleLine2En: "Let's fix your conversions.",
+    titleLine2Bn: 'সরাসরি কথা বলুন।',
+    descEn: "Tired of spending money on Meta ads only to get ghosted in your inbox? We craft creatives and hooks that make shoppers order at full price. We accept strictly 3 brand sprints per week.",
+    descBn: 'প্রতিদিন বিজ্ঞাপনে টাকা ঢালছেন, কিন্তু ইনবক্সে এসে মানুষ দাম জিজ্ঞেস করে উধাও? আর নয়। আপনার ব্র্যান্ডের আসল সেলস নিশ্চিত করতে চলুন সরাসরি কথা বলি। প্রতি সপ্তাহে আমরা সর্বোচ্চ ৩টি ব্র্যান্ড নিয়ে কাজ করি।',
   } as ContactContent;
 
   const links = [
@@ -62,10 +62,10 @@ export default function Contact({ contact }: ContactProps) {
     { icon: <WhatsAppIcon />, label: c.wa, href: `https://wa.me/${c.wa.replace(/\D/g, '')}` },
   ];
 
-  // Contact heading/label/desc locked to English in all locales
+  // Contact heading/label/desc
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = c.titleLine1En ?? "Let's build something";
-  const line2 = c.titleLine2En ?? 'worth noticing.';
+  const line1 = c.titleLine1En ?? 'Stop Burning Ad Spend on Weak Creatives.';
+  const line2 = c.titleLine2En ?? "Let's fix your conversions.";
 
   return (
     <div id="contact" className="bg-[#1e3a8a]">
@@ -77,7 +77,7 @@ export default function Contact({ contact }: ContactProps) {
           <MotionReveal>
             {isBn ? (
               <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                যোগাযোগ করুন
+                সরাসরি যোগাযোগ
               </p>
             ) : (
               <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
@@ -88,17 +88,17 @@ export default function Contact({ contact }: ContactProps) {
           <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
             {isBn ? (
               <>
-                <WordReveal delay={0.1}>আপনার ব্র্যান্ডকে নেক্সট লেভেলে নিতে প্রস্তুত?</WordReveal>
+                <WordReveal delay={0.1}>বিজ্ঞাপনে টাকা অপচয় বন্ধ করতে প্রস্তুত?</WordReveal>
                 <br />
                 <em className="italic text-accent">
-                  <WordReveal delay={0.25}>আসুন কথা বলি।</WordReveal>
+                  <WordReveal delay={0.25}>সরাসরি কথা বলুন।</WordReveal>
                 </em>
               </>
             ) : (
               <>
                 <WordReveal delay={0.1}>{line1}</WordReveal>
                 <br />
-                <em className="italic">
+                <em className="italic text-accent">
                   <WordReveal delay={0.25}>{line2}</WordReveal>
                 </em>
               </>
@@ -107,8 +107,8 @@ export default function Contact({ contact }: ContactProps) {
           <MotionReveal delay={0.15}>
             <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.85] text-primary-foreground/50 mb-10`}>
               {isBn
-                ? 'আপনার D2C ব্র্যান্ডকে স্কেল করতে অথবা মার্কেটিং এজেন্সিকে প্রিমিয়াম ভিজ্যুয়াল দিয়ে আরও শক্তিশালী করতে প্রস্তুত? চলুন কথা বলি। প্রতিটি প্রজেক্টে সর্বোচ্চ মনোযোগ নিশ্চিত করতে আমরা লিমিটেড সংখ্যক ক্লায়েন্ট নিয়ে কাজ করি।'
-                : (c.descEn ?? "Ready to scale your D2C brand or empower your marketing agency with premium visuals? Let’s talk. We take on a limited number of projects to ensure every client gets full attention.")}
+                ? (c.descBn ?? 'প্রতিদিন বিজ্ঞাপনে টাকা ঢালছেন, কিন্তু ইনবক্সে এসে মানুষ দাম জিজ্ঞেস করে উধাও? আর নয়। আপনার ব্র্যান্ডের আসল সেলস নিশ্চিত করতে চলুন সরাসরি কথা বলি। প্রতি সপ্তাহে আমরা সর্বোচ্চ ৩টি ব্র্যান্ড নিয়ে কাজ করি।')
+                : (c.descEn ?? "Tired of spending money on Meta ads only to get ghosted in your inbox? We craft creatives and hooks that make shoppers order at full price. We accept strictly 3 brand sprints per week.")}
             </p>
           </MotionReveal>
 
@@ -143,12 +143,12 @@ export default function Contact({ contact }: ContactProps) {
                 </span>
                 <div>
                   <p className="text-xs font-medium text-primary-foreground">
-                    {isBn ? 'ব্যক্তিগত অ্যাসেট রিভিউ' : 'Store & Visual Audit'}
+                    {isBn ? 'বিজ্ঞাপন ও পেজ অডিট' : 'Store & Live Ad Audit'}
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? '২৪ ঘণ্টার মধ্যে ক্রিয়েটিভ ডিরেক্টর আপনার পেজ ও বিজ্ঞাপনের ভিজ্যুয়াল পর্যালোচনা করবেন।'
-                      : 'Our Creative Director personally audits your Instagram, store UI, and current creatives.'}
+                      ? '২৪ ঘণ্টার মধ্যে আমরা আপনার বর্তমান বিজ্ঞাপন ও ফেসবুক পেজ যাচাই করে কোথায় সেলস লিক হচ্ছে বের করব।'
+                      : 'Within 24 hours, our creative director reviews your live ads to pinpoint why shoppers bounce.'}
                   </p>
                 </div>
               </div>
@@ -158,12 +158,12 @@ export default function Contact({ contact }: ContactProps) {
                 </span>
                 <div>
                   <p className="text-xs font-medium text-primary-foreground">
-                    {isBn ? '৫-মিনিটের ফ্রি ভিডিও টিয়ারডাউন' : '5-Minute Custom Teardown'}
+                    {isBn ? '৫-মিনিটের ভিডিও টিয়ারডাউন' : '5-Minute Video Teardown'}
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? 'কোথায় গ্রাহক ড্রপ হচ্ছে এবং কীভাবে কনভার্শন বাড়ানো যায় তা ভিডিওতে দেখিয়ে দেওয়া হবে।'
-                      : 'We send you a custom video teardown via WhatsApp highlighting exact CAC bottlenecks.'}
+                      ? 'হোয়াটসঅ্যাপে ৫ মিনিটের একটি কাস্টম ভিডিও পাবেন, যেখানে দেখিয়ে দেওয়া হবে কোন কোন ডিজাইনে বিজ্ঞাপনের টাকা নষ্ট হচ্ছে।'
+                      : 'A private 5-minute video sent to your WhatsApp breaking down exact drop-off points.'}
                   </p>
                 </div>
               </div>
@@ -173,12 +173,12 @@ export default function Contact({ contact }: ContactProps) {
                 </span>
                 <div>
                   <p className="text-xs font-medium text-primary-foreground">
-                    {isBn ? 'টেইলার্ড স্প্রিন্ট প্রপোজাল' : 'Guaranteed Sprint Roadmap'}
+                    {isBn ? '৪৮ ঘণ্টার টেস্ট ড্রাইভ স্প্রিন্ট' : '48-Hour Sprint Delivery'}
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? 'নির্দিষ্ট ডেলিভারিবল, ৭ দিনের টাইমলাইন এবং ROI ফোকাসড বাজেট চূড়ান্ত করা হয়।'
-                      : 'Clear deliverables, transparent investment, and a 7-day sprint timeline.'}
+                      ? 'কোনো দীর্ঘ চুক্তি ছাড়া ৫টি হাই-কনভার্টিং ক্রিয়েটিভ আর ধারালো সেলস কপি সরাসরি আপনার হাতে।'
+                      : '5 conversion-ready ad creatives and punchy copy, 100% ready to launch with zero guesswork.'}
                   </p>
                 </div>
               </div>

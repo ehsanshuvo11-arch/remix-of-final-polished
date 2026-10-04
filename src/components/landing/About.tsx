@@ -14,33 +14,33 @@ export default function About({ content, stats }: AboutProps) {
   const isBn = lang === 'bn';
 
   const about = content ?? {
-    labelEn: 'Brand Philosophy',
-    labelBn: 'ব্র্যান্ড ফিলোসফি',
-    titleLine1En: 'Visual authority that',
-    titleLine1Bn: 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই',
-    titleLine2En: 'drives high conversions.',
-    titleLine2Bn: 'বিশ্বাস ও কনভার্শন বাড়ায়।',
-    p1En: 'POLISHED operates on two exclusive fronts: partnering directly with premium D2C & B2C skincare brands, and acting as the backend white-label creative engine for leading marketing agencies.',
-    p1Bn: 'POLISHED হলো প্রিমিয়াম D2C স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ড এবং মার্কেটিং এজেন্সিগুলোর জন্য একটি স্পেশালাইজড ক্রিয়েটিভ ইঞ্জিন।',
-    p2En: 'Our mission goes beyond aesthetics. We engineer high-converting visual identities and campaign assets designed to slash Customer Acquisition Cost (CAC) and maximize Return on Ad Spend (ROAS).',
-    p2Bn: 'আমাদের লক্ষ্য শুধু সুন্দর ডিজাইন নয়। আমরা এমন কনভার্শন-ফোকাসড অ্যাসেট তৈরি করি যা কাস্টমার একুইজিশন খরচ (CAC) কমায় এবং বিজ্ঞাপনের রিটার্ন (ROAS) সর্বোচ্চ করে।',
-    quoteEn: '— Our Signature: Performance-first creatives engineered to convert, scale, and dominate.',
-    quoteBn: '— আমাদের সিগনেচার: পার্ফরম্যান্স-ফার্স্ট ক্রিয়েটিভস — কনভার্ট করতে, স্কেল করতে এবং মার্কেটে আধিপত্য বিস্তার করতে।',
+    labelEn: 'The Plain Truth About Us',
+    labelBn: 'আমরা কে ও কেন আমাদের কাজ আলাদা',
+    titleLine1En: 'Ads that stop the scroll,',
+    titleLine1Bn: 'যে বিজ্ঞাপন দেখে মানুষ থামে,',
+    titleLine2En: 'and sell without excuses.',
+    titleLine2Bn: 'এবং দ্বিধা ছাড়া কেনে।',
+    p1En: 'Building a brand in Bangladesh is brutal. You formulate a great product, yet cheap Canva ads make people doubt its quality. That hurts. We started POLISHED to fix this exact injustice. We build performance creatives that show your product’s true worth—instantly.',
+    p1Bn: 'বাংলাদেশে একটা ব্র্যান্ড দাঁড় করাতে কতটা পরিশ্রম করতে হয়, তা আমরা জানি। কিন্তু দিনশেষে যখন ক্যানভা টেমপ্লেটের কারণে মানুষ প্রোডাক্টের কদর বোঝে না, তখন সবচেয়ে বেশি কষ্ট লাগে। POLISHED-এর জন্ম এই অবিচার দূর করতে। আমরা এমন পারফরম্যান্স ক্রিয়েটিভ বানাই যা আপনার ব্র্যান্ডের আসল মর্যাদা কাস্টমারের চোখে ফুটিয়ে তোলে।',
+    p2En: 'We do not sell pretty wallpaper. We take ownership of your ROAS and bottom-line revenue. Our job is simple: stop your daily ad budget drain and convince shoppers to buy at full price without begging for discounts.',
+    p2Bn: 'আমরা শুধু গ্রাফিক্স বানাই না। আমরা সরাসরি আপনার রেভিনিউ আর আরওএএস (ROAS) বাড়ানোর দায়িত্ব নিই। বিজ্ঞাপনের অপ্রয়োজনীয় ডলার অপচয় বন্ধ করা এবং কাস্টমারকে ডিসকাউন্ট ছাড়াই পূর্ণ মূল্যে অর্ডার করতে উদ্বুদ্ধ করাই আমাদের মূল কাজ।',
+    quoteEn: '— No marketing buzzwords. Pure direct-response creatives that convert.',
+    quoteBn: '— কোনো চটকদার ভনিতা নয়। খাঁটি পারফরম্যান্স ক্রিয়েটিভ যা বিক্রি বাড়ায়।',
   };
 
   const defaultStats: Stat[] = [
     { id: '1', sort_order: 1, num: '3.2x', suffix: '', label_en: 'Average ROAS Lift', label_bn: 'গড় ROAS বৃদ্ধি' },
     { id: '2', sort_order: 2, num: '30+', suffix: '', label_en: 'D2C Brand Partners', label_bn: 'ব্র্যান্ড পার্টনার' },
-    { id: '3', sort_order: 3, num: '-38%', suffix: '', label_en: 'Avg. CAC Reduction', label_bn: 'গড় CAC হ্রাস' },
-    { id: '4', sort_order: 4, num: '100%', suffix: '', label_en: 'Client Satisfaction', label_bn: 'ক্লায়েন্ট সন্তুষ্টি' },
+    { id: '3', sort_order: 3, num: '-42%', suffix: '', label_en: 'Lower Ad Spend Per Order', label_bn: 'বিজ্ঞাপন খরচ হ্রাস (CPR)' },
+    { id: '4', sort_order: 4, num: '48h', suffix: '', label_en: 'Rapid Delivery Sprint', label_bn: 'র‌্যাপিড ডেলিভারি স্প্রিন্ট' },
   ];
 
   const displayStats = stats.length > 0 ? stats : defaultStats;
 
   // About copy is intentionally locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = about.titleLine1En ?? 'Design that earns';
-  const line2 = about.titleLine2En ?? 'trust at first glance.';
+  const line1 = about.titleLine1En ?? 'Ads that stop the scroll,';
+  const line2 = about.titleLine2En ?? 'and sell without excuses.';
 
   return (
     <section id="about" className="py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
@@ -49,11 +49,11 @@ export default function About({ content, stats }: AboutProps) {
           <MotionReveal>
             {isBn ? (
               <p lang="bn" className="text-[14px] md:text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                ব্র্যান্ড ফিলোসফি
+                {about.labelBn ?? 'আমরা কে ও কেন আমাদের কাজ আলাদা'}
               </p>
             ) : (
               <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-                {about.labelEn ?? 'About Polished'}
+                {about.labelEn ?? 'The Plain Truth About Us'}
               </p>
             )}
           </MotionReveal>
@@ -61,10 +61,10 @@ export default function About({ content, stats }: AboutProps) {
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>
-                  {(about.titleLine1Bn ?? 'এমন ভিজ্যুয়াল, যা প্রথম দেখাতেই')}
+                  {(about.titleLine1Bn ?? 'যে বিজ্ঞাপন দেখে মানুষ থামে,')}
                 </RevealText>
                 <RevealText as="span" className="block italic" stagger={0} delay={0}>
-                  {(about.titleLine2Bn ?? 'বিশ্বাস জন্মায়।')}
+                  {(about.titleLine2Bn ?? 'এবং দ্বিধা ছাড়া কেনে।')}
                 </RevealText>
               </>
             ) : (
@@ -76,9 +76,7 @@ export default function About({ content, stats }: AboutProps) {
           </h2>
           <MotionReveal delay={0.3}>
             <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-muted-foreground mb-5">
-              {isBn ? (
-                <><span lang="en">POLISHED</span>{' একটি প্রিমিয়াম ভিজ্যুয়াল আইডেন্টিটি পার্টনার যা D2C স্কিনকেয়ার ও সেলফ-কেয়ার ব্র্যান্ড এবং ই-কমার্স মার্কেটিং এজেন্সিগুলোর জন্য হোয়াইট-লেবেল ক্রিয়েটিভ ইঞ্জিন হিসেবে কাজ করে।'}</>
-              ) : about.p1En}
+              {isBn ? about.p1Bn : about.p1En}
             </p>
           </MotionReveal>
           <MotionReveal delay={0.4}>
@@ -89,11 +87,11 @@ export default function About({ content, stats }: AboutProps) {
           <MotionReveal delay={0.5}>
             {isBn ? (
               <p lang="bn" className="text-[14px] md:text-[15px] leading-[1.8] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                — আমাদের সিগনেচার: পার্ফরম্যান্স-ফার্স্ট ক্রিয়েটিভস — কনভার্ট করতে, স্কেল করতে।
+                {about.quoteBn ?? '— কোনো চটকদার ভনিতা নয়। খাঁটি পারফরম্যান্স ক্রিয়েটিভ যা বিক্রি বাড়ায়।'}
               </p>
             ) : (
               <p lang="en" style={enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-primary italic">
-                {about.quoteEn ?? '— Identifying a gap: professional Bangla visual design done right.'}
+                {about.quoteEn ?? '— No marketing buzzwords. Pure direct-response creatives that convert.'}
               </p>
             )}
           </MotionReveal>
