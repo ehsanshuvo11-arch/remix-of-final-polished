@@ -1,21 +1,33 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  X, 
+  ChevronLeft, 
+  ChevronRight, 
+  TrendingUp, 
+  Sparkles, 
+  ArrowRight, 
+  Eye, 
+  ShieldCheck, 
+  Clock, 
+  Zap, 
+  Check, 
+  Layers, 
+  ChevronDown,
+  MessageCircle,
+  ExternalLink
+} from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
-import MagneticButton from '@/components/landing/MagneticButton';
-import PremiumSkeleton from '@/components/landing/Skeleton';
+import PremiumSkeleton, { PortfolioSkeleton } from '@/components/landing/Skeleton';
 import PremiumImage from '@/components/landing/PremiumImage';
 import { buildSrcSet, resolveStorageUrl } from '@/lib/image';
-
-
-
+import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useUILabels } from '@/hooks/use-site-content';
-import { PortfolioSkeleton } from '@/components/landing/Skeleton';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
@@ -23,9 +35,37 @@ interface PortfolioProps {
   isLoading?: boolean;
 }
 
-export default function Portfolio({ projects, content, isLoading = false }: PortfolioProps) {
+const CATEGORIES = [
+  { id: 'all', labelEn: 'All Works', labelBn: 'সব কাজ' },
+  { id: 'skincare', labelEn: 'Skincare & D2C', labelBn: 'স্কিনকেয়ার ও ডি২সি' },
+  { id: 'ads', labelEn: 'Meta Performance Ads', labelBn: 'মেটা অ্যাড ক্রিয়েটিভ' },
+  { id: 'perfume', labelEn: 'Luxury Fragrance', labelBn: 'লাক্সারি পারফিউম' },
+  { id: 'branding', labelEn: 'Packaging & Identity', labelBn: 'প্যাকেজিং ও ব্র্যান্ডিং' },
+] as const;
 
-  const { t, lang } = useLanguage();
+function matchesCategory(project: PortfolioProject, catId: string): boolean {
+  if (catId === 'all') return true;
+  const en = (project.category_en || '').toLowerCase();
+  const bn = (project.category_bn || '').toLowerCase();
+  const title = (project.title_en || '').toLowerCase();
+  
+  if (catId === 'skincare') {
+    return en.includes('skincare') || bn.includes('স্কিনকেয়ার') || en.includes('serum') || en.includes('elixir') || en.includes('masque') || en.includes('glow') || title.includes('lumin') || title.includes('aurora') || title.includes('cleanser');
+  }
+  if (catId === 'ads') {
+    return en.includes('ad') || en.includes('performance') || en.includes('campaign') || bn.includes('অ্যাড') || en.includes('sprint') || en.includes('funnel');
+  }
+  if (catId === 'perfume') {
+    return en.includes('perfume') || en.includes('parfum') || bn.includes('পারফিউম') || en.includes('fragrance');
+  }
+  if (catId === 'branding') {
+    return en.includes('packaging') || en.includes('identity') || bn.includes('প্যাকেজিং') || bn.includes('ব্র্যান্ডিং') || en.includes('brand');
+  }
+  return true;
+}
+
+export default function Portfolio({ projects, content, isLoading = false }: PortfolioProps) {
+  const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
   const defaultProjects: PortfolioProject[] = [
@@ -41,6 +81,10 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       hook_bn: '৭ দিনে মেটা অ্যাডের CPR ৪৪% হ্রাস। সুইস কোয়াইট লাক্সারি নান্দনিকতার সাথে পরিশীলিত বাংলা সেলস কপি যা স্ক্রলারদের ক্রেতায় রূপান্তর করে।',
       case_study_en: 'Challenge: The client was burning ৳1.2L/month with a CPR of ৳185 on generic Canva banners.\n\nStrategy: We engineered 5 high-converting ad variations using our "Premium Bengali" methodology. Replaced broken English with culturally resonant, persuasive Bengali copywriting.\n\nOutcome: CPR dropped to ৳98 within 7 days, ROAS jumped from 1.6x to 3.8x, and COD delivery confirmation rate increased by 28%.',
       case_study_bn: 'চ্যালেঞ্জ: সাধারণ ক্যানভা ডিজাইনের কারণে ক্লায়েন্টের প্রতি অর্ডারে খরচ (CPR) হচ্ছিল ১৮৫ টাকা।\n\nস্ট্র্যাটেজি: আমরা তৈরি করি ৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ। দুর্বল ইংরেজির বদলে যোগ করি মনস্তাত্ত্বিক বাংলা সেলস কপি।\n\nফলাফল: মাত্র ৭ দিনে CPR নেমে আসে ৯৮ টাকায়, ROAS বৃদ্ধি পায় ৩.৮ গুণ এবং ক্যাশ-অন-ডেলিভারি কনফার্মেশন রেট ২৮% বাড়ে।',
+      roas_lift: '3.8x ROAS',
+      cpr_reduction: '-44% CPR',
+      turnaround: '48h Sprint',
+      revenue_generated: '৳4.2L / mo',
       pdf_url_en: '',
       pdf_url_bn: '',
     },
@@ -56,6 +100,10 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       hook_bn: 'ক্যাশ অন ডেলিভারি (COD) গ্রাহকদের সংশয় দূর করতে বিশেষ ভিজ্যুয়াল স্ট্র্যাটেজি। উপাদান ও ফলাফলের স্বচ্ছ উপস্থাপনা।',
       case_study_en: 'Challenge: High cart abandonment due to customer trust deficit in a crowded serum market.\n\nStrategy: Built trust-forward storefront assets and comparison carousels highlighting verified botanical actives with zero hype.\n\nOutcome: Achieved 4.1x ROAS on cold traffic and generated ৳4.8L revenue in the first launch week.',
       case_study_bn: 'চ্যালেঞ্জ: সিরামের বাজারে গ্রাহকের বিশ্বাসের অভাবে হাই কার্ট এব্যান্ডনমেন্ট।\n\nস্ট্র্যাটেজি: উপাদানের কার্যকারিতা ও স্বচ্ছতা ফুটিয়ে তুলে ট্রাস্ট-বিল্ডিং ভিজ্যুয়াল ও কম্প্যারিসন ক্যারোসেল ডিজাইন।\n\nফলাফল: প্রথম সপ্তাহেই ৪.১ গুণ ROAS এবং ৪.৮ লাখ টাকার সেলস জেনারেট।',
+      roas_lift: '4.1x ROAS',
+      cpr_reduction: '-32% Drop',
+      turnaround: '7-Day Launch',
+      revenue_generated: '৳4.8L Launch',
       pdf_url_en: '',
       pdf_url_bn: '',
     },
@@ -71,132 +119,370 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       hook_bn: 'সুগন্ধিকে দৈনন্দিন সেলফ-কেয়ার রিচুয়াল হিসেবে উপস্থাপন করে ২.৮ গুণ বেশি অ্যাভারেজ অর্ডার ভ্যালু (AOV) অর্জন।',
       case_study_en: 'Challenge: Competing against cheap imported dupes required positioning as an authentic artisanal luxury.\n\nStrategy: Classic Cormorant Garamond typography paired with sensory dark-navy and warm-amber lighting to create undeniable prestige.\n\nOutcome: Sold out 600 limited bottles with zero discounts at an average ticket price of ৳2,450.',
       case_study_bn: 'চ্যালেঞ্জ: সস্তা ইমপোর্টেড পারফিউমের ভিড়ে একটি দেশীয় ব্র্যান্ডকে প্রিমিয়াম আর্ট হিসেবে তুলে ধরা।\n\nস্ট্র্যাটেজি: ক্ল্যাসিক টাইপোগ্রাফি ও ডার্ক-নেভি অ্যাম্বার লাইটিং দিয়ে আনকম্প্রোমাইজিং লাক্সারি লুক তৈরি।\n\nফলাফল: কোনো ছাড় ছাড়াই গড়ে ২,৪৫০ টাকা মূল্যে ৬০০ বোতলের লিমিটেড স্টক মাত্র ১২ দিনে স্টক-আউট।',
+      roas_lift: '2.8x AOV',
+      cpr_reduction: 'Zero Discounts',
+      turnaround: '12 Days Sold Out',
+      revenue_generated: '600 Bottles',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '4',
+      sort_order: 4,
+      title_en: 'VETIVÈRE Swiss Clarifying Masque — Clean Packaging & Meta Ads',
+      title_bn: 'ভেতিভ্যার সুইস ক্ল্যারিফাইং মাস্ক — লাক্সারি প্যাকেজিং ও মেটা অ্যাডস',
+      category_en: 'Premium Skincare & Packaging',
+      category_bn: 'প্রিমিয়াম স্কিনকেয়ার ও প্যাকেজিং',
+      image_url: '/portfolio/velvet-clay.jpg',
+      hook_en: 'Repositioning local clay masks into a high-status Swiss botanical indulgence. Custom minimalist frosted amber glass jar architecture paired with high-converting Meta Story reels.',
+      hook_bn: 'সাধারণ ক্লে মাস্ককে সুইস বোটানিক্যাল লাক্সারি ট্রিটমেন্ট হিসেবে রি-ব্র্যান্ডিং। মিনিমালিস্ট ফ্রস্টেড অ্যাম্বার প্যাকেজিং ও স্টোরি রিলসের মাধ্যমে ৩.৪x ROAS অর্জন।',
+      case_study_en: 'Challenge: Over-saturated face pack market forcing competitors into cut-throat price wars under ৳350.\n\nStrategy: Positioned as an alpine botanical indulgence at ৳1,250 with minimalist gold foil serif labeling and tactile limestone macro product shots.\n\nOutcome: Achieved 3.4x blended ROAS, with repeat order rate jumping by 68% in 30 days.',
+      case_study_bn: 'চ্যালেঞ্জ: ৩৫০ টাকার নিচে সস্তা ফেসপ্যাকের ভিড়ে একটি দেশীয় ব্র্যান্ডকে প্রিমিয়াম সেগমেন্টে তুলে ধরা।\n\nস্ট্র্যাটেজি: মিনিমালিস্ট গোল্ড ফয়েল ও আলপাইন বোটানিক্যাল কনসেপ্ট দিয়ে ১,২৫০ টাকা মূল্যে রিব্র্যান্ডিং।\n\nফলাফল: ৩.৪ গুণ ROAS এবং প্রথম মাসেই ৬৮% রিপিট কাস্টমার পারচেজ নিশ্চিত।',
+      roas_lift: '3.4x ROAS',
+      cpr_reduction: '+68% Repeat',
+      turnaround: '48h Sprint',
+      revenue_generated: '৳1.8L Profit',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '5',
+      sort_order: 5,
+      title_en: 'VALAISON Intense Renewal Elixir — High-AOV Night Serum',
+      title_bn: 'ভালেসন ইনটেন্স রিনিউয়াল এলিক্সির — হাই-AOV নাইট সিরাম',
+      category_en: 'Meta Performance Ads & Funnel',
+      category_bn: 'মেটা পারফরম্যান্স অ্যাডস ও ফানেল',
+      image_url: '/portfolio/nocturne-repair.jpg',
+      hook_en: 'Deep cobalt visual hierarchy engineered to eliminate COD skepticism. Transparent botanical active breakdown that lifted landing page conversions by 54%.',
+      hook_bn: 'ডিপ কোবাল্ট ভিজ্যুয়াল আর্কিটেকচার যা ক্যাশ-অন-ডেলিভারি গ্রাহকদের সকল দ্বিধা দূর করে। ল্যান্ডিং পেজে কনভার্শন রেট ৫৪% বৃদ্ধি।',
+      case_study_en: 'Challenge: High advertising burn rate on generic broad audience ads without clear positioning.\n\nStrategy: Crafted 6 high-conversion angle creatives contrasting botanical science against chemical harshness in elegant Bengali copy.\n\nOutcome: CPR reduced by 39%, ROAS surged to 4.4x, and monthly run-rate scaled to ৳3.8L.',
+      case_study_bn: 'চ্যালেঞ্জ: টার্গেটিং সঠিক থাকলেও জেনেরিক ক্রিয়েটিভের কারণে বিজ্ঞাপনের খরচ লাগামহীনভাবে বাড়ছিল।\n\nস্ট্র্যাটেজি: উপাদান বিজ্ঞান ও প্রাকৃতিক যত্নের তুলনামূলক ৬টি হাই-কনভার্টিং বাংলা অ্যাড অ্যাঙ্গেল তৈরি।\n\nফলাফল: CPR ৩৯% কমে যায় এবং মাত্র ২ সপ্তাহে ROAS ৪.৪ গুণে পৌঁছায়।',
+      roas_lift: '4.4x ROAS',
+      cpr_reduction: '-39% CPR',
+      turnaround: '48h Delivery',
+      revenue_generated: '৳3.8L / mo',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '6',
+      sort_order: 6,
+      title_en: 'AURA Botanicals — Gentle Saffron Cleansing Oil',
+      title_bn: 'অরা বোটানিক্যালস — জেন্টল স্যাফরন ক্লেনজিং অয়েল',
+      category_en: 'D2C Skincare & Brand Identity',
+      category_bn: 'ডি২সি স্কিনকেয়ার ও ব্র্যান্ড আইডেন্টিটি',
+      image_url: '/portfolio/saffron-cleanser.jpg',
+      hook_en: 'Organic sensorial storytelling. Replaced discount banners with raw ingredient provenance, allowing the client to sell at a 40% premium over local competitors.',
+      hook_bn: 'ডিসকাউন্ট-নির্ভরতা ভেঙে উপাদানের স্বচ্ছতা ও আভিজাত্য তুলে ধরা। প্রতিযোগীদের চেয়ে ৪০% বেশি দামে কোনো ছাড় ছাড়াই বিক্রি নিশ্চিত।',
+      case_study_en: 'Challenge: Price-sensitive customers hesitating to spend on an oil-based cleanser in humid weather.\n\nStrategy: Focused on sensory double-cleansing rituals with travertine textures and calming botanical typography.\n\nOutcome: Delivered 3.1x ROAS on cold audiences and ৳3.2L first-run revenue with zero markdowns.',
+      case_study_bn: 'চ্যালেঞ্জ: আর্দ্র আবহাওয়ায় অয়েল-বেসড ক্লিনজারের উপকারিতা বুঝিয়ে ক্রেতাকে কনভিন্স করা।\n\nস্ট্র্যাটেজি: ট্রাভার্টাইন টেক্সচার ও শান্ত টাইপোগ্রাফির মাধ্যমে প্রিমিয়াম সেলফ-কেয়ার রিচুয়াল প্রতিষ্ঠা।\n\nফলাফল: কোল্ড অডিয়েন্সে ৩.১x ROAS এবং কোনো ছাড় ছাড়াই ৩.২ লাখ টাকার বিক্রি।',
+      roas_lift: '3.1x ROAS',
+      cpr_reduction: '+40% Margin',
+      turnaround: '5-Ad Sprint',
+      revenue_generated: '৳3.2L Revenue',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '7',
+      sort_order: 7,
+      title_en: 'SÉRUM N°7 — Active Retinol Performance Cutdowns',
+      title_bn: 'সিরাম নং ৭ — অ্যাক্টিভ রেটিনল মেটা পারফরম্যান্স অ্যাডস',
+      category_en: 'Meta Ad Creatives & Video Ads',
+      category_bn: 'মেটা অ্যাড ক্রিয়েটিভ ও ভিডিও অ্যাডস',
+      image_url: '/portfolio/aurora-serum.jpg',
+      hook_en: '5 scroll-stopping 9:16 motion variations addressing dermatological pain points in conversational Bengali copy. Meta ad spend scaled from ৳20K to ৳2L/month profitably.',
+      hook_bn: 'স্কিনের সংবেদনশীলতা নিয়ে মনস্তাত্ত্বিক ৫টি বাংলা মোশন কাটডাউন। বিজ্ঞাপন খরচ ২০ হাজার থেকে লাভজনকভাবে মাসে ২ লাখে স্কেল।',
+      case_study_en: 'Challenge: Customer fear of skin irritation from active retinol causing severe cart abandonment.\n\nStrategy: Built high-trust step-by-step application carousels with dermatological assurance in native Bengali.\n\nOutcome: CPR slashed by 48%, scaling ad spend profitably by 10x within 45 days.',
+      case_study_bn: 'চ্যালেঞ্জ: রেটিনল ব্যবহারে স্কিন ইরিটেশনের ভয়ে অধিকাংশ ভিজিটর কার্ট এব্যান্ডন করছিল।\n\nস্ট্র্যাটেজি: সহজ বাংলা ব্যবহারের নিয়ম ও ডার্মাটোলজিক্যাল ট্রাস্ট ব্যাজ দিয়ে ৫টি হাই-কনভার্টিং ক্রিয়েটিভ।\n\nফলাফল: প্রতি অর্ডারে খরচ (CPR) ৪৮% হ্রাস এবং বিজ্ঞাপনে স্কেলিং ১০ গুণ বৃদ্ধি।',
+      roas_lift: '3.9x ROAS',
+      cpr_reduction: '-48% CPR',
+      turnaround: '48h Rapid',
+      revenue_generated: '10x Scaled Spend',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '8',
+      sort_order: 8,
+      title_en: 'ÉLIXIR NOIR — Artisanal Oud Extrait de Parfum',
+      title_bn: 'এলিক্সির নোয়ার — আর্টিসানাল উদ পারফিউম লঞ্চ',
+      category_en: 'Haute Parfumerie & Luxury Positioning',
+      category_bn: 'লাক্সারি পারফিউম ও প্রেস্টিজ পজিশনিং',
+      image_url: '/portfolio/aura-perfume.jpg',
+      hook_en: 'Crafting sensory prestige for cold Facebook traffic. Elegant gold-embossed type and tactile textures drove a record-breaking 72-hour launch sell-out.',
+      hook_bn: 'কোল্ড ফেসবুক ট্রাফিকের জন্য প্রেস্টিজ ব্র্যান্ডিং। মাত্র ৭২ ঘণ্টার লঞ্চ ক্যাম্পেইনে সম্পূর্ণ স্টক আউট।',
+      case_study_en: 'Challenge: Selling premium artisanal fragrance online without allowing the buyer to smell the product.\n\nStrategy: Crafted evocative, poetic Bengali olfactory descriptions combined with cinematic luxury bottle lighting.\n\nOutcome: Achieved 5.2x launch-day ROAS, completely selling out the initial 400 flacons in 72 hours.',
+      case_study_bn: 'চ্যালেঞ্জ: ঘ্রাণ নেওয়ার সুযোগ ছাড়া অনলাইনে ২,০০০ টাকার ওপর লাক্সারি পারফিউম সেল করা।\n\nস্ট্র্যাটেজি: সংবেদনশীল বাংলা অনুভূতি প্রকাশ এবং রাজকীয় অ্যাম্বার আলোর শৈল্পিক সমন্বয়।\n\nফলাফল: ৫.২x রেকর্ড ROAS এবং মাত্র ৭২ ঘণ্টায় ৪০০ বোতলের স্টক সমাপ্ত।',
+      roas_lift: '5.2x ROAS',
+      cpr_reduction: '72h Sold Out',
+      turnaround: 'Full Campaign',
+      revenue_generated: '400 Flacons',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '9',
+      sort_order: 9,
+      title_en: 'L’HERBIER — Botanical Body Nectar & Storefront',
+      title_bn: 'লার্বিয়ে — বোটানিক্যাল বডি নেকটার ও স্টোরফ্রন্ট আর্কিটেকচার',
+      category_en: 'Storefront UI & Brand Packaging',
+      category_bn: 'স্টোরফ্রন্ট UI ও ব্র্যান্ড প্যাকেজিং',
+      image_url: '/portfolio/velvet-clay.jpg',
+      hook_en: 'Harmonizing storefront UI with high-converting Meta feed statics. Reduced checkout drop-off by 38% through transparent ingredient comparison tables.',
+      hook_bn: 'স্টোরফ্রন্ট ডিজাইন ও মেটা ফিড স্ট্যাটিক্সের নিখুঁত সামঞ্জস্য। চেকআউট ড্রপ-অফ ৩৮% হ্রাস।',
+      case_study_en: 'Challenge: Disconnect between premium Instagram ads and a clunky, cheap Shopify theme caused bounce rates of over 75%.\n\nStrategy: Designed an integrated visual design system spanning Meta Ads, product page PDPs, and mobile checkout reassurance.\n\nOutcome: Bounce rate plunged to 32%, lifting overall store revenue to ৳6.4L monthly run-rate.',
+      case_study_bn: 'চ্যালেঞ্জ: প্রিমিয়াম অ্যাডের পর সাধারণ স্টোরে এসে কাস্টমার বাউন্স রেট ছিল ৭৫% এর বেশি।\n\nস্ট্র্যাটেজি: বিজ্ঞাপন থেকে শুরু করে চেকআউট পর্যন্ত নিরবচ্ছিন্ন সুইস কোয়াইট লাক্সারি ইউজার জার্নি তৈরি।\n\nফলাফল: বাউন্স রেট ৩২% এ নেমে আসে এবং মাসিক সেলস ৬.৪ লাখে উন্নীত হয়।',
+      roas_lift: '3.3x ROAS',
+      cpr_reduction: '-38% Bounce',
+      turnaround: 'Design Retainer',
+      revenue_generated: '৳6.4L / mo',
+      pdf_url_en: '',
+      pdf_url_bn: '',
+    },
+    {
+      id: '10',
+      sort_order: 10,
+      title_en: 'AURA Céleste — Radiance Shield SPF 50+',
+      title_bn: 'অরা সেলেস্ত — রেডিয়েন্স শিল্ড সানস্ক্রিন ক্যাম্পেইন',
+      category_en: 'High-Converting Meta Creative Sprint',
+      category_bn: 'হাই-কনভার্টিং মেটা ক্রিয়েটিভ স্প্রিন্ট',
+      image_url: '/portfolio/saffron-cleanser.jpg',
+      hook_en: 'Overcoming white-cast objections with high-trust texture macros. Tested against Canva competitor ads; achieved 2.4x higher click-to-purchase rate.',
+      hook_bn: 'সানস্ক্রিনের হোয়াইট কাস্ট সংশয় দূর করতে টেক্সচার ও মেকআপ ফ্রেন্ডলিনেস হাইলাইট। ক্যানভা অ্যাডের তুলনায় ২.৪ গুণ বেশি পারচেজ কনভার্শন রেট।',
+      case_study_en: 'Challenge: High consumer skepticism in Bangladesh regarding sunscreen stickiness and white cast.\n\nStrategy: Produced 5 macro-texture hero statics proving zero white cast with clean, scientific elegance.\n\nOutcome: Click-to-purchase rate surged 2.4x, driving a 3.7x ROAS across cold Meta audiences.',
+      case_study_bn: 'চ্যালেঞ্জ: সাধারণ সানস্ক্রিনে মুখ সাদা বা তেলতেলে হয়ে যাওয়ার ভয় ছিল প্রধান বাধা।\n\nস্ট্র্যাটেজি: হাই-রেজোলিউশন ম্যাক্রো শট এবং স্পষ্ট বাংলা ব্যবহারের মাধ্যমে বাস্তব স্কিন ফিনিশ প্রদর্শন।\n\nফলাফল: ২.৪ গুণ বেশি ক্রয় আগ্রহ এবং ৩.৭ গুণ রিটার্ন অন অ্যাড স্পেন্ড (ROAS)।',
+      roas_lift: '3.7x ROAS',
+      cpr_reduction: '2.4x Purchases',
+      turnaround: '48h Rapid',
+      revenue_generated: '৳2.9L / mo',
       pdf_url_en: '',
       pdf_url_bn: '',
     },
   ];
 
-  const displayProjects = projects.length >= 3 
-    ? projects 
-    : [...projects, ...defaultProjects.slice(projects.length)];
+  // Filter out any empty projects without images to prevent broken skeleton cards
+  const validProjects = projects.filter((p) => {
+    const hasImg = typeof p.image_url === 'string' && p.image_url.trim().length > 0;
+    const hasMock = typeof p.mockup_url === 'string' && p.mockup_url.trim().length > 0;
+    const hasMockList = Array.isArray(p.mockup_urls) && p.mockup_urls.length > 0;
+    return hasImg || hasMock || hasMockList;
+  });
 
-  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  // Combine real database projects with default signature projects
+  const displayProjects = validProjects.length >= 8 
+    ? validProjects 
+    : [...validProjects, ...defaultProjects.slice(validProjects.length)];
+
+  // Active filters and views
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [viewMode, setViewMode] = useState<'visual' | 'impact'>('visual');
+  const [visibleCount, setVisibleCount] = useState<number>(4);
+  const [selectedModalProject, setSelectedModalProject] = useState<PortfolioProject | null>(null);
+
+  // Filter matching projects
+  const filteredProjects = useMemo(() => {
+    return displayProjects.filter((p) => matchesCategory(p, selectedCategory));
+  }, [displayProjects, selectedCategory]);
+
+  const visibleProjects = useMemo(() => {
+    return filteredProjects.slice(0, visibleCount);
+  }, [filteredProjects, visibleCount]);
+
+  const hasMore = visibleCount < filteredProjects.length;
+  const remainingCount = filteredProjects.length - visibleCount;
+
+  const handleCategoryChange = (catId: string) => {
+    setSelectedCategory(catId);
+    setVisibleCount(4); // Reset visible count on filter change
+  };
+
+  const loadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 4, filteredProjects.length));
+  };
 
   return (
-    <section id="work" className="py-14 md:py-32 px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="work" className="py-14 md:py-28 px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto scroll-mt-14">
+      {/* ── Section Header ── */}
       <MotionReveal>
-        {isBn ? (
-          <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-            আমাদের ক্লায়েন্টদের জন্য করা কাজ ও কেস স্টাডি
-          </p>
-        ) : (
-          <p lang="en" style={{ fontFamily: "'DM Sans', sans-serif" }} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {content?.labelEn ?? 'Client Case Studies & Proven Results'}
-          </p>
-        )}
-      </MotionReveal>
-      <MotionReveal delay={0.1}>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-7">
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
-            {isBn ? (
-              <WordReveal delay={0.1}>বাস্তব ব্র্যান্ডের রূপান্তর ও সেলস গ্রোথ।</WordReveal>
-            ) : (
-              <>
-                <WordReveal delay={0.1}>Transforming Brands.</WordReveal>{' '}
-                <em className="italic text-accent">
-                  <WordReveal delay={0.25}>Proven Results.</WordReveal>
-                </em>
-              </>
-            )}
-          </h2>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 md:mb-8">
+          <div>
+            <p 
+              lang={isBn ? 'bn' : 'en'} 
+              className={`text-accent mb-3 font-medium uppercase tracking-[2.5px] ${isBn ? 'text-[13px] tracking-normal font-semibold' : 'text-[11px]'}`} 
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
+            >
+              {isBn ? 'ক্লায়েন্ট কেস স্টাডি ও ভেরিফায়েড রেজাল্ট' : (content?.labelEn ?? 'Client Case Studies & Verified Growth')}
+            </p>
+            <h2 
+              lang={isBn ? 'bn' : 'en'} 
+              className={`font-heading font-normal text-primary leading-[1.15] ${
+                isBn ? 'text-[clamp(24px,6vw,34px)] md:text-[clamp(32px,4vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,56px)]'
+              }`}
+            >
+              {isBn ? (
+                <>বাস্তব ব্র্যান্ডের রূপান্তর ও <em className="italic text-accent">সেলস গ্রোথ।</em></>
+              ) : (
+                <>
+                  <WordReveal delay={0.1}>Transforming Brands.</WordReveal>{' '}
+                  <em className="italic text-accent">
+                    <WordReveal delay={0.25}>Proven Results.</WordReveal>
+                  </em>
+                </>
+              )}
+            </h2>
+          </div>
 
-          {/* Quick Counter for Mobile */}
-          <div className="flex md:hidden items-center gap-2 self-start">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] uppercase font-mono tracking-[2px] bg-accent/10 border border-accent/20 text-accent">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              {displayProjects.length} {isBn ? 'টি সিগনেচার প্রজেক্ট' : 'Curated Works'}
-            </span>
+          {/* ── View Mode Switcher: Visual Mode vs Impact Mode ── */}
+          <div className="flex items-center gap-1.5 p-1 rounded-full bg-primary/[0.06] border border-primary/10 backdrop-blur-sm self-start md:self-end shadow-sm">
+            <button
+              type="button"
+              onClick={() => setViewMode('visual')}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                viewMode === 'visual'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-primary/70 hover:text-primary hover:bg-primary/5'
+              }`}
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              <span>{isBn ? '✨ ভিজ্যুয়াল ভিউ' : 'Visual Mode'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setViewMode('impact')}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                viewMode === 'impact'
+                  ? 'bg-accent text-white shadow-sm'
+                  : 'text-primary/70 hover:text-primary hover:bg-primary/5'
+              }`}
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>{isBn ? '📈 রেজাল্ট ও ROAS' : 'Impact & ROAS'}</span>
+            </button>
           </div>
         </div>
       </MotionReveal>
 
-      <AnimatePresence mode="wait" initial={false}>
-        {isLoading ? (
-          <m.div
-            key="portfolio-skeleton"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <PortfolioSkeleton />
-          </m.div>
-        ) : (
-          <m.div
-            key={`portfolio-list-${isBn ? 'bn' : 'en'}`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div>
-              <div 
-                className="flex md:flex-col overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-5 md:gap-24 items-stretch no-scrollbar -mx-6 px-6 md:mx-0 md:px-0 pb-4 md:pb-0"
-                onScroll={(e) => {
-                  const target = e.currentTarget;
-                  const scrollLeft = target.scrollLeft;
-                  const cardWidth = target.offsetWidth * 0.85;
-                  const index = Math.round(scrollLeft / cardWidth);
-                  setActiveProjectIndex(Math.min(Math.max(0, index), displayProjects.length - 1));
-                }}
-              >
-                {displayProjects.map((project, i) => (
-                  <div key={project.id} className="w-[88vw] max-w-[340px] shrink-0 snap-center md:w-auto md:shrink md:snap-align-none">
-                    <ProjectCard project={project} index={i} isBn={isBn} totalCount={displayProjects.length} />
-                  </div>
-                ))}
-              </div>
+      {/* ── Category Filter Pills Bar (Mobile Swipeable) ── */}
+      <MotionReveal delay={0.15}>
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 mb-8 md:mb-12 -mx-4 px-4 sm:mx-0 sm:px-0">
+          {CATEGORIES.map((cat) => {
+            const active = selectedCategory === cat.id;
+            const count = cat.id === 'all' 
+              ? displayProjects.length 
+              : displayProjects.filter((p) => matchesCategory(p, cat.id)).length;
 
-              {/* Mobile pagination dots and swipe hint */}
-              <div className="flex md:hidden flex-col items-center gap-2 mt-4">
-                <div className="flex items-center gap-1.5">
-                  {displayProjects.map((_, dotIdx) => (
-                    <span
-                      key={dotIdx}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        activeProjectIndex === dotIdx ? 'w-5 bg-accent' : 'w-1.5 bg-primary/20'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-[11px] font-mono text-muted-foreground/70">
-                  {isBn ? '← সোয়াইপ করে অন্যান্য কাজ দেখুন →' : '← Swipe to explore cases →'}
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => handleCategoryChange(cat.id)}
+                className={`relative shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1.5 cursor-pointer select-none ${
+                  active
+                    ? 'bg-primary text-white font-semibold shadow-md'
+                    : 'bg-white/80 text-primary/70 border border-primary/10 hover:border-primary/30 hover:bg-white'
+                }`}
+                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+              >
+                <span>{isBn ? cat.labelBn : cat.labelEn}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  active ? 'bg-white/20 text-white' : 'bg-primary/5 text-primary/60'
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </MotionReveal>
+
+      {/* ── Projects Grid ── */}
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <PortfolioSkeleton />
+        ) : (
+          <div className="space-y-12 md:space-y-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-stretch">
+              {visibleProjects.map((project, idx) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={idx}
+                  isBn={isBn}
+                  viewMode={viewMode}
+                  onOpenCaseStudy={() => setSelectedModalProject(project)}
+                />
+              ))}
+            </div>
+
+            {/* ── Progressive "Load More" Button ── */}
+            {hasMore ? (
+              <div className="flex flex-col items-center justify-center pt-4 pb-2">
+                <button
+                  type="button"
+                  onClick={loadMore}
+                  className="group px-7 py-3.5 rounded-full bg-white border border-primary/20 text-primary hover:border-accent hover:text-accent font-semibold text-xs md:text-sm tracking-wide shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2.5 active:scale-95 cursor-pointer"
+                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                >
+                  <Layers className="w-4 h-4 text-accent transition-transform duration-300 group-hover:rotate-12" />
+                  <span>
+                    {isBn
+                      ? `আরও ${remainingCount}টি সিগনেচার প্রজেক্ট দেখুন`
+                      : `Load ${remainingCount} More Featured Works`}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5" />
+                </button>
+                <p className="text-[11px] text-muted-foreground/70 mt-2.5 font-mono">
+                  {isBn 
+                    ? `(মোট ${filteredProjects.length}টির মধ্যে ${visibleProjects.length}টি প্রদর্শিত)` 
+                    : `Showing ${visibleProjects.length} of ${filteredProjects.length} curated works`}
+                </p>
+              </div>
+            ) : filteredProjects.length > 4 ? (
+              <div className="text-center pt-4">
+                <span className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground/70">
+                  <Check className="w-3.5 h-3.5 text-accent" />
+                  {isBn ? 'এই ক্যাটাগরির সমস্ত কাজ প্রদর্শিত হয়েছে' : 'All works in this category displayed'}
                 </span>
               </div>
-            </div>
-          </m.div>
+            ) : null}
+          </div>
         )}
       </AnimatePresence>
 
-
+      {/* ── Slide-up Case Study Bottom Sheet / Modal Drawer ── */}
+      {selectedModalProject && (
+        <CaseStudyDrawer
+          project={selectedModalProject}
+          isBn={isBn}
+          onClose={() => setSelectedModalProject(null)}
+        />
+      )}
     </section>
   );
 }
 
-function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioProject; index: number; isBn: boolean; totalCount?: number }) {
-  const { data: labels } = useUILabels();
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isFirst = index === 0;
+/* ─────────────────────────────────────────────────────────────────────────────
+   Individual Project Card (Optimized for both Visual & Impact modes)
+───────────────────────────────────────────────────────────────────────────── */
 
-  const [imageExpanded, setImageExpanded] = useState(false);
-  const [caseStudyOpen, setCaseStudyOpen] = useState(false);
+function ProjectCard({
+  project,
+  index,
+  isBn,
+  viewMode,
+  onOpenCaseStudy,
+}: {
+  project: PortfolioProject;
+  index: number;
+  isBn: boolean;
+  viewMode: 'visual' | 'impact';
+  onOpenCaseStudy: () => void;
+}) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-
-  // Per-case-study local language override. Initializes from the global locale
-  // but can be toggled independently — only this card's content switches.
-  const [caseStudyLang, setCaseStudyLang] = useState<'en' | 'bn'>(isBn ? 'bn' : 'en');
-  const csIsBn = caseStudyLang === 'bn';
 
   const mockupUrls: unknown[] = project.mockup_url_data?.length
     ? project.mockup_url_data
@@ -205,383 +491,417 @@ function ProjectCard({ project, index, isBn, totalCount }: { project: PortfolioP
       : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  // Locale-aware field mapping with English fallback when BN translation missing.
-  // Card chrome (title, category, hook) follows the global locale; the case
-  // study body + PDF follow the local micro-toggle.
   const pick = (bn: string | null | undefined, en: string | null | undefined) =>
     isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
-  const pickCs = (bn: string | null | undefined, en: string | null | undefined) =>
-    csIsBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+
   const title = pick(project.title_bn, project.title_en);
   const category = pick(project.category_bn, project.category_en);
-  const caseStudy = pickCs(project.case_study_bn, project.case_study_en);
   const hook = pick(project.hook_bn, project.hook_en);
-  const pdfUrl = csIsBn ? (project.pdf_url_bn || project.pdf_url_en) : project.pdf_url_en;
 
-  const toggleImageExpand = useCallback(() => {
-    setImageExpanded((prev) => !prev);
-  }, []);
-
-  const toggleCaseStudy = useCallback(() => {
-    setCaseStudyOpen((prev) => !prev);
-  }, []);
-
-  const openLightbox = useCallback(() => {
-    setLightboxIndex(0);
-    setLightboxOpen(true);
-  }, []);
+  const heroImage = (typeof project.image_url === 'string' && project.image_url.trim())
+    ? project.image_url
+    : (typeof mockupUrls[0] === 'string' && (mockupUrls[0] as string).trim())
+      ? (mockupUrls[0] as string)
+      : '/portfolio/lumin-botanical.jpg';
 
   return (
-    <MotionReveal delay={0.12 * index} className={`w-full max-w-none ${imageExpanded ? 'overflow-visible' : ''}`}>
-      <div
-        data-project-card-wrapper
-        data-project-card={isFirst ? '' : undefined}
-        className={`p-4 md:p-0 rounded-2xl md:rounded-none bg-white/70 md:bg-transparent border border-primary/10 md:border-none shadow-sm md:shadow-none flex flex-col justify-between ${
-          imageExpanded ? 'relative overflow-visible' : 'relative'
-        }`}
-      >
-        {/* Top meta badge: clearly announces that this is a client project designed by POLISHED */}
-        <div className="flex items-center justify-between gap-3 mb-3 md:mb-4">
-          <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-[11px] tracking-[1.5px] uppercase font-semibold bg-primary/5 border border-primary/10 text-accent">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+    <m.article
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.08 * (index % 4) }}
+      className="group relative flex flex-col justify-between rounded-2xl bg-white border border-primary/10 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(30,58,138,0.08)] hover:border-primary/20 transition-all duration-500 overflow-hidden p-4 sm:p-5"
+    >
+      <div>
+        {/* Top Meta Bar */}
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] uppercase font-semibold tracking-wider bg-primary/5 text-accent border border-primary/10 truncate">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
               {category}
             </span>
-            <span className="hidden sm:inline-block text-[11px] font-mono uppercase tracking-wider text-muted-foreground/70">
-              {isBn ? '• ক্লায়েন্ট কেস স্টাডি' : '• Client Case Study'}
-            </span>
           </div>
-          <span className="text-[11px] font-mono text-muted-foreground/60">
-            0{index + 1} {totalCount ? `/ 0${totalCount}` : ''}
+          <span className="text-[11px] font-mono text-muted-foreground/60 shrink-0">
+            0{index + 1}
           </span>
         </div>
 
-        {/* Aspect-ratio lock: responsive ratio prevents squashed mockups on mobile while maintaining desktop ratio */}
-        <div
-          ref={cardRef}
-          className={`relative cursor-pointer bg-transparent transition-all duration-700 overflow-visible ${imageExpanded ? 'h-auto' : 'aspect-[16/10] sm:aspect-[16/9] w-full h-auto md:aspect-[16/10] md:h-[540px] lg:h-[620px]'
-            }`}
-
-
-          onClick={() => {
-            toggleImageExpand();
-            if (!imageExpanded && cardRef.current) {
-              setTimeout(() => {
-                cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }, 100);
-            }
-          }}
+        {/* Hero Image Container with aspect ratio lock */}
+        <div 
+          onClick={onOpenCaseStudy}
+          className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-xl overflow-hidden cursor-pointer bg-primary/5 transition-transform duration-500 group-hover:scale-[1.01]"
         >
-          {project.image_url ? (
-            imageExpanded ? (
-              <div className="group relative z-[60] flex items-center justify-center w-full py-12 overflow-visible isolate">
-                {/* Premium subtle orange aura — precomputed radial gradient for zero GPU blur cost */}
-                <div 
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] rounded-full pointer-events-none -z-10"
-                  style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.08) 0%, rgba(251,146,60,0) 70%)' }}
-                />
-                <PremiumImage
-                  src={project.image_url}
-                  alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
-                  containerClassName="relative z-[60] aspect-square w-full max-w-[80vh]"
-                  className="object-contain transform-gpu"
-                  sizes="(max-width: 767px) 92vw, 800px"
-                  fadeDuration={0.8}
-                  loading="eager"
-                  fetchPriority="high"
-                  imgStyle={{ background: 'transparent', boxShadow: 'none', border: 'none' }}
-                />
+          <PremiumImage
+            src={heroImage}
+            alt={`${title} — ${category}`}
+            containerClassName="w-full h-full"
+            className="object-cover object-center w-full h-full transform-gpu transition-transform duration-700 group-hover:scale-105"
+            loading={index < 2 ? 'eager' : 'lazy'}
+            fetchPriority={index < 2 ? 'high' : 'auto'}
+            decoding="async"
+          />
 
-              </div>
-            ) : (
-              <TiltImage
-                src={project.image_url}
-                alt={`${title} — ${category} — Premium skincare brand identity and UI design by POLISHED`}
-                /* Only the first two cards sit near the fold — eager + high priority.
-                   Everything below stays lazy to protect first-load bandwidth. */
-                priority={index < 2}
-              />
-            )
+          {/* Quick Hover / Tap Badge */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 text-primary text-xs font-semibold backdrop-blur-md shadow-md">
+              <Eye className="w-3.5 h-3.5 text-accent" />
+              <span>{isBn ? 'কেস স্টাডি দেখতে ট্যাপ করুন' : 'View Full Case Study'}</span>
+            </span>
+          </div>
 
-          ) : (
-            <div className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-transparent">
-              <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-                <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-                <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-                <path d="M4 26l10-8 8 6 6-5 8 9" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-primary" />
-              </svg>
-              <span className="text-xs tracking-[2px] uppercase text-muted-foreground">
-                {title}
-              </span>
+          {/* Impact Mode Overlay Ribbon */}
+          {viewMode === 'impact' && (
+            <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 max-w-[90%] z-20">
+              {project.roas_lift && (
+                <span className="px-2.5 py-1 rounded-lg bg-accent text-white font-bold text-[10.5px] shadow-md flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  {project.roas_lift}
+                </span>
+              )}
+              {project.cpr_reduction && (
+                <span className="px-2.5 py-1 rounded-lg bg-primary/95 text-white font-bold text-[10.5px] shadow-md">
+                  {project.cpr_reduction}
+                </span>
+              )}
             </div>
           )}
         </div>
 
         {/* Project Title */}
         <h3 
-          className="mt-5 px-1 font-heading text-xl sm:text-2xl md:text-3xl text-primary font-normal leading-snug tracking-tight"
+          onClick={onOpenCaseStudy}
+          className="mt-4 font-heading text-lg sm:text-xl md:text-2xl text-primary font-normal leading-snug tracking-tight cursor-pointer hover:text-accent transition-colors"
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
         >
           {title}
         </h3>
 
-        {/* Hook text — displayed between title/image and buttons */}
+        {/* Hook text */}
         {hook && (
           <div
-            className="mt-2.5 px-1 font-sans text-sm md:text-base font-medium text-foreground/80 leading-relaxed antialiased [&_strong]:font-bold [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
-            style={{ fontFamily: 'Arial, Helvetica, "Noto Serif Bengali", sans-serif' }}
+            className="mt-2 text-xs sm:text-sm text-foreground/75 leading-relaxed line-clamp-2"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
           />
         )}
 
-        {/* Controls — ALWAYS visible */}
-        <div className="mt-4 px-1 flex flex-wrap justify-between md:justify-start items-center gap-2.5 md:gap-4">
-          <button
-            onClick={toggleImageExpand}
-            lang={isBn ? 'bn' : 'en'}
-            className={`inline-flex items-center min-h-[44px] md:min-h-0 text-accent text-[11px] font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
-            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
-          >
-            {imageExpanded
-              ? (isBn ? (labels?.portfolioClickCollapseBn ?? 'সংকুচিত করতে ক্লিক করুন') : (labels?.portfolioClickCollapseEn ?? 'Click to collapse'))
-              : (isBn ? (labels?.portfolioClickExpandBn ?? 'ফুল ভিউ দেখতে ছবিতে ক্লিক করুন') : (labels?.portfolioClickExpandEn ?? 'Click image for full view'))}
-          </button>
-
-          <button
-            onClick={toggleCaseStudy}
-            lang={isBn ? 'bn' : 'en'}
-            className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-5 md:px-6 py-2 md:py-2.5 bg-accent text-accent-foreground font-medium rounded-full md:rounded-sm relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(251,146,60,0.35)] active:scale-[0.97] before:content-[''] before:absolute before:inset-0 before:bg-primary-foreground/15 before:scale-x-0 before:origin-left before:transition-transform before:duration-500 hover:before:scale-x-100 ${isBn ? 'text-[14px] tracking-normal' : 'text-[11px] tracking-[2px] uppercase'}`}
-            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
-          >
-            <span className="relative z-10 text-primary-foreground">
-              {caseStudyOpen
-                ? (isBn ? (labels?.portfolioHideCaseStudyBn ?? 'কেস স্টাডি লুকান') : (labels?.portfolioHideCaseStudyEn ?? 'Hide case study'))
-                : (isBn ? (labels?.portfolioViewCaseStudyBn ?? 'সম্পূর্ণ কেস স্টাডি দেখুন') : (labels?.portfolioViewCaseStudyEn ?? 'View full case study'))}
-            </span>
-          </button>
-
-          {hasMockups && (
-            <button
-              onClick={openLightbox}
-              lang={isBn ? 'bn' : 'en'}
-              className={`inline-flex items-center justify-center gap-2 min-h-[44px] px-4 md:px-5 py-2 md:py-2.5 border border-accent/40 text-accent text-[11px] font-medium rounded-full md:rounded-sm transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 hover:-translate-y-0.5 active:scale-[0.97] ${isBn ? 'tracking-normal' : 'tracking-[2px] uppercase'}`}
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '0' } : undefined}
-            >
-              <span>{isBn ? (labels?.portfolioViewMockupsBn ?? 'প্রোজেক্ট মকআপ দেখুন') : (labels?.portfolioViewMockupsEn ?? 'View project mockups')}</span>
-            </button>
-          )}
-        </div>
-
-        {/* Case study content */}
-        <AnimatePresence>
-          {caseStudyOpen && (
-            <m.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="mt-4 pt-4 border-t border-border px-1">
-                <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
-                  <p className="text-[11px] tracking-[2px] uppercase text-accent font-medium">
-                    Case Study
-                  </p>
-                  {/* Premium segmented pill toggle — quiet luxury */}
-                  <div
-                    role="group"
-                    aria-label="Case study language"
-                    className="inline-flex items-center gap-1 p-1 rounded-full border border-primary/10 bg-primary/5 md:backdrop-blur-sm md:shadow-sm select-none"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setCaseStudyLang('en')}
-                      aria-pressed={!csIsBn}
-                      className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${!csIsBn
-                          ? 'bg-accent/15 text-accent font-semibold'
-                          : 'text-muted-foreground/70 hover:text-foreground'
-                        }`}
-                    >
-                      English
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setCaseStudyLang('bn')}
-                      aria-pressed={csIsBn}
-                      lang="bn"
-                      style={{ fontFamily: "'Noto Serif Bengali', serif" }}
-                      className={`px-4 py-1.5 text-sm rounded-full transition-all duration-300 ease-out ${csIsBn
-                          ? 'bg-accent/15 text-accent font-semibold'
-                          : 'text-muted-foreground/70 hover:text-foreground'
-                        }`}
-                    >
-                      বাংলা
-                    </button>
-                  </div>
-                </div>
-                {caseStudy && (
-                  <div
-                    lang={csIsBn ? 'bn' : 'en'}
-                    className="prose prose-lg prose-invert max-w-none
-                    font-sans tracking-normal antialiased
-                    text-foreground font-medium leading-loose
-
-                    [&_strong]:font-bold [&_strong]:text-foreground
-                    [&_em]:italic [&_em]:text-foreground/90
-
-                    prose-headings:font-sans prose-headings:font-semibold prose-headings:tracking-normal prose-headings:text-primary
-                    prose-h1:text-3xl prose-h1:mt-12 prose-h1:mb-6
-                    prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-5 prose-h2:border-b prose-h2:border-accent/20 prose-h2:pb-3
-                    prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-foreground/90
-
-                    [&>p]:mb-6 [&>p]:leading-loose [&_p]:leading-loose
-                    [&>p:first-child]:mt-0 [&>p:last-child]:mb-0
-
-                    [&>ul]:my-6 [&>ul]:pl-8 [&>ul]:list-disc [&>ul]:space-y-3
-                    [&_ul]:my-4 [&_ul]:pl-8 [&_ul]:list-disc [&_ul]:space-y-3
-                    [&>ol]:my-6 [&>ol]:pl-8 [&>ol]:list-decimal [&>ol]:space-y-3
-                    [&_ol]:my-4 [&_ol]:pl-8 [&_ol]:list-decimal [&_ol]:space-y-3
-                    [&_li]:text-foreground [&_li]:leading-relaxed [&_li]:pl-2 [&_li]:font-medium
-                    [&_li_p]:mb-2
-
-                    prose-a:text-accent prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-accent/80
-                    prose-blockquote:border-l-2 prose-blockquote:border-accent/40 prose-blockquote:pl-6 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
-                  "
-                    style={{ fontFamily: csIsBn ? "'Noto Serif Bengali', serif" : 'Arial, Helvetica, sans-serif' }}
-                  >
-                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(caseStudy) }} />
-                  </div>
-                )}
-                {pdfUrl && (
-                  <a
-                    href={pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-accent/10 text-accent text-[11px] tracking-[2px] uppercase font-medium rounded-sm transition-all duration-500 ease-out hover:bg-accent/20 active:scale-[0.97]"
-                  >
-                    📄 Download PDF
-                  </a>
-                )}
-                <div className="mt-5">
-                  <button
-                    onClick={() => setCaseStudyOpen(false)}
-                    className="text-accent text-[11px] tracking-[2px] uppercase font-medium transition-all duration-500 ease-out hover:text-accent/70 active:scale-[0.97]"
-                  >
-                    Show less
-                  </button>
-                </div>
-              </div>
-            </m.div>
-          )}
-        </AnimatePresence>
-
-        {/* Premium Swipeable Lightbox Gallery */}
-        {hasMockups && createPortal(
-          <AnimatePresence>
-            {lightboxOpen && (
-              <MockupLightbox
-                urls={mockupUrls}
-                initialIndex={lightboxIndex}
-                title={title}
-                onClose={() => setLightboxOpen(false)}
-              />
-            )}
-          </AnimatePresence>,
-          document.body
+        {/* Impact Mode Stat Strip */}
+        {viewMode === 'impact' && (
+          <div className="mt-3.5 p-2.5 rounded-xl bg-primary/[0.04] border border-primary/10 grid grid-cols-2 gap-2 text-center">
+            <div>
+              <span className="text-[10px] text-muted-foreground block uppercase font-mono">
+                {isBn ? 'টার্নঅ্যারাউন্ড' : 'Turnaround'}
+              </span>
+              <span className="text-xs font-bold text-primary font-mono">
+                {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
+              </span>
+            </div>
+            <div>
+              <span className="text-[10px] text-muted-foreground block uppercase font-mono">
+                {isBn ? 'ভেরিফায়েড রেজাল্ট' : 'Revenue / Impact'}
+              </span>
+              <span className="text-xs font-bold text-accent font-mono">
+                {project.revenue_generated || project.roas_lift || '3.2x ROAS'}
+              </span>
+            </div>
+          </div>
         )}
       </div>
-    </MotionReveal>
-  );
-}
 
-/* ── Tilt Image (matches Services "What We Do" card animation) ── */
-/*
-  ASSET HINT: portfolio mockups should be exported as .webp (or .avif with a
-  .webp fallback) at ~1600px on the long edge and quality ~78. These PNG/JPG
-  mockups are the heaviest payload on the page — converting them typically cuts
-  60-80% of the bytes with no visible quality loss on retina screens.
-*/
+      {/* Action Row */}
+      <div className="mt-5 pt-3.5 border-t border-primary/10 flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={onOpenCaseStudy}
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-accent transition-colors cursor-pointer group/btn"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+        >
+          <span>{isBn ? 'সম্পূর্ণ কেস স্টাডি দেখুন' : 'Explore Case Study'}</span>
+          <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform duration-300 group-hover/btn:translate-x-1" />
+        </button>
 
-function TiltImage({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  // No scroll-velocity springs here: they ran a rAF loop per card and were the
-  // main source of jank. Hover tilt is plain CSS transform, GPU composited.
-  const handleTilt = (e: React.MouseEvent) => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const midX = rect.width / 2;
-    const midY = rect.height / 2;
-    const rotateY = ((x - midX) / midX) * 6;
-    const rotateX = ((midY - y) / midY) * 6;
-    el.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02) translateY(-4px)`;
-  };
-
-  const handleTiltLeave = () => {
-    if (wrapperRef.current) wrapperRef.current.style.transform = '';
-  };
-
-  return (
-    <div className="group relative z-[60] w-full h-full overflow-visible isolate">
-      {/* Premium subtle orange aura — precomputed radial gradient for zero GPU paint cost */}
-      <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] rounded-full pointer-events-none -z-10"
-        style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.08) 0%, rgba(251,146,60,0) 70%)' }}
-      />
-
-      <div
-        ref={wrapperRef}
-        onMouseMove={handleTilt}
-        onMouseLeave={handleTiltLeave}
-        className="relative z-[60] w-full h-full overflow-hidden isolate transform-gpu"
-        style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-      >
-        <PremiumImage
-          src={src}
-          alt={alt}
-          containerClassName="w-full h-full"
-          className="object-cover object-center cursor-pointer transform-gpu"
-          loading={priority ? 'eager' : 'lazy'}
-          fetchPriority={priority ? 'high' : 'auto'}
-          decoding="async"
-          fadeDuration={0.6}
-          onLoad={() => setImageLoaded(true)}
-          imgStyle={{
-            transform: imageLoaded ? 'scale(1)' : 'scale(1.02)',
-            transition: 'opacity 0.6s ease-out, transform 1.1s cubic-bezier(0.22,1,0.36,1)',
-          }}
-        />
+        {hasMockups && (
+          <button
+            type="button"
+            onClick={() => setLightboxOpen(true)}
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-accent transition-colors cursor-pointer"
+          >
+            <span>{isBn ? 'মকআপ' : 'Mockups'}</span>
+            <span className="text-[9.5px] font-mono opacity-70">({mockupUrls.length})</span>
+          </button>
+        )}
       </div>
-    </div>
+
+      {/* Mockup Lightbox Portal */}
+      {lightboxOpen && (
+        <MockupLightbox
+          urls={mockupUrls}
+          initialIndex={0}
+          title={title}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
+    </m.article>
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Slide-Up Mobile Bottom Sheet / Modal Drawer
+───────────────────────────────────────────────────────────────────────────── */
 
+function CaseStudyDrawer({
+  project,
+  isBn: globalIsBn,
+  onClose,
+}: {
+  project: PortfolioProject;
+  isBn: boolean;
+  onClose: () => void;
+}) {
+  const [localLang, setLocalLang] = useState<'bn' | 'en'>(globalIsBn ? 'bn' : 'en');
+  const isBn = localLang === 'bn';
 
-/* ── Premium Swipeable Lightbox ── */
+  const pick = (bn: string | null | undefined, en: string | null | undefined) =>
+    isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
 
-function MockupLightbox({ urls, initialIndex, title, onClose }: {
+  const title = pick(project.title_bn, project.title_en);
+  const category = pick(project.category_bn, project.category_en);
+  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const hook = pick(project.hook_bn, project.hook_en);
+  const heroImage = project.image_url || '/portfolio/lumin-botanical.jpg';
+
+  // Inform mobile dock to tuck away while modal is active
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('polished:modal-state', { detail: { open: true } }));
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.dispatchEvent(new CustomEvent('polished:modal-state', { detail: { open: false } }));
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
+  // Keyboard escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  const whatsappMessage = encodeURIComponent(
+    `Hi POLISHED, I just reviewed your case study for "${project.title_en}" and would love to achieve similar ROAS results for my brand.`
+  );
+
+  return createPortal(
+    <AnimatePresence>
+      <div className="fixed inset-0 z-[600] flex flex-col justify-end md:justify-center md:items-center">
+        {/* Backdrop */}
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-black/75 backdrop-blur-md cursor-pointer"
+        />
+
+        {/* Drawer / Sheet Window */}
+        <m.div
+          initial={{ y: '100%', opacity: 0.8 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: '100%', opacity: 0 }}
+          transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+          className="relative z-10 w-full md:max-w-2xl lg:max-w-3xl max-h-[92vh] md:max-h-[88vh] bg-white rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+        >
+          {/* Top Mobile Drag Handle Bar */}
+          <div className="md:hidden flex justify-center pt-2.5 pb-1">
+            <span className="w-12 h-1 rounded-full bg-primary/20" />
+          </div>
+
+          {/* Sticky Header */}
+          <div className="px-5 py-3.5 border-b border-primary/10 flex items-center justify-between gap-3 bg-white/95 backdrop-blur-md sticky top-0 z-30">
+            <div className="min-w-0">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-accent font-semibold block truncate">
+                {category}
+              </span>
+              <h2 
+                className="text-base sm:text-lg font-bold text-primary truncate"
+                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                {title}
+              </h2>
+            </div>
+
+            {/* Language switch + Close Button */}
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center p-0.5 rounded-full bg-primary/5 border border-primary/10 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setLocalLang('bn')}
+                  className={`px-2.5 py-1 rounded-full transition-colors ${
+                    isBn ? 'bg-primary text-white' : 'text-primary/70 hover:text-primary'
+                  }`}
+                >
+                  বাং
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLocalLang('en')}
+                  className={`px-2.5 py-1 rounded-full transition-colors ${
+                    !isBn ? 'bg-primary text-white' : 'text-primary/70 hover:text-primary'
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close Case Study"
+                className="w-9 h-9 rounded-full bg-primary/5 hover:bg-primary/15 text-primary flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Scrollable Content Body */}
+          <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6">
+            {/* Featured Image */}
+            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-primary/5 shadow-md">
+              <img
+                src={heroImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Verified Performance Metrics Ribbon */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#1e3a8a] text-white">
+              <div className="text-center p-1.5">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'ROAS লিফট' : 'ROAS Lift'}
+                </span>
+                <span className="text-lg font-bold text-accent font-mono">
+                  {project.roas_lift || '3.8x ROAS'}
+                </span>
+              </div>
+              <div className="text-center p-1.5">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'বিজ্ঞাপন খরচ (CPR)' : 'CPR Reduction'}
+                </span>
+                <span className="text-lg font-bold text-white font-mono">
+                  {project.cpr_reduction || '-44% CPR'}
+                </span>
+              </div>
+              <div className="text-center p-1.5">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'ডেলিভারি টাইম' : 'Turnaround'}
+                </span>
+                <span className="text-lg font-bold text-white font-mono">
+                  {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
+                </span>
+              </div>
+              <div className="text-center p-1.5">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'স্ট্যাটাস' : 'Verification'}
+                </span>
+                <span className="text-sm font-bold text-emerald-400 font-mono flex items-center justify-center gap-1 mt-1">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  {isBn ? 'যাচাইকৃত' : 'Verified'}
+                </span>
+              </div>
+            </div>
+
+            {/* Strategic Hook */}
+            {hook && (
+              <div className="p-4 rounded-xl bg-accent/10 border-l-4 border-accent text-primary">
+                <p 
+                  className="text-xs sm:text-sm font-medium leading-relaxed"
+                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                >
+                  {hook}
+                </p>
+              </div>
+            )}
+
+            {/* Detailed Case Study Narrative */}
+            {caseStudy && (
+              <div className="space-y-4 pt-2">
+                <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground font-semibold">
+                  {isBn ? 'কেস স্টাডি বিশ্লেষণ ও ফলাফল' : 'Detailed Case Breakdown'}
+                </h4>
+                <div 
+                  className="prose prose-sm max-w-none text-foreground/85 leading-relaxed font-sans space-y-3 whitespace-pre-line"
+                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}
+                >
+                  {caseStudy}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Sticky Bottom Direct Conversion Bar */}
+          <div className="p-4 border-t border-primary/10 bg-white/95 backdrop-blur-md flex flex-col sm:flex-row items-center gap-2.5">
+            <a
+              href={`https://wa.me/8801346288210?text=${whatsappMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:flex-1 h-11 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
+            >
+              <MessageCircle className="w-4 h-4 fill-current" />
+              <span>{isBn ? 'এই প্রজেক্ট নিয়ে কথা বলুন' : 'Chat About This Work'}</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                openQuickBookingModal({
+                  tierId: 'trial-pack',
+                  tierTitle: 'No-Risk Test Drive Sprint',
+                  tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
+                  price: '৳3,999',
+                  priceBn: '৳৩,৯৯৯',
+                  source: `Case Study: ${project.title_en}`,
+                });
+              }}
+              className="w-full sm:flex-1 h-11 rounded-xl bg-accent hover:bg-accent/90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
+            >
+              <span>{isBn ? '৳৩,৯৯৯ স্প্রিন্ট বুক করুন' : 'Book ৳3,999 Sprint'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </m.div>
+      </div>
+    </AnimatePresence>,
+    document.body
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Mockup Lightbox (Swipeable, Esc to close)
+───────────────────────────────────────────────────────────────────────────── */
+
+function MockupLightbox({
+  urls,
+  initialIndex,
+  title,
+  onClose,
+}: {
   urls: unknown[];
   initialIndex: number;
   title: string;
   onClose: () => void;
 }) {
   const [current, setCurrent] = useState(initialIndex);
-  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
-
   const total = urls.length;
-
-  // 3D tilt removed for a calm, distortion-free viewing experience.
-
 
   const goNext = useCallback(() => setCurrent((c) => Math.min(c + 1, total - 1)), [total]);
   const goPrev = useCallback(() => setCurrent((c) => Math.max(c - 1, 0)), []);
 
-  // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -592,184 +912,80 @@ function MockupLightbox({ urls, initialIndex, title, onClose }: {
     return () => window.removeEventListener('keydown', handler);
   }, [onClose, goNext, goPrev]);
 
-  return (
+  return createPortal(
     <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-6 cursor-pointer select-none bg-black/90"
-      style={{ backdropFilter: 'none', WebkitBackdropFilter: 'none' }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 z-[700] bg-black/90 flex flex-col justify-between p-4 md:p-8"
       onClick={onClose}
     >
-      {/* Invisible Story-style tap zones */}
-      <button
-        type="button"
-        aria-label="Previous mockup"
-        onClick={(e) => { e.stopPropagation(); goPrev(); }}
-        disabled={total <= 1 || current === 0}
-        className="absolute left-0 top-0 h-full w-[30%] z-40 bg-transparent border-0 outline-none cursor-w-resize disabled:cursor-default disabled:pointer-events-none"
-        style={{ WebkitTapHighlightColor: 'transparent' }}
-      />
-      <button
-        type="button"
-        aria-label="Next mockup"
-        onClick={(e) => { e.stopPropagation(); goNext(); }}
-        disabled={total <= 1 || current === total - 1}
-        className="absolute right-0 top-0 h-full w-[30%] z-40 bg-transparent border-0 outline-none cursor-e-resize disabled:cursor-default disabled:pointer-events-none"
-        style={{ WebkitTapHighlightColor: 'transparent' }}
-      />
-
-      {/* Close button */}
-      <button
-        onClick={(e) => { e.stopPropagation(); onClose(); }}
-        className="absolute top-4 right-4 md:top-6 md:right-6 w-11 h-11 flex items-center justify-center text-primary-foreground/60 hover:text-primary-foreground transition-colors duration-200 z-50"
-        aria-label="Close"
-      >
-        <X className="w-6 h-6" />
-      </button>
-
-      {/* Image counter */}
-      {total > 1 && (
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 text-primary-foreground/50 text-[11px] tracking-[3px] uppercase font-medium z-50">
-          {current + 1} / {total}
-        </div>
-      )}
-
-      {/* Prev arrow */}
-      {total > 1 && current > 0 && (
+      {/* Lightbox Header */}
+      <div className="flex items-center justify-between text-white z-10" onClick={(e) => e.stopPropagation()}>
+        <span className="text-xs font-mono uppercase tracking-wider text-white/70">
+          {title} ({current + 1} / {total})
+        </span>
         <button
-          onClick={(e) => { e.stopPropagation(); goPrev(); }}
-          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-11 h-11 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
-          aria-label="Previous"
+          type="button"
+          onClick={onClose}
+          className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer"
         >
-          <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
+          <X className="w-5 h-5" />
         </button>
-      )}
-
-      {/* Next arrow */}
-      {total > 1 && current < total - 1 && (
-        <button
-          onClick={(e) => { e.stopPropagation(); goNext(); }}
-          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-11 h-11 md:w-14 md:h-14 flex items-center justify-center rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 md:backdrop-blur-md text-primary-foreground/70 hover:text-primary-foreground transition-all duration-300 z-50 hover:scale-110 active:scale-95"
-          aria-label="Next"
-        >
-          <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
-        </button>
-      )}
-
-      {/* Main image — aspect-locked box with a pure-CSS shimmer behind it, so the
-          lightbox never resizes while a heavy mockup downloads. Fades are plain
-          CSS opacity transitions (compositor-only, zero main-thread work). */}
-      <div className="relative flex items-center justify-center w-full flex-1 h-[80vh] px-4 md:px-12 transform-gpu will-change-transform [transform:translateZ(0)]">
-        <div className="relative flex items-center justify-center w-full h-full transform-gpu will-change-transform [transform:translateZ(0)]">
-          <div
-            aria-hidden
-            className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 ease-out"
-            style={{ opacity: loaded[current] ? 0 : 1 }}
-          >
-            <PremiumSkeleton tone="light" className="w-full h-full" rounded="rounded-none" />
-          </div>
-          {urls.map((url, i) => {
-            console.log("Raw URL Data:", url);
-
-            // Only the current slide and its immediate neighbours are mounted
-            if (Math.abs(i - current) > 1) return null;
-            const isCurrent = i === current;
-
-            const extractPath = (value: unknown, seen = new Set<object>()): string | null => {
-              if (typeof value === 'string') {
-                const trimmed = value.trim();
-                if (!trimmed || trimmed === '[object Object]') return null;
-
-                if (
-                  (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
-                  (trimmed.startsWith('[') && trimmed.endsWith(']'))
-                ) {
-                  try {
-                    return extractPath(JSON.parse(trimmed) as unknown, seen);
-                  } catch {
-                    // It only resembled JSON; treat it as a normal storage path.
-                  }
-                }
-
-                return trimmed.replace(/^['"]|['"]$/g, '').trim() || null;
-              }
-
-              if (Array.isArray(value)) {
-                for (const item of value) {
-                  const result = extractPath(item, seen);
-                  if (result) return result;
-                }
-                return null;
-              }
-
-              if (typeof value !== 'object' || value === null || seen.has(value)) return null;
-              seen.add(value);
-
-              const record = value as Record<string, unknown>;
-              const preferredKeys = ['url', 'path', 'src', 'image', 'publicUrl', 'file', 'name', 'key'] as const;
-              for (const key of preferredKeys) {
-                const result = extractPath(record[key], seen);
-                if (result) return result;
-              }
-              for (const nestedValue of Object.values(record)) {
-                const result = extractPath(nestedValue, seen);
-                if (result) return result;
-              }
-              return null;
-            };
-
-            const rawPath = extractPath(url);
-            if (!rawPath) return null;
-
-            // Resolve through the Supabase client (works without VITE_SUPABASE_URL being set).
-            const storagePath = rawPath
-              .replace(/^\/+/, '')
-              .replace(/^storage\/v1\/object\/public\/polished-assets\//i, '')
-              .replace(/^polished-assets\//i, '');
-            const cleanUrl = /^https?:\/\//i.test(rawPath)
-              ? rawPath
-              : resolveStorageUrl(storagePath);
-            if (!cleanUrl) return null;
-
-            return (
-              <img
-                key={cleanUrl + i}
-                src={cleanUrl}
-                alt={`Project Mockup ${i + 1}`}
-                loading="lazy"
-                decoding="async"
-                className={`absolute inset-0 w-full h-full object-contain transform-gpu will-change-transform [transform:translateZ(0)] transition-[opacity,transform] duration-500 ease-out ${isCurrent ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0'
-                  }`}
-                onLoad={() => setLoaded((prev) => ({ ...prev, [i]: true }))}
-                onError={() => console.error('Portfolio lightbox image failed:', { raw: url, resolved: cleanUrl })}
-              />
-            );
-          })}
-        </div>
       </div>
 
+      {/* Main Image */}
+      <div 
+        className="relative flex-1 flex items-center justify-center my-4 overflow-hidden" 
+        onClick={(e) => e.stopPropagation()}
+      >
+        {urls[current] ? (
+          <img
+            src={typeof urls[current] === 'string' ? (urls[current] as string) : resolveStorageUrl(String(urls[current]))}
+            alt={`${title} mockup ${current + 1}`}
+            className="max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
+          />
+        ) : null}
 
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={goPrev}
+              disabled={current === 0}
+              className="absolute left-2 p-2 rounded-full bg-white/10 text-white hover:bg-white/25 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              disabled={current === total - 1}
+              className="absolute right-2 p-2 rounded-full bg-white/10 text-white hover:bg-white/25 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </>
+        )}
+      </div>
 
-      {/* Dot indicators */}
+      {/* Dots Indicator */}
       {total > 1 && (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 z-50">
+        <div className="flex justify-center gap-1.5 z-10" onClick={(e) => e.stopPropagation()}>
           {urls.map((_, i) => (
             <button
               key={i}
-              onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
-              className="h-11 w-6 flex items-center justify-center"
-              aria-label={`Go to mockup ${i + 1}`}
-            >
-              <span
-                className={`block h-2 rounded-full transition-all duration-300 ${i === current ? 'bg-accent w-6' : 'bg-primary-foreground/30 hover:bg-primary-foreground/50 w-2'
-                  }`}
-              />
-            </button>
+              type="button"
+              onClick={() => setCurrent(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === current ? 'w-6 bg-accent' : 'w-2 bg-white/30'
+              }`}
+            />
           ))}
         </div>
       )}
-    </m.div>
+    </m.div>,
+    document.body
   );
-}// Clean UI deployed
+}

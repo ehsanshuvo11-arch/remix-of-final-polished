@@ -61,7 +61,7 @@ export default function Index() {
 
   return (
     <SmoothScroll>
-      <main className="font-body relative min-h-screen">
+      <main className="font-body relative min-h-screen pb-[calc(env(safe-area-inset-bottom,0px)+88px)] md:pb-0">
         <PageLoader onComplete={() => setHeroReady(true)} />
         <SectionTheme />
         
@@ -100,7 +100,7 @@ export default function Index() {
 
         {/* 5. BRAND PHILOSOPHY & PROVEN METRICS */}
         <About content={aboutContent ?? null} stats={stats} />
-        <SectionDivider className="py-4" />
+        <SectionDivider className="py-2 md:py-4" />
 
         {/* 6. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies with ROAS Results */}
         <Suspense fallback={<SectionFallback minHeight="80vh" />}>
@@ -125,7 +125,7 @@ export default function Index() {
             <Process steps={processSteps} content={processMeta ?? null} />
           </ErrorBoundary>
         </Suspense>
-        <SectionDivider className="py-4" />
+        <SectionDivider className="py-2 md:py-4" />
 
         {/* 9. TESTIMONIALS & CLIENT ENDORSEMENTS */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>
@@ -133,7 +133,7 @@ export default function Index() {
             <Testimonials />
           </ErrorBoundary>
         </Suspense>
-        <SectionDivider className="py-4" />
+        <SectionDivider className="py-2 md:py-4" />
 
         {/* 10. REVENUE DIAGNOSTIC: Calculate ROAS lift right before investment decision */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>

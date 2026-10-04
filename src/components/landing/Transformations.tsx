@@ -18,7 +18,7 @@ export default function Transformations({ items, content }: TransformationsProps
   return (
     <section
       id="transformations"
-      className="py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto"
+      className="py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto"
     >
       <MotionReveal>
         <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
@@ -26,7 +26,7 @@ export default function Transformations({ items, content }: TransformationsProps
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang="en" className="font-heading font-normal text-primary mb-12 text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang="en" className="font-heading font-normal text-primary mb-8 md:mb-12 text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.1]">
           <WordReveal delay={0.1}>
             {content?.titleLine1En ?? 'Before'}
           </WordReveal>{' '}

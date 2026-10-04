@@ -59,7 +59,7 @@ export default function LocalFaq() {
   };
 
   return (
-    <section id="faq" className="py-20 md:py-28 px-6 md:px-14 bg-[#f9fafb] text-primary border-t border-primary/10">
+    <section id="faq" className="py-14 md:py-28 px-4 sm:px-6 md:px-14 bg-[#f9fafb] text-primary border-t border-primary/10">
       <div className="max-w-[880px] mx-auto">
         <MotionReveal>
           <div className="text-center mb-12">

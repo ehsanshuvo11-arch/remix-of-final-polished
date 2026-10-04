@@ -172,7 +172,7 @@ export default function StickyStorytelling() {
   return (
     <section 
       id="brand-positioning" 
-      className="relative bg-[#1e3a8a] text-[#f9fafb] py-20 md:py-28 px-5 sm:px-8 md:px-14 overflow-hidden border-t border-b border-white/10"
+      className="relative bg-[#1e3a8a] text-[#f9fafb] py-10 sm:py-16 md:py-28 px-4 sm:px-8 md:px-14 overflow-hidden border-t border-b border-white/10"
     >
       {/* Brand Subtle Moving Grid Texture matching Hero */}
       <div 
@@ -197,9 +197,9 @@ export default function StickyStorytelling() {
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-16">
           <span 
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#fb923c]/15 text-[#fb923c] border border-[#fb923c]/30 text-[11px] font-semibold uppercase mb-4 shadow-sm ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fb923c]/15 text-[#fb923c] border border-[#fb923c]/30 text-[10px] md:text-[11px] font-semibold uppercase mb-2.5 md:mb-4 shadow-sm ${
               isBn ? 'tracking-normal' : 'tracking-[0.25em]'
             }`}
           >
@@ -208,12 +208,12 @@ export default function StickyStorytelling() {
           </span>
 
           <h2 
-            className="text-2xl sm:text-4xl md:text-5xl font-heading font-normal text-[#f9fafb] tracking-tight leading-[1.25] mb-4"
+            className="text-xl sm:text-3xl md:text-5xl font-heading font-normal text-[#f9fafb] tracking-tight leading-snug mb-2 md:mb-4"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
           >
             {isBn ? (
               <>
-                পরিশীলিত বাংলা ও <span className="text-[#fb923c] italic font-semibold">শান্ত লাক্সারির</span> অনন্য মেলবন্ধন
+                পরিশীলিত বাংলা ও <span className="text-[#fb923c] italic font-semibold">শান্ত লাক্সারির</span> মেলবন্ধন
               </>
             ) : (
               <>
@@ -223,7 +223,7 @@ export default function StickyStorytelling() {
           </h2>
 
           <p 
-            className="text-[#f9fafb]/80 text-[13px] sm:text-[14px] md:text-[16px] leading-relaxed font-light max-w-2xl mx-auto"
+            className="text-[#f9fafb]/80 text-[12px] sm:text-[14px] md:text-[16px] leading-relaxed font-light max-w-2xl mx-auto"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
           >
             {isBn 
@@ -234,14 +234,14 @@ export default function StickyStorytelling() {
         </div>
 
         {/* MOBILE VIEW: Ultra-Clean High-Impact 2-Column Comparison Matrix */}
-        <div className="block lg:hidden mb-4">
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.06] border border-white/12 shadow-xl backdrop-blur-md">
-            <div className="text-center mb-4">
-              <span className="text-[10px] font-mono uppercase tracking-[2px] text-accent font-semibold">
+        <div className="block lg:hidden mb-2">
+          <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.06] border border-white/12 shadow-xl backdrop-blur-md">
+            <div className="text-center mb-3">
+              <span className="text-[9.5px] font-mono uppercase tracking-[1.5px] text-accent font-semibold">
                 {isBn ? 'বাস্তব তুলনামূলক পার্থক্য' : 'Side-by-Side Reality'}
               </span>
               <h3 
-                className="text-lg font-bold text-white mt-1"
+                className="text-base font-bold text-white mt-0.5"
                 style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
               >
                 {isBn ? 'ক্যানভা টেমপ্লেট ❌ বনাম POLISHED ✨' : 'Generic Canva ❌ vs POLISHED Standard ✨'}
@@ -249,76 +249,76 @@ export default function StickyStorytelling() {
             </div>
 
             {/* 2-Column Side-by-Side Matrix */}
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 text-left">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 text-left">
               {/* Left Column: Canva / Typical */}
-              <div className="p-3 rounded-xl bg-red-950/25 border border-red-500/25 flex flex-col justify-between">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-red-950/25 border border-red-500/25 flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider block mb-2">
+                  <span className="text-[9.5px] font-bold text-red-400 uppercase tracking-wider block mb-1.5">
                     {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
                   </span>
-                  <ul className="space-y-2 text-[10.5px] text-white/70">
-                    <li className="flex items-start gap-1.5">
+                  <ul className="space-y-1.5 text-[10px] text-white/70">
+                    <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
-                      <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল ইংরেজি' : 'Recycled templated visuals'}</span>
+                      <span>{isBn ? 'চেনা টেমপ্লেট ও সাধারণ কপি' : 'Recycled templated visuals'}</span>
                     </li>
-                    <li className="flex items-start gap-1.5">
+                    <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
                       <span>{isBn ? '০.৯x - ১.৩x গড় ROAS' : '0.9x - 1.3x Avg ROAS'}</span>
                     </li>
-                    <li className="flex items-start gap-1.5">
+                    <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
                       <span>{isBn ? '৩০-৪০% COD রিটার্ন ঝুঁকি' : '30-40% COD return rate'}</span>
                     </li>
-                    <li className="flex items-start gap-1.5">
+                    <li className="flex items-start gap-1">
                       <span className="text-red-400">✕</span>
                       <span>{isBn ? 'বারবার ডিসকাউন্টের চাপ' : 'Forced heavy discounting'}</span>
                     </li>
                   </ul>
                 </div>
-                <div className="mt-3 pt-2 border-t border-red-500/15 text-[9.5px] text-red-300/80 font-mono">
-                  {isBn ? 'সিপিআর বৃদ্ধি ও ক্ষতি' : 'High CAC & Budget Drain'}
+                <div className="mt-2.5 pt-1.5 border-t border-red-500/15 text-[9px] text-red-300/80 font-mono">
+                  {isBn ? 'সিপিআর বৃদ্ধি ও বাজেট অপচয়' : 'High CAC & Budget Drain'}
                 </div>
               </div>
 
               {/* Right Column: POLISHED */}
-              <div className="p-3 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] font-bold text-accent uppercase tracking-wider block mb-2">
+                  <span className="text-[9.5px] font-bold text-accent uppercase tracking-wider block mb-1.5">
                     {isBn ? 'POLISHED স্ট্যান্ডার্ড ✨' : 'POLISHED Standard ✨'}
                   </span>
-                  <ul className="space-y-2 text-[10.5px] text-white/95">
-                    <li className="flex items-start gap-1.5">
+                  <ul className="space-y-1.5 text-[10px] text-white/95">
+                    <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
                       <span>{isBn ? 'আভিজাত্যময় বাংলা কপি ও আর্ট' : 'Custom high-status visuals'}</span>
                     </li>
-                    <li className="flex items-start gap-1.5">
+                    <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
                       <span>{isBn ? '৩.২x - ৪.৫x গড় ROAS' : '3.2x - 4.5x Avg ROAS'}</span>
                     </li>
-                    <li className="flex items-start gap-1.5">
+                    <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
                       <span>{isBn ? 'COD রিটার্নে বড় পতন' : 'Drastic drop in returns'}</span>
                     </li>
-                    <li className="flex items-start gap-1.5">
+                    <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
                       <span>{isBn ? 'কোনো ছাড় ছাড়াই হাই AOV' : 'Zero discounts required'}</span>
                     </li>
                   </ul>
                 </div>
-                <div className="mt-3 pt-2 border-t border-accent/20 text-[9.5px] text-accent font-mono font-bold">
+                <div className="mt-2.5 pt-1.5 border-t border-accent/20 text-[9px] text-accent font-mono font-bold">
                   {isBn ? 'গড় ৩.২x সেলস গ্রোথ' : '3.2x Validated Scaling'}
                 </div>
               </div>
             </div>
 
             {/* Single High-Converting CTA */}
-            <div className="mt-4 pt-3 border-t border-white/10">
+            <div className="mt-3 pt-2.5 border-t border-white/10">
               <button
                 type="button"
                 onClick={() => openQuickBookingModal({
                   source: 'Mobile Comparison Card',
                 })}
-                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভে তফাত দেখুন' : 'Experience ৳3,999 Sprint'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

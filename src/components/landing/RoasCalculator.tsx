@@ -2,16 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { triggerInquiry } from '@/lib/inquiry-events';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { ArrowRight, Sparkles, RotateCcw } from 'lucide-react';
 
 export default function RoasCalculator() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
-  const [adSpend, setAdSpend] = useState(300000);
-  const [cpc, setCpc] = useState(15);
-  const [conversionRate, setConversionRate] = useState(1.2);
-  const [aov, setAov] = useState(2500);
+  // Standard eCommerce Benchmarks
+  const DEFAULT_SPEND = 100000;
+  const DEFAULT_CPC = 15;
+  const DEFAULT_CR = 1.2;
+  const DEFAULT_AOV = 2500;
 
+  const [adSpend, setAdSpend] = useState(DEFAULT_SPEND);
+  const [cpc, setCpc] = useState(DEFAULT_CPC);
+  const [conversionRate, setConversionRate] = useState(DEFAULT_CR);
+  const [aov, setAov] = useState(DEFAULT_AOV);
+
+  // Calculated metrics
   const [currentRevenue, setCurrentRevenue] = useState(0);
   const [projectedRevenue, setProjectedRevenue] = useState(0);
   const [revenueLost, setRevenueLost] = useState(0);
@@ -20,7 +28,7 @@ export default function RoasCalculator() {
     const traffic = adSpend / (cpc || 1);
     const current = traffic * (conversionRate / 100) * aov;
     
-    // Kept the 1.5% hook for maximum marketing impact
+    // 1.5% conversion lift benchmark via visual upgrades
     const projectedCR = conversionRate + 1.5;
     const projected = traffic * (projectedCR / 100) * aov;
     
@@ -30,301 +38,297 @@ export default function RoasCalculator() {
   }, [adSpend, cpc, conversionRate, aov]);
 
   const formatCurrency = (num: number) => {
-    const formatted = new Intl.NumberFormat(isBn ? 'bn-BD' : 'en-IN', {
+    return new Intl.NumberFormat(isBn ? 'bn-BD' : 'en-IN', {
       maximumFractionDigits: 0,
-    }).format(num);
-    return `${formatted}`; 
+    }).format(Math.round(num));
   };
 
-  // 🌍 Translation Dictionary (Premium "Quiet Luxury" Bengali)
-  const t = {
-    subtitle: isBn ? "রেভিনিউ ডায়াগনস্টিক" : "Revenue Diagnostic",
-    desc: isBn ? "গড়পড়তা ভিজ্যুয়ালের কারণে প্রতি মাসে আপনি ঠিক কত টাকার সম্ভাব্য রেভিনিউ হারাচ্ছেন, তা নিখুঁতভাবে হিসাব করুন।" : "Calculate exactly how much revenue you are leaving on the table every month due to average visuals.",
-    adSpend: isBn ? "মাসিক অ্যাড বাজেট" : "Monthly Ad Spend",
-    cpc: isBn ? "ক্লিক-প্রতি গড় খরচ (CPC)" : "Avg. Cost Per Click (CPC)",
-    cr: isBn ? "বর্তমান কনভার্শন রেট" : "Current Conversion Rate",
-    aov: isBn ? "গড় অর্ডার ভ্যালু (AOV)" : "Average Order Value",
-    currentRev: isBn ? "আপনার বর্তমান রেভিনিউ" : "Current Revenue",
-    withPolished: isBn ? "POLISHED-এর সাথে (+১.৫%)" : "With POLISHED (+1.5%)",
-    lostRev: isBn ? "প্রতি মাসে যে পরিমাণ রেভিনিউ আপনি হারাচ্ছেন" : "Revenue Left On The Table",
-    
-    // The "Hidden in Plain Sight" Note
-    methodologyNote: isBn 
-      ? "ভিজ্যুয়াল আপগ্রেডের মাধ্যমে সম্ভাব্য ১.৫% কনভার্শন বৃদ্ধির গাণিতিক অনুমানের ওপর ভিত্তি করে এই প্রজেকশনটি তৈরি।" 
-      : "Projection is based on a mathematical estimate of a potential 1.5% conversion lift via visual upgrades.",
-    
-    btn: isBn ? "লোকসান বন্ধ করুন (ফ্রি অডিট নিন)" : "Recover Lost Revenue (Get Free Audit)",
-    currency: isBn ? "টাকা" : "BDT"
+  const isCustomized = 
+    adSpend !== DEFAULT_SPEND || 
+    cpc !== DEFAULT_CPC || 
+    conversionRate !== DEFAULT_CR || 
+    aov !== DEFAULT_AOV;
+
+  const resetDefaults = () => {
+    setAdSpend(DEFAULT_SPEND);
+    setCpc(DEFAULT_CPC);
+    setConversionRate(DEFAULT_CR);
+    setAov(DEFAULT_AOV);
   };
 
   const fontPrimary = isBn ? '"Noto Serif Bengali", serif' : '"Cormorant Garamond", serif';
   const fontBody = isBn ? '"Noto Serif Bengali", sans-serif' : 'inherit';
 
   return (
-    <section className="py-16 md:py-28 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden">
-      
-      <div className="absolute top-0 right-0 w-64 h-64 bg-[#fb923c] opacity-[0.03] rounded-bl-full pointer-events-none"></div>
+    <section className="py-12 sm:py-16 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
+      {/* Background Ambient Glows */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#fb923c]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1e3a8a]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-5 sm:px-6 md:px-14 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Header Section */}
-        <div className="text-center mb-10 md:mb-16">
-          <span className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] mb-4" style={{ fontFamily: fontBody }}>
-            {t.subtitle}
+        {/* Section Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <span 
+            className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] mb-3" 
+            style={{ fontFamily: fontBody }}
+          >
+            {isBn ? "রেভিনিউ ডায়াগনস্টিক" : "Revenue Diagnostic"}
           </span>
-          <h2 className="text-[#1e3a8a] text-3xl md:text-5xl font-medium mb-4 md:mb-6 leading-tight" style={{ fontFamily: fontPrimary }}>
+          <h2 
+            className="text-[#1e3a8a] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 leading-tight" 
+            style={{ fontFamily: fontPrimary }}
+          >
             {isBn ? (
               <>সাধারণ ভিজ্যুয়াল কি আপনার অ্যাড বাজেট <span className="text-[#fb923c] font-bold">নষ্ট</span> করছে?</>
             ) : (
               <>Is Poor Design <span className="text-[#fb923c] font-bold">Bleeding</span> Your Ad Budget?</>
             )}
           </h2>
-          <p className="text-[#1e3a8a]/70 text-sm md:text-base max-w-2xl mx-auto font-light" style={{ fontFamily: fontBody }}>
-            {t.desc}
+          <p 
+            className="text-[#1e3a8a]/70 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed" 
+            style={{ fontFamily: fontBody }}
+          >
+            {isBn 
+              ? "আপনার ব্যবসার বর্তমান সংখ্যাগুলো পরিবর্তন করে দেখুন—ডিজাইন দুর্বলতার কারণে প্রতি মাসে ঠিক কত টাকা সম্ভাব্য সেলস হারাচ্ছেন।"
+              : "Adjust your metrics to calculate how much revenue you are leaving on the table every month due to average visuals."}
           </p>
         </div>
 
-        {/* Quiet Luxury Calculator Layout */}
-        <div className="flex flex-col lg:flex-row shadow-xl rounded-2xl overflow-hidden border border-[#1e3a8a]/10 bg-white">
+        {/* 2-Column Split: Clean 4-Row Inputs + High-Impact Results Card */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           
-          {/* LEFT COLUMN: INPUTS */}
-          <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-14 bg-white relative">
+          {/* LEFT: 4 CLEAN, BREATHABLE INPUT ROWS */}
+          <div className="lg:col-span-7 bg-white rounded-2xl md:rounded-3xl border border-[#1e3a8a]/10 p-5 sm:p-7 md:p-8 shadow-sm flex flex-col justify-between">
             
-            {/* Live Mobile Revenue Projection Banner — sticky real-time feedback */}
-            <div className="flex lg:hidden items-center justify-between p-4 rounded-xl bg-[#1e3a8a] text-white shadow-md border border-[#fb923c]/30 mb-8">
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-white/70 block font-medium">
-                  {t.lostRev}
-                </span>
-                <span className="text-2xl font-bold text-[#fb923c] tracking-tight" style={{ fontFamily: fontPrimary }}>
-                  {formatCurrency(revenueLost)} <span className="text-xs font-normal text-white/80">{t.currency}/mo</span>
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const resEl = document.getElementById('roas-results-panel');
-                  resEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }}
-                className="px-3.5 py-1.5 rounded-full bg-[#fb923c] text-white text-[10px] font-bold tracking-wider uppercase active:scale-95 shadow-sm"
-              >
-                Breakdown ↓
-              </button>
-            </div>
-
-            <div className="space-y-10 md:space-y-12 relative z-10">
+            <div className="space-y-5 sm:space-y-6">
               
-              {/* Input 1 */}
+              {/* Row 1: Monthly Ad Spend */}
               <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold flex items-center gap-2" style={{ fontFamily: fontBody }}>
-                    <span className="w-1 h-3 bg-[#fb923c] inline-block opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    {t.adSpend}
+                <div className="flex items-baseline justify-between mb-2">
+                  <label 
+                    className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
+                    style={{ fontFamily: fontBody }}
+                  >
+                    {isBn ? "মাসিক অ্যাড বাজেট" : "Monthly Ad Spend"}
                   </label>
-                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
-                    <input 
-                      type="number" 
-                      lang={isBn ? "bn" : "en"}
-                      value={adSpend}
-                      onChange={(e) => setAdSpend(Number(e.target.value))}
-                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
-                      style={{ fontFamily: fontPrimary }}
-                    />
-                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">{t.currency}</span>
+                  <div className="text-right">
+                    <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
+                      ৳{formatCurrency(adSpend)}
+                    </span>
+                    <span className="text-[10px] sm:text-xs text-gray-500 ml-1 font-mono">{isBn ? "টাকা" : "BDT"}</span>
                   </div>
                 </div>
                 <input 
                   type="range" 
-                  min="50000" max="5000000" step="10000"
+                  min="20000" 
+                  max="1000000" 
+                  step="5000"
                   value={adSpend} 
                   onChange={(e) => setAdSpend(Number(e.target.value))}
-                  className="w-full h-[3px] bg-[#1e3a8a]/10 appearance-none cursor-pointer accent-[#fb923c]"
+                  className="w-full h-2 bg-gray-100 hover:bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fb923c] touch-pan-x transition-colors"
+                  aria-label="Monthly Ad Spend"
                 />
-                {/* Budget Quick Preset Pills */}
-                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pt-2.5">
-                  <span className="text-[10px] text-muted-foreground mr-1 uppercase tracking-wider shrink-0">Preset:</span>
-                  {[
-                    { label: '৳100K', val: 100000 },
-                    { label: '৳300K', val: 300000 },
-                    { label: '৳500K', val: 500000 },
-                    { label: '৳1M', val: 1000000 },
-                    { label: '৳2.5M', val: 2500000 }
-                  ].map((preset) => (
-                    <button
-                      key={preset.val}
-                      type="button"
-                      onClick={() => setAdSpend(preset.val)}
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-medium transition-all shrink-0 ${
-                        adSpend === preset.val
-                          ? 'bg-[#1e3a8a] text-white shadow-sm'
-                          : 'bg-[#1e3a8a]/5 text-[#1e3a8a]/80 hover:bg-[#1e3a8a]/10'
-                      }`}
-                    >
-                      {preset.label}
-                    </button>
-                  ))}
-                </div>
               </div>
 
-              {/* Input 2 */}
+              {/* Row 2: Average CPC */}
               <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold flex items-center gap-2" style={{ fontFamily: fontBody }}>
-                    <span className="w-1 h-3 bg-[#fb923c] inline-block opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    {t.cpc}
+                <div className="flex items-baseline justify-between mb-2">
+                  <label 
+                    className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
+                    style={{ fontFamily: fontBody }}
+                  >
+                    {isBn ? "গড় ক্লিক খরচ (CPC)" : "Avg. Cost Per Click (CPC)"}
                   </label>
-                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
-                    <input 
-                      type="number" 
-                      lang={isBn ? "bn" : "en"}
-                      value={cpc}
-                      onChange={(e) => setCpc(Number(e.target.value))}
-                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
-                      style={{ fontFamily: fontPrimary }}
-                    />
-                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">{t.currency}</span>
+                  <div className="text-right">
+                    <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
+                      ৳{cpc}
+                    </span>
+                    <span className="text-[10px] sm:text-xs text-gray-500 ml-1 font-mono">{isBn ? "টাকা" : "BDT"}</span>
                   </div>
                 </div>
                 <input 
                   type="range" 
-                  min="2" max="200" step="1"
+                  min="2" 
+                  max="100" 
+                  step="1"
                   value={cpc} 
                   onChange={(e) => setCpc(Number(e.target.value))}
-                  className="w-full h-[3px] bg-[#1e3a8a]/10 appearance-none cursor-pointer accent-[#fb923c]"
+                  className="w-full h-2 bg-gray-100 hover:bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fb923c] touch-pan-x transition-colors"
+                  aria-label="Average CPC"
                 />
               </div>
 
-              {/* Input 3 */}
+              {/* Row 3: Conversion Rate */}
               <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold flex items-center gap-2" style={{ fontFamily: fontBody }}>
-                    <span className="w-1 h-3 bg-[#fb923c] inline-block opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    {t.cr}
+                <div className="flex items-baseline justify-between mb-2">
+                  <label 
+                    className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
+                    style={{ fontFamily: fontBody }}
+                  >
+                    {isBn ? "কনভার্শন রেট (CR)" : "Conversion Rate"}
                   </label>
-                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
-                    <input 
-                      type="number" 
-                      lang={isBn ? "bn" : "en"}
-                      value={conversionRate}
-                      onChange={(e) => setConversionRate(Number(e.target.value))}
-                      className="w-20 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
-                      style={{ fontFamily: fontPrimary }}
-                    />
-                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">%</span>
+                  <div className="text-right">
+                    <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
+                      {conversionRate}%
+                    </span>
                   </div>
                 </div>
                 <input 
                   type="range" 
-                  min="0.1" max="10" step="0.1"
+                  min="0.2" 
+                  max="5.0" 
+                  step="0.1"
                   value={conversionRate} 
                   onChange={(e) => setConversionRate(Number(e.target.value))}
-                  className="w-full h-[3px] bg-[#1e3a8a]/10 appearance-none cursor-pointer accent-[#fb923c]"
+                  className="w-full h-2 bg-gray-100 hover:bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fb923c] touch-pan-x transition-colors"
+                  aria-label="Conversion Rate"
                 />
               </div>
 
-              {/* Input 4 */}
+              {/* Row 4: Average Order Value (AOV) */}
               <div className="group">
-                <div className="flex justify-between items-end mb-3">
-                  <label className="text-[#1e3a8a] text-xs uppercase tracking-widest font-semibold flex items-center gap-2" style={{ fontFamily: fontBody }}>
-                    <span className="w-1 h-3 bg-[#fb923c] inline-block opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    {t.aov}
+                <div className="flex items-baseline justify-between mb-2">
+                  <label 
+                    className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
+                    style={{ fontFamily: fontBody }}
+                  >
+                    {isBn ? "গড় অর্ডার সাইজ (AOV)" : "Average Order Value"}
                   </label>
-                  <div className="flex items-center gap-1 border-b border-[#1e3a8a]/20 group-hover:border-[#fb923c]/50 transition-colors pb-1">
-                    <input 
-                      type="number" 
-                      lang={isBn ? "bn" : "en"}
-                      value={aov}
-                      onChange={(e) => setAov(Number(e.target.value))}
-                      className="w-28 bg-transparent text-right focus:outline-none text-[#1e3a8a] font-bold text-lg"
-                      style={{ fontFamily: fontPrimary }}
-                    />
-                    <span className="text-[#1e3a8a]/60 text-[10px] uppercase tracking-wider">{t.currency}</span>
+                  <div className="text-right">
+                    <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
+                      ৳{formatCurrency(aov)}
+                    </span>
+                    <span className="text-[10px] sm:text-xs text-gray-500 ml-1 font-mono">{isBn ? "টাকা" : "BDT"}</span>
                   </div>
                 </div>
                 <input 
                   type="range" 
-                  min="500" max="15000" step="100"
+                  min="500" 
+                  max="15000" 
+                  step="100"
                   value={aov} 
                   onChange={(e) => setAov(Number(e.target.value))}
-                  className="w-full h-[3px] bg-[#1e3a8a]/10 appearance-none cursor-pointer accent-[#fb923c]"
+                  className="w-full h-2 bg-gray-100 hover:bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fb923c] touch-pan-x transition-colors"
+                  aria-label="Average Order Value"
                 />
               </div>
 
             </div>
+
+            {/* Bottom Reset Action (Appears if customized) */}
+            <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+              <span className="text-[11px]" style={{ fontFamily: fontBody }}>
+                {isBn ? "💡 স্লাইডার নাড়িয়ে আপনার প্রকৃত ডেটা সেট করুন" : "💡 Adjust sliders to match your metrics"}
+              </span>
+              {isCustomized && (
+                <button
+                  type="button"
+                  onClick={resetDefaults}
+                  className="inline-flex items-center gap-1 text-[#fb923c] hover:underline font-medium cursor-pointer"
+                  style={{ fontFamily: fontBody }}
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>{isBn ? "রিসেট ডিফল্ট" : "Reset Defaults"}</span>
+                </button>
+              )}
+            </div>
+
           </div>
 
-          {/* RIGHT COLUMN: RESULTS */}
-          <div id="roas-results-panel" className="w-full lg:w-1/2 p-6 sm:p-10 md:p-14 bg-[#1e3a8a] text-[#f9fafb] flex flex-col justify-between relative overflow-hidden">
+          {/* RIGHT: HIGH-IMPACT DEEP NAVY RESULTS CARD */}
+          <div className="lg:col-span-5 bg-[#1e3a8a] text-white rounded-2xl md:rounded-3xl border border-white/10 p-5 sm:p-7 md:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
             
-            <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#fb923c] opacity-[0.05] rounded-tl-full pointer-events-none"></div>
+            {/* Ambient Background Glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#fb923c]/10 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="mb-12 border-b border-white/10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-              <div>
-                <p className="text-white/60 text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: fontBody }}>{t.currentRev}</p>
-                <p className="text-3xl font-medium tracking-tight" style={{ fontFamily: fontPrimary }}>
-                  {formatCurrency(currentRevenue)} <span className="text-base text-white/70">{t.currency}</span>
-                </p>
-              </div>
-              <div>
-                <p className="text-[#fb923c] text-[10px] font-bold uppercase tracking-widest mb-3" style={{ fontFamily: fontBody }}>
-                  {t.withPolished}
-                </p>
-                <p className="text-3xl font-bold tracking-tight text-[#fb923c]" style={{ fontFamily: fontPrimary }}>
-                  {formatCurrency(projectedRevenue)} <span className="text-base">{t.currency}</span>
-                </p>
-              </div>
-            </div>
-
-            <div className="mb-10 relative z-10">
-              <p className="text-white/90 text-[10px] font-semibold uppercase tracking-[0.2em] mb-4 bg-[#fb923c]/20 inline-block px-3 py-1 rounded-sm border border-[#fb923c]/30" style={{ fontFamily: fontBody }}>
-                <span className="text-[#fb923c] mr-2">■</span>{t.lostRev}
-              </p>
-              <h3 className="text-5xl md:text-6xl font-normal text-white mb-2 leading-tight flex items-baseline gap-3" style={{ fontFamily: fontPrimary }}>
-                {formatCurrency(revenueLost)} <span className="text-2xl text-[#fb923c]">{t.currency}</span>
-              </h3>
+            <div className="relative z-10 flex flex-col h-full justify-between gap-5 sm:gap-6">
               
-              {/* THE HIDDEN IN PLAIN SIGHT NOTE */}
-              <p className="text-white/30 text-[9px] tracking-wide font-light" style={{ fontFamily: fontBody }}>
-                {t.methodologyNote}
-              </p>
+              {/* TOP: Revenue Comparison Strip */}
+              <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-white/[0.08] border border-white/10 text-center">
+                <div>
+                  <p className="text-white/60 text-[10px] uppercase font-semibold tracking-wider mb-0.5" style={{ fontFamily: fontBody }}>
+                    {isBn ? "বর্তমান রেভিনিউ" : "Current Revenue"}
+                  </p>
+                  <p className="text-base sm:text-lg font-bold text-white font-mono">
+                    ৳{formatCurrency(currentRevenue)}
+                  </p>
+                </div>
+                <div className="border-l border-white/10 pl-2">
+                  <p className="text-[#fb923c] text-[10px] uppercase font-bold tracking-wider mb-0.5" style={{ fontFamily: fontBody }}>
+                    {isBn ? "POLISHED অপ্টিমাইজেশনে (+১.৫%)" : "With POLISHED (+1.5%)"}
+                  </p>
+                  <p className="text-base sm:text-lg font-bold text-[#fb923c] font-mono">
+                    ৳{formatCurrency(projectedRevenue)}
+                  </p>
+                </div>
+              </div>
+
+              {/* MIDDLE: Hero Revenue Left On Table */}
+              <div className="text-center my-auto py-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[#fb923c] text-[11px] font-bold uppercase tracking-wider mb-2" style={{ fontFamily: fontBody }}>
+                  <span className="w-2 h-2 rounded-full bg-[#fb923c] animate-pulse" />
+                  <span>{isBn ? "সম্ভাব্য মাসিক লোকসান" : "Revenue Left on Table"}</span>
+                </div>
+
+                <div className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none mb-2 font-mono">
+                  ৳{formatCurrency(revenueLost)}{' '}
+                  <span className="text-base sm:text-lg text-[#fb923c] font-bold">
+                    {isBn ? "/মাস" : "/mo"}
+                  </span>
+                </div>
+
+                <p className="text-[11px] sm:text-xs text-white/60 font-light max-w-sm mx-auto leading-relaxed" style={{ fontFamily: fontBody }}>
+                  {isBn 
+                    ? "ভিজ্যুয়াল কোয়ালিটি ও ল্যান্ডিং পেজ আপগ্রেডে মাত্র ১.৫% কনভার্শন বৃদ্ধি পেলেই এই বাড়তি টাকা সরাসরি আপনার একাউন্টে আসত।"
+                    : "Based on a 1.5% conversion lift benchmark achieved through high-converting creative upgrades."}
+                </p>
+              </div>
+
+              {/* BOTTOM: Direct Actions */}
+              <div className="flex flex-col gap-2.5 pt-2">
+                <a
+                  href={`https://wa.me/8801346288210?text=${encodeURIComponent(
+                    `Hi POLISHED, I calculated ~৳${formatCurrency(revenueLost)}/mo in lost revenue on my ৳${formatCurrency(adSpend)} monthly ad spend. I want to recover this profit with the ৳3,999 Skincare Trial Pack!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#fb923c] hover:bg-[#fb923c]/95 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-200 active:scale-[0.98] btn-shimmer"
+                  style={{ fontFamily: fontBody }}
+                >
+                  <span>{isBn ? "৳৩,৯৯৯ ট্রায়ালে লোকসান বন্ধ করুন" : "Recover with ৳3,999 Trial"}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    triggerInquiry({
+                      revenueLost: `৳${formatCurrency(revenueLost)}`,
+                      budget: adSpend >= 300000 ? '50k-plus' : '20k-50k',
+                      note: `Calculated ~৳${formatCurrency(revenueLost)}/mo in lost revenue on monthly ad spend of ৳${formatCurrency(adSpend)}. Requesting visual teardown.`
+                    });
+                    openAuditModal({
+                      source: 'ROAS Diagnostic Calculator',
+                      note: `Calculated ~৳${formatCurrency(revenueLost)}/mo in lost revenue on monthly ad spend of ৳${formatCurrency(adSpend)}.`
+                    });
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 text-xs text-white/70 hover:text-white transition-colors cursor-pointer py-1 group"
+                  style={{ fontFamily: fontBody }}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
+                  <span className="underline decoration-white/30 group-hover:decoration-white">
+                    {isBn ? "অথবা ৫ মিনিটের ফ্রি অডিট নিন" : "Or request a free 5-minute audit"}
+                  </span>
+                </button>
+              </div>
+
             </div>
 
-            {/* Dual High-Converting Actions: WhatsApp Trial Booking + Free Audit Modal */}
-            <div className="flex flex-col sm:flex-row gap-3 relative z-10 w-full">
-              <a
-                href={`https://wa.me/8801346288210?text=${encodeURIComponent(
-                  `Hi POLISHED, I calculated ~৳${formatCurrency(revenueLost)}/mo in lost revenue on my ৳${formatCurrency(adSpend)} monthly ad spend. I want to recover this profit with the ৳3,999 Skincare Trial Pack!`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 bg-[#fb923c] hover:bg-[#fb923c]/90 text-white py-4 px-6 rounded-xl font-bold text-[11px] md:text-xs uppercase tracking-[1px] transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_6px_25px_rgba(251,146,60,0.4)] hover:shadow-[0_10px_35px_rgba(251,146,60,0.6)] border border-[#fb923c]/50 cursor-pointer active:scale-[0.98] btn-shimmer"
-                style={{ fontFamily: fontBody }}
-              >
-                <span>{isBn ? '৳৩,৯৯৯ ট্রায়ালে লোকসান বন্ধ করুন' : 'Recover with ৳3,999 Trial'}</span>
-                <span className="text-base font-bold">→</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={() => {
-                  triggerInquiry({
-                    revenueLost: `${formatCurrency(revenueLost)} ${t.currency}`,
-                    budget: adSpend >= 300000 ? '50k-plus' : '20k-50k',
-                    note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}. Requesting a visual teardown & conversion upgrade plan.`
-                  });
-                  openAuditModal({
-                    source: 'ROAS Diagnostic Calculator',
-                    note: `Calculated ~${formatCurrency(revenueLost)} ${t.currency}/mo in lost revenue on monthly ad spend of ${formatCurrency(adSpend)} ${t.currency}.`
-                  });
-                }}
-                className="py-4 px-5 rounded-xl bg-white/10 hover:bg-white/15 text-white/90 hover:text-white border border-white/20 font-semibold text-[11px] md:text-xs uppercase tracking-[1px] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
-                style={{ fontFamily: fontBody }}
-              >
-                <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-Min Audit'}</span>
-              </button>
-            </div>
           </div>
+
         </div>
+
       </div>
     </section>
   );

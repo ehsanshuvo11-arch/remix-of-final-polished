@@ -43,12 +43,12 @@ export default function About({ content, stats }: AboutProps) {
   const line2 = about.titleLine2En ?? 'trust at first glance.';
 
   return (
-    <section id="about" className="py-16 md:py-[110px] px-5 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="about" className="py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
         <div>
           <MotionReveal>
             {isBn ? (
-              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              <p lang="bn" className="text-[14px] md:text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                 ব্র্যান্ড ফিলোসফি
               </p>
             ) : (
@@ -57,7 +57,7 @@ export default function About({ content, stats }: AboutProps) {
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)] leading-[1.4]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.2]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-6 md:mb-7 ${isBn ? 'text-[clamp(22px,6vw,32px)] md:text-[clamp(30px,4.2vw,50px)] leading-[1.3]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.2]'}`}>
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>

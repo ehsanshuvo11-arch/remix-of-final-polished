@@ -32,6 +32,12 @@ export interface PortfolioProject {
   mockup_urls?: string[];
   /** Raw CMS values retained for resilient frontend URL extraction. */
   mockup_url_data?: unknown[];
+  /** Performance & ROAS metrics for Impact view */
+  roas_lift?: string;
+  cpr_reduction?: string;
+  aov_increase?: string;
+  revenue_generated?: string;
+  turnaround?: string;
 }
 
 export interface ProcessStep {
