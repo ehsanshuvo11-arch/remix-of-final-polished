@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import {
   normalizePortfolioProjectRow,
@@ -56,6 +57,35 @@ export function useServices() {
 }
 
 export function usePortfolio() {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    // 1. Supabase Realtime channel for live multi-tab & multi-device sync
+    const channel = supabase
+      .channel('realtime_portfolio_projects')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'portfolio_projects' },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+          queryClient.refetchQueries({ queryKey: ['portfolio'] });
+        }
+      )
+      .subscribe();
+
+    // 2. Custom local window event for instant in-browser admin sync
+    const handleLocalUpdate = () => {
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+      queryClient.refetchQueries({ queryKey: ['portfolio'] });
+    };
+    window.addEventListener('polished:portfolio-updated', handleLocalUpdate);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener('polished:portfolio-updated', handleLocalUpdate);
+    };
+  }, [queryClient]);
+
   return useQuery({
     queryKey: ['portfolio'],
     queryFn: async () => {
@@ -66,7 +96,8 @@ export function usePortfolio() {
       if (error) throw error;
       return (data ?? []).map((row) => normalizePortfolioProjectRow(row as Record<string, unknown>)) as PortfolioProject[];
     },
-    staleTime: 30000,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 }
 

@@ -511,6 +511,7 @@ async function saveCollection<T extends { id: string }>(
   }
 
   await refreshCollectionQueries(queryKey);
+  window.dispatchEvent(new CustomEvent('polished:portfolio-updated'));
 
   if (successMessage) toast.success(successMessage);
   return true;

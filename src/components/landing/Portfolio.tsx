@@ -277,16 +277,21 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
     return hasImg || hasMock || hasMockList || hasContent;
   });
 
-  // Combine real database projects with default signature projects
-  const displayProjects = validProjects.length >= 8 
-    ? validProjects 
-    : [...validProjects, ...defaultProjects.slice(validProjects.length)];
+  // If database has projects, show ONLY actual database projects from Admin!
+  // Fall back to default placeholders ONLY if database has 0 projects.
+  const displayProjects = validProjects.length > 0 ? validProjects : defaultProjects;
 
   // Active filters and views
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'visual' | 'impact'>('visual');
-  const [visibleCount, setVisibleCount] = useState<number>(4);
-  const [selectedModalProject, setSelectedModalProject] = useState<PortfolioProject | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(() => Math.max(8, validProjects.length || 8));
+
+  // Auto-expand visible count when new projects are loaded/added from Admin
+  useEffect(() => {
+    if (validProjects.length > 0) {
+      setVisibleCount((prev) => Math.max(prev, validProjects.length));
+    }
+  }, [validProjects.length]);
 
   // Filter matching projects
   const filteredProjects = useMemo(() => {
@@ -479,7 +484,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 
 function formatRichContent(content: string | null | undefined): string {
   if (!content) return '';
-  const trimmed = content.trim();
+  const trimmed = content.replace(/\r\n/g, '\n').trim();
   if (!trimmed) return '';
 
   // Check if content already contains HTML tags (e.g. from TipTap rich editor, Google Docs paste)
