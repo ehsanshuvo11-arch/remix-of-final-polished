@@ -80,7 +80,7 @@ export default function Index() {
           style={{ transformOrigin: '50% 50%', willChange: 'transform, opacity' }}
         >
           <Hero
-            content={heroContent ?? null}
+            content={null}
             logoUrl={logoData?.url ?? fallbackLogoUrl}
           />
         </m.div>
@@ -99,7 +99,7 @@ export default function Index() {
         </Suspense>
 
         {/* 5. BRAND PHILOSOPHY & PROVEN METRICS */}
-        <About content={aboutContent ?? null} stats={stats} />
+        <About content={null} stats={[]} />
         <SectionDivider className="py-2 md:py-4" />
 
         {/* 6. IMMEDIATE CREATIVE PROOF: Selected Work & Case Studies with ROAS Results */}
@@ -109,20 +109,17 @@ export default function Index() {
           </ErrorBoundary>
         </Suspense>
 
-        {/* 7. VISUAL EVOLUTION & BEFORE/AFTER TRANSFORMATIONS */}
+        {/* 7. VISUAL EVOLUTION & BEFORE/AFTER */}
         <Suspense fallback={<SectionFallback minHeight="60vh" />}>
           <ErrorBoundary isSection sectionName="Evolution">
             <Evolution />
-          </ErrorBoundary>
-          <ErrorBoundary isSection sectionName="Transformations">
-            <Transformations items={transformations} content={transformationsMeta ?? null} />
           </ErrorBoundary>
         </Suspense>
 
         {/* 8. SPRINT PROCESS & HOW WE OPERATE (48-Hour Zero-Friction Delivery) */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>
           <ErrorBoundary isSection sectionName="Process">
-            <Process steps={processSteps} content={processMeta ?? null} />
+            <Process steps={[]} content={null} />
           </ErrorBoundary>
         </Suspense>
         <SectionDivider className="py-2 md:py-4" />
@@ -143,7 +140,7 @@ export default function Index() {
         </Suspense>
 
         {/* 11. THE OFFER: SERVICES & PRICING (Transparent Sprints, ৳3,999 No-Risk Trial) */}
-        <Services services={services} content={servicesMeta ?? null} />
+        <Services services={[]} content={null} />
 
         {/* 12. LOCAL FAQ & PAYMENT ASSURANCE (bKash/Nagad, 100% Free Revisions) */}
         <Suspense fallback={<SectionFallback minHeight="40vh" />}>
@@ -155,7 +152,7 @@ export default function Index() {
         {/* 13. FINAL DIRECT CONVERSION / STRATEGY CONSULTATION */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>
           <ErrorBoundary isSection sectionName="Contact">
-            <Contact contact={contactContent ?? null} />
+            <Contact contact={null} />
           </ErrorBoundary>
           <Footer footer={footerContent ?? null} />
         </Suspense>

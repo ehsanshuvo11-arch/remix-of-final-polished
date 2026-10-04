@@ -21,7 +21,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
   const orb1Ref = useRef<HTMLDivElement>(null);
   const orb2Ref = useRef<HTMLDivElement>(null);
 
-  const hero = content ?? {
+  const hero = {
     titleEn: 'Make Your Collection',
     title2En: '*Unmissable!*',
     titleBn: 'আপনার কালেকশন হোক',

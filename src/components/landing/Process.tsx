@@ -47,12 +47,12 @@ export default function Process({ steps, content }: ProcessProps) {
     },
   ];
 
-  const displaySteps = steps.length > 0 ? steps : defaultSteps;
+  const displaySteps = defaultSteps;
 
-  // Process headings/labels locked to English in all locales
+  // Process headings/labels
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = content?.titleLine1En ?? 'No endless meetings.';
-  const line2 = content?.titleLine2En ?? 'Fresh creatives in 48 hours.';
+  const line1 = 'No endless meetings.';
+  const line2 = 'Fresh creatives in 48 hours.';
 
   return (
     <div className="bg-secondary">

@@ -78,8 +78,8 @@ export default function Services(_props: ServicesProps) {
   const isBn = lang === 'bn';
   const { data: cms } = useSiteSetting<PricingContent>('pricing');
 
-  const content: PricingContent = { ...DEFAULT_PRICING, ...(cms ?? {}) };
-  const tiers: PricingTier[] = content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers!;
+  const content: PricingContent = DEFAULT_PRICING;
+  const tiers: PricingTier[] = DEFAULT_PRICING.tiers!;
 
   const [activeTier, setActiveTier] = useState(0);
 

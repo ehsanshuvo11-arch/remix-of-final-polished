@@ -40,7 +40,7 @@ export default function Contact({ contact }: ContactProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
 
-  const c = contact ?? {
+  const c = {
     email: 'polished.bd@gmail.com',
     ig: '@polished.studio.bd',
     fb: 'polished.studio.bd',

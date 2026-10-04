@@ -13,7 +13,7 @@ export default function About({ content, stats }: AboutProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
 
-  const about = content ?? {
+  const about = {
     labelEn: 'The Plain Truth About Us',
     labelBn: 'আমরা কে ও কেন আমাদের কাজ আলাদা',
     titleLine1En: 'Ads that stop the scroll,',
@@ -35,7 +35,7 @@ export default function About({ content, stats }: AboutProps) {
     { id: '4', sort_order: 4, num: '48h', suffix: '', label_en: 'Rapid Delivery Sprint', label_bn: 'র‌্যাপিড ডেলিভারি স্প্রিন্ট' },
   ];
 
-  const displayStats = stats.length > 0 ? stats : defaultStats;
+  const displayStats = defaultStats;
 
   // About copy is intentionally locked to English in all locales
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
