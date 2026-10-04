@@ -30,6 +30,7 @@ import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import type { PortfolioMetaContent, PortfolioProject } from '@/types/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useUILabels } from '@/hooks/use-site-content';
+import { DEFAULT_PORTFOLIO_PROJECTS } from '@/lib/default-projects';
 
 interface PortfolioProps {
   projects: PortfolioProject[];
@@ -70,198 +71,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
-  const defaultProjects: PortfolioProject[] = [
-    {
-      id: '1',
-      sort_order: 1,
-      title_en: 'LUMÍN Botanical Glow — D2C Skincare Hero Sprint',
-      title_bn: 'লুমিন বোটানিক্যাল গ্লো — ডি২সি স্কিনকেয়ার স্প্রিন্ট',
-      category_en: 'D2C Skincare Performance Creative',
-      category_bn: 'ডি২সি স্কিনকেয়ার পারফরম্যান্স ক্রিয়েটিভ',
-      image_url: '/portfolio/lumin-botanical.jpg',
-      hook_en: 'Meta Ad CPR reduced by 44% in 7 days. High-trust Bengali copy paired with Swiss-inspired quiet luxury aesthetics to dominate local D2C skincare.',
-      hook_bn: '৭ দিনে মেটা অ্যাডের CPR ৪৪% হ্রাস। সুইস কোয়াইট লাক্সারি নান্দনিকতার সাথে পরিশীলিত বাংলা সেলস কপি যা স্ক্রলারদের ক্রেতায় রূপান্তর করে।',
-      case_study_en: 'Challenge: The client was burning ৳1.2L/month with a CPR of ৳185 on generic Canva banners.\n\nStrategy: We engineered 5 high-converting ad variations using our "Premium Bengali" methodology. Replaced broken English with culturally resonant, persuasive Bengali copywriting.\n\nOutcome: CPR dropped to ৳98 within 7 days, ROAS jumped from 1.6x to 3.8x, and COD delivery confirmation rate increased by 28%.',
-      case_study_bn: 'চ্যালেঞ্জ: সাধারণ ক্যানভা ডিজাইনের কারণে ক্লায়েন্টের প্রতি অর্ডারে খরচ (CPR) হচ্ছিল ১৮৫ টাকা।\n\nস্ট্র্যাটেজি: আমরা তৈরি করি ৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ। দুর্বল ইংরেজির বদলে যোগ করি মনস্তাত্ত্বিক বাংলা সেলস কপি।\n\nফলাফল: মাত্র ৭ দিনে CPR নেমে আসে ৯৮ টাকায়, ROAS বৃদ্ধি পায় ৩.৮ গুণ এবং ক্যাশ-অন-ডেলিভারি কনফার্মেশন রেট ২৮% বাড়ে।',
-      roas_lift: '3.8x ROAS',
-      cpr_reduction: '-44% CPR',
-      turnaround: '48h Sprint',
-      revenue_generated: '৳4.2L / mo',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '2',
-      sort_order: 2,
-      title_en: 'AURORA Hydrating Elixir — Product Launch Campaign',
-      title_bn: 'অরোরা হাইড্রেটিং এলিক্সির — প্রোডাক্ট লঞ্চ ক্যাম্পেইন',
-      category_en: 'Conversion Campaign & Funnel Architecture',
-      category_bn: 'কনভার্শন ক্যাম্পেইন ও ফানেল আর্কিটেকচার',
-      image_url: '/portfolio/aurora-serum.jpg',
-      hook_en: 'Sensory visual architecture engineered to eliminate COD hesitation. Clear ingredient transparency with high-converting social proof.',
-      hook_bn: 'ক্যাশ অন ডেলিভারি (COD) গ্রাহকদের সংশয় দূর করতে বিশেষ ভিজ্যুয়াল স্ট্র্যাটেজি। উপাদান ও ফলাফলের স্বচ্ছ উপস্থাপনা।',
-      case_study_en: 'Challenge: High cart abandonment due to customer trust deficit in a crowded serum market.\n\nStrategy: Built trust-forward storefront assets and comparison carousels highlighting verified botanical actives with zero hype.\n\nOutcome: Achieved 4.1x ROAS on cold traffic and generated ৳4.8L revenue in the first launch week.',
-      case_study_bn: 'চ্যালেঞ্জ: সিরামের বাজারে গ্রাহকের বিশ্বাসের অভাবে হাই কার্ট এব্যান্ডনমেন্ট।\n\nস্ট্র্যাটেজি: উপাদানের কার্যকারিতা ও স্বচ্ছতা ফুটিয়ে তুলে ট্রাস্ট-বিল্ডিং ভিজ্যুয়াল ও কম্প্যারিসন ক্যারোসেল ডিজাইন।\n\nফলাফল: প্রথম সপ্তাহেই ৪.১ গুণ ROAS এবং ৪.৮ লাখ টাকার সেলস জেনারেট।',
-      roas_lift: '4.1x ROAS',
-      cpr_reduction: '-32% Drop',
-      turnaround: '7-Day Launch',
-      revenue_generated: '৳4.8L Launch',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '3',
-      sort_order: 3,
-      title_en: 'AURA Haute Parfumerie — Eid Luxury Collection',
-      title_bn: 'অরা ওত পারফিউমারি — ঈদ লাক্সারি কালেকশন',
-      category_en: 'Luxury Brand Identity & Paid Ads',
-      category_bn: 'লাক্সারি ব্র্যান্ড আইডেন্টিটি ও পেইড অ্যাডস',
-      image_url: '/portfolio/aura-perfume.jpg',
-      hook_en: 'Transforming fragrance from a luxury splurge into an irresistible everyday self-care ritual. Premium typography that commanded 2.8x higher AOV.',
-      hook_bn: 'সুগন্ধিকে দৈনন্দিন সেলফ-কেয়ার রিচুয়াল হিসেবে উপস্থাপন করে ২.৮ গুণ বেশি অ্যাভারেজ অর্ডার ভ্যালু (AOV) অর্জন।',
-      case_study_en: 'Challenge: Competing against cheap imported dupes required positioning as an authentic artisanal luxury.\n\nStrategy: Classic Cormorant Garamond typography paired with sensory dark-navy and warm-amber lighting to create undeniable prestige.\n\nOutcome: Sold out 600 limited bottles with zero discounts at an average ticket price of ৳2,450.',
-      case_study_bn: 'চ্যালেঞ্জ: সস্তা ইমপোর্টেড পারফিউমের ভিড়ে একটি দেশীয় ব্র্যান্ডকে প্রিমিয়াম আর্ট হিসেবে তুলে ধরা।\n\nস্ট্র্যাটেজি: ক্ল্যাসিক টাইপোগ্রাফি ও ডার্ক-নেভি অ্যাম্বার লাইটিং দিয়ে আনকম্প্রোমাইজিং লাক্সারি লুক তৈরি।\n\nফলাফল: কোনো ছাড় ছাড়াই গড়ে ২,৪৫০ টাকা মূল্যে ৬০০ বোতলের লিমিটেড স্টক মাত্র ১২ দিনে স্টক-আউট।',
-      roas_lift: '2.8x AOV',
-      cpr_reduction: 'Zero Discounts',
-      turnaround: '12 Days Sold Out',
-      revenue_generated: '600 Bottles',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '4',
-      sort_order: 4,
-      title_en: 'VETIVÈRE Swiss Clarifying Masque — Clean Packaging & Meta Ads',
-      title_bn: 'ভেতিভ্যার সুইস ক্ল্যারিফাইং মাস্ক — লাক্সারি প্যাকেজিং ও মেটা অ্যাডস',
-      category_en: 'Premium Skincare & Packaging',
-      category_bn: 'প্রিমিয়াম স্কিনকেয়ার ও প্যাকেজিং',
-      image_url: '/portfolio/velvet-clay.jpg',
-      hook_en: 'Repositioning local clay masks into a high-status Swiss botanical indulgence. Custom minimalist frosted amber glass jar architecture paired with high-converting Meta Story reels.',
-      hook_bn: 'সাধারণ ক্লে মাস্ককে সুইস বোটানিক্যাল লাক্সারি ট্রিটমেন্ট হিসেবে রি-ব্র্যান্ডিং। মিনিমালিস্ট ফ্রস্টেড অ্যাম্বার প্যাকেজিং ও স্টোরি রিলসের মাধ্যমে ৩.৪x ROAS অর্জন।',
-      case_study_en: 'Challenge: Over-saturated face pack market forcing competitors into cut-throat price wars under ৳350.\n\nStrategy: Positioned as an alpine botanical indulgence at ৳1,250 with minimalist gold foil serif labeling and tactile limestone macro product shots.\n\nOutcome: Achieved 3.4x blended ROAS, with repeat order rate jumping by 68% in 30 days.',
-      case_study_bn: 'চ্যালেঞ্জ: ৩৫০ টাকার নিচে সস্তা ফেসপ্যাকের ভিড়ে একটি দেশীয় ব্র্যান্ডকে প্রিমিয়াম সেগমেন্টে তুলে ধরা।\n\nস্ট্র্যাটেজি: মিনিমালিস্ট গোল্ড ফয়েল ও আলপাইন বোটানিক্যাল কনসেপ্ট দিয়ে ১,২৫০ টাকা মূল্যে রিব্র্যান্ডিং।\n\nফলাফল: ৩.৪ গুণ ROAS এবং প্রথম মাসেই ৬৮% রিপিট কাস্টমার পারচেজ নিশ্চিত।',
-      roas_lift: '3.4x ROAS',
-      cpr_reduction: '+68% Repeat',
-      turnaround: '48h Sprint',
-      revenue_generated: '৳1.8L Profit',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '5',
-      sort_order: 5,
-      title_en: 'VALAISON Intense Renewal Elixir — High-AOV Night Serum',
-      title_bn: 'ভালেসন ইনটেন্স রিনিউয়াল এলিক্সির — হাই-AOV নাইট সিরাম',
-      category_en: 'Meta Performance Ads & Funnel',
-      category_bn: 'মেটা পারফরম্যান্স অ্যাডস ও ফানেল',
-      image_url: '/portfolio/nocturne-repair.jpg',
-      hook_en: 'Deep cobalt visual hierarchy engineered to eliminate COD skepticism. Transparent botanical active breakdown that lifted landing page conversions by 54%.',
-      hook_bn: 'ডিপ কোবাল্ট ভিজ্যুয়াল আর্কিটেকচার যা ক্যাশ-অন-ডেলিভারি গ্রাহকদের সকল দ্বিধা দূর করে। ল্যান্ডিং পেজে কনভার্শন রেট ৫৪% বৃদ্ধি।',
-      case_study_en: 'Challenge: High advertising burn rate on generic broad audience ads without clear positioning.\n\nStrategy: Crafted 6 high-conversion angle creatives contrasting botanical science against chemical harshness in elegant Bengali copy.\n\nOutcome: CPR reduced by 39%, ROAS surged to 4.4x, and monthly run-rate scaled to ৳3.8L.',
-      case_study_bn: 'চ্যালেঞ্জ: টার্গেটিং সঠিক থাকলেও জেনেরিক ক্রিয়েটিভের কারণে বিজ্ঞাপনের খরচ লাগামহীনভাবে বাড়ছিল।\n\nস্ট্র্যাটেজি: উপাদান বিজ্ঞান ও প্রাকৃতিক যত্নের তুলনামূলক ৬টি হাই-কনভার্টিং বাংলা অ্যাড অ্যাঙ্গেল তৈরি।\n\nফলাফল: CPR ৩৯% কমে যায় এবং মাত্র ২ সপ্তাহে ROAS ৪.৪ গুণে পৌঁছায়।',
-      roas_lift: '4.4x ROAS',
-      cpr_reduction: '-39% CPR',
-      turnaround: '48h Delivery',
-      revenue_generated: '৳3.8L / mo',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '6',
-      sort_order: 6,
-      title_en: 'AURA Botanicals — Gentle Saffron Cleansing Oil',
-      title_bn: 'অরা বোটানিক্যালস — জেন্টল স্যাফরন ক্লেনজিং অয়েল',
-      category_en: 'D2C Skincare & Brand Identity',
-      category_bn: 'ডি২সি স্কিনকেয়ার ও ব্র্যান্ড আইডেন্টিটি',
-      image_url: '/portfolio/saffron-cleanser.jpg',
-      hook_en: 'Organic sensorial storytelling. Replaced discount banners with raw ingredient provenance, allowing the client to sell at a 40% premium over local competitors.',
-      hook_bn: 'ডিসকাউন্ট-নির্ভরতা ভেঙে উপাদানের স্বচ্ছতা ও আভিজাত্য তুলে ধরা। প্রতিযোগীদের চেয়ে ৪০% বেশি দামে কোনো ছাড় ছাড়াই বিক্রি নিশ্চিত।',
-      case_study_en: 'Challenge: Price-sensitive customers hesitating to spend on an oil-based cleanser in humid weather.\n\nStrategy: Focused on sensory double-cleansing rituals with travertine textures and calming botanical typography.\n\nOutcome: Delivered 3.1x ROAS on cold audiences and ৳3.2L first-run revenue with zero markdowns.',
-      case_study_bn: 'চ্যালেঞ্জ: আর্দ্র আবহাওয়ায় অয়েল-বেসড ক্লিনজারের উপকারিতা বুঝিয়ে ক্রেতাকে কনভিন্স করা।\n\nস্ট্র্যাটেজি: ট্রাভার্টাইন টেক্সচার ও শান্ত টাইপোগ্রাফির মাধ্যমে প্রিমিয়াম সেলফ-কেয়ার রিচুয়াল প্রতিষ্ঠা।\n\nফলাফল: কোল্ড অডিয়েন্সে ৩.১x ROAS এবং কোনো ছাড় ছাড়াই ৩.২ লাখ টাকার বিক্রি।',
-      roas_lift: '3.1x ROAS',
-      cpr_reduction: '+40% Margin',
-      turnaround: '5-Ad Sprint',
-      revenue_generated: '৳3.2L Revenue',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '7',
-      sort_order: 7,
-      title_en: 'SÉRUM N°7 — Active Retinol Performance Cutdowns',
-      title_bn: 'সিরাম নং ৭ — অ্যাক্টিভ রেটিনল মেটা পারফরম্যান্স অ্যাডস',
-      category_en: 'Meta Ad Creatives & Video Ads',
-      category_bn: 'মেটা অ্যাড ক্রিয়েটিভ ও ভিডিও অ্যাডস',
-      image_url: '/portfolio/aurora-serum.jpg',
-      hook_en: '5 scroll-stopping 9:16 motion variations addressing dermatological pain points in conversational Bengali copy. Meta ad spend scaled from ৳20K to ৳2L/month profitably.',
-      hook_bn: 'স্কিনের সংবেদনশীলতা নিয়ে মনস্তাত্ত্বিক ৫টি বাংলা মোশন কাটডাউন। বিজ্ঞাপন খরচ ২০ হাজার থেকে লাভজনকভাবে মাসে ২ লাখে স্কেল।',
-      case_study_en: 'Challenge: Customer fear of skin irritation from active retinol causing severe cart abandonment.\n\nStrategy: Built high-trust step-by-step application carousels with dermatological assurance in native Bengali.\n\nOutcome: CPR slashed by 48%, scaling ad spend profitably by 10x within 45 days.',
-      case_study_bn: 'চ্যালেঞ্জ: রেটিনল ব্যবহারে স্কিন ইরিটেশনের ভয়ে অধিকাংশ ভিজিটর কার্ট এব্যান্ডন করছিল।\n\nস্ট্র্যাটেজি: সহজ বাংলা ব্যবহারের নিয়ম ও ডার্মাটোলজিক্যাল ট্রাস্ট ব্যাজ দিয়ে ৫টি হাই-কনভার্টিং ক্রিয়েটিভ।\n\nফলাফল: প্রতি অর্ডারে খরচ (CPR) ৪৮% হ্রাস এবং বিজ্ঞাপনে স্কেলিং ১০ গুণ বৃদ্ধি।',
-      roas_lift: '3.9x ROAS',
-      cpr_reduction: '-48% CPR',
-      turnaround: '48h Rapid',
-      revenue_generated: '10x Scaled Spend',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '8',
-      sort_order: 8,
-      title_en: 'ÉLIXIR NOIR — Artisanal Oud Extrait de Parfum',
-      title_bn: 'এলিক্সির নোয়ার — আর্টিসানাল উদ পারফিউম লঞ্চ',
-      category_en: 'Haute Parfumerie & Luxury Positioning',
-      category_bn: 'লাক্সারি পারফিউম ও প্রেস্টিজ পজিশনিং',
-      image_url: '/portfolio/aura-perfume.jpg',
-      hook_en: 'Crafting sensory prestige for cold Facebook traffic. Elegant gold-embossed type and tactile textures drove a record-breaking 72-hour launch sell-out.',
-      hook_bn: 'কোল্ড ফেসবুক ট্রাফিকের জন্য প্রেস্টিজ ব্র্যান্ডিং। মাত্র ৭২ ঘণ্টার লঞ্চ ক্যাম্পেইনে সম্পূর্ণ স্টক আউট।',
-      case_study_en: 'Challenge: Selling premium artisanal fragrance online without allowing the buyer to smell the product.\n\nStrategy: Crafted evocative, poetic Bengali olfactory descriptions combined with cinematic luxury bottle lighting.\n\nOutcome: Achieved 5.2x launch-day ROAS, completely selling out the initial 400 flacons in 72 hours.',
-      case_study_bn: 'চ্যালেঞ্জ: ঘ্রাণ নেওয়ার সুযোগ ছাড়া অনলাইনে ২,০০০ টাকার ওপর লাক্সারি পারফিউম সেল করা।\n\nস্ট্র্যাটেজি: সংবেদনশীল বাংলা অনুভূতি প্রকাশ এবং রাজকীয় অ্যাম্বার আলোর শৈল্পিক সমন্বয়।\n\nফলাফল: ৫.২x রেকর্ড ROAS এবং মাত্র ৭২ ঘণ্টায় ৪০০ বোতলের স্টক সমাপ্ত।',
-      roas_lift: '5.2x ROAS',
-      cpr_reduction: '72h Sold Out',
-      turnaround: 'Full Campaign',
-      revenue_generated: '400 Flacons',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '9',
-      sort_order: 9,
-      title_en: 'L’HERBIER — Botanical Body Nectar & Storefront',
-      title_bn: 'লার্বিয়ে — বোটানিক্যাল বডি নেকটার ও স্টোরফ্রন্ট আর্কিটেকচার',
-      category_en: 'Storefront UI & Brand Packaging',
-      category_bn: 'স্টোরফ্রন্ট UI ও ব্র্যান্ড প্যাকেজিং',
-      image_url: '/portfolio/velvet-clay.jpg',
-      hook_en: 'Harmonizing storefront UI with high-converting Meta feed statics. Reduced checkout drop-off by 38% through transparent ingredient comparison tables.',
-      hook_bn: 'স্টোরফ্রন্ট ডিজাইন ও মেটা ফিড স্ট্যাটিক্সের নিখুঁত সামঞ্জস্য। চেকআউট ড্রপ-অফ ৩৮% হ্রাস।',
-      case_study_en: 'Challenge: Disconnect between premium Instagram ads and a clunky, cheap Shopify theme caused bounce rates of over 75%.\n\nStrategy: Designed an integrated visual design system spanning Meta Ads, product page PDPs, and mobile checkout reassurance.\n\nOutcome: Bounce rate plunged to 32%, lifting overall store revenue to ৳6.4L monthly run-rate.',
-      case_study_bn: 'চ্যালেঞ্জ: প্রিমিয়াম অ্যাডের পর সাধারণ স্টোরে এসে কাস্টমার বাউন্স রেট ছিল ৭৫% এর বেশি।\n\nস্ট্র্যাটেজি: বিজ্ঞাপন থেকে শুরু করে চেকআউট পর্যন্ত নিরবচ্ছিন্ন সুইস কোয়াইট লাক্সারি ইউজার জার্নি তৈরি।\n\nফলাফল: বাউন্স রেট ৩২% এ নেমে আসে এবং মাসিক সেলস ৬.৪ লাখে উন্নীত হয়।',
-      roas_lift: '3.3x ROAS',
-      cpr_reduction: '-38% Bounce',
-      turnaround: 'Design Retainer',
-      revenue_generated: '৳6.4L / mo',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-    {
-      id: '10',
-      sort_order: 10,
-      title_en: 'AURA Céleste — Radiance Shield SPF 50+',
-      title_bn: 'অরা সেলেস্ত — রেডিয়েন্স শিল্ড সানস্ক্রিন ক্যাম্পেইন',
-      category_en: 'High-Converting Meta Creative Sprint',
-      category_bn: 'হাই-কনভার্টিং মেটা ক্রিয়েটিভ স্প্রিন্ট',
-      image_url: '/portfolio/saffron-cleanser.jpg',
-      hook_en: 'Overcoming white-cast objections with high-trust texture macros. Tested against Canva competitor ads; achieved 2.4x higher click-to-purchase rate.',
-      hook_bn: 'সানস্ক্রিনের হোয়াইট কাস্ট সংশয় দূর করতে টেক্সচার ও মেকআপ ফ্রেন্ডলিনেস হাইলাইট। ক্যানভা অ্যাডের তুলনায় ২.৪ গুণ বেশি পারচেজ কনভার্শন রেট।',
-      case_study_en: 'Challenge: High consumer skepticism in Bangladesh regarding sunscreen stickiness and white cast.\n\nStrategy: Produced 5 macro-texture hero statics proving zero white cast with clean, scientific elegance.\n\nOutcome: Click-to-purchase rate surged 2.4x, driving a 3.7x ROAS across cold Meta audiences.',
-      case_study_bn: 'চ্যালেঞ্জ: সাধারণ সানস্ক্রিনে মুখ সাদা বা তেলতেলে হয়ে যাওয়ার ভয় ছিল প্রধান বাধা।\n\nস্ট্র্যাটেজি: হাই-রেজোলিউশন ম্যাক্রো শট এবং স্পষ্ট বাংলা ব্যবহারের মাধ্যমে বাস্তব স্কিন ফিনিশ প্রদর্শন।\n\nফলাফল: ২.৪ গুণ বেশি ক্রয় আগ্রহ এবং ৩.৭ গুণ রিটার্ন অন অ্যাড স্পেন্ড (ROAS)।',
-      roas_lift: '3.7x ROAS',
-      cpr_reduction: '2.4x Purchases',
-      turnaround: '48h Rapid',
-      revenue_generated: '৳2.9L / mo',
-      pdf_url_en: '',
-      pdf_url_bn: '',
-    },
-  ];
+  const defaultProjects: PortfolioProject[] = DEFAULT_PORTFOLIO_PROJECTS;
 
   // Filter out any empty projects without images or content to prevent broken skeleton cards
   const validProjects = projects.filter((p) => {
@@ -272,7 +82,9 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       (p.title_en && p.title_en.trim()) ||
       (p.title_bn && p.title_bn.trim()) ||
       (p.case_study_en && p.case_study_en.trim()) ||
-      (p.case_study_bn && p.case_study_bn.trim())
+      (p.case_study_bn && p.case_study_bn.trim()) ||
+      (p.hook_en && p.hook_en.trim()) ||
+      (p.hook_bn && p.hook_bn.trim())
     );
     return hasImg || hasMock || hasMockList || hasContent;
   });
@@ -883,42 +695,50 @@ function CaseStudyDrawer({
               />
             </div>
 
-            {/* Verified Performance Metrics Ribbon */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#1e3a8a] text-white">
-              <div className="text-center p-1.5">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'ROAS লিফট' : 'ROAS Lift'}
-                </span>
-                <span className="text-lg font-bold text-accent font-mono">
-                  {project.roas_lift || '3.8x ROAS'}
-                </span>
+            {/* Performance Metrics Ribbon — shown when metrics are provided */}
+            {(project.roas_lift || project.cpr_reduction || project.turnaround) ? (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#1e3a8a] text-white">
+                {project.roas_lift && (
+                  <div className="text-center p-1.5">
+                    <span className="text-[10px] uppercase font-mono text-white/70 block">
+                      {isBn ? 'ROAS লিফট' : 'ROAS Lift'}
+                    </span>
+                    <span className="text-lg font-bold text-accent font-mono">
+                      {project.roas_lift}
+                    </span>
+                  </div>
+                )}
+                {project.cpr_reduction && (
+                  <div className="text-center p-1.5">
+                    <span className="text-[10px] uppercase font-mono text-white/70 block">
+                      {isBn ? 'বিজ্ঞাপন খরচ (CPR)' : 'CPR Reduction'}
+                    </span>
+                    <span className="text-lg font-bold text-white font-mono">
+                      {project.cpr_reduction}
+                    </span>
+                  </div>
+                )}
+                {project.turnaround && (
+                  <div className="text-center p-1.5">
+                    <span className="text-[10px] uppercase font-mono text-white/70 block">
+                      {isBn ? 'ডেলিভারি টাইম' : 'Turnaround'}
+                    </span>
+                    <span className="text-lg font-bold text-white font-mono">
+                      {project.turnaround}
+                    </span>
+                  </div>
+                )}
+                <div className="text-center p-1.5">
+                  <span className="text-[10px] uppercase font-mono text-white/70 block">
+                    {isBn ? 'স্ট্যাটাস' : 'Verification'}
+                  </span>
+                  <span className="text-sm font-bold text-emerald-400 font-mono flex items-center justify-center gap-1 mt-1">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    {isBn ? 'যাচাইকৃত' : 'Verified'}
+                  </span>
+                </div>
               </div>
-              <div className="text-center p-1.5">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'বিজ্ঞাপন খরচ (CPR)' : 'CPR Reduction'}
-                </span>
-                <span className="text-lg font-bold text-white font-mono">
-                  {project.cpr_reduction || '-44% CPR'}
-                </span>
-              </div>
-              <div className="text-center p-1.5">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'ডেলিভারি টাইম' : 'Turnaround'}
-                </span>
-                <span className="text-lg font-bold text-white font-mono">
-                  {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
-                </span>
-              </div>
-              <div className="text-center p-1.5">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'স্ট্যাটাস' : 'Verification'}
-                </span>
-                <span className="text-sm font-bold text-emerald-400 font-mono flex items-center justify-center gap-1 mt-1">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  {isBn ? 'যাচাইকৃত' : 'Verified'}
-                </span>
-              </div>
-            </div>
+            ) : null}
 
             {/* Strategic Hook */}
             {hook && (
