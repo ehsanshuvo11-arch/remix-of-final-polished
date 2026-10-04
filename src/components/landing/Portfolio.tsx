@@ -17,7 +17,9 @@ import {
   Layers, 
   ChevronDown,
   MessageCircle,
-  ExternalLink
+  ExternalLink,
+  FileText,
+  Download
 } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
@@ -50,16 +52,16 @@ function matchesCategory(project: PortfolioProject, catId: string): boolean {
   const title = (project.title_en || '').toLowerCase();
   
   if (catId === 'skincare') {
-    return en.includes('skincare') || bn.includes('স্কিনকেয়ার') || en.includes('serum') || en.includes('elixir') || en.includes('masque') || en.includes('glow') || title.includes('lumin') || title.includes('aurora') || title.includes('cleanser');
+    return en.includes('skincare') || bn.includes('স্কিনকেয়ার') || en.includes('serum') || en.includes('elixir') || en.includes('masque') || en.includes('glow') || title.includes('lumin') || title.includes('aurora') || title.includes('cleanser') || en.includes('d2c') || bn.includes('ডি২সি');
   }
   if (catId === 'ads') {
-    return en.includes('ad') || en.includes('performance') || en.includes('campaign') || bn.includes('অ্যাড') || en.includes('sprint') || en.includes('funnel');
+    return en.includes('ad') || en.includes('performance') || en.includes('campaign') || bn.includes('অ্যাড') || en.includes('sprint') || en.includes('funnel') || en.includes('creative');
   }
   if (catId === 'perfume') {
-    return en.includes('perfume') || en.includes('parfum') || bn.includes('পারফিউম') || en.includes('fragrance');
+    return en.includes('perfume') || en.includes('parfum') || bn.includes('পারফিউম') || en.includes('fragrance') || en.includes('scent') || bn.includes('সুগন্ধি');
   }
   if (catId === 'branding') {
-    return en.includes('packaging') || en.includes('identity') || bn.includes('প্যাকেজিং') || bn.includes('ব্র্যান্ডিং') || en.includes('brand');
+    return en.includes('packaging') || en.includes('identity') || bn.includes('প্যাকেজিং') || bn.includes('ব্র্যান্ডিং') || en.includes('brand') || en.includes('design') || bn.includes('ডিজাইন');
   }
   return true;
 }
@@ -261,12 +263,18 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
     },
   ];
 
-  // Filter out any empty projects without images to prevent broken skeleton cards
+  // Filter out any empty projects without images or content to prevent broken skeleton cards
   const validProjects = projects.filter((p) => {
     const hasImg = typeof p.image_url === 'string' && p.image_url.trim().length > 0;
     const hasMock = typeof p.mockup_url === 'string' && p.mockup_url.trim().length > 0;
     const hasMockList = Array.isArray(p.mockup_urls) && p.mockup_urls.length > 0;
-    return hasImg || hasMock || hasMockList;
+    const hasContent = Boolean(
+      (p.title_en && p.title_en.trim()) ||
+      (p.title_bn && p.title_bn.trim()) ||
+      (p.case_study_en && p.case_study_en.trim()) ||
+      (p.case_study_bn && p.case_study_bn.trim())
+    );
+    return hasImg || hasMock || hasMockList || hasContent;
   });
 
   // Combine real database projects with default signature projects
@@ -466,6 +474,29 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Format Rich / Plain Text Content (Preserves HTML, Headings, Lists, Paragraphs)
+───────────────────────────────────────────────────────────────────────────── */
+
+function formatRichContent(content: string | null | undefined): string {
+  if (!content) return '';
+  const trimmed = content.trim();
+  if (!trimmed) return '';
+
+  // Check if content already contains HTML tags (e.g. from TipTap rich editor, Google Docs paste)
+  const hasHtml = /<\/?(p|div|h[1-6]|ul|ol|li|blockquote|strong|b|em|i|u|s|a|table|tr|td|br|span)\b/i.test(trimmed);
+  if (hasHtml) {
+    return trimmed;
+  }
+
+  // If plain text with linebreaks, wrap double newlines into paragraphs, single into <br />
+  return trimmed
+    .split(/\n{2,}/)
+    .filter(Boolean)
+    .map((p) => `<p>${p.replace(/\n/g, '<br />')}</p>`)
+    .join('');
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Individual Project Card (Optimized for both Visual & Impact modes)
 ───────────────────────────────────────────────────────────────────────────── */
 
@@ -491,18 +522,37 @@ function ProjectCard({
       : (project.mockup_url ? [project.mockup_url] : []);
   const hasMockups = mockupUrls.length > 0;
 
-  const pick = (bn: string | null | undefined, en: string | null | undefined) =>
-    isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+  const pick = (bn: string | null | undefined, en: string | null | undefined) => {
+    const cleanBn = bn?.trim() ?? '';
+    const cleanEn = en?.trim() ?? '';
+    if (isBn) {
+      return cleanBn || cleanEn;
+    }
+    return cleanEn || cleanBn;
+  };
 
-  const title = pick(project.title_bn, project.title_en);
-  const category = pick(project.category_bn, project.category_en);
+  const title = pick(project.title_bn, project.title_en) || (isBn ? 'কেস স্টাডি' : 'Case Study');
+  const category = pick(project.category_bn, project.category_en) || (isBn ? 'ডিজাইন' : 'Creative Design');
   const hook = pick(project.hook_bn, project.hook_en);
+  const caseStudy = pick(project.case_study_bn, project.case_study_en);
+  const pdfUrl = isBn
+    ? (project.pdf_url_bn || project.pdf_url_en)
+    : (project.pdf_url_en || project.pdf_url_bn);
+  const hasPdf = Boolean(pdfUrl && pdfUrl.trim());
 
   const heroImage = (typeof project.image_url === 'string' && project.image_url.trim())
-    ? project.image_url
+    ? resolveStorageUrl(project.image_url)
     : (typeof mockupUrls[0] === 'string' && (mockupUrls[0] as string).trim())
-      ? (mockupUrls[0] as string)
+      ? resolveStorageUrl(mockupUrls[0] as string)
       : '/portfolio/lumin-botanical.jpg';
+
+  const displayHook = useMemo(() => {
+    if (hook && hook.trim()) return formatRichContent(hook);
+    if (!caseStudy || !caseStudy.trim()) return '';
+    const stripped = caseStudy.replace(/<[^>]*>?/gm, '').trim();
+    if (!stripped) return '';
+    return `<p>${stripped.slice(0, 150)}${stripped.length > 150 ? '...' : ''}</p>`;
+  }, [hook, caseStudy]);
 
   return (
     <m.article
@@ -575,11 +625,11 @@ function ProjectCard({
           {title}
         </h3>
 
-        {/* Hook text */}
-        {hook && (
+        {/* Hook / Teaser text */}
+        {displayHook && (
           <div
-            className="mt-2 text-xs sm:text-sm text-foreground/75 leading-relaxed line-clamp-2"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(hook) }}
+            className="mt-2 text-xs sm:text-sm text-foreground/75 leading-relaxed line-clamp-2 prose prose-sm max-w-none [&_p]:my-0"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(displayHook) }}
           />
         )}
 
@@ -618,16 +668,32 @@ function ProjectCard({
           <ArrowRight className="w-3.5 h-3.5 text-accent transition-transform duration-300 group-hover/btn:translate-x-1" />
         </button>
 
-        {hasMockups && (
-          <button
-            type="button"
-            onClick={() => setLightboxOpen(true)}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-accent transition-colors cursor-pointer"
-          >
-            <span>{isBn ? 'মকআপ' : 'Mockups'}</span>
-            <span className="text-[9.5px] font-mono opacity-70">({mockupUrls.length})</span>
-          </button>
-        )}
+        <div className="flex items-center gap-2.5">
+          {hasPdf && (
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-accent transition-colors"
+              title={isBn ? 'কেস স্টাডি PDF ডাউনলোড করুন' : 'Download Case Study PDF'}
+            >
+              <FileText className="w-3.5 h-3.5 text-accent" />
+              <span>PDF</span>
+            </a>
+          )}
+
+          {hasMockups && (
+            <button
+              type="button"
+              onClick={() => setLightboxOpen(true)}
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-accent transition-colors cursor-pointer"
+            >
+              <span>{isBn ? 'মকআপ' : 'Mockups'}</span>
+              <span className="text-[9.5px] font-mono opacity-70">({mockupUrls.length})</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Mockup Lightbox Portal */}
@@ -659,14 +725,45 @@ function CaseStudyDrawer({
   const [localLang, setLocalLang] = useState<'bn' | 'en'>(globalIsBn ? 'bn' : 'en');
   const isBn = localLang === 'bn';
 
-  const pick = (bn: string | null | undefined, en: string | null | undefined) =>
-    isBn ? ((bn && bn.trim()) ? bn : (en ?? '')) : (en ?? '');
+  const pick = (bn: string | null | undefined, en: string | null | undefined) => {
+    const cleanBn = bn?.trim() ?? '';
+    const cleanEn = en?.trim() ?? '';
+    if (isBn) {
+      return cleanBn || cleanEn;
+    }
+    return cleanEn || cleanBn;
+  };
 
-  const title = pick(project.title_bn, project.title_en);
-  const category = pick(project.category_bn, project.category_en);
+  const title = pick(project.title_bn, project.title_en) || (isBn ? 'কেস স্টাডি' : 'Case Study');
+  const category = pick(project.category_bn, project.category_en) || (isBn ? 'ডিজাইন' : 'Creative Design');
   const caseStudy = pick(project.case_study_bn, project.case_study_en);
   const hook = pick(project.hook_bn, project.hook_en);
-  const heroImage = project.image_url || '/portfolio/lumin-botanical.jpg';
+  const pdfUrl = isBn
+    ? (project.pdf_url_bn || project.pdf_url_en)
+    : (project.pdf_url_en || project.pdf_url_bn);
+
+  const mockupUrls = useMemo(() => {
+    const list: string[] = [];
+    if (Array.isArray(project.mockup_urls)) {
+      project.mockup_urls.forEach((item) => {
+        if (typeof item === 'string' && item.trim()) list.push(item);
+        else if (item && typeof item === 'object' && 'url' in (item as any)) list.push(String((item as any).url));
+      });
+    }
+    if (project.mockup_url && !list.includes(project.mockup_url)) {
+      list.push(project.mockup_url);
+    }
+    return list;
+  }, [project.mockup_urls, project.mockup_url]);
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const heroImage = (typeof project.image_url === 'string' && project.image_url.trim())
+    ? resolveStorageUrl(project.image_url)
+    : (mockupUrls.length > 0)
+      ? resolveStorageUrl(mockupUrls[0])
+      : '/portfolio/lumin-botanical.jpg';
 
   // Inform mobile dock to tuck away while modal is active
   useEffect(() => {
@@ -690,7 +787,7 @@ function CaseStudyDrawer({
   }, [onClose]);
 
   const whatsappMessage = encodeURIComponent(
-    `Hi POLISHED, I just reviewed your case study for "${project.title_en}" and would love to achieve similar ROAS results for my brand.`
+    `Hi POLISHED, I just reviewed your case study for "${project.title_en || project.title_bn}" and would love to achieve similar ROAS results for my brand.`
   );
 
   return createPortal(
@@ -818,26 +915,120 @@ function CaseStudyDrawer({
             {/* Strategic Hook */}
             {hook && (
               <div className="p-4 rounded-xl bg-accent/10 border-l-4 border-accent text-primary">
-                <p 
-                  className="text-xs sm:text-sm font-medium leading-relaxed"
+                <div 
+                  className="text-xs sm:text-sm font-medium leading-relaxed prose prose-sm max-w-none text-primary [&_p]:my-1"
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                >
-                  {hook}
-                </p>
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatRichContent(hook)) }}
+                />
               </div>
             )}
 
             {/* Detailed Case Study Narrative */}
             {caseStudy && (
               <div className="space-y-4 pt-2">
-                <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground font-semibold">
-                  {isBn ? 'কেস স্টাডি বিশ্লেষণ ও ফলাফল' : 'Detailed Case Breakdown'}
-                </h4>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground font-semibold">
+                    {isBn ? 'কেস স্টাডি বিশ্লেষণ ও ফলাফল' : 'Detailed Case Breakdown'}
+                  </h4>
+                  {pdfUrl && (
+                    <a
+                      href={pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/15 text-primary text-[11px] font-semibold transition-colors"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-accent" />
+                      <span>{isBn ? 'PDF ডাউনলোড' : 'Download PDF'}</span>
+                    </a>
+                  )}
+                </div>
+
                 <div 
-                  className="prose prose-sm max-w-none text-foreground/85 leading-relaxed font-sans space-y-3 whitespace-pre-line"
-                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}
+                  className="prose prose-sm sm:prose-base max-w-none text-foreground/90 leading-relaxed font-sans dark:prose-invert
+                    [&_h1]:text-xl sm:[&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-primary [&_h1]:mt-6 [&_h1]:mb-3 [&_h1]:tracking-tight
+                    [&_h2]:text-lg sm:[&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-primary [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:tracking-tight
+                    [&_h3]:text-base sm:[&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:mt-5 [&_h3]:mb-2 [&_h3]:tracking-tight
+                    [&_p]:my-3.5 [&_p]:leading-relaxed [&_p]:text-foreground/85
+                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3.5 [&_ul]:space-y-1.5 [&_ul]:text-foreground/85
+                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-3.5 [&_ol]:space-y-1.5 [&_ol]:text-foreground/85
+                    [&_li]:pl-1 [&_li]:leading-relaxed
+                    [&_strong]:font-bold [&_strong]:text-primary
+                    [&_b]:font-bold [&_b]:text-primary
+                    [&_em]:italic
+                    [&_u]:underline [&_u]:underline-offset-2
+                    [&_s]:line-through [&_s]:opacity-60
+                    [&_blockquote]:border-l-4 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:py-1.5 [&_blockquote]:my-4 [&_blockquote]:italic [&_blockquote]:text-foreground/80 [&_blockquote]:bg-primary/[0.02] [&_blockquote]:rounded-r-lg
+                    [&_a]:text-accent [&_a]:underline [&_a]:font-medium hover:[&_a]:text-accent/80"
+                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : { lineHeight: 1.75 }}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(formatRichContent(caseStudy), {
+                      ADD_ATTR: ['target', 'rel'],
+                    }),
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Official PDF Document Card */}
+            {pdfUrl && (
+              <div className="p-4 rounded-2xl bg-primary/[0.03] border border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/15 text-accent flex items-center justify-center shrink-0">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-bold text-primary">
+                      {isBn ? 'কেস স্টাডি অফিসিয়াল ডকুমেন্ট (PDF)' : 'Official Case Study Document (PDF)'}
+                    </h5>
+                    <p className="text-[11px] text-muted-foreground">
+                      {isBn ? 'সম্পূর্ণ ডেটা ও স্ট্র্যাটেজি এক নজরে পড়তে ডাউনলোড করুন' : 'Download full strategic breakdown and metrics report'}
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-semibold transition-all hover:scale-[1.02] inline-flex items-center justify-center gap-2 shrink-0 shadow-sm"
                 >
-                  {caseStudy}
+                  <Download className="w-3.5 h-3.5" />
+                  <span>{isBn ? 'PDF ডাউনলোড' : 'Download PDF'}</span>
+                </a>
+              </div>
+            )}
+
+            {/* Project Deliverables / Mockup Gallery */}
+            {mockupUrls.length > 0 && (
+              <div className="space-y-3 pt-4 border-t border-primary/10">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground font-semibold">
+                    {isBn ? `প্রজেক্ট গ্যালারি ও মকআপ (${mockupUrls.length})` : `Deliverables & Mockups (${mockupUrls.length})`}
+                  </h4>
+                  <span className="text-[10px] text-muted-foreground">
+                    {isBn ? 'বড় করে দেখতে ট্যাপ করুন' : 'Tap to expand'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {mockupUrls.map((url, mi) => (
+                    <div
+                      key={mi}
+                      onClick={() => {
+                        setLightboxIndex(mi);
+                        setLightboxOpen(true);
+                      }}
+                      className="group relative aspect-square rounded-xl overflow-hidden bg-primary/5 border border-primary/10 cursor-pointer hover:border-accent transition-all"
+                    >
+                      <img
+                        src={resolveStorageUrl(url)}
+                        alt={`${title} mockup ${mi + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Eye className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -865,7 +1056,7 @@ function CaseStudyDrawer({
                   tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
                   price: '৳3,999',
                   priceBn: '৳৩,৯৯৯',
-                  source: `Case Study: ${project.title_en}`,
+                  source: `Case Study: ${project.title_en || project.title_bn}`,
                 });
               }}
               className="w-full sm:flex-1 h-11 rounded-xl bg-accent hover:bg-accent/90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
@@ -875,6 +1066,16 @@ function CaseStudyDrawer({
             </button>
           </div>
         </m.div>
+
+        {/* Mockup Lightbox Portal inside Drawer */}
+        {lightboxOpen && (
+          <MockupLightbox
+            urls={mockupUrls}
+            initialIndex={lightboxIndex}
+            title={title}
+            onClose={() => setLightboxOpen(false)}
+          />
+        )}
       </div>
     </AnimatePresence>,
     document.body

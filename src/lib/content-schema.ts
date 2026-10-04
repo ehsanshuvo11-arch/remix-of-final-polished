@@ -91,6 +91,11 @@ export function normalizePortfolioProjectRow(row: RowLike): PortfolioProject {
     mockup_url: firstNonEmpty(singleMockup, mockupUrls[0]),
     mockup_urls: mockupUrls.length ? mockupUrls : (singleMockup ? [singleMockup] : []),
     mockup_url_data: rawMockupData,
+    roas_lift: stringValue(row.roas_lift),
+    cpr_reduction: stringValue(row.cpr_reduction),
+    aov_increase: stringValue(row.aov_increase),
+    revenue_generated: stringValue(row.revenue_generated),
+    turnaround: stringValue(row.turnaround),
   };
 }
 
