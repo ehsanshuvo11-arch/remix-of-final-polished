@@ -1,7 +1,15 @@
-import { useState } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ArrowRight, Check, Clock, TrendingUp, Palette, ShoppingBag, Zap, ChevronDown, ChevronUp, Sparkles, ShieldCheck, CreditCard, MessageCircle } from 'lucide-react';
+import {
+  ArrowRight,
+  Check,
+  Clock,
+  Sparkles,
+  ShieldCheck,
+  CreditCard,
+  MessageCircle,
+  FileCheck,
+} from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
 import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
@@ -14,17 +22,11 @@ interface ServicesProps {
   content: ServicesMetaContent | null;
 }
 
-/**
- * Service-level details layered on top of each CMS pricing tier.
- * Keyed by tier id so Services + Pricing live in ONE section:
- * "what we do" and "what it costs" are read together, never twice.
- */
 const SERVICE_META: Record<
   string,
   {
-    icon: typeof Palette;
-    tabEn: string;
-    tabBn: string;
+    prefixEn: string;
+    prefixBn: string;
     turnaroundEn: string;
     turnaroundBn: string;
     roiEn: string;
@@ -32,56 +34,91 @@ const SERVICE_META: Record<
   }
 > = {
   'trial-pack': {
-    icon: Palette,
-    tabEn: 'Test Drive',
-    tabBn: '৳৩,৯৯৯ ট্রায়াল',
-    turnaroundEn: '48 hours',
-    turnaroundBn: '৪৮ ঘণ্টা',
+    prefixEn: '01 / TRIAL SPRINT',
+    prefixBn: '০১ / টেস্ট ড্রাইভ',
+    turnaroundEn: '48h Delivery',
+    turnaroundBn: '৪৮ ঘণ্টার ডেলিভারি',
     roiEn: '100% bespoke craft, zero templates',
     roiBn: '১০০% কাস্টম ক্রাফট, জিরো টেমপ্লেট',
   },
   'growth-pack': {
-    icon: ShoppingBag,
-    tabEn: 'D2C Growth',
-    tabBn: 'D2C গ্রোথ',
-    turnaroundEn: 'Monthly sprint',
-    turnaroundBn: 'মাসিক স্প্রিন্ট',
-    roiEn: 'Conversion architecture & full testing set',
-    roiBn: 'কনভার্শন আর্কিটেকচার ও পূর্ণাঙ্গ টেস্টিং সেট',
+    prefixEn: '02 / D2C GROWTH ★',
+    prefixBn: '০২ / গ্রোথ পার্টনার ★',
+    turnaroundEn: 'Monthly Sprint',
+    turnaroundBn: 'মাসিক ডেডিকেটেড স্প্রিন্ট',
+    roiEn: 'Engineered for 3x+ ROAS ad scaling',
+    roiBn: 'বিজ্ঞাপনে ৩ গুণ+ সেলস স্কেলিংয়ের জন্য তৈরি',
   },
   'agency-pack': {
-    icon: Zap,
-    tabEn: 'Agency',
-    tabBn: 'এজেন্সি',
-    turnaroundEn: '48h SLA',
-    turnaroundBn: '৪৮ ঘণ্টা SLA',
+    prefixEn: '03 / SCALE & AGENCY',
+    prefixBn: '০৩ / এজেন্সি হোয়াইট-লেবেল',
+    turnaroundEn: '48h Fast SLA',
+    turnaroundBn: '৪৮ ঘণ্টার ফাস্ট SLA',
     roiEn: 'Scale client output with zero design hiring',
     roiBn: 'হায়ারিং ছাড়া হোয়াইট-লেবেল ক্রিয়েটিভ স্কেলিং',
   },
 };
 
-const FALLBACK_META = SERVICE_META['trial-pack'];
+const FALLBACK_META = {
+  prefixEn: 'SPRINT TIER',
+  prefixBn: 'স্প্রিন্ট প্যাকেজ',
+  turnaroundEn: '3-5 days',
+  turnaroundBn: '৩-৫ দিন',
+  roiEn: 'Guaranteed performance lift',
+  roiBn: 'পারফরম্যান্স নিশ্চিত বৃদ্ধির নিশ্চয়তা',
+};
+
 const bnFont = { fontFamily: "'Noto Serif Bengali', serif" } as const;
 const serifFont = { fontFamily: "'Cormorant Garamond', serif" } as const;
 
-const toBnDigits = (n: number) => String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[+d]);
-
-/** Splits "৳32,299 / month" → { amount: "৳32,299", period: "month" } */
-function splitPrice(price?: string) {
-  if (!price) return { amount: '', period: '' };
-  const [amount, period] = price.split('/').map((s) => s.trim());
-  return { amount, period: period ?? '' };
+function splitPrice(raw?: string): { amount: string; period: string | null } {
+  if (!raw) return { amount: '', period: null };
+  const parts = raw.split('/');
+  return {
+    amount: parts[0]?.trim() || '',
+    period: parts[1]?.trim() || null,
+  };
 }
 
 export default function Services(_props: ServicesProps) {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
-  const { data: cms } = useSiteSetting<PricingContent>('pricing');
 
-  const content: PricingContent = DEFAULT_PRICING;
-  const tiers: PricingTier[] = DEFAULT_PRICING.tiers!;
+  const { data: pricingData } = useSiteSetting<PricingContent>('pricing_content', DEFAULT_PRICING);
+  const content = pricingData || DEFAULT_PRICING;
+  const tiers = (content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers) || [];
 
-  const [activeTier, setActiveTier] = useState(0);
+  // Mobile Carousel state & scroll tracking
+  const [activeMobileIdx, setActiveMobileIdx] = useState(1);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const handleMobileScroll = () => {
+    if (!carouselRef.current) return;
+    const { scrollLeft, offsetWidth } = carouselRef.current;
+    const index = Math.round(scrollLeft / (offsetWidth * 0.88));
+    if (index >= 0 && index < tiers.length) {
+      setActiveMobileIdx(index);
+    }
+  };
+
+  const scrollToMobileCard = (idx: number) => {
+    if (!carouselRef.current) return;
+    const cardEl = carouselRef.current.children[idx] as HTMLElement;
+    if (cardEl) {
+      cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      setActiveMobileIdx(idx);
+    }
+  };
+
+  // Default scroll to featured card on initial mount
+  useEffect(() => {
+    if (carouselRef.current && tiers.length > 1) {
+      const featuredIndex = tiers.findIndex((t) => t.featured);
+      if (featuredIndex !== -1) {
+        setTimeout(() => scrollToMobileCard(featuredIndex), 300);
+      }
+    }
+  }, []);
 
   const bookTier = (tier: PricingTier) => {
     const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
@@ -113,80 +150,98 @@ export default function Services(_props: ServicesProps) {
     <section
       id="services"
       aria-labelledby="services-pricing-heading"
-      className="relative bg-[#f9fafb] text-primary border-y border-primary/10 scroll-mt-20"
+      className="relative py-20 sm:py-24 md:py-32 bg-[#faf7f2] text-primary border-y border-primary/10 overflow-hidden"
     >
-      {/* Legacy anchors so any #pricing / #investment link still lands here */}
       <span id="pricing" className="absolute -top-20" aria-hidden="true" />
       <span id="investment" className="absolute -top-20" aria-hidden="true" />
 
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 md:px-14 py-14 md:py-28">
-        {/* ── Header ── */}
-        <header className="max-w-[820px] mb-8 md:mb-14">
+      <div className="max-w-[1240px] mx-auto px-5 sm:px-8 md:px-12">
+        {/* Section Header */}
+        <header className="max-w-2xl mx-auto text-center mb-12 sm:mb-16">
           <MotionReveal>
-            <p
-              className={`text-accent font-semibold mb-4 ${isBn ? 'text-[14px] tracking-normal' : 'text-[10px] tracking-[4px] uppercase'}`}
-              style={isBn ? bnFont : undefined}
-            >
-              {isBn ? 'স্বচ্ছ বিনিয়োগ ও আসল লাভ' : 'Direct Investment & Profit'}
-            </p>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span
+                className="text-[10.5px] sm:text-[11px] uppercase tracking-[2.5px] font-bold text-primary/80"
+                style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
+              >
+                {isBn ? 'স্বচ্ছ বিনিয়োগ • নির্দিষ্ট ফলাফল' : 'Transparent Investment • Fixed Deliverables'}
+              </span>
+            </div>
           </MotionReveal>
 
-          <h2
-            id="services-pricing-heading"
-            className={`font-normal text-primary leading-[1.12] tracking-tight mb-4 ${
-              isBn ? 'text-[26px] sm:text-4xl md:text-[46px]' : 'text-[32px] sm:text-5xl md:text-[58px]'
-            }`}
-            style={isBn ? bnFont : serifFont}
-          >
-            {isBn ? (
-              <>
-                বিজ্ঞাপনে আর লস নয়।
-                <br />
-                <em className="italic text-accent">আসল সেলস আনার সিস্টেমে আসুন।</em>
-              </>
-            ) : (
-              <>
-                Stop Guessing on Ads.
-                <br />
-                <em className="italic text-accent">Pay for creatives that actually convert.</em>
-              </>
-            )}
-          </h2>
+          <MotionReveal delay={0.05}>
+            <h2
+              id="services-pricing-heading"
+              className={`tracking-tight text-primary leading-[1.12] mb-4 ${
+                isBn ? 'text-[28px] sm:text-[38px] md:text-[46px] font-bold' : 'text-[34px] sm:text-[44px] md:text-[54px] font-normal'
+              }`}
+              style={isBn ? bnFont : serifFont}
+            >
+              {isBn ? (
+                <>
+                  বিজ্ঞাপনে আর লস নয়।
+                  <br />
+                  <em className="italic text-accent">আসল সেলস আনার সিস্টেমে আসুন।</em>
+                </>
+              ) : (
+                <>
+                  Stop Guessing on Ads.
+                  <br />
+                  <em className="italic text-accent">Pay for creatives that actually convert.</em>
+                </>
+              )}
+            </h2>
+          </MotionReveal>
 
-          <p
-            className="text-primary/65 text-[14px] md:text-[16px] leading-relaxed mb-4"
-            style={isBn ? bnFont : undefined}
-          >
-            {isBn
-              ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ফলাফল, নির্ধারিত বিনিয়োগ, কোনো লুকানো চার্জ নেই। আজই পরীক্ষা করে দেখুন।'
-              : 'Three focused sprints — clear deliverables, fixed investment, real sales. No hidden fees. Test our quality today.'}
-          </p>
-
-          {/* Top Custom Consultation Badge Link */}
-          <div className="flex justify-center">
-            <a
-              href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20am%20interested%20in%20a%20custom%20branding%20package."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-[12px] font-semibold hover:bg-accent/20 transition-all active:scale-[0.98]"
+          <MotionReveal delay={0.1}>
+            <p
+              className="text-primary/70 text-[14px] md:text-[16px] leading-relaxed max-w-xl mx-auto"
               style={isBn ? bnFont : undefined}
             >
-              <Sparkles className="w-3.5 h-3.5 text-accent animate-pulse" />
-              <span>{isBn ? 'কাস্টম বাজেটের জন্য সরাসরি কথা বলুন' : 'Need custom scope? Chat directly'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
+              {isBn
+                ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ফলাফল, নির্ধারিত বাজেট, কোনো লুকানো চার্জ নেই। আজই পরীক্ষা করে দেখুন।'
+                : 'Three focused sprints — clear deliverables, fixed investment, real sales. Zero hidden charges.'}
+            </p>
+          </MotionReveal>
         </header>
 
-        {/* ── MOBILE: Vertical Stacked Compact Cards ── */}
-        <div className="md:hidden space-y-4">
-          {tiers.map((tier) => (
-            <ServiceCard key={tier.id} tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
-          ))}
+        {/* ── MOBILE: Apple-Style Snap Carousel with Peek ── */}
+        <div className="md:hidden">
+          <div
+            ref={carouselRef}
+            onScroll={handleMobileScroll}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 py-4 scrollbar-none -mx-5"
+            style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+          >
+            {tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className="w-[85vw] max-w-[340px] snap-center shrink-0 transition-transform duration-300"
+              >
+                <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel Dot Indicators */}
+          <div className="flex justify-center items-center gap-2 mt-4 mb-2">
+            {tiers.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => scrollToMobileCard(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  activeMobileIdx === idx ? 'w-6 bg-accent' : 'w-1.5 bg-primary/20'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* ── DESKTOP: 3 columns with middle featured card ── */}
-        <div className={`hidden md:grid gap-6 lg:gap-7 items-start ${tiers.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+        {/* ── DESKTOP: 3 Balanced Editorial Columns ── */}
+        <div className={`hidden md:grid gap-6 lg:gap-8 items-stretch ${tiers.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {tiers.map((tier, idx) => (
             <MotionReveal key={tier.id} delay={0.08 * (idx + 1)} className="h-full">
               <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
@@ -194,43 +249,54 @@ export default function Services(_props: ServicesProps) {
           ))}
         </div>
 
-        {/* ── Reassurance + secondary paths (quiet, single line) ── */}
+        {/* ── Unified Global Reassurance Bar (Clean, Minimal, Non-Intrusive) ── */}
         <MotionReveal delay={0.15}>
-          <div className="mt-8 md:mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6 pt-6 md:pt-8 border-t border-primary/10">
-            <ul
-              className="flex flex-col sm:flex-row gap-2.5 sm:gap-6 text-[12.5px] md:text-[13px] text-primary/65"
-              style={isBn ? bnFont : undefined}
-            >
-              <li className="flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
-                {isBn ? 'বিকাশ, নগদ ও ব্যাংক ট্রান্সফার' : 'bKash, Nagad & bank transfer'}
-              </li>
-              <li className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
-                {isBn ? 'সন্তুষ্ট না হওয়া পর্যন্ত ফ্রি রিভিশন' : 'Free revisions until approved'}
-              </li>
-            </ul>
+          <div className="mt-12 md:mt-16 pt-8 border-t border-primary/10">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              {/* Trust Badges */}
+              <ul
+                className="flex flex-wrap items-center justify-center lg:justify-start gap-y-3 gap-x-6 text-[12.5px] md:text-[13px] text-primary/70 font-medium"
+                style={isBn ? bnFont : undefined}
+              >
+                <li className="flex items-center gap-2">
+                  <CreditCard className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                  <span>{isBn ? 'বিকাশ, নগদ ও ব্যাংক ট্রান্সফার' : 'bKash, Nagad & Bank Transfer'}</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                  <span>{isBn ? 'সন্তুষ্ট না হওয়া পর্যন্ত ১০০% ফ্রি রিভিশন' : '100% Free Revisions Until Approved'}</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FileCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                  <span>{isBn ? 'অফিসিয়াল ইনভয়েস ও চুক্তি' : 'Official Invoice & Agreement'}</span>
+                </li>
+              </ul>
 
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]" style={isBn ? bnFont : undefined}>
-              <button
-                id="services-custom-quote"
-                type="button"
-                onClick={requestCustomQuote}
-                className="group inline-flex items-center gap-1.5 font-semibold text-primary hover:text-accent transition-colors"
+              {/* Secondary Actions */}
+              <div
+                className="flex items-center justify-center lg:justify-end gap-x-5 text-[13px]"
+                style={isBn ? bnFont : undefined}
               >
-                {isBn ? content.customCtaBn || 'কাস্টম কোটেশন নিন' : content.customCtaEn || 'Request a custom quote'}
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-              </button>
-              <span className="hidden sm:block w-px h-4 bg-primary/15" aria-hidden />
-              <button
-                id="services-free-audit"
-                type="button"
-                onClick={() => openAuditModal({ source: 'Services & Pricing' })}
-                className="inline-flex items-center gap-1.5 text-primary/60 hover:text-accent transition-colors"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-accent" />
-                {isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-min audit'}
-              </button>
+                <button
+                  id="services-custom-quote"
+                  type="button"
+                  onClick={requestCustomQuote}
+                  className="group inline-flex items-center gap-1.5 font-semibold text-primary hover:text-accent transition-colors"
+                >
+                  <span>{isBn ? content.customCtaBn || 'কাস্টম কোটেশন নিন' : content.customCtaEn || 'Need a custom scope?'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                </button>
+                <span className="w-px h-4 bg-primary/15" aria-hidden />
+                <button
+                  id="services-free-audit"
+                  type="button"
+                  onClick={() => openAuditModal({ source: 'Services & Pricing' })}
+                  className="inline-flex items-center gap-1.5 text-primary/60 hover:text-accent transition-colors font-medium"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-accent" />
+                  <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-min audit'}</span>
+                </button>
+              </div>
             </div>
           </div>
         </MotionReveal>
@@ -250,95 +316,85 @@ function ServiceCard({
   isBn: boolean;
   onBook: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
-  const Icon = meta.icon;
   const featured = !!tier.featured;
 
   const { amount, period } = splitPrice(isBn ? tier.price_bn ?? tier.price_en : tier.price_en ?? tier.price_bn);
   const deliverables = (isBn ? tier.deliverables_bn : tier.deliverables_en) ?? [];
-  const previewCount = 2;
-  const initialItems = deliverables.slice(0, previewCount);
-  const remainingItems = deliverables.slice(previewCount);
 
-  // WhatsApp prefilled message URL
+  // Refined WhatsApp prefilled URL
   const waText = encodeURIComponent(
     isBn
-      ? `হ্যালো POLISHED, আমি "${tier.title_bn}" (${tier.price_bn}) প্যাকেজটি নিয়ে সরাসরি কথা বলতে এবং শুরু করতে আগ্রহী।`
-      : `Hi POLISHED, I am interested in booking the "${tier.title_en}" (${tier.price_en}) sprint.`
+      ? `হ্যালো POLISHED, আমি "${tier.title_bn}" (${tier.price_bn}) প্যাকেজটি নিয়ে কথা বলতে ও শুরু করতে চাই।`
+      : `Hi POLISHED, I would like to book the "${tier.title_en}" (${tier.price_en}) sprint.`
   );
   const waUrl = tier.whatsapp_url || `https://wa.me/8801346288210?text=${waText}`;
 
-  // Featured card is inverted (navy) — creates clear visual depth without 3D gimmicks.
+  // Luxury Editorial Card Tone
   const tone = featured
     ? {
-        card: 'bg-primary text-white border-primary/40 shadow-[0_16px_45px_-12px_rgba(30,58,138,0.4)] md:scale-[1.02] md:z-10 ring-1 ring-accent/30',
+        card: 'bg-primary text-white border-primary shadow-[0_20px_50px_-15px_rgba(30,58,138,0.4)] md:scale-[1.03] md:z-10 ring-1 ring-accent/30',
+        prefix: 'text-accent',
         muted: 'text-white/70',
         soft: 'text-white/90',
         divider: 'border-white/15',
-        chip: 'bg-white/10 text-white/90',
-        iconBox: 'bg-accent text-white shadow-sm',
+        pill: 'bg-white/10 text-white/90 border border-white/15',
+        specBg: 'bg-white/5 border border-white/15 text-accent',
       }
     : {
-        card: 'bg-white text-primary border-primary/15 shadow-[0_4px_20px_-4px_rgba(30,58,138,0.06)] hover:border-primary/30 hover:shadow-[0_14px_36px_-12px_rgba(30,58,138,0.12)]',
-        muted: 'text-primary/60',
+        card: 'bg-white text-primary border-primary/10 shadow-[0_4px_24px_-4px_rgba(30,58,138,0.06)] hover:border-primary/25 hover:shadow-[0_16px_40px_-12px_rgba(30,58,138,0.12)]',
+        prefix: 'text-primary/50',
+        muted: 'text-primary/65',
         soft: 'text-primary/85',
         divider: 'border-primary/10',
-        chip: 'bg-primary/[0.05] text-primary/75',
-        iconBox: 'bg-primary/[0.06] text-primary',
+        pill: 'bg-primary/[0.04] text-primary/75 border border-primary/10',
+        specBg: 'bg-accent/10 border border-accent/20 text-accent',
       };
 
   return (
     <article
       data-service-card={tier.id}
-      className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border p-4.5 sm:p-6 md:p-7 transition-all duration-300 ${tone.card} md:hover:-translate-y-1 shadow-sm`}
+      className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border p-6 sm:p-7 md:p-8 transition-all duration-300 ${tone.card}`}
     >
       {featured && (
         <span
-          className="absolute -top-3 left-5 sm:left-6 px-3 py-0.5 sm:py-1 rounded-full bg-accent text-white text-[10px] sm:text-[10.5px] font-bold tracking-[1px] uppercase shadow-sm"
-          style={isBn ? bnFont : undefined}
+          className="absolute -top-3 left-6 px-3.5 py-1 rounded-full bg-accent text-white text-[10px] sm:text-[10.5px] font-bold tracking-[1.5px] uppercase shadow-sm"
+          style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
         >
-          {isBn ? 'সবচেয়ে জনপ্রিয় গ্রোথ প্ল্যান' : 'Most popular growth sprint'}
+          {isBn ? 'সবচেয়ে জনপ্রিয় গ্রোথ স্প্রিন্ট' : 'Most Popular Growth Sprint'}
         </span>
       )}
 
       <div>
-        {/* Top row: icon + turnaround pill */}
-        <div className="flex items-center justify-between mb-3">
-          <span className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center ${tone.iconBox}`}>
-            <Icon className="w-4.5 h-4.5 sm:w-5 sm:h-5" strokeWidth={1.75} />
+        {/* Top row: Numbered prefix + SLA Turnaround Pill */}
+        <div className="flex items-center justify-between mb-4">
+          <span
+            className={`text-[10.5px] font-bold uppercase tracking-[2px] ${tone.prefix}`}
+            style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
+          >
+            {isBn ? meta.prefixBn : meta.prefixEn}
           </span>
-          <div className="flex items-center gap-1.5">
-            <span
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 sm:py-1 rounded-full text-[10.5px] sm:text-[11px] font-semibold ${tone.chip}`}
-              style={isBn ? bnFont : undefined}
-            >
-              <Clock className="w-3 h-3 text-accent" />
-              {isBn ? meta.turnaroundBn : meta.turnaroundEn}
-            </span>
-          </div>
+          <span
+            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold ${tone.pill}`}
+            style={isBn ? bnFont : undefined}
+          >
+            <Clock className="w-3 h-3 text-accent" />
+            <span>{isBn ? meta.turnaroundBn : meta.turnaroundEn}</span>
+          </span>
         </div>
-
-        {/* Target persona */}
-        <p
-          className={`text-[10.5px] sm:text-[11px] font-semibold mb-0.5 ${featured ? 'text-accent' : tone.muted} ${isBn ? '' : 'uppercase tracking-[1.5px]'}`}
-          style={isBn ? bnFont : undefined}
-        >
-          {isBn ? tier.target_bn : tier.target_en}
-        </p>
 
         {/* Title */}
         <h3
-          className={`leading-tight mb-2 sm:mb-3 ${isBn ? 'text-[19px] sm:text-[21px] font-bold' : 'text-[22px] sm:text-[24px] md:text-[26px] font-medium'}`}
+          className={`leading-tight mb-3 ${isBn ? 'text-[22px] sm:text-[24px] font-bold' : 'text-[24px] sm:text-[28px] font-normal'}`}
           style={isBn ? bnFont : serifFont}
         >
           {isBn ? tier.title_bn : tier.title_en}
         </h3>
 
-        {/* Price Tag */}
+        {/* Price Row */}
         {amount && (
-          <div className={`flex items-baseline gap-2 pb-3 mb-3 border-b ${tone.divider}`}>
-            <span className="text-[30px] sm:text-[36px] font-bold tracking-tight leading-none font-sans text-accent">
+          <div className={`flex items-baseline gap-2 pb-4 mb-4 border-b ${tone.divider}`}>
+            <span className="text-[34px] sm:text-[40px] font-bold tracking-tight leading-none font-sans text-accent">
               {amount.startsWith('৳') ? (
                 <>
                   <span className="text-[0.6em] font-semibold align-[0.45em] mr-0.5 opacity-80">৳</span>
@@ -349,11 +405,11 @@ function ServiceCard({
               )}
             </span>
             {period ? (
-              <span className={`text-[12px] sm:text-[13px] ${tone.muted}`} style={isBn ? bnFont : undefined}>
+              <span className={`text-[13px] ${tone.muted}`} style={isBn ? bnFont : undefined}>
                 / {period}
               </span>
             ) : (
-              <span className="text-[10.5px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
+              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
                 {isBn ? 'এককালীন টেস্ট স্প্রিন্ট' : 'One-Time Sprint'}
               </span>
             )}
@@ -361,74 +417,29 @@ function ServiceCard({
         )}
 
         {/* Value Proposition Description */}
-        <p className={`text-[12.5px] sm:text-[13px] leading-relaxed mb-3 ${tone.muted}`} style={isBn ? bnFont : undefined}>
+        <p className={`text-[13px] leading-relaxed mb-5 ${tone.muted}`} style={isBn ? bnFont : undefined}>
           {isBn ? tier.desc_bn : tier.desc_en}
         </p>
 
-        {/* Deliverables: Top 2 visible + Collapsible Accordion */}
-        <div className="mb-3">
-          <ul className="space-y-2">
-            {initialItems.map((item, i) => (
-              <li
-                key={i}
-                className={`flex items-start gap-2 text-[12px] sm:text-[12.5px] leading-snug ${tone.soft}`}
-                style={isBn ? bnFont : undefined}
-              >
-                <div className="w-3.5 h-3.5 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
-                  <Check className="w-2.5 h-2.5 text-accent" strokeWidth={2.5} />
-                </div>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          <AnimatePresence>
-            {expanded && remainingItems.length > 0 && (
-              <m.ul
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="space-y-2 mt-2 pt-2 border-t border-dashed border-primary/10 overflow-hidden"
-              >
-                {remainingItems.map((item, i) => (
-                  <li
-                    key={i}
-                    className={`flex items-start gap-2 text-[12px] sm:text-[12.5px] leading-snug ${tone.soft}`}
-                    style={isBn ? bnFont : undefined}
-                  >
-                    <div className="w-3.5 h-3.5 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
-                      <Check className="w-2.5 h-2.5 text-accent" strokeWidth={2.5} />
-                    </div>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </m.ul>
-            )}
-          </AnimatePresence>
-
-          {remainingItems.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setExpanded(!expanded)}
-              className={`mt-2 inline-flex items-center gap-1 text-[11.5px] font-semibold transition-colors ${
-                featured ? 'text-accent hover:text-white' : 'text-primary/70 hover:text-primary'
-              }`}
+        {/* Deliverables Checklist (Airy & Clean) */}
+        <ul className="space-y-3 mb-6">
+          {deliverables.map((item, i) => (
+            <li
+              key={i}
+              className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
               style={isBn ? bnFont : undefined}
             >
-              <span>
-                {expanded
-                  ? (isBn ? 'সংক্ষিপ্ত করুন' : 'Show less')
-                  : (isBn ? `সম্পূর্ণ ${deliverables.length}টি ডেলিভারেবল দেখুন` : `View all ${deliverables.length} deliverables`)}
-              </span>
-              {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            </button>
-          )}
-        </div>
+              <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
+              </div>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
 
         {/* ROI / Craft Spec Highlight */}
         <div
-          className="flex items-center gap-2 text-[11px] sm:text-[11.5px] font-semibold mt-2 mb-4 px-2.5 py-1.5 rounded-xl bg-accent/10 border border-accent/20 text-accent"
+          className={`flex items-center gap-2 text-[11.5px] sm:text-[12px] font-semibold mb-6 px-3 py-2 rounded-xl ${tone.specBg}`}
           style={isBn ? bnFont : undefined}
         >
           <Sparkles className="w-3.5 h-3.5 shrink-0 text-accent" />
@@ -436,47 +447,43 @@ function ServiceCard({
         </div>
       </div>
 
-      {/* Conversion Actions Group — WhatsApp First */}
-      <div className="space-y-2 pt-1">
-        {/* Primary CTA: Direct WhatsApp Order */}
+      {/* Conversion Actions Group — High Contrast Editorial Dual CTAs */}
+      <div className="space-y-2.5 pt-2">
+        {/* Primary Sprint Trigger Button */}
+        <button
+          id={`services-book-${tier.id}`}
+          type="button"
+          onClick={onBook}
+          className={`w-full h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-md btn-shimmer ${
+            featured
+              ? 'bg-accent hover:bg-accent/90 text-white shadow-[0_6px_20px_-6px_rgba(251,146,60,0.6)]'
+              : 'bg-primary hover:bg-primary/90 text-white shadow-[0_4px_16px_-4px_rgba(30,58,138,0.25)]'
+          }`}
+          style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
+        >
+          <span>{isBn ? tier.cta_bn : tier.cta_en}</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+
+        {/* Secondary Sleek Outline WhatsApp CTA (No tacky solid green) */}
         <a
           id={`services-wa-${tier.id}`}
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full h-11 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[13px] font-bold tracking-wide transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-md bg-[#25D366] hover:bg-[#20bd5a] text-white btn-shimmer"
-          style={isBn ? bnFont : undefined}
-        >
-          <MessageCircle className="w-4.5 h-4.5 fill-current" />
-          <span>{isBn ? 'হোয়াটসঅ্যাপে সরাসরি অর্ডার' : 'Order via WhatsApp'}</span>
-        </a>
-
-        {/* Secondary: Web Booking Form */}
-        <button
-          id={`services-book-${tier.id}`}
-          type="button"
-          onClick={onBook}
-          className={`w-full h-9 rounded-xl inline-flex items-center justify-center gap-1.5 text-[11.5px] font-medium transition-all active:scale-[0.98] cursor-pointer ${
+          className={`w-full h-10 rounded-xl inline-flex items-center justify-center gap-2 text-[12px] font-semibold transition-all active:scale-[0.98] ${
             featured
-              ? 'bg-white/10 hover:bg-white/15 text-white/90 border border-white/15'
-              : 'bg-primary/5 hover:bg-primary/10 text-primary/80 border border-primary/10'
+              ? 'border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/10'
+              : 'border border-primary/15 text-primary/80 hover:border-primary/35 hover:bg-primary/[0.04]'
           }`}
           style={isBn ? bnFont : undefined}
         >
-          <span>{isBn ? 'অথবা ওয়েবসাইটে ফরম পূরণ করুন' : 'Or fill website form'}</span>
-          <ArrowRight className="w-3 h-3 opacity-70" />
-        </button>
-
-        {/* Mini Trust Row */}
-        <div className="flex items-center justify-center gap-2 pt-1 text-[10px] sm:text-[10.5px] opacity-80 font-medium">
-          <span>💳 বিকাশ / নগদ</span>
-          <span>•</span>
-          <span>🛡️ ফ্রি রিভিশন</span>
-          <span>•</span>
-          <span>⚡ ৩-৫ দিনে ডেলিভারি</span>
-        </div>
+          <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+          <span>{isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}</span>
+        </a>
       </div>
     </article>
   );
 }
+
 
