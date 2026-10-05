@@ -83,22 +83,6 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           const BASE = 0.4;
           const STAGGER = 0.15;
           const line2Delay = BASE + 2 * STAGGER;
-          if (isBn) {
-            return (
-              <h1
-                lang="bn"
-                className="hero-headline font-heading font-normal text-primary-foreground leading-[1.2] text-center mb-3 md:mb-6 max-w-[340px] sm:max-w-[480px] md:max-w-none mx-auto text-[clamp(26px,7vw,36px)] md:text-[clamp(44px,6vw,84px)]"
-                style={{ fontFamily: "'Noto Serif Bengali', serif" }}
-              >
-                <RevealText as="span" delay={BASE} triggerOnMount={true} className="block whitespace-normal" stagger={STAGGER}>
-                  {hero.titleBn || 'আপনার কালেকশন হোক'}
-                </RevealText>
-                <RevealText as="span" delay={line2Delay} triggerOnMount={true} className="hero-accent-line block leading-[1.15] mt-1 md:mt-2 italic text-accent" stagger={STAGGER}>
-                  {hero.title2Bn || '*অনবদ্য!*'}
-                </RevealText>
-              </h1>
-            );
-          }
           return (
             <h1
               lang="en"
@@ -116,7 +100,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="block md:inline whitespace-normal md:whitespace-nowrap"
                 stagger={STAGGER}
               >
-                {hero.titleEn}
+                {hero.titleEn || 'Make your brand'}
               </RevealText>{' '}
               <br className="hidden md:inline" />
               <RevealText
@@ -126,7 +110,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
                 className="hero-accent-line block md:inline text-[clamp(34px,8.8vw,46px)] md:text-[clamp(48px,8vw,96px)] leading-[1.08] mt-1 md:mt-0 italic text-accent md:whitespace-nowrap"
                 stagger={STAGGER}
               >
-                {hero.title2En}
+                {hero.title2En || '*Unforgettable.*'}
               </RevealText>
             </h1>
           );

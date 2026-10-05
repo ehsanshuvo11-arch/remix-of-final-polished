@@ -503,6 +503,40 @@ a:active, button:active, [role="button"]:active {
   transition-duration: 120ms;
 }
 
+/* Smooth luxury button shimmer and card hover glows */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.75s ease;
+  pointer-events: none;
+}
+.btn-shimmer:hover::after {
+  transform: translateX(100%);
+}
+
+.luxury-glow-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.luxury-glow-hover:hover {
+  box-shadow: 0 12px 36px -8px rgba(251, 146, 60, 0.25);
+  transform: translateY(-2px);
+}
+
 /* Custom cursor — hide default cursor on frontend only (non-touch devices) */
 @media (hover: hover) and (pointer: fine) {
   body.public-site[data-custom-cursor='ready'][data-custom-cursor-visible] *,
