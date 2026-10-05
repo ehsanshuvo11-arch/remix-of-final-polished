@@ -16,34 +16,34 @@ export default function Process({ steps, content }: ProcessProps) {
     { 
       id: '1', 
       sort_order: 1, 
-      title_en: '1. Audit Leaking Ad Spend', 
-      title_bn: '১. প্রোডাক্ট ও ব্যথার জায়গা খোঁজা', 
-      desc_en: 'We diagnose why your past ads bled cash. We identify the exact doubts stopping local buyers and map emotional angles to overcome them.', 
-      desc_bn: 'আমরা দেখি আপনার আগের বিজ্ঞাপনে কেন মানুষ অর্ডার করেনি। কোথায় ডলার অপচয় হচ্ছিল এবং ক্রেতাদের খাঁটি বিশ্বাস অর্জনের জন্য কোন হুক কাজ করবে—তা ঠিক করি।' 
+      title_en: '1. Audit & Angle Strategy', 
+      title_bn: '১. অডিট ও হুক স্ট্র্যাটেজি', 
+      desc_en: 'We diagnose past ad leaks and identify the psychological hooks needed to win local trust.', 
+      desc_bn: 'আগের বিজ্ঞাপনে ক্রেতাদের যে দ্বিধা ছিল তা দূর করার কৌশল ও মনস্তাত্ত্বিক হুক নির্ধারণ করি।' 
     },
     { 
       id: '2', 
       sort_order: 2, 
-      title_en: '2. Sharp Bangla Copy & Visual Craft', 
-      title_bn: '২. বাংলা কপি ও বিশ্বাসযোগ্য আর্ট', 
-      desc_en: 'Zero generic templates. We write persuasive Bengali sales copy and build clean, high-status visuals that command full price without discounts.', 
-      desc_bn: 'কোনো সস্তা ক্যানভা টেমপ্লেট নয়। আমরা প্রতিটি ক্রিয়েটিভের জন্য লিখি খাঁটি বাংলা সেলস কপি এবং সাজাই এমন পরিচ্ছন্ন ডিজাইন যা দেখে মানুষ বিশ্বাস পায়।' 
+      title_en: '2. Bespoke Copy & Visual Craft', 
+      title_bn: '২. মার্জিত বাংলা কপি ও ক্রাফট', 
+      desc_en: 'Zero recycled templates. High-status visual design paired with culturally sharp Bengali sales copy.', 
+      desc_bn: 'জিরো টেমপ্লেট। সম্পূর্ণ কাস্টম ডিজাইন ও খাঁটি বাংলা কপি যা দেখে মানুষ বিশ্বাস পায়।' 
     },
     { 
       id: '3', 
       sort_order: 3, 
-      title_en: '3. 48-Hour Rapid Turnaround', 
+      title_en: '3. 48-Hour Rapid Delivery', 
       title_bn: '৩. ৪৮ ঘণ্টার দ্রুত ডেলিভারি', 
-      desc_en: 'Strict turnaround. Within 48 hours, you receive ready-to-launch Meta statics and bundle graphics with zero back-and-forth delays.', 
-      desc_bn: 'সময়ের কোনো অপচয় নেই। মাত্র ৪৮ ঘণ্টায় আপনি ফিড ও স্টোরি সাইজের মেটা-কমপ্লায়েন্ট রেডি ক্রিয়েটিভ পেয়ে যাবেন—যা সরাসরি অ্যাডম্যানেজারে চালানোর উপযোগী।' 
+      desc_en: 'Strict SLA. Ready-to-launch 1:1 and 9:16 Meta creatives delivered straight to your WhatsApp or Drive.', 
+      desc_bn: 'কঠোর ৪৮ ঘণ্টার মধ্যে মেটা ও টিকটক রেডি ফিড + স্টোরি সাইজের অ্যাসেট ডেলিভারি।' 
     },
     { 
       id: '4', 
       sort_order: 4, 
       title_en: '4. Launch, Cut CPR & Scale', 
-      title_bn: '৪. লঞ্চ ও লাভজনক সেলস স্কেলিং', 
-      desc_en: 'Launch the tested angles. We analyze performance data to scale winning creatives and keep your cost-per-order predictably low.', 
-      desc_bn: 'আপনি বা আপনার এজেন্সি অ্যাড লাইভ করবেন। আমরা রেজাল্ট দেখে উইনিং অ্যাডের ওপর জোর দিই, যাতে কম খরচে প্রতিদিন বেশি ফুল-প্রাইস সেলস নিশ্চিত হয়।' 
+      title_bn: '৪. লঞ্চ ও লাভজনক স্কেলিং', 
+      desc_en: 'Launch with confidence. Scale winning creatives to drive full-price orders with lower acquisition costs.', 
+      desc_bn: 'বিজ্ঞাপন লাইভ করে কম খরচে (CPR) নিশ্চিত ফুল-প্রাইস সেলস ও ব্র্যান্ড অথরিটি বৃদ্ধি।' 
     },
   ];
 

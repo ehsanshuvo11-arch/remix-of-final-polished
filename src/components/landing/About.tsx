@@ -14,18 +14,16 @@ export default function About({ content, stats }: AboutProps) {
   const isBn = lang === 'bn';
 
   const about = {
-    labelEn: 'The Plain Truth About Us',
-    labelBn: 'আমরা কে ও কেন আমাদের কাজ আলাদা',
-    titleLine1En: 'Ads that stop the scroll,',
+    labelEn: 'Our Philosophy',
+    labelBn: 'আমাদের ফিলোসফি',
+    titleLine1En: 'Creatives that stop the scroll,',
     titleLine1Bn: 'যে বিজ্ঞাপন দেখে মানুষ থামে,',
-    titleLine2En: 'and sell without excuses.',
-    titleLine2Bn: 'এবং দ্বিধা ছাড়া কেনে।',
-    p1En: 'Building a brand in Bangladesh is brutal. You formulate a great product, yet cheap Canva ads make people doubt its quality. That hurts. We started POLISHED to fix this exact injustice. We build performance creatives that show your product’s true worth—instantly.',
-    p1Bn: 'বাংলাদেশে একটা ব্র্যান্ড দাঁড় করাতে কতটা পরিশ্রম করতে হয়, তা আমরা জানি। কিন্তু দিনশেষে যখন ক্যানভা টেমপ্লেটের কারণে মানুষ প্রোডাক্টের কদর বোঝে না, তখন সবচেয়ে বেশি কষ্ট লাগে। POLISHED-এর জন্ম এই অবিচার দূর করতে। আমরা এমন পারফরম্যান্স ক্রিয়েটিভ বানাই যা আপনার ব্র্যান্ডের আসল মর্যাদা কাস্টমারের চোখে ফুটিয়ে তোলে।',
-    p2En: 'We do not sell pretty wallpaper. We take ownership of your ROAS and bottom-line revenue. Our job is simple: stop your daily ad budget drain and convince shoppers to buy at full price without begging for discounts.',
-    p2Bn: 'আমরা শুধু গ্রাফিক্স বানাই না। আমরা সরাসরি আপনার রেভিনিউ আর আরওএএস (ROAS) বাড়ানোর দায়িত্ব নিই। বিজ্ঞাপনের অপ্রয়োজনীয় ডলার অপচয় বন্ধ করা এবং কাস্টমারকে ডিসকাউন্ট ছাড়াই পূর্ণ মূল্যে অর্ডার করতে উদ্বুদ্ধ করাই আমাদের মূল কাজ।',
-    quoteEn: '— No marketing buzzwords. Pure direct-response creatives that convert.',
-    quoteBn: '— কোনো চটকদার ভনিতা নয়। খাঁটি পারফরম্যান্স ক্রিয়েটিভ যা বিক্রি বাড়ায়।',
+    titleLine2En: 'and sell at full price.',
+    titleLine2Bn: 'এবং ছাড় ছাড়াই কেনে।',
+    p1En: 'In a market flooded with generic Canva templates, cheap visuals make local shoppers doubt product quality. POLISHED builds direct-response performance creatives and culturally persuasive Bengali sales copy that establish instant luxury authority—stopping ad budget leaks and driving full-price checkouts.',
+    p1Bn: 'বাংলাদেশে ভালো প্রডাক্ট বানিয়েও সস্তা ক্যানভা ডিজাইনের কারণে ক্রেতার আস্থা হারানো অনেক বড় লোকসান। POLISHED তৈরি করে মনস্তাত্ত্বিক পারফরম্যান্স ক্রিয়েটিভ ও মার্জিত বাংলা সেলস কপি—যা প্রথম দেখাতেই পণ্যের আভিজাত্য ফুটিয়ে তোলে এবং বিজ্ঞাপনের অপচয় বন্ধ করে ফুল-প্রাইস সেলস নিশ্চিত করে।',
+    quoteEn: '— 100% Bespoke Craft. Zero Recycled Templates.',
+    quoteBn: '— ১০০% কাস্টম ক্রাফট। জিরো টেমপ্লেট।',
   };
 
   const defaultStats: Stat[] = [
@@ -37,23 +35,23 @@ export default function About({ content, stats }: AboutProps) {
 
   const displayStats = defaultStats;
 
-  // About copy is intentionally locked to English in all locales
+  // About typography
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = about.titleLine1En ?? 'Ads that stop the scroll,';
-  const line2 = about.titleLine2En ?? 'and sell without excuses.';
+  const line1 = about.titleLine1En ?? 'Creatives that stop the scroll,';
+  const line2 = about.titleLine2En ?? 'and sell at full price.';
 
   return (
-    <section id="about" className="py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
+    <section id="about" className="py-14 md:py-[100px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
           <MotionReveal>
             {isBn ? (
               <p lang="bn" className="text-[14px] md:text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                {about.labelBn ?? 'আমরা কে ও কেন আমাদের কাজ আলাদা'}
+                {about.labelBn}
               </p>
             ) : (
               <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-                {about.labelEn ?? 'The Plain Truth About Us'}
+                {about.labelEn}
               </p>
             )}
           </MotionReveal>
@@ -61,10 +59,10 @@ export default function About({ content, stats }: AboutProps) {
             {isBn ? (
               <>
                 <RevealText as="span" className="block" stagger={0} delay={0}>
-                  {(about.titleLine1Bn ?? 'যে বিজ্ঞাপন দেখে মানুষ থামে,')}
+                  {about.titleLine1Bn}
                 </RevealText>
                 <RevealText as="span" className="block italic" stagger={0} delay={0}>
-                  {(about.titleLine2Bn ?? 'এবং দ্বিধা ছাড়া কেনে।')}
+                  {about.titleLine2Bn}
                 </RevealText>
               </>
             ) : (
@@ -75,23 +73,18 @@ export default function About({ content, stats }: AboutProps) {
             )}
           </h2>
           <MotionReveal delay={0.3}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-muted-foreground mb-5">
+            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-muted-foreground mb-6">
               {isBn ? about.p1Bn : about.p1En}
             </p>
           </MotionReveal>
           <MotionReveal delay={0.4}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-muted-foreground mb-5">
-              {isBn ? about.p2Bn : about.p2En}
-            </p>
-          </MotionReveal>
-          <MotionReveal delay={0.5}>
             {isBn ? (
-              <p lang="bn" className="text-[14px] md:text-[15px] leading-[1.8] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                {about.quoteBn ?? '— কোনো চটকদার ভনিতা নয়। খাঁটি পারফরম্যান্স ক্রিয়েটিভ যা বিক্রি বাড়ায়।'}
+              <p lang="bn" className="text-[14px] md:text-[15px] font-semibold leading-[1.8] text-primary" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                {about.quoteBn}
               </p>
             ) : (
-              <p lang="en" style={enFont} className="text-[14px] md:text-[15px] leading-[1.8] text-primary italic">
-                {about.quoteEn ?? '— No marketing buzzwords. Pure direct-response creatives that convert.'}
+              <p lang="en" style={enFont} className="text-[13px] md:text-[14px] font-semibold tracking-wide uppercase leading-[1.8] text-primary">
+                {about.quoteEn}
               </p>
             )}
           </MotionReveal>

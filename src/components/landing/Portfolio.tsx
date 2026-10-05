@@ -257,11 +257,13 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         )}
       </AnimatePresence>
 
-      {/* ── Slide-up Case Study Bottom Sheet / Modal Drawer ── */}
+      {/* ── Fullscreen Interactive Case Study Lightbox Modal ── */}
       {selectedModalProject && (
         <CaseStudyDrawer
           project={selectedModalProject}
           isBn={isBn}
+          allProjects={filteredProjects}
+          onSelectProject={(p) => setSelectedProjectId(p.id)}
           onClose={() => setSelectedProjectId(null)}
         />
       )}
@@ -496,13 +498,21 @@ function ProjectCard({
    Slide-Up Mobile Bottom Sheet / Modal Drawer
 ───────────────────────────────────────────────────────────────────────────── */
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Fullscreen Interactive Case Study Lightbox Modal (Ultra-Smooth GPU Accelerated)
+───────────────────────────────────────────────────────────────────────────── */
+
 function CaseStudyDrawer({
   project,
   isBn: globalIsBn,
+  allProjects,
+  onSelectProject,
   onClose,
 }: {
   project: PortfolioProject;
   isBn: boolean;
+  allProjects?: PortfolioProject[];
+  onSelectProject?: (p: PortfolioProject) => void;
   onClose: () => void;
 }) {
   const [localLang, setLocalLang] = useState<'bn' | 'en'>(globalIsBn ? 'bn' : 'en');
@@ -510,6 +520,23 @@ function CaseStudyDrawer({
     setLocalLang(globalIsBn ? 'bn' : 'en');
   }, [globalIsBn]);
   const isBn = localLang === 'bn';
+
+  const projectsList = allProjects || [project];
+  const currentIndex = projectsList.findIndex((p) => p.id === project.id);
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex < projectsList.length - 1 && currentIndex !== -1;
+
+  const goPrev = () => {
+    if (hasPrev && onSelectProject) {
+      onSelectProject(projectsList[currentIndex - 1]);
+    }
+  };
+
+  const goNext = () => {
+    if (hasNext && onSelectProject) {
+      onSelectProject(projectsList[currentIndex + 1]);
+    }
+  };
 
   // Direct mapping to database rich text HTML fields with fallbacks
   const rawBnCaseStudy = (typeof project.case_study_bn === 'string' && project.case_study_bn.trim())
@@ -568,16 +595,25 @@ function CaseStudyDrawer({
     return list;
   }, [project.mockup_urls, project.mockup_url]);
 
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const heroImage = (typeof project.image_url === 'string' && project.image_url.trim())
-    ? resolveStorageUrl(project.image_url)
-    : (mockupUrls.length > 0)
-      ? resolveStorageUrl(mockupUrls[0])
-      : '/portfolio/lumin-botanical.jpg';
+  const galleryImages = useMemo(() => {
+    const images: string[] = [];
+    if (typeof project.image_url === 'string' && project.image_url.trim()) {
+      images.push(resolveStorageUrl(project.image_url));
+    }
+    mockupUrls.forEach((m) => {
+      const resolved = resolveStorageUrl(m);
+      if (!images.includes(resolved)) images.push(resolved);
+    });
+    if (images.length === 0) images.push('/portfolio/lumin-botanical.jpg');
+    return images;
+  }, [project.image_url, mockupUrls]);
 
-  // Inform mobile dock to tuck away while modal is active
+  const currentHeroImg = galleryImages[activeImageIndex] || galleryImages[0];
+
+  // Lock body scroll and notify mobile dock
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('polished:modal-state', { detail: { open: true } }));
     const prevOverflow = document.body.style.overflow;
@@ -589,60 +625,86 @@ function CaseStudyDrawer({
     };
   }, []);
 
-  // Keyboard escape
+  // Keyboard navigation: Escape to close, Left/Right arrows to switch projects
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'ArrowRight') goNext();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  }, [onClose, goPrev, goNext]);
 
   const whatsappMessage = encodeURIComponent(
-    `Hi POLISHED, I just reviewed your case study for "${project.title_en || project.title_bn}" and would love to achieve similar ROAS results for my brand.`
+    `Hi POLISHED, I am reviewing your case study for "${project.title_en || project.title_bn}" and would like to build a similar high-converting design sprint for my brand.`
   );
 
   return createPortal(
-    <AnimatePresence>
-      <div className="fixed inset-0 z-[600] flex flex-col justify-end md:justify-center md:items-center">
+    <AnimatePresence mode="wait">
+      <div className="fixed inset-0 z-[600] flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden transform-gpu">
         {/* Backdrop */}
         <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.25 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/75 backdrop-blur-md cursor-pointer"
+          className="fixed inset-0 bg-black/80 backdrop-blur-xl cursor-pointer"
         />
 
-        {/* Drawer / Sheet Window */}
+        {/* Modal Main Frame */}
         <m.div
-          initial={{ y: '100%', opacity: 0.8 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: '100%', opacity: 0 }}
-          transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-          className="relative z-10 w-full md:max-w-2xl lg:max-w-3xl max-h-[92vh] md:max-h-[88vh] bg-white rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+          initial={{ scale: 0.95, opacity: 0, y: 12 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.95, opacity: 0, y: 12 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 w-full max-w-5xl max-h-[94vh] bg-white rounded-2xl sm:rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.4)] border border-primary/10 flex flex-col overflow-hidden will-change-transform"
         >
-          {/* Top Mobile Drag Handle Bar */}
-          <div className="md:hidden flex justify-center pt-2.5 pb-1">
-            <span className="w-12 h-1 rounded-full bg-primary/20" />
-          </div>
+          {/* Top Bar */}
+          <div className="px-4 sm:px-6 py-3.5 border-b border-primary/10 flex items-center justify-between gap-3 bg-white/95 backdrop-blur-md sticky top-0 z-30">
+            <div className="flex items-center gap-3 min-w-0">
+              {/* Previous / Next buttons */}
+              {projectsList.length > 1 && (
+                <div className="flex items-center gap-1 shrink-0 bg-primary/5 p-1 rounded-full border border-primary/10">
+                  <button
+                    type="button"
+                    onClick={goPrev}
+                    disabled={!hasPrev}
+                    title="Previous Project"
+                    className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-primary/10 text-primary disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <span className="text-[10px] font-mono px-1 font-semibold text-primary/70">
+                    {currentIndex + 1}/{projectsList.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    disabled={!hasNext}
+                    title="Next Project"
+                    className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-primary/10 text-primary disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
 
-          {/* Sticky Header */}
-          <div className="px-5 py-3.5 border-b border-primary/10 flex items-center justify-between gap-3 bg-white/95 backdrop-blur-md sticky top-0 z-30">
-            <div className="min-w-0">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-accent font-semibold block truncate">
-                {category}
-              </span>
-              <h2 
-                className="text-base sm:text-lg font-bold text-primary truncate"
-                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
-              >
-                {title}
-              </h2>
+              <div className="truncate">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-accent font-bold block truncate">
+                  {category}
+                </span>
+                <h2 
+                  className="text-sm sm:text-base md:text-lg font-bold text-primary truncate leading-tight"
+                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+                >
+                  {title}
+                </h2>
+              </div>
             </div>
 
-            {/* Language switch + Close Button */}
+            {/* Language Switch + Close */}
             <div className="flex items-center gap-2 shrink-0">
               <div className="flex items-center p-0.5 rounded-full bg-primary/5 border border-primary/10 text-xs font-semibold">
                 <button
@@ -669,213 +731,203 @@ function CaseStudyDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Close Case Study"
-                className="w-9 h-9 rounded-full bg-primary/5 hover:bg-primary/15 text-primary flex items-center justify-center transition-colors cursor-pointer"
+                className="w-8 sm:w-9 h-8 sm:h-9 rounded-full bg-primary/5 hover:bg-primary/15 text-primary flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Scrollable Content Body */}
-          <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6">
-            {/* Featured Image — 1:1 Ratio */}
-            <div className="relative w-full aspect-square max-h-[60vh] rounded-2xl overflow-hidden bg-primary/5 shadow-md flex items-center justify-center">
-              <img
-                src={heroImage}
-                alt={title}
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
-
-            {/* Strategic Concept Sprint Spec Ribbon */}
-            <div className="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-[#1e3a8a] text-white text-center">
-              <div className="p-1">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'টাইপ' : 'Type'}
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-accent font-mono mt-0.5 block">
-                  {isBn ? 'কনসেপ্ট স্প্রিন্ট' : 'Concept Sprint'}
-                </span>
-              </div>
-              <div className="p-1 border-x border-white/10">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'ডেলিভারি' : 'Delivery'}
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-white font-mono mt-0.5 block">
-                  {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
-                </span>
-              </div>
-              <div className="p-1">
-                <span className="text-[10px] uppercase font-mono text-white/70 block">
-                  {isBn ? 'আর্টওয়ার্ক' : 'Craft'}
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-emerald-300 font-mono mt-0.5 block">
-                  {isBn ? '১০০% কাস্টম' : '100% Bespoke'}
-                </span>
-              </div>
-            </div>
-
-            {/* Strategic Hook */}
-            {hook && (
-              <div className="p-4 rounded-xl bg-accent/10 border-l-4 border-accent text-primary">
-                <div 
-                  className="text-xs sm:text-sm font-medium leading-relaxed prose prose-sm max-w-none text-primary [&_p]:my-1"
-                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatRichContent(hook)) }}
+          {/* Modal Body: Responsive 2-Column Split */}
+          <div className="flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-primary/10">
+            {/* Left Column: Visual Showcase & Thumbnails */}
+            <div className="lg:col-span-6 p-4 sm:p-6 bg-primary/[0.02] flex flex-col justify-between gap-4">
+              <div 
+                onClick={() => setLightboxOpen(true)}
+                className="group relative w-full aspect-square rounded-2xl overflow-hidden bg-primary/5 border border-primary/10 shadow-sm flex items-center justify-center cursor-zoom-in"
+              >
+                <img
+                  src={currentHeroImg}
+                  alt={title}
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-medium backdrop-blur-[2px]">
+                  <Eye className="w-4 h-4" />
+                  <span>{isBn ? 'ফুল-স্ক্রিন দেখতে ক্লিক করুন' : 'Click for full screen'}</span>
+                </div>
               </div>
-            )}
 
-            {/* Detailed Case Study Narrative */}
-            {caseStudy && (
-              <div className="space-y-4 pt-2">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground font-semibold">
-                    {isBn ? 'কেস স্টাডি বিশ্লেষণ ও ফলাফল' : 'Detailed Case Breakdown'}
-                  </h4>
-                  {pdfUrl && (
+              {/* Thumbnails Gallery */}
+              {galleryImages.length > 1 && (
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1">
+                  {galleryImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
+                        activeImageIndex === idx ? 'border-accent shadow-md scale-105' : 'border-primary/10 opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <img src={img} alt="thumbnail" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Strategic Concept Sprint Spec Ribbon */}
+              <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#1e3a8a] text-white text-center shadow-inner">
+                <div className="p-1">
+                  <span className="text-[9px] uppercase font-mono text-white/70 block">
+                    {isBn ? 'টাইপ' : 'Type'}
+                  </span>
+                  <span className="text-xs font-bold text-accent font-mono mt-0.5 block">
+                    {isBn ? 'কনসেপ্ট স্প্রিন্ট' : 'Concept Sprint'}
+                  </span>
+                </div>
+                <div className="p-1 border-x border-white/10">
+                  <span className="text-[9px] uppercase font-mono text-white/70 block">
+                    {isBn ? 'ডেলিভারি' : 'Delivery'}
+                  </span>
+                  <span className="text-xs font-bold text-white font-mono mt-0.5 block">
+                    {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
+                  </span>
+                </div>
+                <div className="p-1">
+                  <span className="text-[9px] uppercase font-mono text-white/70 block">
+                    {isBn ? 'আর্টওয়ার্ক' : 'Craft'}
+                  </span>
+                  <span className="text-xs font-bold text-emerald-300 font-mono mt-0.5 block">
+                    {isBn ? '১০০% কাস্টম' : '100% Bespoke'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Narrative & Rich Content */}
+            <div className="lg:col-span-6 p-5 sm:p-7 space-y-5 flex flex-col justify-between">
+              <div className="space-y-4">
+                {/* Strategic Hook */}
+                {hook && (
+                  <div className="p-3.5 rounded-xl bg-accent/10 border-l-4 border-accent text-primary">
+                    <div 
+                      className="text-xs sm:text-sm font-medium leading-relaxed prose prose-sm max-w-none text-primary [&_p]:my-1"
+                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatRichContent(hook)) }}
+                    />
+                  </div>
+                )}
+
+                {/* Case Study Body */}
+                {caseStudy ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between border-b border-primary/10 pb-2">
+                      <h4 className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground font-semibold">
+                        {isBn ? 'কেস স্টাডি বিশ্লেষণ' : 'Strategic Case Breakdown'}
+                      </h4>
+                      {pdfUrl && (
+                        <a
+                          href={pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/15 text-primary text-[10px] font-semibold transition-colors"
+                        >
+                          <FileText className="w-3 h-3 text-accent" />
+                          <span>PDF</span>
+                        </a>
+                      )}
+                    </div>
+
+                    <div 
+                      className="prose prose-sm max-w-none text-foreground/85 leading-relaxed font-sans
+                        [&_h1]:text-lg [&_h1]:font-bold [&_h1]:text-primary [&_h1]:mt-4 [&_h1]:mb-2
+                        [&_h2]:text-base [&_h2]:font-bold [&_h2]:text-primary [&_h2]:mt-4 [&_h2]:mb-2
+                        [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:mt-3 [&_h3]:mb-1.5
+                        [&_p]:my-2.5 [&_p]:leading-relaxed
+                        [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-2.5 [&_ul]:space-y-1
+                        [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-2.5 [&_ol]:space-y-1
+                        [&_strong]:font-bold [&_strong]:text-primary
+                        [&_blockquote]:border-l-4 [&_blockquote]:border-accent [&_blockquote]:pl-3 [&_blockquote]:py-1 [&_blockquote]:my-3 [&_blockquote]:bg-primary/[0.02]"
+                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(formatRichContent(caseStudy), {
+                          ADD_ATTR: ['target', 'rel'],
+                          ADD_TAGS: ['hr', 'br', 'iframe'],
+                        }),
+                      }}
+                    />
+                  </div>
+                ) : null}
+
+                {/* PDF Document Attachment Card if available */}
+                {pdfUrl && (
+                  <div className="p-3.5 rounded-xl bg-primary/[0.03] border border-primary/10 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center shrink-0">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div className="truncate">
+                        <p className="text-xs font-bold text-primary truncate">
+                          {isBn ? 'কেস স্টাডি PDF' : 'Official Case PDF'}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground truncate">
+                          {isBn ? 'সম্পূর্ণ ডকুমেন্টেশন ডাউনলোড করুন' : 'Download complete design teardown'}
+                        </p>
+                      </div>
+                    </div>
                     <a
                       href={pdfUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/15 text-primary text-[11px] font-semibold transition-colors"
+                      className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-white text-[11px] font-semibold transition-all inline-flex items-center gap-1.5 shrink-0 shadow-sm"
                     >
-                      <FileText className="w-3.5 h-3.5 text-accent" />
-                      <span>{isBn ? 'PDF ডাউনলোড' : 'Download PDF'}</span>
+                      <Download className="w-3 h-3" />
+                      <span>Download</span>
                     </a>
-                  )}
-                </div>
-
-                <div 
-                  className="prose prose-sm sm:prose-base max-w-none text-foreground/90 leading-relaxed font-sans dark:prose-invert
-                    [&_h1]:text-xl sm:[&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-primary [&_h1]:mt-6 [&_h1]:mb-3 [&_h1]:tracking-tight
-                    [&_h2]:text-lg sm:[&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-primary [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:tracking-tight
-                    [&_h3]:text-base sm:[&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:mt-5 [&_h3]:mb-2 [&_h3]:tracking-tight
-                    [&_p]:my-3.5 [&_p]:leading-relaxed [&_p]:text-foreground/85
-                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3.5 [&_ul]:space-y-1.5 [&_ul]:text-foreground/85
-                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-3.5 [&_ol]:space-y-1.5 [&_ol]:text-foreground/85
-                    [&_li]:pl-1 [&_li]:leading-relaxed
-                    [&_strong]:font-bold [&_strong]:text-primary
-                    [&_b]:font-bold [&_b]:text-primary
-                    [&_em]:italic
-                    [&_u]:underline [&_u]:underline-offset-2
-                    [&_s]:line-through [&_s]:opacity-60
-                    [&_blockquote]:border-l-4 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:py-1.5 [&_blockquote]:my-4 [&_blockquote]:italic [&_blockquote]:text-foreground/80 [&_blockquote]:bg-primary/[0.02] [&_blockquote]:rounded-r-lg
-                    [&_a]:text-accent [&_a]:underline [&_a]:font-medium hover:[&_a]:text-accent/80"
-                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : { lineHeight: 1.75 }}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(formatRichContent(caseStudy), {
-                      ADD_ATTR: ['target', 'rel'],
-                      ADD_TAGS: ['hr', 'br', 'iframe'],
-                    }),
-                  }}
-                />
+                  </div>
+                )}
               </div>
-            )}
 
-            {/* Official PDF Document Card */}
-            {pdfUrl && (
-              <div className="p-4 rounded-2xl bg-primary/[0.03] border border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/15 text-accent flex items-center justify-center shrink-0">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h5 className="text-xs font-bold text-primary">
-                      {isBn ? 'কেস স্টাডি অফিসিয়াল ডকুমেন্ট (PDF)' : 'Official Case Study Document (PDF)'}
-                    </h5>
-                    <p className="text-[11px] text-muted-foreground">
-                      {isBn ? 'সম্পূর্ণ ডেটা ও স্ট্র্যাটেজি এক নজরে পড়তে ডাউনলোড করুন' : 'Download full strategic breakdown and metrics report'}
-                    </p>
-                  </div>
-                </div>
+              {/* Action Buttons */}
+              <div className="pt-4 border-t border-primary/10 flex flex-col sm:flex-row items-center gap-2.5">
                 <a
-                  href={pdfUrl}
+                  href={`https://wa.me/8801346288210?text=${whatsappMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-xs font-semibold transition-all hover:scale-[1.02] inline-flex items-center justify-center gap-2 shrink-0 shadow-sm"
+                  className="w-full sm:flex-1 h-10 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
                 >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>{isBn ? 'PDF ডাউনলোড' : 'Download PDF'}</span>
+                  <MessageCircle className="w-4 h-4 fill-current" />
+                  <span>{isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat On WhatsApp'}</span>
                 </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    openQuickBookingModal({
+                      tierId: 'trial-pack',
+                      tierTitle: 'No-Risk Test Drive Sprint',
+                      tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
+                      price: '৳3,999',
+                      priceBn: '৳৩,৯৯৯',
+                      source: `Case Study: ${project.title_en || project.title_bn}`,
+                    });
+                  }}
+                  className="w-full sm:flex-1 h-10 rounded-xl bg-accent hover:bg-accent/90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
+                >
+                  <span>{isBn ? '৳৩,৯৯৯ স্প্রিন্ট শুরু' : 'Book ৳3,999 Sprint'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
-            )}
-
-            {/* Project Deliverables / Mockup Gallery */}
-            {mockupUrls.length > 0 && (
-              <div className="space-y-3 pt-4 border-t border-primary/10">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-muted-foreground font-semibold">
-                    {isBn ? `প্রজেক্ট গ্যালারি ও মকআপ (${mockupUrls.length})` : `Deliverables & Mockups (${mockupUrls.length})`}
-                  </h4>
-                  <span className="text-[10px] text-muted-foreground">
-                    {isBn ? 'বড় করে দেখতে ট্যাপ করুন' : 'Tap to expand'}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                  {mockupUrls.map((url, mi) => (
-                    <div
-                      key={mi}
-                      onClick={() => {
-                        setLightboxIndex(mi);
-                        setLightboxOpen(true);
-                      }}
-                      className="group relative aspect-square rounded-xl overflow-hidden bg-primary/5 border border-primary/10 cursor-pointer hover:border-accent transition-all"
-                    >
-                      <img
-                        src={resolveStorageUrl(url)}
-                        alt={`${title} mockup ${mi + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Eye className="w-5 h-5 text-white" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Sticky Bottom Direct Conversion Bar */}
-          <div className="p-4 border-t border-primary/10 bg-white/95 backdrop-blur-md flex flex-col sm:flex-row items-center gap-2.5">
-            <a
-              href={`https://wa.me/8801346288210?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:flex-1 h-11 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
-            >
-              <MessageCircle className="w-4 h-4 fill-current" />
-              <span>{isBn ? 'এই প্রজেক্ট নিয়ে কথা বলুন' : 'Chat About This Work'}</span>
-            </a>
-
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                openQuickBookingModal({
-                  tierId: 'trial-pack',
-                  tierTitle: 'No-Risk Test Drive Sprint',
-                  tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
-                  price: '৳3,999',
-                  priceBn: '৳৩,৯৯৯',
-                  source: `Case Study: ${project.title_en || project.title_bn}`,
-                });
-              }}
-              className="w-full sm:flex-1 h-11 rounded-xl bg-accent hover:bg-accent/90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
-            >
-              <span>{isBn ? '৳৩,৯৯৯ স্প্রিন্ট বুক করুন' : 'Book ৳3,999 Sprint'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </div>
           </div>
         </m.div>
 
-        {/* Mockup Lightbox Portal inside Drawer */}
+        {/* Fullscreen High-Res Lightbox */}
         {lightboxOpen && (
           <MockupLightbox
-            urls={mockupUrls}
-            initialIndex={lightboxIndex}
+            urls={galleryImages}
+            initialIndex={activeImageIndex}
             title={title}
             onClose={() => setLightboxOpen(false)}
           />
