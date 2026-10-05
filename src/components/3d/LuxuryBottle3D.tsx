@@ -205,7 +205,7 @@ export default function LuxuryBottle3D({
 
       ctx.fillStyle = '#fb923c';
       ctx.font = 'bold 24px "DM Sans", Arial, sans-serif';
-      ctx.fillText('3.2x ROAS FORMULA', 512, 330);
+      ctx.fillText('TACTILE VISUAL CRAFT', 512, 330);
 
       ctx.fillStyle = '#94a3b8';
       ctx.font = '22px "DM Sans", Arial, sans-serif';

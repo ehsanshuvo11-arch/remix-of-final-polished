@@ -329,6 +329,16 @@ export default function RoasCalculator() {
 
         </div>
 
+        {/* Disclaimer Note */}
+        <p 
+          className="text-center text-[11px] text-[#1e3a8a]/50 mt-6 max-w-2xl mx-auto font-light leading-relaxed"
+          style={{ fontFamily: fontBody }}
+        >
+          {isBn 
+            ? "* ই-কমার্স ইন্ডাস্ট্রির গড় পারফরম্যান্স ফ্রেমওয়ার্কের ওপর ভিত্তি করে তৈরি একটি আনুমানিক ডায়াগনস্টিক মডেল। এটি কোনো নির্দিষ্ট আর্থিক আয়ের পূর্ব-গ্যারান্টি নয়।"
+            : "* Illustrative diagnostic model based on typical e-commerce benchmark metrics, not a guarantee of specific financial returns."}
+        </p>
+
       </div>
     </section>
   );

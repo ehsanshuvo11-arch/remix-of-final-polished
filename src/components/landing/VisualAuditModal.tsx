@@ -299,8 +299,8 @@ export default function VisualAuditModal() {
 
                   <p className="text-[10px] text-center text-[#1e3a8a]/50 mt-2">
                     {isBn
-                      ? 'স্টুডিও ক্যাপাসিটি রক্ষা করতে চলতি মাসে মাত্র ৩টি স্লট বরাদ্দ রয়েছে।'
-                      : 'Strictly limited to 3 brand partner reviews per week to preserve quality.'}
+                      ? 'মান বজায় রাখতে প্রতিটি ব্র্যান্ডের অডিট আমরা গভীরভাবে পর্যালোচনা করি।'
+                      : 'Each brand audit is deeply analyzed individually to ensure actionable insights.'}
                   </p>
                 </form>
               ) : (

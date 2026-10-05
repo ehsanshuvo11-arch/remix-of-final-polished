@@ -62,7 +62,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
             <span>
-              {isBn ? '৩টি পার্টনার স্লট বাকি • মার্চ স্প্রিন্ট' : '3 Partner Slots Remaining • March Sprint'}
+              {isBn ? 'নতুন ব্র্যান্ড নেওয়া হচ্ছে • ৪৮ ঘণ্টার স্প্রিন্ট' : 'Now Accepting New Brands • 48h Sprint Available'}
             </span>
           </div>
 
@@ -201,7 +201,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           <span className="hidden sm:inline text-white/25">•</span>
           <span className="hidden sm:flex items-center gap-1.5">
             <span className="text-accent">★</span>
-            <span>{isBn ? 'গড় ৩.২x ROAS বৃদ্ধি' : '3.2x Avg. ROAS Lift'}</span>
+            <span>{isBn ? '১০০% কাস্টম, জিরো টেমপ্লেট' : '100% Custom, Zero Templates'}</span>
           </span>
         </div>
       </div>

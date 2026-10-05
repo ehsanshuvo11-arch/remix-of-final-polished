@@ -124,13 +124,15 @@ export default function Index() {
         </Suspense>
         <SectionDivider className="py-2 md:py-4" />
 
-        {/* 9. TESTIMONIALS & CLIENT ENDORSEMENTS */}
+        {/* 9. TESTIMONIALS & CLIENT ENDORSEMENTS (Hidden until genuine client testimonials are earned) */}
+        {/*
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>
           <ErrorBoundary isSection sectionName="Testimonials">
             <Testimonials />
           </ErrorBoundary>
         </Suspense>
         <SectionDivider className="py-2 md:py-4" />
+        */}
 
         {/* 10. REVENUE DIAGNOSTIC: Calculate ROAS lift right before investment decision */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>

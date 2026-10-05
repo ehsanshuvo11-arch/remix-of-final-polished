@@ -187,7 +187,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
             {pick(labels, 'leadFormIntroTitleBn', 'পার্টনারশিপ ইনকোয়ারি ও ফ্রি অডিট')}
           </h3>
           <p lang="bn" className="text-primary-foreground/60 text-[13px] md:text-[14px] leading-[1.85]">
-            {pick(labels, 'leadFormIntroDescBn', 'আমরা প্রতিটি ব্র্যান্ডের সাথে অত্যন্ত নিবিড়ভাবে কাজ করি, তাই প্রতি মাসে আমাদের ক্লায়েন্ট স্লট সীমিত। আপনার ব্র্যান্ডের তথ্য শেয়ার করুন।')}
+            {pick(labels, 'leadFormIntroDescBn', 'আমরা প্রতিটি ব্র্যান্ডের জন্য সম্পূর্ণ কাস্টম ডিজাইন তৈরি করি। আপনার ব্র্যান্ড ও অ্যাসেটের তথ্য শেয়ার করুন—আমরা বিশ্লেষণ করে জানাব।')}
           </p>
         </div>
       )}

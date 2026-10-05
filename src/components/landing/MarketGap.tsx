@@ -157,7 +157,7 @@ export default function MarketGap() {
               </ul>
             </div>
             <div className="mt-7 pt-4 border-t border-primary-foreground/15 text-[11px] sm:text-[12px] text-accent font-semibold flex items-center justify-between">
-              <span>{isBn ? 'ফলাফল: ৩.২x বেশি ROAS, কম CAC ও প্রিমিয়াম ব্র্যান্ড ভ্যালু' : 'Result: 3.2x Average ROAS, Lower CAC & Zero Ad Rejections'}</span>
+              <span>{isBn ? 'ফলাফল: স্ট্রং ব্র্যান্ড অথরিটি, অপ্টিমাইজড একুইজিশন ও জিরো অ্যাড রিজেকশন' : 'Result: Strong Brand Authority, Optimized Acquisition & Zero Ad Rejections'}</span>
             </div>
           </div>
         </MotionReveal>

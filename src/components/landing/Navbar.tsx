@@ -132,7 +132,7 @@ export default function Navbar({ content }: NavbarProps) {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
-            <span>{isBn ? '৩টি স্প্রিন্ট স্লট বাকি' : '3 Sprint Slots Open'}</span>
+            <span>{isBn ? '৪৮ ঘণ্টার স্প্রিন্ট ওপেন' : '48h Sprints Open'}</span>
           </div>
         </div>
 

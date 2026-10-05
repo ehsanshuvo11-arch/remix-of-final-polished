@@ -122,8 +122,8 @@ export default function StickyStorytelling() {
       num: isBn ? '০৩' : '03',
       tabLabelEn: '3. Real Profit',
       tabLabelBn: '৩. আসল লাভ',
-      eyebrowEn: 'Verified Business Impact',
-      eyebrowBn: 'বাস্তব বাণিজ্যিক ফলাফল',
+      eyebrowEn: 'Conversion Architecture',
+      eyebrowBn: 'কনভার্শন আর্কিটেকচার',
       titleEn: 'Lower CPR. Real Profit in Your Bank.',
       titleBn: 'বিজ্ঞাপন খরচ কমবে, আসল লাভ পকেটে থাকবে',
       descEn:
@@ -132,33 +132,33 @@ export default function StickyStorytelling() {
         'প্রতিযোগীদের চেয়ে আপনার ডিজাইন যখন ১০ গুণ বেশি বিশ্বাসযোগ্য দেখায়, তখন মেটা কম খরচে সঠিক ক্রেতা এনে দেয়। মানুষ মন থেকে ভালোবেসে অর্ডার করে, ফলে ডেলিভারি নেওয়ার হার বাড়ে এবং রিটার্ন কমে যায়। বিজ্ঞাপনের টাকা আর জলে যায় না।',
       bulletPoints: [
         {
-          en: 'Average 3.2x ROAS lift demonstrated across 30+ premium Bangladeshi D2C stores',
-          bn: '৩০+ বাংলাদেশি ব্র্যান্ডে পরীক্ষিত: গড়ে ৩.২x পর্যন্ত আরওএএস (ROAS) বৃদ্ধি',
+          en: 'Bespoke direct-response design engineered specifically for Bangladeshi consumer psychology',
+          bn: 'বাঙালি ক্রেতার সাইকোলজি বুঝে সম্পূর্ণ কাস্টম ডিরেক্ট-রেসপন্স ভিজ্যুয়াল ও কপি আর্কিটেকচার',
           negative: false,
         },
         {
-          en: 'Up to 42% reduction in Cost Per Result (CPR) through higher click-through trust',
-          bn: 'উচ্চমানের আস্থার কারণে বিজ্ঞাপনের খরচ (CPR) গড়ে ৪২% পর্যন্ত কমে আসে',
+          en: 'Engineered for higher click-through trust and lower Cost Per Result (CPR)',
+          bn: 'উচ্চমানের আস্থার কারণে বিজ্ঞাপনে ক্লিক বাড়ে এবং অপ্টিমাইজড খরচে কোয়ালিটি কাস্টমার আসে',
           negative: false,
         },
         {
-          en: 'White-label agency partnership: Scaled output without designer hiring headaches',
-          bn: 'মার্কেটিং এজেন্সি পার্টনারশিপ: ইন-হাউস ডিজাইনারের প্যারা ছাড়াই ক্লায়েন্টের ফলাফল স্কেল করুন',
+          en: 'White-label agency & brand partnership: Scaled output without designer hiring headaches',
+          bn: 'মার্কেটিং এজেন্সি ও ব্র্যান্ড পার্টনারশিপ: ইন-হাউস ডিজাইনারের প্যারা ছাড়াই স্কেল করুন',
           negative: false,
         },
       ],
       showcase: {
-        badgeEn: 'Performance Benchmark',
-        badgeBn: 'বাস্তব পারফরম্যান্স মেট্রিক্স',
-        cardTitleEn: 'Verified Growth Metrics',
-        cardTitleBn: 'ভেরিফায়েড গ্রোথ মেট্রিক্স',
-        headlineEn: '3.2x Average ROAS & 42% Lower CPR',
-        headlineBn: 'গড় ৩.২x ROAS ও ৪২% কম বিজ্ঞাপন খরচ',
+        badgeEn: 'Creative Architecture',
+        badgeBn: 'ক্রিয়েটিভ আর্কিটেকচার',
+        cardTitleEn: 'Direct-Response Creative Spec',
+        cardTitleBn: 'ডিরেক্ট-রেসপন্স ক্রিয়েটিভ স্পেক',
+        headlineEn: '100% Bespoke Craft & Clear Message Hierarchy',
+        headlineBn: '১০০% কাস্টম ডিজাইন ও নিখুঁত মেসেজিং হায়ারার্কি',
         sublineEn: 'Turning daily ad spend from a bleeding expense into predictable profit.',
         sublineBn: 'বিজ্ঞাপনের ব্যয়কে প্রতিদিনের লোকসান থেকে একটি স্থায়ী লাভের ইঞ্জিনে রূপান্তর করুন।',
         metrics: [
-          { label: isBn ? 'গড় ROAS বৃদ্ধি' : 'Avg. ROAS Lift', val: '3.2x - 4.5x', alert: false },
-          { label: isBn ? 'বিজ্ঞাপন খরচ (CPR)' : 'CPR Reduction', val: '-42%', alert: false },
+          { label: isBn ? 'ক্রাফট কোয়ালিটি' : 'Craft Quality', val: '100% Bespoke', alert: false },
+          { label: isBn ? 'সেলস কপি' : 'Sales Copy', val: isBn ? 'বাং+EN' : 'Bilingual', alert: false },
           { label: isBn ? 'ডেলিভারি স্প্রিন্ট' : 'Delivery Sprint', val: isBn ? '৪৮ ঘণ্টা' : '48 Hours', alert: false },
         ],
         footerNoteEn: 'Start with 5 conversion creatives for ৳3,999 — zero long-term lock-in.',
@@ -293,7 +293,7 @@ export default function StickyStorytelling() {
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
-                      <span>{isBn ? '৩.২x - ৪.৫x গড় ROAS' : '3.2x - 4.5x average ROAS'}</span>
+                      <span>{isBn ? 'হাই-কনভার্শন আর্কিটেকচার' : 'High-conversion architecture'}</span>
                     </li>
                     <li className="flex items-start gap-1">
                       <span className="text-accent font-bold">✓</span>
@@ -306,7 +306,7 @@ export default function StickyStorytelling() {
                   </ul>
                 </div>
                 <div className="mt-2.5 pt-1.5 border-t border-accent/20 text-[9px] text-accent font-mono font-bold">
-                  {isBn ? 'গড় ৩.২x ভেরিফায়েড সেলস' : '3.2x Scaled Revenue'}
+                  {isBn ? '১০০% কাস্টম ক্রাফট • ৪৮ ঘণ্টার স্প্রিন্ট' : '100% Custom Craft • 48h Sprint'}
                 </div>
               </div>
             </div>
@@ -498,7 +498,7 @@ export default function StickyStorytelling() {
                     )}
                   </div>
 
-                  {/* Bottom Verified Metrics Grid */}
+                  {/* Bottom Creative Spec Grid */}
                   <div className="grid grid-cols-3 gap-2 text-center bg-white/[0.04] rounded-xl p-3 sm:p-4 border border-white/10 mt-5">
                     {current.showcase.metrics.map((m, mIdx) => (
                       <div key={mIdx} className="px-1">

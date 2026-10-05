@@ -140,7 +140,7 @@ export default function Showcase3D() {
                 )
               ) : (
                 isBn ? (
-                  <>এজেন্সির নিজস্ব টিম হায়ারিংয়ের ঝামেলা ছাড়াই <span className="text-[#fb923c] italic">ক্লায়েন্টদের ৩.২x ROAS দিন</span></>
+                  <>এজেন্সির নিজস্ব টিম হায়ারিংয়ের ঝামেলা ছাড়াই <span className="text-[#fb923c] italic">ক্লায়েন্টদের বিশ্বমানের ৩ডি ভিজ্যুয়াল দিন</span></>
                 ) : (
                   <>Deliver World-Class 3D Assets for Your Clients <span className="text-[#fb923c] italic">Without In-House Bottlenecks</span></>
                 )
@@ -163,28 +163,28 @@ export default function Showcase3D() {
             <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
               <div className="bg-white/5 border border-white/10 rounded-sm p-4 hover:border-[#fb923c]/40 transition-colors">
                 <span className="text-[10px] text-white/50 uppercase tracking-widest block mb-1">
-                  {activePersona === 'd2c' ? (isBn ? 'গড় ROAS বৃদ্ধি' : 'Average ROAS Lift') : (isBn ? 'টার্নঅ্যারাউন্ড স্পিড' : 'Turnaround SLA')}
+                  {isBn ? 'টার্নঅ্যারাউন্ড স্পিড' : 'Turnaround SLA'}
                 </span>
                 <p className="font-heading text-2xl sm:text-3xl text-[#fb923c] font-normal">
-                  {activePersona === 'd2c' ? '3.2x' : '48 Hours'}
+                  {isBn ? '৪৮ ঘণ্টা' : '48 Hours'}
                 </p>
                 <p className="text-[11px] text-white/60 mt-1">
                   {activePersona === 'd2c'
-                    ? (isBn ? 'মেটা ও টিকটক বিজ্ঞাপনে পরীক্ষিত' : 'Proven across Meta & TikTok campaigns')
+                    ? (isBn ? 'দ্রুত টেস্ট ও স্কেল করার জন্য রেডি' : 'Fast sprint delivery for agile testing')
                     : (isBn ? 'ক্যাম্পেইনে কখনোই দেরি হবে না' : 'Strict sprint delivery guarantee')}
                 </p>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-sm p-4 hover:border-[#fb923c]/40 transition-colors">
                 <span className="text-[10px] text-white/50 uppercase tracking-widest block mb-1">
-                  {activePersona === 'd2c' ? (isBn ? 'CAC হ্রাস' : 'CAC Reduction') : (isBn ? 'এজেন্সি লাভ' : 'Overhead Saved')}
+                  {activePersona === 'd2c' ? (isBn ? 'ডিজাইন স্ট্যান্ডার্ড' : 'Design Standard') : (isBn ? 'এজেন্সি সিকিউরিটি' : 'Agency Security')}
                 </span>
                 <p className="font-heading text-2xl sm:text-3xl text-[#fb923c] font-normal">
-                  {activePersona === 'd2c' ? '-38%' : '100% NDA'}
+                  {activePersona === 'd2c' ? '100% Bespoke' : '100% NDA'}
                 </p>
                 <p className="text-[11px] text-white/60 mt-1">
                   {activePersona === 'd2c'
-                    ? (isBn ? 'কাস্টমার একুইজিশন খরচ কমে' : 'Lower acquisition costs, higher profit margin')
+                    ? (isBn ? 'জিরো টেমপ্লেট, সম্পূর্ণ ইউনিক আর্ট' : 'Zero recycled templates, bespoke craft')
                     : (isBn ? 'আপনার ব্র্যান্ড নামে ক্লায়েন্ট ডেলিভারি' : 'Completely invisible white-label partnership')}
                 </p>
               </div>

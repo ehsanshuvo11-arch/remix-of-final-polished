@@ -139,7 +139,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
               className={`text-accent mb-3 font-medium uppercase tracking-[2.5px] ${isBn ? 'text-[13px] tracking-normal font-semibold' : 'text-[11px]'}`} 
               style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
             >
-              {isBn ? 'ক্লায়েন্ট কেস স্টাডি ও ভেরিফায়েড রেজাল্ট' : (content?.labelEn ?? 'Client Case Studies & Verified Growth')}
+              {isBn ? 'কৌশলগত রিডিজাইন ও কনসেপ্ট কেস স্টাডি' : (content?.labelEn ?? 'Strategic Concept Sprints & Redesigns')}
             </p>
             <h2 
               lang={isBn ? 'bn' : 'en'} 
@@ -148,47 +148,24 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
               }`}
             >
               {isBn ? (
-                <>বাস্তব ব্র্যান্ডের রূপান্তর ও <em className="italic text-accent">সেলস গ্রোথ।</em></>
+                <>বাস্তব ব্র্যান্ডের জন্য তৈরি <em className="italic text-accent">হাই-কনভার্শন আর্কিটেকচার।</em></>
               ) : (
                 <>
-                  <WordReveal delay={0.1}>Transforming Brands.</WordReveal>{' '}
+                  <WordReveal delay={0.1}>Strategic Concept Sprints.</WordReveal>{' '}
                   <em className="italic text-accent">
-                    <WordReveal delay={0.25}>Proven Results.</WordReveal>
+                    <WordReveal delay={0.25}>Crafted For Conversion.</WordReveal>
                   </em>
                 </>
               )}
             </h2>
           </div>
 
-          {/* ── View Mode Switcher: Visual Mode vs Impact Mode ── */}
-          <div className="flex items-center gap-1.5 p-1 rounded-full bg-primary/[0.06] border border-primary/10 backdrop-blur-sm self-start md:self-end shadow-sm">
-            <button
-              type="button"
-              onClick={() => setViewMode('visual')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
-                viewMode === 'visual'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'text-primary/70 hover:text-primary hover:bg-primary/5'
-              }`}
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-accent" />
-              <span>{isBn ? '✨ ভিজ্যুয়াল ভিউ' : 'Visual Mode'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setViewMode('impact')}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
-                viewMode === 'impact'
-                  ? 'bg-accent text-white shadow-sm'
-                  : 'text-primary/70 hover:text-primary hover:bg-primary/5'
-              }`}
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-            >
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>{isBn ? '📈 রেজাল্ট ও ROAS' : 'Impact & ROAS'}</span>
-            </button>
+          {/* ── Badge: 100% Bespoke Craft ── */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/[0.04] border border-primary/10 self-start md:self-end">
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
+            <span className="text-xs font-semibold text-primary" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+              {isBn ? '১০০% কাস্টম পারফরম্যান্স আর্ট' : '100% Bespoke Performance Art'}
+            </span>
           </div>
         </div>
       </MotionReveal>
@@ -239,7 +216,7 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
                   project={project}
                   index={idx}
                   isBn={isBn}
-                  viewMode={viewMode}
+                  viewMode="visual"
                   onOpenCaseStudy={() => setSelectedProjectId(project.id)}
                 />
               ))}
@@ -442,23 +419,6 @@ function ProjectCard({
               <span>{isBn ? 'কেস স্টাডি দেখতে ট্যাপ করুন' : 'View Full Case Study'}</span>
             </span>
           </div>
-
-          {/* Impact Mode Overlay Ribbon */}
-          {viewMode === 'impact' && (
-            <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 max-w-[90%] z-20">
-              {project.roas_lift && (
-                <span className="px-2.5 py-1 rounded-lg bg-accent text-white font-bold text-[10.5px] shadow-md flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  {project.roas_lift}
-                </span>
-              )}
-              {project.cpr_reduction && (
-                <span className="px-2.5 py-1 rounded-lg bg-primary/95 text-white font-bold text-[10.5px] shadow-md">
-                  {project.cpr_reduction}
-                </span>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Project Title */}
@@ -476,28 +436,6 @@ function ProjectCard({
             className="mt-2 text-xs sm:text-sm text-foreground/75 leading-relaxed line-clamp-2 prose prose-sm max-w-none [&_p]:my-0"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(displayHook) }}
           />
-        )}
-
-        {/* Impact Mode Stat Strip */}
-        {viewMode === 'impact' && (
-          <div className="mt-3.5 p-2.5 rounded-xl bg-primary/[0.04] border border-primary/10 grid grid-cols-2 gap-2 text-center">
-            <div>
-              <span className="text-[10px] text-muted-foreground block uppercase font-mono">
-                {isBn ? 'টার্নঅ্যারাউন্ড' : 'Turnaround'}
-              </span>
-              <span className="text-xs font-bold text-primary font-mono">
-                {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
-              </span>
-            </div>
-            <div>
-              <span className="text-[10px] text-muted-foreground block uppercase font-mono">
-                {isBn ? 'ভেরিফায়েড রেজাল্ট' : 'Revenue / Impact'}
-              </span>
-              <span className="text-xs font-bold text-accent font-mono">
-                {project.revenue_generated || project.roas_lift || '3.2x ROAS'}
-              </span>
-            </div>
-          </div>
         )}
       </div>
 
@@ -749,50 +687,33 @@ function CaseStudyDrawer({
               />
             </div>
 
-            {/* Performance Metrics Ribbon — shown when metrics are provided */}
-            {(project.roas_lift || project.cpr_reduction || project.turnaround) ? (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3.5 rounded-2xl bg-[#1e3a8a] text-white">
-                {project.roas_lift && (
-                  <div className="text-center p-1.5">
-                    <span className="text-[10px] uppercase font-mono text-white/70 block">
-                      {isBn ? 'ROAS লিফট' : 'ROAS Lift'}
-                    </span>
-                    <span className="text-lg font-bold text-accent font-mono">
-                      {project.roas_lift}
-                    </span>
-                  </div>
-                )}
-                {project.cpr_reduction && (
-                  <div className="text-center p-1.5">
-                    <span className="text-[10px] uppercase font-mono text-white/70 block">
-                      {isBn ? 'বিজ্ঞাপন খরচ (CPR)' : 'CPR Reduction'}
-                    </span>
-                    <span className="text-lg font-bold text-white font-mono">
-                      {project.cpr_reduction}
-                    </span>
-                  </div>
-                )}
-                {project.turnaround && (
-                  <div className="text-center p-1.5">
-                    <span className="text-[10px] uppercase font-mono text-white/70 block">
-                      {isBn ? 'ডেলিভারি টাইম' : 'Turnaround'}
-                    </span>
-                    <span className="text-lg font-bold text-white font-mono">
-                      {project.turnaround}
-                    </span>
-                  </div>
-                )}
-                <div className="text-center p-1.5">
-                  <span className="text-[10px] uppercase font-mono text-white/70 block">
-                    {isBn ? 'স্ট্যাটাস' : 'Verification'}
-                  </span>
-                  <span className="text-sm font-bold text-emerald-400 font-mono flex items-center justify-center gap-1 mt-1">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    {isBn ? 'যাচাইকৃত' : 'Verified'}
-                  </span>
-                </div>
+            {/* Strategic Concept Sprint Spec Ribbon */}
+            <div className="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-[#1e3a8a] text-white text-center">
+              <div className="p-1">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'টাইপ' : 'Type'}
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-accent font-mono mt-0.5 block">
+                  {isBn ? 'কনসেপ্ট স্প্রিন্ট' : 'Concept Sprint'}
+                </span>
               </div>
-            ) : null}
+              <div className="p-1 border-x border-white/10">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'ডেলিভারি' : 'Delivery'}
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-white font-mono mt-0.5 block">
+                  {project.turnaround || (isBn ? '৪৮ ঘণ্টা' : '48 Hours')}
+                </span>
+              </div>
+              <div className="p-1">
+                <span className="text-[10px] uppercase font-mono text-white/70 block">
+                  {isBn ? 'আর্টওয়ার্ক' : 'Craft'}
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-emerald-300 font-mono mt-0.5 block">
+                  {isBn ? '১০০% কাস্টম' : '100% Bespoke'}
+                </span>
+              </div>
+            </div>
 
             {/* Strategic Hook */}
             {hook && (

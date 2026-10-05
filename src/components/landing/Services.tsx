@@ -37,8 +37,8 @@ const SERVICE_META: Record<
     tabBn: '৳৩,৯৯৯ ট্রায়াল',
     turnaroundEn: '48 hours',
     turnaroundBn: '৪৮ ঘণ্টা',
-    roiEn: 'Avg. −42% cost per result',
-    roiBn: 'বিজ্ঞাপন খরচ গড়ে ৪২% কম',
+    roiEn: '100% bespoke craft, zero templates',
+    roiBn: '১০০% কাস্টম ক্রাফট, জিরো টেমপ্লেট',
   },
   'growth-pack': {
     icon: ShoppingBag,
@@ -46,8 +46,8 @@ const SERVICE_META: Record<
     tabBn: 'D2C গ্রোথ',
     turnaroundEn: 'Monthly sprint',
     turnaroundBn: 'মাসিক স্প্রিন্ট',
-    roiEn: '3.2x avg. ROAS lift',
-    roiBn: 'গড়ে ৩.২x ROAS বৃদ্ধি',
+    roiEn: 'Conversion architecture & full testing set',
+    roiBn: 'কনভার্শন আর্কিটেকচার ও পূর্ণাঙ্গ টেস্টিং সেট',
   },
   'agency-pack': {
     icon: Zap,
@@ -55,8 +55,8 @@ const SERVICE_META: Record<
     tabBn: 'এজেন্সি',
     turnaroundEn: '48h SLA',
     turnaroundBn: '৪৮ ঘণ্টা SLA',
-    roiEn: 'Scale clients 3x, zero hiring',
-    roiBn: 'নিয়োগ ছাড়াই ৩ গুণ ক্লায়েন্ট',
+    roiEn: 'Scale client output with zero design hiring',
+    roiBn: 'হায়ারিং ছাড়া হোয়াইট-লেবেল ক্রিয়েটিভ স্কেলিং',
   },
 };
 

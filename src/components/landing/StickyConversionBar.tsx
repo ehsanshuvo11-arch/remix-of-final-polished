@@ -53,16 +53,16 @@ export default function StickyConversionBar() {
                 <p className="text-[11px] sm:text-xs font-medium text-white/95 truncate">
                   {isBn ? (
                     <>
-                      <span className="text-[#fb923c] font-bold">৩টি স্লট বাকি</span> — প্রিমিয়াম D2C ভিজ্যুয়াল পার্টনারশিপ
+                      <span className="text-[#fb923c] font-bold">নতুন স্প্রিন্ট ওপেন</span> — প্রিমিয়াম D2C ভিজ্যুয়াল পার্টনারশিপ
                     </>
                   ) : (
                     <>
-                      <span className="text-[#fb923c] font-bold">3 Slots Remaining</span> — D2C & Agency Partner Sprint
+                      <span className="text-[#fb923c] font-bold">Sprint Available</span> — D2C & Agency Design Sprint
                     </>
                   )}
                 </p>
                 <p className="text-[9px] text-white/50 hidden sm:block truncate">
-                  {isBn ? 'গড় ৩.২x ROAS বৃদ্ধি • ৭ দিনে স্প্রিন্ট ডেলিভারি' : '3.2x Average ROAS Lift • 7-Day Sprint Delivery'}
+                  {isBn ? '১০০% কাস্টম ডিজাইন • ৪৮ ঘণ্টায় প্রথম ডেলিভারি' : '100% Bespoke Design • 48-Hour First Delivery'}
                 </p>
               </div>
             </div>

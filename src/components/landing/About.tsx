@@ -29,10 +29,10 @@ export default function About({ content, stats }: AboutProps) {
   };
 
   const defaultStats: Stat[] = [
-    { id: '1', sort_order: 1, num: '3.2x', suffix: '', label_en: 'Average ROAS Lift', label_bn: 'গড় ROAS বৃদ্ধি' },
-    { id: '2', sort_order: 2, num: '30+', suffix: '', label_en: 'D2C Brand Partners', label_bn: 'ব্র্যান্ড পার্টনার' },
-    { id: '3', sort_order: 3, num: '-42%', suffix: '', label_en: 'Lower Ad Spend Per Order', label_bn: 'বিজ্ঞাপন খরচ হ্রাস (CPR)' },
-    { id: '4', sort_order: 4, num: '48h', suffix: '', label_en: 'Rapid Delivery Sprint', label_bn: 'র‌্যাপিড ডেলিভারি স্প্রিন্ট' },
+    { id: '1', sort_order: 1, num: '48h', suffix: '', label_en: 'Sprint Delivery', label_bn: 'ডেলিভারি স্প্রিন্ট' },
+    { id: '2', sort_order: 2, num: '0', suffix: '', label_en: 'Recycled Templates (100% Custom)', label_bn: 'টেমপ্লেট (সব কাস্টম ডিজাইন)' },
+    { id: '3', sort_order: 3, num: 'বাং+EN', suffix: '', label_en: 'Bilingual Sales Copy', label_bn: 'দ্বিভাষিক সেলস কপি' },
+    { id: '4', sort_order: 4, num: '1:1', suffix: '', label_en: 'Meta-Ready 1:1 & 9:16 Formats', label_bn: 'Meta-রেডি ফরম্যাট (১:১ ও ৯:১৬)' },
   ];
 
   const displayStats = defaultStats;
@@ -103,12 +103,12 @@ export default function About({ content, stats }: AboutProps) {
               <div
                 className="stat-box bg-background p-5 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-primary/[0.03] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
               >
-                <div className="font-heading text-[40px] md:text-[52px] font-light text-primary leading-none mb-1.5 md:mb-2">
+                <div className="font-heading text-[32px] sm:text-[40px] md:text-[48px] font-light text-primary leading-none mb-1.5 md:mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
                 {isBn ? (
-                  <div lang="bn" className="text-[13px] tracking-[1px] text-muted-foreground leading-[1.15] py-1" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-                    {(['সফল প্রজেক্ট', 'ব্র্যান্ড পার্টনার', 'ইন্ডাস্ট্রি অভিজ্ঞতা', 'ক্লায়েন্ট সন্তুষ্টি'])[i] ?? stat.label_bn}
+                  <div lang="bn" className="text-[12px] sm:text-[13px] tracking-[0.5px] text-muted-foreground leading-[1.3] py-1" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                    {stat.label_bn}
                   </div>
                 ) : (
                   <div lang="en" style={enFont} className="text-[10px] md:text-[11px] tracking-[1.5px] md:tracking-[2px] uppercase text-muted-foreground leading-[1.4]">
