@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   ArrowRight,
@@ -10,8 +9,6 @@ import {
   CreditCard,
   MessageCircle,
   FileCheck,
-  ChevronDown,
-  ChevronUp,
 } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
@@ -40,7 +37,7 @@ const SERVICE_META: Record<
     prefixEn: '01 / TRIAL SPRINT',
     prefixBn: '০১ / টেস্ট ড্রাইভ',
     turnaroundEn: '48h Delivery',
-    turnaroundBn: '৪৮ ঘণ্টার ডেলিভারি',
+    turnaroundBn: '৪৮ ঘণ্টা ডেলিভারি',
     roiEn: '100% bespoke craft, zero templates',
     roiBn: '১০০% কাস্টম ক্রাফট, জিরো টেমপ্লেট',
   },
@@ -56,7 +53,7 @@ const SERVICE_META: Record<
     prefixEn: '03 / SCALE & AGENCY',
     prefixBn: '০৩ / এজেন্সি হোয়াইট-লেবেল',
     turnaroundEn: '48h Fast SLA',
-    turnaroundBn: '৪৮ ঘণ্টার ফাস্ট SLA',
+    turnaroundBn: '৪৮ ঘণ্টা ফাস্ট SLA',
     roiEn: 'Scale client output with zero design hiring',
     roiBn: 'হায়ারিং ছাড়া হোয়াইট-লেবেল ক্রিয়েটিভ স্কেলিং',
   },
@@ -153,19 +150,19 @@ export default function Services(_props: ServicesProps) {
     <section
       id="services"
       aria-labelledby="services-pricing-heading"
-      className="relative py-12 sm:py-16 md:py-20 bg-[#faf7f2] text-primary border-y border-primary/10 overflow-hidden"
+      className="relative py-16 sm:py-20 md:py-24 bg-[#faf7f2] text-primary border-y border-primary/10 overflow-hidden"
     >
       <span id="pricing" className="absolute -top-20" aria-hidden="true" />
       <span id="investment" className="absolute -top-20" aria-hidden="true" />
 
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10">
-        {/* Section Header (Compact & Punchy) */}
-        <header className="max-w-2xl mx-auto text-center mb-8 sm:mb-10">
+      <div className="max-w-[1240px] mx-auto px-5 sm:px-8 md:px-12">
+        {/* Section Header */}
+        <header className="max-w-2xl mx-auto text-center mb-12 sm:mb-14">
           <MotionReveal>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-primary/5 border border-primary/10 mb-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               <span
-                className="text-[10px] sm:text-[10.5px] uppercase tracking-[2px] font-bold text-primary/80"
+                className="text-[11px] uppercase tracking-[2px] font-bold text-primary/80"
                 style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
               >
                 {isBn ? 'স্বচ্ছ বিনিয়োগ • নির্দিষ্ট ফলাফল' : 'Transparent Investment • Fixed Deliverables'}
@@ -176,8 +173,8 @@ export default function Services(_props: ServicesProps) {
           <MotionReveal delay={0.05}>
             <h2
               id="services-pricing-heading"
-              className={`tracking-tight text-primary leading-[1.12] mb-2.5 ${
-                isBn ? 'text-[24px] sm:text-[32px] md:text-[38px] font-bold' : 'text-[28px] sm:text-[38px] md:text-[46px] font-normal'
+              className={`tracking-tight text-primary leading-[1.14] mb-3.5 ${
+                isBn ? 'text-[28px] sm:text-[36px] md:text-[44px] font-bold' : 'text-[32px] sm:text-[42px] md:text-[50px] font-normal'
               }`}
               style={isBn ? bnFont : serifFont}
             >
@@ -197,28 +194,28 @@ export default function Services(_props: ServicesProps) {
 
           <MotionReveal delay={0.1}>
             <p
-              className="text-primary/70 text-[13px] md:text-[14.5px] leading-relaxed max-w-lg mx-auto"
+              className="text-primary/70 text-[14px] md:text-[15.5px] leading-relaxed max-w-xl mx-auto"
               style={isBn ? bnFont : undefined}
             >
               {isBn
-                ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ফলাফল, নির্ধারিত বাজেট, কোনো লুকানো চার্জ নেই।'
-                : 'Three focused sprints — clear deliverables, fixed investment, zero hidden charges.'}
+                ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ডেলিভারেবল, নির্ধারিত বাজেট, কোনো লুকানো চার্জ নেই।'
+                : 'Three focused sprints — clear deliverables, fixed investment, real sales. Zero hidden charges.'}
             </p>
           </MotionReveal>
         </header>
 
-        {/* ── MOBILE: Apple-Style Snap Carousel with Peek ── */}
+        {/* ── MOBILE: Apple-Style Snap Carousel ── */}
         <div className="md:hidden">
           <div
             ref={carouselRef}
             onScroll={handleMobileScroll}
-            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-4 py-3 scrollbar-none -mx-4"
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 py-3 scrollbar-none -mx-5"
             style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
           >
             {tiers.map((tier) => (
               <div
                 key={tier.id}
-                className="w-[84vw] max-w-[330px] snap-center shrink-0 transition-transform duration-300"
+                className="w-[85vw] max-w-[340px] snap-center shrink-0 transition-transform duration-300"
               >
                 <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
               </div>
@@ -226,14 +223,14 @@ export default function Services(_props: ServicesProps) {
           </div>
 
           {/* Carousel Dot Indicators */}
-          <div className="flex justify-center items-center gap-1.5 mt-3 mb-1">
+          <div className="flex justify-center items-center gap-2 mt-3.5 mb-2">
             {tiers.map((_, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => scrollToMobileCard(idx)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeMobileIdx === idx ? 'w-5 bg-accent' : 'w-1.5 bg-primary/20'
+                  activeMobileIdx === idx ? 'w-6 bg-accent' : 'w-1.5 bg-primary/20'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
@@ -241,8 +238,8 @@ export default function Services(_props: ServicesProps) {
           </div>
         </div>
 
-        {/* ── DESKTOP: 3 Balanced Editorial Columns (Compact Height) ── */}
-        <div className={`hidden md:grid gap-5 lg:gap-6 items-start ${tiers.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
+        {/* ── DESKTOP: 3 Balanced Editorial Columns (Linear / Vercel Proportions) ── */}
+        <div className={`hidden md:grid gap-6 lg:gap-7 items-stretch ${tiers.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {tiers.map((tier, idx) => (
             <MotionReveal key={tier.id} delay={0.08 * (idx + 1)} className="h-full">
               <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
@@ -250,55 +247,85 @@ export default function Services(_props: ServicesProps) {
           ))}
         </div>
 
-        {/* ── Unified Global Reassurance Bar (Minimal & Compact) ── */}
+        {/* ── BESPOKE / CUSTOM PRICING BANNER (Vercel Enterprise Style) ── */}
         <MotionReveal delay={0.15}>
-          <div className="mt-8 md:mt-10 pt-6 border-t border-primary/10">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              {/* Trust Badges */}
-              <ul
-                className="flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-5 text-[12px] md:text-[12.5px] text-primary/70 font-medium"
-                style={isBn ? bnFont : undefined}
-              >
-                <li className="flex items-center gap-1.5">
-                  <CreditCard className="w-3.5 h-3.5 text-accent shrink-0" strokeWidth={1.75} />
-                  <span>{isBn ? 'বিকাশ, নগদ ও ব্যাংক ট্রান্সফার' : 'bKash, Nagad & Bank Transfer'}</span>
-                </li>
-                <li className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0" strokeWidth={1.75} />
-                  <span>{isBn ? '১০০% ফ্রি রিভিশন' : '100% Free Revisions'}</span>
-                </li>
-                <li className="flex items-center gap-1.5">
-                  <FileCheck className="w-3.5 h-3.5 text-accent shrink-0" strokeWidth={1.75} />
-                  <span>{isBn ? 'অফিসিয়াল ইনভয়েস ও চুক্তি' : 'Official Invoice & Agreement'}</span>
-                </li>
-              </ul>
-
-              {/* Secondary Actions */}
-              <div
-                className="flex items-center justify-center lg:justify-end gap-x-4 text-[12.5px]"
-                style={isBn ? bnFont : undefined}
-              >
-                <button
-                  id="services-custom-quote"
-                  type="button"
-                  onClick={requestCustomQuote}
-                  className="group inline-flex items-center gap-1 font-semibold text-primary hover:text-accent transition-colors"
-                >
-                  <span>{isBn ? content.customCtaBn || 'কাস্টম কোটেশন নিন' : content.customCtaEn || 'Need a custom scope?'}</span>
-                  <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-                </button>
-                <span className="w-px h-3.5 bg-primary/15" aria-hidden />
-                <button
-                  id="services-free-audit"
-                  type="button"
-                  onClick={() => openAuditModal({ source: 'Services & Pricing' })}
-                  className="inline-flex items-center gap-1 text-primary/60 hover:text-accent transition-colors font-medium"
-                >
-                  <Sparkles className="w-3 h-3 text-accent" />
-                  <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট' : 'Free 5-min audit'}</span>
-                </button>
+          <div className="mt-8 sm:mt-10 rounded-2xl sm:rounded-3xl border border-primary/15 bg-white/80 backdrop-blur-md p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm hover:border-primary/25 transition-all">
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[11px] font-bold uppercase tracking-wider mb-2.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{isBn ? 'বেসপোক পার্টনারশিপ' : 'Bespoke Visual Partnership'}</span>
               </div>
+              <h3
+                className={`text-[20px] sm:text-[23px] text-primary font-bold mb-1.5 leading-snug`}
+                style={isBn ? bnFont : serifFont}
+              >
+                {isBn
+                  ? 'আপনার ব্র্যান্ডের কি কাস্টম স্কেল বা বিশেষ রিটেইনার প্রয়োজন?'
+                  : 'Need custom creative volume or dedicated retainers?'}
+              </h3>
+              <p className="text-[13px] sm:text-[14px] text-primary/70 leading-relaxed" style={isBn ? bnFont : undefined}>
+                {isBn
+                  ? 'নির্দিষ্ট মাসিক ভলিউম, হোয়াইট-লেবেল এজেন্সি স্কেলিং বা ফুল-ফানেল আর্কিটেকচারের জন্য সরাসরি কাস্টম কোট নিন।'
+                  : 'Custom creative volume, white-label scaling, or full-funnel revamp tailored specifically for your brand goals.'}
+              </p>
             </div>
+
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
+              <button
+                id="services-custom-quote"
+                type="button"
+                onClick={requestCustomQuote}
+                className="h-11.5 px-6 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] inline-flex items-center justify-center gap-2 shadow-md btn-shimmer active:scale-[0.98] transition-all cursor-pointer"
+                style={isBn ? bnFont : undefined}
+              >
+                <span>{isBn ? 'কাস্টম কোটেশন নিন' : 'Request Custom Quote'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <a
+                href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20need%20a%20custom%20branding%20%26%20creative%20retainer."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-11.5 px-5 rounded-xl border border-primary/20 hover:border-primary/40 text-primary font-semibold text-[12px] inline-flex items-center justify-center gap-2 hover:bg-primary/5 transition-all"
+                style={isBn ? bnFont : undefined}
+              >
+                <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                <span>{isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}</span>
+              </a>
+            </div>
+          </div>
+        </MotionReveal>
+
+        {/* ── Unified Global Reassurance Bar (Minimal & Trust-Building) ── */}
+        <MotionReveal delay={0.2}>
+          <div className="mt-8 pt-6 border-t border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <ul
+              className="flex flex-wrap items-center justify-center sm:justify-start gap-y-2.5 gap-x-6 text-[12.5px] text-primary/70 font-medium"
+              style={isBn ? bnFont : undefined}
+            >
+              <li className="flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                <span>{isBn ? 'বিকাশ, নগদ ও ব্যাংক ট্রান্সফার' : 'bKash, Nagad & Bank Transfer'}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                <span>{isBn ? 'সন্তুষ্ট না হওয়া পর্যন্ত ১০০% ফ্রি রিভিশন' : '100% Free Revisions Until Approved'}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <FileCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                <span>{isBn ? 'অফিসিয়াল ইনভয়েস ও চুক্তি' : 'Official Invoice & Agreement'}</span>
+              </li>
+            </ul>
+
+            <button
+              id="services-free-audit"
+              type="button"
+              onClick={() => openAuditModal({ source: 'Services & Pricing' })}
+              className="inline-flex items-center gap-1.5 text-primary/70 hover:text-accent transition-colors font-medium text-[12.5px] cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট চান?' : 'Want a free 5-min audit?'}</span>
+              <ArrowRight className="w-3 h-3 ml-0.5" />
+            </button>
           </div>
         </MotionReveal>
       </div>
@@ -317,15 +344,11 @@ function ServiceCard({
   isBn: boolean;
   onBook: () => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
   const featured = !!tier.featured;
 
   const { amount, period } = splitPrice(isBn ? tier.price_bn ?? tier.price_en : tier.price_en ?? tier.price_bn);
   const deliverables = (isBn ? tier.deliverables_bn : tier.deliverables_en) ?? [];
-  const previewCount = 2;
-  const initialItems = deliverables.slice(0, previewCount);
-  const remainingItems = deliverables.slice(previewCount);
 
   // Refined WhatsApp prefilled URL
   const waText = encodeURIComponent(
@@ -338,7 +361,7 @@ function ServiceCard({
   // Luxury Editorial Card Tone
   const tone = featured
     ? {
-        card: 'bg-primary text-white border-primary shadow-[0_16px_40px_-12px_rgba(30,58,138,0.35)] ring-1 ring-accent/30',
+        card: 'bg-primary text-white border-primary shadow-[0_20px_50px_-15px_rgba(30,58,138,0.4)] md:scale-[1.02] md:z-10 ring-1 ring-accent/30',
         prefix: 'text-accent',
         muted: 'text-white/70',
         soft: 'text-white/90',
@@ -347,7 +370,7 @@ function ServiceCard({
         specBg: 'bg-white/5 border border-white/15 text-accent',
       }
     : {
-        card: 'bg-white text-primary border-primary/10 shadow-[0_4px_20px_-4px_rgba(30,58,138,0.06)] hover:border-primary/25 hover:shadow-[0_12px_32px_-10px_rgba(30,58,138,0.1)]',
+        card: 'bg-white text-primary border-primary/10 shadow-[0_4px_24px_-4px_rgba(30,58,138,0.06)] hover:border-primary/25 hover:shadow-[0_16px_40px_-12px_rgba(30,58,138,0.12)]',
         prefix: 'text-primary/50',
         muted: 'text-primary/65',
         soft: 'text-primary/85',
@@ -359,11 +382,11 @@ function ServiceCard({
   return (
     <article
       data-service-card={tier.id}
-      className={`relative h-full flex flex-col justify-between rounded-2xl border p-4.5 sm:p-5 md:p-5.5 transition-all duration-300 ${tone.card}`}
+      className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border p-6 sm:p-7 md:p-7.5 transition-all duration-300 ${tone.card}`}
     >
       {featured && (
         <span
-          className="absolute -top-2.5 left-5 px-3 py-0.5 rounded-full bg-accent text-white text-[9.5px] font-bold tracking-[1px] uppercase shadow-sm"
+          className="absolute -top-3 left-6 px-3.5 py-0.5 sm:py-1 rounded-full bg-accent text-white text-[10px] sm:text-[10.5px] font-bold tracking-[1.5px] uppercase shadow-sm"
           style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
         >
           {isBn ? 'সবচেয়ে জনপ্রিয় গ্রোথ স্প্রিন্ট' : 'Most Popular Growth Sprint'}
@@ -372,25 +395,25 @@ function ServiceCard({
 
       <div>
         {/* Top row: Numbered prefix + SLA Turnaround Pill */}
-        <div className="flex items-center justify-between mb-2.5">
+        <div className="flex items-center justify-between mb-3.5">
           <span
-            className={`text-[9.5px] font-bold uppercase tracking-[1.5px] ${tone.prefix}`}
+            className={`text-[10.5px] font-bold uppercase tracking-[1.5px] ${tone.prefix}`}
             style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
           >
             {isBn ? meta.prefixBn : meta.prefixEn}
           </span>
           <span
-            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${tone.pill}`}
+            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] sm:text-[11px] font-semibold ${tone.pill}`}
             style={isBn ? bnFont : undefined}
           >
-            <Clock className="w-2.5 h-2.5 text-accent" />
+            <Clock className="w-3 h-3 text-accent" />
             <span>{isBn ? meta.turnaroundBn : meta.turnaroundEn}</span>
           </span>
         </div>
 
         {/* Title */}
         <h3
-          className={`leading-tight mb-2 ${isBn ? 'text-[18px] sm:text-[20px] font-bold' : 'text-[20px] sm:text-[22px] font-medium'}`}
+          className={`leading-tight mb-2.5 ${isBn ? 'text-[21px] sm:text-[23px] font-bold' : 'text-[23px] sm:text-[26px] font-normal'}`}
           style={isBn ? bnFont : serifFont}
         >
           {isBn ? tier.title_bn : tier.title_en}
@@ -398,8 +421,8 @@ function ServiceCard({
 
         {/* Price Row */}
         {amount && (
-          <div className={`flex items-baseline gap-1.5 pb-2.5 mb-2.5 border-b ${tone.divider}`}>
-            <span className="text-[26px] sm:text-[30px] font-bold tracking-tight leading-none font-sans text-accent">
+          <div className={`flex items-baseline gap-2 pb-3.5 mb-3.5 border-b ${tone.divider}`}>
+            <span className="text-[32px] sm:text-[38px] font-bold tracking-tight leading-none font-sans text-accent">
               {amount.startsWith('৳') ? (
                 <>
                   <span className="text-[0.6em] font-semibold align-[0.45em] mr-0.5 opacity-80">৳</span>
@@ -410,11 +433,11 @@ function ServiceCard({
               )}
             </span>
             {period ? (
-              <span className={`text-[11.5px] sm:text-[12px] ${tone.muted}`} style={isBn ? bnFont : undefined}>
+              <span className={`text-[12.5px] sm:text-[13px] ${tone.muted}`} style={isBn ? bnFont : undefined}>
                 / {period}
               </span>
             ) : (
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
+              <span className="text-[10.5px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
                 {isBn ? 'এককালীন টেস্ট স্প্রিন্ট' : 'One-Time Sprint'}
               </span>
             )}
@@ -422,99 +445,52 @@ function ServiceCard({
         )}
 
         {/* Value Proposition Description */}
-        <p className={`text-[12px] leading-relaxed mb-3 ${tone.muted}`} style={isBn ? bnFont : undefined}>
+        <p className={`text-[12.5px] sm:text-[13px] leading-relaxed mb-4 ${tone.muted}`} style={isBn ? bnFont : undefined}>
           {isBn ? tier.desc_bn : tier.desc_en}
         </p>
 
-        {/* Deliverables: Top 2 visible + Clean Expandable Toggle */}
-        <div className="mb-3">
-          <ul className="space-y-1.5">
-            {initialItems.map((item, i) => (
-              <li
-                key={i}
-                className={`flex items-start gap-2 text-[11.5px] sm:text-[12px] leading-snug ${tone.soft}`}
-                style={isBn ? bnFont : undefined}
-              >
-                <div className="w-3.5 h-3.5 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
-                  <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
-                </div>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Collapsible remaining items */}
-          <AnimatePresence>
-            {expanded && remainingItems.length > 0 && (
-              <m.ul
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.22, ease: 'easeInOut' }}
-                className="space-y-1.5 mt-1.5 pt-1.5 border-t border-dashed border-primary/10 overflow-hidden"
-              >
-                {remainingItems.map((item, i) => (
-                  <li
-                    key={i}
-                    className={`flex items-start gap-2 text-[11.5px] sm:text-[12px] leading-snug ${tone.soft}`}
-                    style={isBn ? bnFont : undefined}
-                  >
-                    <div className="w-3.5 h-3.5 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
-                      <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
-                    </div>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </m.ul>
-            )}
-          </AnimatePresence>
-
-          {/* See More Toggle Button */}
-          {remainingItems.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setExpanded(!expanded)}
-              className={`mt-1.5 inline-flex items-center gap-1 text-[11px] font-semibold cursor-pointer transition-colors ${
-                featured ? 'text-accent hover:text-white' : 'text-primary/70 hover:text-primary'
-              }`}
+        {/* Deliverables Checklist (Natural, Comfortable Line Spacing) */}
+        <ul className="space-y-2.5 mb-5">
+          {deliverables.map((item, i) => (
+            <li
+              key={i}
+              className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
               style={isBn ? bnFont : undefined}
             >
-              <span>
-                {expanded
-                  ? (isBn ? 'সংক্ষিপ্ত করুন' : 'Show less')
-                  : (isBn ? `সম্পূর্ণ ${deliverables.length}টি ডেলিভারেবল দেখুন` : `See all ${deliverables.length} deliverables`)}
-              </span>
-              {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-            </button>
-          )}
-        </div>
+              <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
+              </div>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
 
         {/* ROI / Craft Spec Highlight */}
         <div
-          className={`flex items-center gap-1.5 text-[11px] font-semibold mb-3.5 px-2.5 py-1.5 rounded-lg ${tone.specBg}`}
+          className={`flex items-center gap-2 text-[11.5px] sm:text-[12px] font-semibold mb-5 px-3 py-2 rounded-xl ${tone.specBg}`}
           style={isBn ? bnFont : undefined}
         >
-          <Sparkles className="w-3 h-3 shrink-0 text-accent" />
+          <Sparkles className="w-3.5 h-3.5 shrink-0 text-accent" />
           <span>{isBn ? meta.roiBn : meta.roiEn}</span>
         </div>
       </div>
 
-      {/* Conversion Actions Group — Compact Dual CTAs */}
-      <div className="space-y-2 pt-1">
+      {/* Conversion Actions Group — Confident Dual CTAs */}
+      <div className="space-y-2.5 pt-1">
         {/* Primary Sprint Trigger Button */}
         <button
           id={`services-book-${tier.id}`}
           type="button"
           onClick={onBook}
-          className={`w-full h-10.5 rounded-lg sm:rounded-xl inline-flex items-center justify-center gap-1.5 text-[12px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-sm btn-shimmer ${
+          className={`w-full h-11.5 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-md btn-shimmer ${
             featured
-              ? 'bg-accent hover:bg-accent/90 text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.5)]'
-              : 'bg-primary hover:bg-primary/90 text-white shadow-[0_2px_12px_-2px_rgba(30,58,138,0.2)]'
+              ? 'bg-accent hover:bg-accent/90 text-white shadow-[0_6px_20px_-6px_rgba(251,146,60,0.6)]'
+              : 'bg-primary hover:bg-primary/90 text-white shadow-[0_4px_16px_-4px_rgba(30,58,138,0.25)]'
           }`}
           style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
         >
           <span>{isBn ? tier.cta_bn : tier.cta_en}</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <ArrowRight className="w-4 h-4" />
         </button>
 
         {/* Secondary Sleek Outline WhatsApp CTA */}
@@ -523,20 +499,21 @@ function ServiceCard({
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`w-full h-8.5 rounded-lg sm:rounded-xl inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold transition-all active:scale-[0.98] ${
+          className={`w-full h-9.5 rounded-xl inline-flex items-center justify-center gap-2 text-[12px] font-semibold transition-all active:scale-[0.98] ${
             featured
               ? 'border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/10'
               : 'border border-primary/15 text-primary/80 hover:border-primary/35 hover:bg-primary/[0.04]'
           }`}
           style={isBn ? bnFont : undefined}
         >
-          <MessageCircle className="w-3 h-3 text-[#25D366]" />
+          <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
           <span>{isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}</span>
         </a>
       </div>
     </article>
   );
 }
+
 
 
 
