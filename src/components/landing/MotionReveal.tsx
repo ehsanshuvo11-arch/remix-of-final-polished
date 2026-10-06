@@ -85,7 +85,6 @@ export default function MotionReveal({
               delay: delayed,
               ease,
               opacity: { duration: dur * 0.8, delay: delayed, ease: 'linear' },
-              filter: { duration: dur * 0.7, delay: delayed, ease },
             }
       }
       className={`transform-gpu ${className ?? ''}`}

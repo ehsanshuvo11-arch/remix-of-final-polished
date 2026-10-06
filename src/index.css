@@ -92,6 +92,10 @@
   html {
     /* Document-level scrolling handled cleanly by browser and Lenis */
     touch-action: pan-y;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   body {
     @apply bg-background text-foreground;
@@ -919,6 +923,15 @@ a.story-link:hover::after {
   main,
   section {
     touch-action: pan-y !important;
+  }
+
+  /* Seamless, friction-free horizontal swiping on mobile tracks without parent conflict */
+  .snap-x,
+  [data-carousel],
+  [class*="overflow-x-auto"] {
+    touch-action: pan-x pan-y !important;
+    overscroll-behavior-x: contain !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   /* 6. Mobile-only paint budget: retain the visual identity without keeping

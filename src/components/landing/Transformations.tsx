@@ -93,24 +93,37 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
   const [dragging, setDragging] = useState(false);
   const [currentPct, setCurrentPct] = useState(50);
 
-  // Sync state for button highlight
+  const rectRef = useRef<DOMRect | null>(null);
+
+  // Sync state for button highlight - throttled with rAF so dragging is GPU-smooth
   useEffect(() => {
+    let frame = 0;
+    let last = -1;
     const unsub = x.on('change', (v) => {
-      setCurrentPct(Math.round(v));
+      const rounded = Math.round(v);
+      if (rounded === last || frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        last = rounded;
+        setCurrentPct(rounded);
+      });
     });
-    return unsub;
+    return () => {
+      unsub();
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [x]);
 
   const setFromClientX = useCallback((clientX: number) => {
-    const el = containerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
+    const rect = rectRef.current ?? containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
     const pct = ((clientX - rect.left) / rect.width) * 100;
     x.set(Math.max(0, Math.min(100, pct)));
   }, [x]);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0 && e.pointerType === 'mouse') return;
+    rectRef.current = containerRef.current?.getBoundingClientRect() ?? null;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {}
@@ -124,6 +137,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    rectRef.current = null;
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {}

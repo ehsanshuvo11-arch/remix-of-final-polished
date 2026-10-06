@@ -20,14 +20,15 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       return;
     }
 
-    // Zero-latency native hardware-accelerated scrolling:
-    // Wheel events are handled directly by the browser compositor thread at 120/144Hz.
-    // Lenis remains active for silky-smooth programmatic anchor scrolling (Navbar, CTAs).
+    // Luxury butter-smooth inertial scrolling for desktop / trackpad / wheel:
+    // Exponential curve ensures immediate response (<16ms) to wheel inputs
+    // while providing an ultra-silky, 60/120fps glide without sluggish lag.
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: false, // Prevents mouse wheel drag & rubber-band latency on desktop
+      smoothWheel: true,
       syncTouch: false,
+      wheelMultiplier: 1.0,
       autoRaf: true,
     });
     lenisInstance = lenis;

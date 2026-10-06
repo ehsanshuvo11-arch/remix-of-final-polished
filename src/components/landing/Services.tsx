@@ -346,13 +346,13 @@ export default function Services(_props: ServicesProps) {
         <div className="md:hidden">
           <div
             ref={carouselRef}
-            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2.5 scrollbar-none -mx-5 overscroll-x-contain touch-auto cursor-grab active:cursor-grabbing select-none"
+            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2.5 scrollbar-none -mx-5 overscroll-x-contain touch-pan-x cursor-grab active:cursor-grabbing select-none"
             style={{
               WebkitOverflowScrolling: 'touch',
               scrollSnapType: 'x mandatory',
               scrollPaddingLeft: '1.25rem',
               scrollPaddingRight: '1.25rem',
-              scrollBehavior: 'smooth',
+              touchAction: 'pan-x pan-y',
             }}
           >
             {displayTiers.map((tier) => (

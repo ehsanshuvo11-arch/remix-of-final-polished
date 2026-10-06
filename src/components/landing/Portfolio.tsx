@@ -98,14 +98,28 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const [mobileIdx, setMobileIdx] = useState(0);
   const mobileCarouselRef = useRef<HTMLDivElement>(null);
 
-  const handleMobileScroll = () => {
-    if (!mobileCarouselRef.current) return;
-    const { scrollLeft, offsetWidth } = mobileCarouselRef.current;
-    const index = Math.round(scrollLeft / (offsetWidth * 0.86));
-    if (index >= 0 && index < filteredProjects.length) {
-      setMobileIdx(index);
-    }
-  };
+  // High-performance RAF passive scroll tracking (eliminates unthrottled re-render jank)
+  useEffect(() => {
+    const el = mobileCarouselRef.current;
+    if (!el) return;
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const { scrollLeft, offsetWidth } = el;
+        const index = Math.round(scrollLeft / (offsetWidth * 0.86));
+        if (index >= 0 && index < filteredProjects.length) {
+          setMobileIdx((prev) => (prev === index ? prev : index));
+        }
+      });
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [filteredProjects.length]);
 
   const scrollToMobileProject = (idx: number) => {
     if (!mobileCarouselRef.current) return;
@@ -211,9 +225,12 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
             <div className="md:hidden">
               <div
                 ref={mobileCarouselRef}
-                onScroll={handleMobileScroll}
-                className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-4 py-2 scrollbar-none -mx-4"
-                style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+                className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-4 py-2 scrollbar-none -mx-4 overscroll-x-contain touch-pan-x cursor-grab active:cursor-grabbing select-none"
+                style={{
+                  scrollSnapType: 'x mandatory',
+                  WebkitOverflowScrolling: 'touch',
+                  touchAction: 'pan-x pan-y',
+                }}
               >
                 {filteredProjects.map((project, idx) => (
                   <div

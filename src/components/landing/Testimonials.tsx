@@ -200,8 +200,8 @@ export default function Testimonials() {
         {/* ── MOBILE: native scroll-snap swipe track ── */}
         <div
           ref={trackRef}
-          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab overscroll-x-contain touch-auto [scroll-padding-left:1.5rem]"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          className="md:hidden -mx-6 px-6 flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab active:cursor-grabbing overscroll-x-contain touch-pan-x [scroll-padding-left:1.5rem]"
+          style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-x pan-y' }}
         >
 
           {testimonials.map((t) => (
