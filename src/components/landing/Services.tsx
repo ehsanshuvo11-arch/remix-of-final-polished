@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   ArrowRight,
@@ -9,6 +10,8 @@ import {
   CreditCard,
   MessageCircle,
   FileCheck,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
@@ -88,14 +91,14 @@ export default function Services(_props: ServicesProps) {
   const content = pricingData || DEFAULT_PRICING;
   const tiers = (content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers) || [];
 
-  // Mobile Carousel state & scroll tracking
+  // Mobile Carousel state & quiet scroll tracking
   const [activeMobileIdx, setActiveMobileIdx] = useState(1);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const handleMobileScroll = () => {
     if (!carouselRef.current) return;
     const { scrollLeft, offsetWidth } = carouselRef.current;
-    const index = Math.round(scrollLeft / (offsetWidth * 0.88));
+    const index = Math.round(scrollLeft / (offsetWidth * 0.86));
     if (index >= 0 && index < tiers.length) {
       setActiveMobileIdx(index);
     }
@@ -204,33 +207,33 @@ export default function Services(_props: ServicesProps) {
           </MotionReveal>
         </header>
 
-        {/* ── MOBILE: Apple-Style Snap Carousel ── */}
+        {/* ── MOBILE: Quiet & Understated Swipeable Cards ── */}
         <div className="md:hidden">
           <div
             ref={carouselRef}
             onScroll={handleMobileScroll}
-            className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 py-3 scrollbar-none -mx-5"
+            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2 scrollbar-none -mx-5"
             style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
           >
             {tiers.map((tier) => (
               <div
                 key={tier.id}
-                className="w-[85vw] max-w-[340px] snap-center shrink-0 transition-transform duration-300"
+                className="w-[84vw] max-w-[335px] snap-center shrink-0 transition-transform duration-300"
               >
                 <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
               </div>
             ))}
           </div>
 
-          {/* Carousel Dot Indicators */}
-          <div className="flex justify-center items-center gap-2 mt-3.5 mb-2">
+          {/* Understated Minimal Dot Indicators */}
+          <div className="flex justify-center items-center gap-1.5 mt-3 mb-2">
             {tiers.map((_, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => scrollToMobileCard(idx)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeMobileIdx === idx ? 'w-6 bg-accent' : 'w-1.5 bg-primary/20'
+                  activeMobileIdx === idx ? 'w-4.5 bg-primary/70' : 'w-1.5 bg-primary/20'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
@@ -344,11 +347,15 @@ function ServiceCard({
   isBn: boolean;
   onBook: () => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
   const featured = !!tier.featured;
 
   const { amount, period } = splitPrice(isBn ? tier.price_bn ?? tier.price_en : tier.price_en ?? tier.price_bn);
   const deliverables = (isBn ? tier.deliverables_bn : tier.deliverables_en) ?? [];
+  const previewCount = 3;
+  const initialItems = deliverables.slice(0, previewCount);
+  const remainingItems = deliverables.slice(previewCount);
 
   // Refined WhatsApp prefilled URL
   const waText = encodeURIComponent(
@@ -361,7 +368,7 @@ function ServiceCard({
   // Luxury Editorial Card Tone
   const tone = featured
     ? {
-        card: 'bg-primary text-white border-primary shadow-[0_20px_50px_-15px_rgba(30,58,138,0.4)] md:scale-[1.02] md:z-10 ring-1 ring-accent/30',
+        card: 'bg-primary text-white border-primary shadow-[0_16px_40px_-12px_rgba(30,58,138,0.35)] md:scale-[1.02] md:z-10 ring-1 ring-accent/30',
         prefix: 'text-accent',
         muted: 'text-white/70',
         soft: 'text-white/90',
@@ -449,21 +456,68 @@ function ServiceCard({
           {isBn ? tier.desc_bn : tier.desc_en}
         </p>
 
-        {/* Deliverables Checklist (Natural, Comfortable Line Spacing) */}
-        <ul className="space-y-2.5 mb-5">
-          {deliverables.map((item, i) => (
-            <li
-              key={i}
-              className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
+        {/* Deliverables Checklist: 3 Preview Items + Expandable See More Toggle */}
+        <div className="mb-4">
+          <ul className="space-y-2.5">
+            {initialItems.map((item, i) => (
+              <li
+                key={i}
+                className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
+                style={isBn ? bnFont : undefined}
+              >
+                <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
+                  <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
+                </div>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Smooth Collapsible remaining items */}
+          <AnimatePresence>
+            {expanded && remainingItems.length > 0 && (
+              <m.ul
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.22, ease: 'easeInOut' }}
+                className="space-y-2.5 mt-2.5 pt-2.5 border-t border-dashed border-primary/10 overflow-hidden"
+              >
+                {remainingItems.map((item, i) => (
+                  <li
+                    key={i}
+                    className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
+                    style={isBn ? bnFont : undefined}
+                  >
+                    <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
+                      <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
+                    </div>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </m.ul>
+            )}
+          </AnimatePresence>
+
+          {/* See More Toggle Button */}
+          {remainingItems.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setExpanded(!expanded)}
+              className={`mt-2.5 inline-flex items-center gap-1 text-[11.5px] font-semibold cursor-pointer transition-colors ${
+                featured ? 'text-accent hover:text-white' : 'text-primary/70 hover:text-accent'
+              }`}
               style={isBn ? bnFont : undefined}
             >
-              <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
-                <Check className="w-2.5 h-2.5 text-accent" strokeWidth={3} />
-              </div>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
+              <span>
+                {expanded
+                  ? (isBn ? 'সংক্ষিপ্ত করুন' : 'Show less')
+                  : (isBn ? `আরও ${remainingItems.length}টি ডেলিভারেবল দেখুন` : `+${remainingItems.length} more deliverables`)}
+              </span>
+              {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+          )}
+        </div>
 
         {/* ROI / Craft Spec Highlight */}
         <div
