@@ -69,23 +69,23 @@ export default function Contact({ contact }: ContactProps) {
 
   return (
     <div id="contact" className="bg-[#1e3a8a]">
-      <div className="py-10 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-6 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
         <hr className="border-t border-white/10" />
       </div>
-      <div className="py-12 md:py-[110px] px-5 sm:px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
+      <div className="pb-14 pt-2 md:py-[110px] px-5 sm:px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-start">
         <div>
           <MotionReveal>
             {isBn ? (
-              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-3 md:mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                 সরাসরি যোগাযোগ
               </p>
             ) : (
-              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-3 md:mb-4 font-medium">
                 {c.sectionLabelEn ?? 'Get In Touch'}
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-4 md:mb-7 leading-[1.15] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
             {isBn ? (
               <>
                 <WordReveal delay={0.1}>বিজ্ঞাপনে টাকা অপচয় বন্ধ করতে প্রস্তুত?</WordReveal>
@@ -105,34 +105,34 @@ export default function Contact({ contact }: ContactProps) {
             )}
           </h2>
           <MotionReveal delay={0.15}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.85] text-primary-foreground/50 mb-10`}>
+            <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.8] text-primary-foreground/60 mb-6 md:mb-10`}>
               {isBn
                 ? (c.descBn ?? 'প্রতিদিন বিজ্ঞাপনে টাকা ঢালছেন, কিন্তু ইনবক্সে এসে মানুষ দাম জিজ্ঞেস করে উধাও? আর নয়। আপনার ব্র্যান্ডের আসল সেলস নিশ্চিত করতে চলুন সরাসরি কথা বলি। প্রতি সপ্তাহে আমরা সর্বোচ্চ ৩টি ব্র্যান্ড নিয়ে কাজ করি।')
                 : (c.descEn ?? "Tired of spending money on Meta ads only to get ghosted in your inbox? We craft creatives and hooks that make shoppers order at full price. We accept strictly 3 brand sprints per week.")}
             </p>
           </MotionReveal>
 
-          <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 mb-8 md:mb-0">
             {links.map((link, i) => (
               <MotionReveal key={link.label} delay={0.2 + i * 0.06}>
                 <a
                   href={link.href}
                   target={link.href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3.5 text-primary-foreground/70 text-sm transition-all duration-500 hover:text-accent hover:translate-x-2 group min-h-[44px] py-1"
+                  className="flex items-center gap-3 text-primary-foreground/80 text-xs sm:text-sm p-2.5 rounded-xl bg-white/[0.04] border border-white/10 transition-all duration-300 hover:border-accent hover:text-accent group min-h-[44px]"
                   style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
                 >
-                  <span className="w-9 h-9 border border-primary-foreground/15 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:border-accent group-hover:bg-accent/10 group-hover:rotate-[10deg]">
+                  <span className="w-8 h-8 border border-primary-foreground/15 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:border-accent group-hover:bg-accent/10">
                     {link.icon}
                   </span>
-                  {link.label}
+                  <span className="truncate">{link.label}</span>
                 </a>
               </MotionReveal>
             ))}
           </div>
 
           {/* Partnership Process Roadmap */}
-          <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/10">
             <p className="text-[10px] tracking-[2px] uppercase text-accent font-semibold mb-4">
               {isBn ? 'ইনকোয়ারির পরবর্তী ৩টি ধাপ' : 'What Happens Next'}
             </p>

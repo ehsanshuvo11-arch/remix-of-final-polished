@@ -63,7 +63,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
             <span>
-              {isBn ? 'নতুন ব্র্যান্ড নেওয়া হচ্ছে • ৪৮ ঘণ্টার স্প্রিন্ট' : 'Now Accepting New Brands • 48h Sprint Available'}
+              {isBn ? 'নতুন ব্র্যান্ড নেওয়া হচ্ছে • ৭২ ঘণ্টার স্প্রিন্ট' : 'Now Accepting New Brands • 72h Sprint Available'}
             </span>
           </div>
 

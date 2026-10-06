@@ -101,6 +101,19 @@ export default function RoasCalculator() {
           {/* LEFT: 4 CLEAN, BREATHABLE INPUT ROWS */}
           <div className="lg:col-span-7 bg-white rounded-2xl md:rounded-3xl border border-[#1e3a8a]/10 p-5 sm:p-7 md:p-8 shadow-sm flex flex-col justify-between">
             
+            {/* Mobile Live Diagnostic Quick Pill (Instant Feedback While Sliding) */}
+            <div className="block lg:hidden mb-4 p-3 rounded-xl bg-[#fb923c]/10 border border-[#fb923c]/25 shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold text-[#1e3a8a] flex items-center gap-1.5" style={{ fontFamily: fontBody }}>
+                  <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
+                  <span>{isBn ? "দুর্বল ডিজাইনে সম্ভাব্য মাসিক লস:" : "Est. Monthly Sales Leak:"}</span>
+                </span>
+                <span className="text-sm font-bold text-[#fb923c] font-mono">
+                  -৳{formatCurrency(revenueLost)}
+                </span>
+              </div>
+            </div>
+
             <div className="space-y-5 sm:space-y-6">
               
               {/* Row 1: Monthly Ad Spend */}

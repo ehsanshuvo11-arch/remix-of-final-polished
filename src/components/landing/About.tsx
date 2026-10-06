@@ -27,7 +27,7 @@ export default function About({ content, stats }: AboutProps) {
   };
 
   const defaultStats: Stat[] = [
-    { id: '1', sort_order: 1, num: '48h', suffix: '', label_en: 'Sprint Delivery', label_bn: 'ডেলিভারি স্প্রিন্ট' },
+    { id: '1', sort_order: 1, num: '72h', suffix: '', label_en: 'Sprint Delivery', label_bn: 'ডেলিভারি স্প্রিন্ট' },
     { id: '2', sort_order: 2, num: '0', suffix: '', label_en: 'Recycled Templates (100% Custom)', label_bn: 'টেমপ্লেট (সব কাস্টম ডিজাইন)' },
     { id: '3', sort_order: 3, num: 'বাং+EN', suffix: '', label_en: 'Bilingual Sales Copy', label_bn: 'দ্বিভাষিক সেলস কপি' },
     { id: '4', sort_order: 4, num: '1:1', suffix: '', label_en: 'Meta-Ready 1:1 & 9:16 Formats', label_bn: 'Meta-রেডি ফরম্যাট (১:১ ও ৯:১৬)' },
@@ -90,21 +90,21 @@ export default function About({ content, stats }: AboutProps) {
           </MotionReveal>
         </div>
 
-        <div className="grid grid-cols-2 gap-px bg-border border border-border mt-4 md:mt-0">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-px md:bg-border md:border md:border-border mt-6 md:mt-0">
           {displayStats.map((stat, i) => (
             <MotionReveal key={stat.id} delay={0.15 * (i + 1)}>
               <div
-                className="stat-box bg-background p-5 md:p-9 text-center transition-all duration-700 ease-out relative overflow-hidden group hover:bg-primary/[0.03] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
+                className="stat-box bg-card/60 md:bg-background p-4 sm:p-5 md:p-9 text-center rounded-2xl md:rounded-none border border-border/60 md:border-none shadow-sm md:shadow-none transition-all duration-700 ease-out relative overflow-hidden group hover:bg-primary/[0.03] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] before:content-[''] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-accent before:scale-x-0 before:transition-transform before:duration-700 hover:before:scale-x-100"
               >
-                <div className="font-heading text-[32px] sm:text-[40px] md:text-[48px] font-light text-primary leading-none mb-1.5 md:mb-2">
+                <div className="font-heading text-[28px] sm:text-[36px] md:text-[48px] font-light text-primary leading-none mb-1.5 md:mb-2">
                   {stat.num}<span className="text-accent">{stat.suffix}</span>
                 </div>
                 {isBn ? (
-                  <div lang="bn" className="text-[12px] sm:text-[13px] tracking-[0.5px] text-muted-foreground leading-[1.3] py-1" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                  <div lang="bn" className="text-[11.5px] sm:text-[13px] tracking-[0.3px] text-muted-foreground leading-snug py-0.5" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                     {stat.label_bn}
                   </div>
                 ) : (
-                  <div lang="en" style={enFont} className="text-[10px] md:text-[11px] tracking-[1.5px] md:tracking-[2px] uppercase text-muted-foreground leading-[1.4]">
+                  <div lang="en" style={enFont} className="text-[10px] md:text-[11px] tracking-[1.5px] md:tracking-[2px] uppercase text-muted-foreground leading-snug">
                     {stat.label_en}
                   </div>
                 )}

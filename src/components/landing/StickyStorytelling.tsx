@@ -19,6 +19,7 @@ export default function StickyStorytelling() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const [activeTab, setActiveTab] = useState(1); // Default to POLISHED Solution (index 1) for immediate high-status impact
+  const [mobileComparisonTab, setMobileComparisonTab] = useState<'polished' | 'canva'>('polished');
 
   const chapters = [
     {
@@ -142,8 +143,8 @@ export default function StickyStorytelling() {
           negative: false,
         },
         {
-          en: 'White-label agency & brand partnership with strict 48-hour delivery SLAs',
-          bn: 'ইন-হাউস ডিজাইনারের প্যারা ছাড়া এজেন্সি ও ব্র্যান্ডের জন্য ৪৮ ঘণ্টার স্প্রিন্ট',
+          en: 'White-label agency & brand partnership with strict 72-hour delivery SLAs',
+          bn: 'ইন-হাউস ডিজাইনারের প্যারা ছাড়া এজেন্সি ও ব্র্যান্ডের জন্য ৭২ ঘণ্টার স্প্রিন্ট',
           negative: false,
         },
       ],
@@ -159,7 +160,7 @@ export default function StickyStorytelling() {
         metrics: [
           { label: isBn ? 'ক্রাফট কোয়ালিটি' : 'Craft Quality', val: '100% Bespoke', alert: false },
           { label: isBn ? 'সেলস কপি' : 'Sales Copy', val: isBn ? 'বাং+EN' : 'Bilingual', alert: false },
-          { label: isBn ? 'ডেলিভারি স্প্রিন্ট' : 'Delivery Sprint', val: isBn ? '৪৮ ঘণ্টা' : '48 Hours', alert: false },
+          { label: isBn ? 'ডেলিভারি স্প্রিন্ট' : 'Delivery Sprint', val: isBn ? '৭২ ঘণ্টা' : '72 Hours', alert: false },
         ],
         footerNoteEn: 'Start with 5 conversion creatives for ৳3,999 — zero long-term lock-in.',
         footerNoteBn: 'কোনো দীর্ঘমেয়াদী চুক্তি ছাড়াই মাত্র ৳৩,৯৯৯-তে ৫টি ক্রিয়েটিভ দিয়ে ট্রায়াল শুরু করুন।',
@@ -233,92 +234,130 @@ export default function StickyStorytelling() {
           </p>
         </div>
 
-        {/* MOBILE VIEW: Ultra-Clean High-Impact 2-Column Comparison Matrix */}
-        <div className="block lg:hidden mb-2">
-          <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.06] border border-white/12 shadow-xl backdrop-blur-md">
+        {/* MOBILE VIEW: Premium Segmented Switcher & Breathable Full-Width Card */}
+        <div className="block lg:hidden mb-4">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.06] border border-white/12 shadow-xl backdrop-blur-md">
             <div className="text-center mb-3">
-              <span className="text-[9.5px] font-mono uppercase tracking-[1.5px] text-accent font-semibold">
+              <span className="text-[10px] font-mono uppercase tracking-[1.5px] text-accent font-semibold">
                 {isBn ? 'বাস্তব তুলনামূলক পার্থক্য' : 'Side-by-Side Reality'}
               </span>
               <h3 
-                className="text-base font-bold text-white mt-0.5"
+                className="text-base sm:text-lg font-bold text-white mt-1 leading-snug"
                 style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
               >
                 {isBn ? 'সস্তা ক্যানভা টেমপ্লেট ❌ বনাম POLISHED সিস্টেম ✨' : 'Cheap Canva Ads ❌ vs POLISHED System ✨'}
               </h3>
             </div>
 
-            {/* 2-Column Side-by-Side Matrix */}
-            <div className="grid grid-cols-2 gap-2 sm:gap-3 text-left">
-              {/* Left Column: Canva / Typical */}
-              <div className="p-2.5 sm:p-3 rounded-xl bg-red-950/25 border border-red-500/25 flex flex-col justify-between">
-                <div>
-                  <span className="text-[9.5px] font-bold text-red-400 uppercase tracking-wider block mb-1.5">
-                    {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
-                  </span>
-                  <ul className="space-y-1.5 text-[10px] text-white/70">
-                    <li className="flex items-start gap-1">
-                      <span className="text-red-400">✕</span>
-                      <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল কপি' : 'Recycled template, weak copy'}</span>
-                    </li>
-                    <li className="flex items-start gap-1">
-                      <span className="text-red-400">✕</span>
-                      <span>{isBn ? '০.৮x - ১.২x ROAS (লস)' : '0.8x - 1.2x ROAS (Losing money)'}</span>
-                    </li>
-                    <li className="flex items-start gap-1">
-                      <span className="text-red-400">✕</span>
-                      <span>{isBn ? '৩৫% - ৪৫% COD রিটার্ন' : '35% - 45% COD returns'}</span>
-                    </li>
-                    <li className="flex items-start gap-1">
-                      <span className="text-red-400">✕</span>
-                      <span>{isBn ? 'ইনবক্সে "দাম কত" বলে উধাও' : 'Inbox "Price please?" ghosting'}</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="mt-2.5 pt-1.5 border-t border-red-500/15 text-[9px] text-red-300/80 font-mono">
-                  {isBn ? 'ডলার অপচয় ও শূন্য লাভ' : 'Budget Drain & Zero Profit'}
-                </div>
-              </div>
+            {/* Segmented Switcher Pills */}
+            <div className="grid grid-cols-2 p-1 rounded-xl bg-white/[0.07] border border-white/12 mb-3.5">
+              <button
+                type="button"
+                onClick={() => setMobileComparisonTab('polished')}
+                className={`py-2 px-2.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
+                  mobileComparisonTab === 'polished'
+                    ? 'bg-accent text-accent-foreground shadow-md'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <span>✨</span>
+                <span>{isBn ? 'POLISHED সিস্টেম' : 'POLISHED System'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileComparisonTab('canva')}
+                className={`py-2 px-2.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
+                  mobileComparisonTab === 'canva'
+                    ? 'bg-red-500/30 text-red-100 shadow-md border border-red-500/40'
+                    : 'text-white/70 hover:text-white'
+                }`}
+              >
+                <span>❌</span>
+                <span>{isBn ? 'সাধারণ ক্যানভা' : 'Generic Canva'}</span>
+              </button>
+            </div>
 
-              {/* Right Column: POLISHED */}
-              <div className="p-2.5 sm:p-3 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
+            {/* Breathable Full-Width Active Card */}
+            {mobileComparisonTab === 'polished' ? (
+              <div className="p-3.5 sm:p-4 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
                 <div>
-                  <span className="text-[9.5px] font-bold text-accent uppercase tracking-wider block mb-1.5">
-                    {isBn ? 'POLISHED সিস্টেম ✨' : 'POLISHED System ✨'}
-                  </span>
-                  <ul className="space-y-1.5 text-[10px] text-white/95">
-                    <li className="flex items-start gap-1">
-                      <span className="text-accent font-bold">✓</span>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold text-accent uppercase tracking-wider">
+                      {isBn ? 'POLISHED সিস্টেম ✨' : 'POLISHED System ✨'}
+                    </span>
+                    <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-accent/20 text-accent font-semibold">
+                      {isBn ? 'সুপারিশকৃত মডেল' : 'Proven Standard'}
+                    </span>
+                  </div>
+                  <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/95">
+                    <li className="flex items-start gap-2">
+                      <span className="text-accent font-bold mt-0.5">✓</span>
                       <span>{isBn ? 'আস্থার প্রতীক বাংলা সেলস আর্ট' : 'Authority visual & copy'}</span>
                     </li>
-                    <li className="flex items-start gap-1">
-                      <span className="text-accent font-bold">✓</span>
+                    <li className="flex items-start gap-2">
+                      <span className="text-accent font-bold mt-0.5">✓</span>
                       <span>{isBn ? 'হাই-কনভার্শন আর্কিটেকচার' : 'High-conversion architecture'}</span>
                     </li>
-                    <li className="flex items-start gap-1">
-                      <span className="text-accent font-bold">✓</span>
+                    <li className="flex items-start gap-2">
+                      <span className="text-accent font-bold mt-0.5">✓</span>
                       <span>{isBn ? 'COD রিটার্ন এক ধাক্কায় কমে' : 'Dramatic drop in returns'}</span>
                     </li>
-                    <li className="flex items-start gap-1">
-                      <span className="text-accent font-bold">✓</span>
+                    <li className="flex items-start gap-2">
+                      <span className="text-accent font-bold mt-0.5">✓</span>
                       <span>{isBn ? 'ছাড় ছাড়াই নিশ্চিন্ত অর্ডার' : 'Full-price orders without discounts'}</span>
                     </li>
                   </ul>
                 </div>
-                <div className="mt-2.5 pt-1.5 border-t border-accent/20 text-[9px] text-accent font-mono font-bold">
-                  {isBn ? '১০০% কাস্টম ক্রাফট • ৪৮ ঘণ্টার স্প্রিন্ট' : '100% Custom Craft • 48h Sprint'}
+                <div className="mt-3.5 pt-2 border-t border-accent/20 text-[10px] text-accent font-mono font-bold flex items-center justify-between">
+                  <span>{isBn ? '১০০% কাস্টম ক্রাফট' : '100% Custom Craft'}</span>
+                  <span>•</span>
+                  <span>{isBn ? '৭২ ঘণ্টার স্প্রিন্ট' : '72h Sprint'}</span>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="p-3.5 sm:p-4 rounded-xl bg-red-950/30 border border-red-500/25 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold text-red-400 uppercase tracking-wider">
+                      {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
+                    </span>
+                    <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-semibold">
+                      {isBn ? 'বাজেট অপচয়' : 'Budget Leak'}
+                    </span>
+                  </div>
+                  <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/80">
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল কপি' : 'Recycled template, weak copy'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span>{isBn ? '০.৮x - ১.২x ROAS (লস)' : '0.8x - 1.2x ROAS (Losing money)'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span>{isBn ? '৩৫% - ৪৫% COD রিটার্ন' : '35% - 45% COD returns'}</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span>{isBn ? 'ইনবক্সে "দাম কত" বলে উধাও' : 'Inbox "Price please?" ghosting'}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="mt-3.5 pt-2 border-t border-red-500/15 text-[10px] text-red-300/80 font-mono">
+                  {isBn ? 'ডলার অপচয় ও শূন্য লাভ' : 'Budget Drain & Zero Profit'}
+                </div>
+              </div>
+            )}
 
             {/* Single High-Converting CTA */}
-            <div className="mt-3 pt-2.5 border-t border-white/10">
+            <div className="mt-3.5 pt-3 border-t border-white/10">
               <button
                 type="button"
                 onClick={() => openQuickBookingModal({
                   source: 'Mobile Comparison Card',
                 })}
-                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভে তফাত দেখুন' : 'Experience ৳3,999 Sprint'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
