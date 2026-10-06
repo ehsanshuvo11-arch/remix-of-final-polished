@@ -17,7 +17,7 @@ function SectionDivider({ className = '' }: SectionDividerProps) {
           initial={{ opacity: 0, scaleX: 0.4 }}
           whileInView={{ opacity: 1, scaleX: 1 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ transformOrigin: 'center' }}
           className="h-px w-full bg-gradient-to-r from-transparent via-primary/15 to-transparent"
         />

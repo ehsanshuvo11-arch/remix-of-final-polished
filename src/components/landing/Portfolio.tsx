@@ -499,7 +499,7 @@ function ProjectCard({
             containerClassName="w-full h-full"
             className="object-cover object-center w-full h-full transform-gpu transition-transform duration-700 group-hover:scale-105"
             loading={index < 2 ? 'eager' : 'lazy'}
-            fetchPriority={index < 2 ? 'high' : 'auto'}
+            fetchpriority={index < 2 ? 'high' : 'auto'}
             decoding="async"
           />
 

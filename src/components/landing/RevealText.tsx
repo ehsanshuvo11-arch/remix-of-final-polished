@@ -30,8 +30,8 @@ export default function RevealText({
   children,
   className = '',
   delay = 0,
-  duration = 1.3,
-  stagger = 0.1,
+  duration = 0.5,
+  stagger = 0.04,
   splitBy = 'word',
   as: Tag = 'span',
   triggerOnMount = false,
@@ -43,8 +43,8 @@ export default function RevealText({
 
   const Wrapper = Tag as any;
   const isMobile = useIsMobileDevice();
-  const step = isMobile ? Math.min(stagger, 0.05) : stagger;
-  const dur = isMobile ? Math.min(duration, 0.5) : duration;
+  const step = isMobile ? Math.min(stagger, 0.02) : stagger;
+  const dur = isMobile ? Math.min(duration, 0.35) : duration;
 
   const rest = { y: '0%', opacity: 1 } as const;
 

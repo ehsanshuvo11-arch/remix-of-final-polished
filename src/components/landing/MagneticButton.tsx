@@ -55,10 +55,9 @@ export default function MagneticButton({
   const textX = useMotionValue(0);
   const textY = useMotionValue(0);
 
-  // "Old money" physics: low stiffness + high damping + meaningful mass
-  // → a slow, dense, deliberate pull. No bounce, no jitter.
-  const buttonSpring = { stiffness: 90, damping: 22, mass: 0.9 };
-  const textSpring = { stiffness: 120, damping: 24, mass: 0.6 };
+  // Responsive, fluid physics: immediate cursor follow with zero sluggishness
+  const buttonSpring = { stiffness: 240, damping: 20, mass: 0.25 };
+  const textSpring = { stiffness: 280, damping: 22, mass: 0.2 };
 
   const sx = useSpring(x, buttonSpring);
   const sy = useSpring(y, buttonSpring);

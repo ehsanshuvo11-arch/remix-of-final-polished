@@ -23,8 +23,8 @@ export default function WordReveal({
   const isMobile = useIsMobileDevice();
 
   const words = children.split(' ');
-  // Same reveal on mobile, marginally tighter stagger to avoid frame backlog.
-  const step = isMobile ? 0.03 : 0.04;
+  // Snappy stagger so words appear swiftly without lagging user reading speed.
+  const step = isMobile ? 0.015 : 0.022;
 
   return (
     <Tag ref={ref as any} className={className}>
@@ -48,7 +48,7 @@ export default function WordReveal({
             initial={{ y: '110%', opacity: 0 }}
             animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
             transition={{
-              duration: isMobile ? 0.5 : 0.9,
+              duration: isMobile ? 0.32 : 0.42,
               delay: delay + i * step,
               ease: LUXURY_EASE as any,
             }}

@@ -90,9 +90,8 @@
     @apply border-border;
   }
   html {
-    /* Document-level scrolling handled cleanly by browser and Lenis */
+    /* Document-level scrolling handled cleanly by browser native compositor and Lenis anchors */
     touch-action: pan-y;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

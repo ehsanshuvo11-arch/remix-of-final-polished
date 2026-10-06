@@ -20,31 +20,24 @@ const directionMap: Record<Direction, { x?: number; y?: number }> = {
   right: { x: 40 },
 };
 
-// Quiet-luxury easing: long, decelerating settle with zero overshoot.
-const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
-// Mobile keeps a luxury curve but resolves faster so it feels thumb-responsive.
-const MOBILE_EASE = [0.22, 1, 0.36, 1] as const;
+// Crisp modern easing: swift, responsive settle without lagging behind user scroll.
+const SNAPPY_EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function MotionReveal({
   children,
   delay = 0,
-  duration = 1.15,
+  duration = 0.45,
   direction = 'up',
   distance,
   className,
   once = true,
 }: MotionRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: '0px 0px -60px 0px', amount: 0.08 });
+  const isInView = useInView(ref, { once, margin: '0px 0px -40px 0px', amount: 0.05 });
   const isMobile = useIsMobileDevice();
-  // Once the reveal has settled we release the GPU layer hint — a permanent
-  // will-change keeps a compositor layer alive per element and is the single
-  // biggest cause of scroll jank on mobile once dozens of them exist.
   const [settled, setSettled] = useState(false);
 
   const offset = directionMap[direction];
-  // High-performance hardware-accelerated animation: transform + opacity ONLY.
-  // Dropping non-composited raster blur filters ensures 100% zero-jank 60/120fps scrolling.
   const rest = { opacity: 1, x: 0, y: 0, scale: 1 };
   const initial = {
     opacity: 0,
@@ -53,40 +46,24 @@ export default function MotionReveal({
     scale: isMobile ? 1 : 0.99,
   };
 
-  const dur = isMobile ? Math.min(duration, 0.5) : duration;
-  const ease = isMobile ? MOBILE_EASE : LUXURY_EASE;
-  const delayed = isMobile ? Math.min(delay * 0.6, 0.24) : delay;
+  const dur = isMobile ? Math.min(duration, 0.35) : duration;
+  const delayed = isMobile ? Math.min(delay * 0.5, 0.15) : Math.min(delay, 0.25);
 
   return (
     <m.div
       ref={ref}
-      // Hardcode the pre-animation state inline so the element never flashes
-      // in its final position before Framer Motion hydrates (FOUC/jank fix).
-      // translate3d forces the element onto its own GPU layer.
       style={{
-        opacity: initial.opacity,
-        transform: `translate3d(${initial.x ?? 0}px, ${initial.y ?? 0}px, 0) scale(${initial.scale ?? 1})`,
         willChange: settled ? 'auto' : 'transform, opacity',
         backfaceVisibility: 'hidden',
       }}
       initial={initial}
       animate={isInView ? rest : initial}
       onAnimationComplete={() => isInView && setSettled(true)}
-      transition={
-        isMobile
-          ? {
-              duration: dur,
-              delay: delayed,
-              ease,
-              opacity: { duration: dur * 0.8, delay: delayed, ease: 'linear' },
-            }
-          : {
-              duration: dur,
-              delay: delayed,
-              ease,
-              opacity: { duration: dur * 0.8, delay: delayed, ease: 'linear' },
-            }
-      }
+      transition={{
+        duration: dur,
+        delay: delayed,
+        ease: SNAPPY_EASE,
+      }}
       className={`transform-gpu ${className ?? ''}`}
     >
       {children}
