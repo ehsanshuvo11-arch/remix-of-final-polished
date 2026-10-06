@@ -225,15 +225,15 @@ export default function Services(_props: ServicesProps) {
             ))}
           </div>
 
-          {/* Understated Minimal Dot Indicators */}
-          <div className="flex justify-center items-center gap-1.5 mt-3 mb-2">
+          {/* Understated Minimal Dot Indicators in Brand Orange */}
+          <div className="flex justify-center items-center gap-1.5 mt-2.5 mb-1.5">
             {tiers.map((_, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => scrollToMobileCard(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeMobileIdx === idx ? 'w-4.5 bg-primary/70' : 'w-1.5 bg-primary/20'
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  activeMobileIdx === idx ? 'w-3.5 bg-accent' : 'w-1 bg-accent/30 hover:bg-accent/50'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
