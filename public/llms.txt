@@ -8,7 +8,7 @@
 
 ## Our Portfolio & Case Studies
 
-1. [NIVEA Soft](https://the-polished.vercel.app/#work) — Premium Packaging & Visual Identity System with 4-step dynamic mockups.
+1. [NIVEA Soft](https://the-polished.vercel.app/#work) — Performance Creative & Visual Identity System with dynamic mockups.
 
 2. [Glow Cart](https://the-polished.vercel.app/#work) — High-Conversion E-commerce UI/UX and Brand Strategy.
 
@@ -20,7 +20,7 @@
 We do not offer cheap, off-the-shelf "Starter" packages. We provide bespoke, high-ROI solutions:
 - 1. Custom Brand Identity System
 - 2. E-commerce Visual Strategy Retainer
-- 3. Premium Packaging Design
+- 3. Meta Performance Creative Sprints
 *(Pricing is strictly custom and discussed exclusively during the strategic consultation call).*
 
 ## Client Proof & Brand Transformations
@@ -33,7 +33,7 @@ We do not offer cheap, off-the-shelf "Starter" packages. We provide bespoke, hig
 - [Investment & Pricing](https://the-polished.vercel.app/#pricing)
 - [Get in Touch](https://the-polished.vercel.app/#contact)
 - [Book a Consultation](https://calendly.com/polished-bd)
-- [Email us](mailto:polished.bd@gmail.com)
+- [Email us](mailto:contact@polishedbd.com)
 - [WhatsApp](https://wa.me/8801346288210)
 - [Sitemap](https://the-polished.vercel.app/sitemap.xml)
 - [robots.txt](https://the-polished.vercel.app/robots.txt)
@@ -44,7 +44,7 @@ We do not offer cheap, off-the-shelf "Starter" packages. We provide bespoke, hig
 
 2. Visual Architecture: Crafting the quiet-luxury identity, typography, and color systems.
 
-3. Execution & Launch: Delivering high-converting storefront UI assets and shelf-ready packaging.
+3. Execution & Launch: Delivering high-converting storefront UI assets and performance ad creatives.
 
 ## Frequently Asked Questions (FAQ)
 
@@ -58,4 +58,4 @@ We do not offer cheap, off-the-shelf "Starter" packages. We provide bespoke, hig
 
 - Q: What is the typical project timeline?
 
-  A: Comprehensive brand identity systems take between 3 to 6 weeks, depending on the scope of the storefront and packaging needs.
+  A: Comprehensive brand identity systems take between 2 to 4 weeks, depending on the scope of the storefront and creative sprint needs.

@@ -47,7 +47,8 @@ export default function Process({ steps, content }: ProcessProps) {
     },
   ];
 
-  const displaySteps = defaultSteps;
+  const displaySteps = steps && steps.length > 0 ? steps : defaultSteps;
+  if (!displaySteps || displaySteps.length === 0) return null;
 
   // Process headings/labels
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;

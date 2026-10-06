@@ -48,7 +48,7 @@ export default function Showcase3D() {
         <p className="text-sm md:text-base text-muted-foreground leading-relaxed font-light max-w-2xl mx-auto">
           {isBn
             ? 'ডিজিটাল স্ক্রিনে আপনার পণ্য দেখতে প্রিমিয়াম ও এক্সপেনসিভ না লাগলে গ্রাহক কখনোই উচ্চমূল্যে প্রি-অর্ডার করবে না। ৩ডি লাইটিং, গ্লাস রিফ্লেকশন ও সিগনেচার বাংলা টাইপোগ্রাফির সমন্বয়ে আমরা ব্র্যান্ডকে অনন্য উচ্চতায় নিয়ে যাই।'
-            : 'If your product looks flat and templated on social feeds, high-value buyers scroll past. We engineer tactile 3D packaging depth, amber caustics, and world-class typography that command instant trust and higher pricing power.'}
+            : 'If your product looks flat and templated on social feeds, high-value buyers scroll past. We engineer tactile 3D visual depth, amber caustics, and world-class typography that command instant trust and higher pricing power.'}
         </p>
 
         {/* Persona Switcher for conversion relevance */}
@@ -208,7 +208,7 @@ export default function Showcase3D() {
             <button
               type="button"
               onClick={() => triggerInquiry({
-                service: activePersona === 'd2c' ? '3D Product Packaging & Visuals' : 'White-Label Agency Partnership',
+                service: activePersona === 'd2c' ? '3D Product Render & Visuals' : 'White-Label Agency Partnership',
                 note: `Inquiry from 3D showcase (${activePersona.toUpperCase()})`
               })}
               className="w-full sm:w-auto py-3.5 px-6 bg-transparent border border-white/20 hover:border-white text-white text-xs font-medium uppercase tracking-[1.5px] rounded-sm transition-colors flex items-center justify-center"

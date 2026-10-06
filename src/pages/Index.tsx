@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { m } from 'framer-motion';
 import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
@@ -29,7 +29,7 @@ import SectionDivider from '@/components/landing/SectionDivider';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { useSiteSetting, useServices, usePortfolio, useProcessSteps, useStats, useTransformations } from '@/hooks/use-site-content';
 import { supabase } from '@/lib/supabase';
-import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent } from '@/types/database';
+import type { HeroContent, AboutContent, ContactContent, FooterContent, NavContent, ServicesMetaContent, PortfolioMetaContent, ProcessMetaContent, TransformationsMetaContent, TestimonialsContent } from '@/types/database';
 
 /** Reserves vertical space so lazy sections never cause layout shift. */
 const SectionFallback = ({ minHeight = '60vh' }: { minHeight?: string }) => (
@@ -38,6 +38,13 @@ const SectionFallback = ({ minHeight = '60vh' }: { minHeight?: string }) => (
 
 export default function Index() {
   const [heroReady, setHeroReady] = useState(() => !shouldShowLoader());
+
+  // Guarantee page loads at top without jump
+  useEffect(() => {
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   const fallbackLogoUrl = supabase.storage.from('polished-assets').getPublicUrl('logo/current').data.publicUrl;
 
@@ -51,6 +58,7 @@ export default function Index() {
   const { data: processMeta } = useSiteSetting<ProcessMetaContent>('process-meta');
   const { data: marqueeData } = useSiteSetting<{ items: string[] }>('marquee');
   const { data: logoData } = useSiteSetting<{ url: string }>('logo');
+  const { data: testimonialsData } = useSiteSetting<TestimonialsContent>('testimonials');
 
   const { data: services = [] } = useServices();
   const { data: projects = [], isLoading: projectsLoading } = usePortfolio();
@@ -119,20 +127,22 @@ export default function Index() {
         {/* 8. SPRINT PROCESS & HOW WE OPERATE (48-Hour Zero-Friction Delivery) */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>
           <ErrorBoundary isSection sectionName="Process">
-            <Process steps={[]} content={null} />
+            <Process steps={processSteps} content={processMeta ?? null} />
           </ErrorBoundary>
         </Suspense>
         <SectionDivider className="py-2 md:py-4" />
 
-        {/* 9. TESTIMONIALS & CLIENT ENDORSEMENTS (Hidden until genuine client testimonials are earned) */}
-        {/*
-        <Suspense fallback={<SectionFallback minHeight="50vh" />}>
-          <ErrorBoundary isSection sectionName="Testimonials">
-            <Testimonials />
-          </ErrorBoundary>
-        </Suspense>
-        <SectionDivider className="py-2 md:py-4" />
-        */}
+        {/* 9. TESTIMONIALS & CLIENT ENDORSEMENTS (Shown dynamically when added in Admin, hidden if 0) */}
+        {testimonialsData?.items && testimonialsData.items.length > 0 && (
+          <>
+            <Suspense fallback={<SectionFallback minHeight="50vh" />}>
+              <ErrorBoundary isSection sectionName="Testimonials">
+                <Testimonials />
+              </ErrorBoundary>
+            </Suspense>
+            <SectionDivider className="py-2 md:py-4" />
+          </>
+        )}
 
         {/* 10. REVENUE DIAGNOSTIC: Calculate ROAS lift right before investment decision */}
         <Suspense fallback={<SectionFallback minHeight="50vh" />}>

@@ -104,24 +104,30 @@ export default function Services(_props: ServicesProps) {
     }
   };
 
-  const scrollToMobileCard = (idx: number) => {
+  const scrollToMobileCard = (idx: number, smooth: boolean = true) => {
     if (!carouselRef.current) return;
     const cardEl = carouselRef.current.children[idx] as HTMLElement;
     if (cardEl) {
-      cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      const targetLeft = cardEl.offsetLeft - (carouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
+      carouselRef.current.scrollTo({ left: targetLeft, behavior: smooth ? 'smooth' : 'auto' });
       setActiveMobileIdx(idx);
     }
   };
 
-  // Default scroll to featured card on initial mount
+  // Default scroll to featured card on initial mount (CONTAINER ONLY, NEVER SCROLLS WINDOW)
   useEffect(() => {
     if (carouselRef.current && tiers.length > 1) {
       const featuredIndex = tiers.findIndex((t) => t.featured);
       if (featuredIndex !== -1) {
-        setTimeout(() => scrollToMobileCard(featuredIndex), 300);
+        const cardEl = carouselRef.current.children[featuredIndex] as HTMLElement;
+        if (cardEl) {
+          const targetLeft = cardEl.offsetLeft - (carouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
+          carouselRef.current.scrollLeft = targetLeft;
+          setActiveMobileIdx(featuredIndex);
+        }
       }
     }
-  }, []);
+  }, [tiers]);
 
   const bookTier = (tier: PricingTier) => {
     const meta = SERVICE_META[tier.id] ?? FALLBACK_META;

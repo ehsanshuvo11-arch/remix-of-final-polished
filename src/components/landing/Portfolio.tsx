@@ -42,7 +42,7 @@ const CATEGORIES = [
   { id: 'skincare', labelEn: 'Skincare & D2C', labelBn: 'স্কিনকেয়ার ও ডি২সি' },
   { id: 'ads', labelEn: 'Meta Performance Ads', labelBn: 'মেটা অ্যাড ক্রিয়েটিভ' },
   { id: 'perfume', labelEn: 'Luxury Fragrance', labelBn: 'লাক্সারি পারফিউম' },
-  { id: 'branding', labelEn: 'Packaging & Identity', labelBn: 'প্যাকেজিং ও ব্র্যান্ডিং' },
+  { id: 'branding', labelEn: 'Brand Identity', labelBn: 'ব্র্যান্ড আইডেন্টিটি' },
 ] as const;
 
 function matchesCategory(project: PortfolioProject, catId: string): boolean {
@@ -61,7 +61,7 @@ function matchesCategory(project: PortfolioProject, catId: string): boolean {
     return en.includes('perfume') || en.includes('parfum') || bn.includes('পারফিউম') || en.includes('fragrance') || en.includes('scent') || bn.includes('সুগন্ধি');
   }
   if (catId === 'branding') {
-    return en.includes('packaging') || en.includes('identity') || bn.includes('প্যাকেজিং') || bn.includes('ব্র্যান্ডিং') || en.includes('brand') || en.includes('design') || bn.includes('ডিজাইন');
+    return en.includes('identity') || bn.includes('ব্র্যান্ডিং') || en.includes('brand') || en.includes('design') || bn.includes('ডিজাইন');
   }
   return true;
 }
@@ -88,6 +88,11 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
 
   // Display ONLY live projects from the database
   const displayProjects = validProjects;
+
+  // When section has 0 projects, don't show it (simply remove it)
+  if (!isLoading && validProjects.length === 0) {
+    return null;
+  }
 
   // Active filters and views
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -119,9 +124,37 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
   const hasMore = visibleCount < filteredProjects.length;
   const remainingCount = filteredProjects.length - visibleCount;
 
+  // Mobile Peek Snap Carousel state & handlers
+  const [mobileIdx, setMobileIdx] = useState(0);
+  const mobileCarouselRef = useRef<HTMLDivElement>(null);
+
+  const handleMobileScroll = () => {
+    if (!mobileCarouselRef.current) return;
+    const { scrollLeft, offsetWidth } = mobileCarouselRef.current;
+    const index = Math.round(scrollLeft / (offsetWidth * 0.86));
+    if (index >= 0 && index < filteredProjects.length) {
+      setMobileIdx(index);
+    }
+  };
+
+  const scrollToMobileProject = (idx: number) => {
+    if (!mobileCarouselRef.current) return;
+    const cardEl = mobileCarouselRef.current.children[idx] as HTMLElement;
+    if (cardEl) {
+      const targetLeft = cardEl.offsetLeft - (mobileCarouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
+      mobileCarouselRef.current.scrollTo({ left: targetLeft, behavior: 'smooth' });
+      setMobileIdx(idx);
+    }
+  };
+
+  // Reset mobile carousel index when category changes
   const handleCategoryChange = (catId: string) => {
     setSelectedCategory(catId);
-    setVisibleCount(4); // Reset visible count on filter change
+    setVisibleCount(4);
+    setMobileIdx(0);
+    if (mobileCarouselRef.current) {
+      mobileCarouselRef.current.scrollLeft = 0;
+    }
   };
 
   const loadMore = () => {
@@ -203,56 +236,130 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         </div>
       </MotionReveal>
 
-      {/* ── Projects Grid ── */}
+      {/* ── Projects Grid & Showcase ── */}
       <AnimatePresence mode="wait">
         {isLoading ? (
           <PortfolioSkeleton />
         ) : (
           <div className="space-y-12 md:space-y-20">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-stretch">
-              {visibleProjects.map((project, idx) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={idx}
-                  isBn={isBn}
-                  viewMode="visual"
-                  onOpenCaseStudy={() => setSelectedProjectId(project.id)}
-                />
-              ))}
+            {/* ── MOBILE: Peek Snap Carousel (Apple / Instagram Showcase Style) ── */}
+            <div className="md:hidden">
+              <div
+                ref={mobileCarouselRef}
+                onScroll={handleMobileScroll}
+                className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-4 py-2 scrollbar-none -mx-4"
+                style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+              >
+                {filteredProjects.map((project, idx) => (
+                  <div
+                    key={project.id}
+                    className="w-[84vw] max-w-[335px] snap-center shrink-0 transition-transform duration-300"
+                  >
+                    <ProjectCard
+                      project={project}
+                      index={idx}
+                      isBn={isBn}
+                      viewMode="visual"
+                      onOpenCaseStudy={() => setSelectedProjectId(project.id)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Minimal Understated Slide Counter & Brand Orange Dots */}
+              <div className="flex items-center justify-between px-1 mt-4">
+                <span className="text-[11px] font-mono text-primary/60 font-semibold">
+                  {isBn
+                    ? `${(mobileIdx + 1).toLocaleString('bn-BD', { minimumIntegerDigits: 2 })} / ${filteredProjects.length.toLocaleString('bn-BD', { minimumIntegerDigits: 2 })}`
+                    : `${String(mobileIdx + 1).padStart(2, '0')} / ${String(filteredProjects.length).padStart(2, '0')}`}
+                </span>
+
+                {/* Brand Orange Accent Dots matching pricing carousel */}
+                <div className="flex items-center gap-1.5">
+                  {filteredProjects.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => scrollToMobileProject(idx)}
+                      className={`h-1 rounded-full transition-all duration-300 ${
+                        mobileIdx === idx ? 'w-3.5 bg-accent' : 'w-1 bg-accent/30 hover:bg-accent/50'
+                      }`}
+                      aria-label={`Go to project ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Sleek Mini Nav Arrows */}
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => scrollToMobileProject(Math.max(0, mobileIdx - 1))}
+                    disabled={mobileIdx === 0}
+                    className="w-7 h-7 rounded-full border border-primary/15 flex items-center justify-center text-primary/70 disabled:opacity-30 disabled:pointer-events-none active:scale-95 transition-all"
+                    aria-label="Previous project"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollToMobileProject(Math.min(filteredProjects.length - 1, mobileIdx + 1))}
+                    disabled={mobileIdx === filteredProjects.length - 1}
+                    className="w-7 h-7 rounded-full border border-primary/15 flex items-center justify-center text-primary/70 disabled:opacity-30 disabled:pointer-events-none active:scale-95 transition-all"
+                    aria-label="Next project"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
             </div>
 
-            {/* ── Progressive "Load More" Button ── */}
-            {hasMore ? (
-              <div className="flex flex-col items-center justify-center pt-4 pb-2">
-                <button
-                  type="button"
-                  onClick={loadMore}
-                  className="group px-7 py-3.5 rounded-full bg-white border border-primary/20 text-primary hover:border-accent hover:text-accent font-semibold text-xs md:text-sm tracking-wide shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2.5 active:scale-95 cursor-pointer"
-                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                >
-                  <Layers className="w-4 h-4 text-accent transition-transform duration-300 group-hover:rotate-12" />
-                  <span>
-                    {isBn
-                      ? `আরও ${remainingCount}টি সিগনেচার প্রজেক্ট দেখুন`
-                      : `Load ${remainingCount} More Featured Works`}
+            {/* ── DESKTOP: 2-Column Balanced Editorial Grid ── */}
+            <div className="hidden md:block space-y-12 md:space-y-20">
+              <div className="grid grid-cols-2 gap-8 md:gap-14 items-stretch">
+                {visibleProjects.map((project, idx) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    index={idx}
+                    isBn={isBn}
+                    viewMode="visual"
+                    onOpenCaseStudy={() => setSelectedProjectId(project.id)}
+                  />
+                ))}
+              </div>
+
+              {/* ── Progressive "Load More" Button ── */}
+              {hasMore ? (
+                <div className="flex flex-col items-center justify-center pt-4 pb-2">
+                  <button
+                    type="button"
+                    onClick={loadMore}
+                    className="group px-7 py-3.5 rounded-full bg-white border border-primary/20 text-primary hover:border-accent hover:text-accent font-semibold text-xs md:text-sm tracking-wide shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2.5 active:scale-95 cursor-pointer"
+                    style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                  >
+                    <Layers className="w-4 h-4 text-accent transition-transform duration-300 group-hover:rotate-12" />
+                    <span>
+                      {isBn
+                        ? `আরও ${remainingCount}টি সিগনেচার প্রজেক্ট দেখুন`
+                        : `Load ${remainingCount} More Featured Works`}
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5" />
+                  </button>
+                  <p className="text-[11px] text-muted-foreground/70 mt-2.5 font-mono">
+                    {isBn 
+                      ? `(মোট ${filteredProjects.length}টির মধ্যে ${visibleProjects.length}টি প্রদর্শিত)` 
+                      : `Showing ${visibleProjects.length} of ${filteredProjects.length} curated works`}
+                  </p>
+                </div>
+              ) : filteredProjects.length > 4 ? (
+                <div className="text-center pt-4">
+                  <span className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground/70">
+                    <Check className="w-3.5 h-3.5 text-accent" />
+                    {isBn ? 'এই ক্যাটাগরির সমস্ত কাজ প্রদর্শিত হয়েছে' : 'All works in this category displayed'}
                   </span>
-                  <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5" />
-                </button>
-                <p className="text-[11px] text-muted-foreground/70 mt-2.5 font-mono">
-                  {isBn 
-                    ? `(মোট ${filteredProjects.length}টির মধ্যে ${visibleProjects.length}টি প্রদর্শিত)` 
-                    : `Showing ${visibleProjects.length} of ${filteredProjects.length} curated works`}
-                </p>
-              </div>
-            ) : filteredProjects.length > 4 ? (
-              <div className="text-center pt-4">
-                <span className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground/70">
-                  <Check className="w-3.5 h-3.5 text-accent" />
-                  {isBn ? 'এই ক্যাটাগরির সমস্ত কাজ প্রদর্শিত হয়েছে' : 'All works in this category displayed'}
-                </span>
-              </div>
-            ) : null}
+                </div>
+              ) : null}
+            </div>
           </div>
         )}
       </AnimatePresence>
