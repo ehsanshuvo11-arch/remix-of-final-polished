@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { sendInquiryEmail } from '@/lib/email';
@@ -6,9 +6,80 @@ import MagneticButton from '@/components/landing/MagneticButton';
 import { useUILabels } from '@/hooks/use-site-content';
 import { INQUIRY_PREFILL_EVENT, type InquiryPrefillDetail } from '@/lib/inquiry-events';
 import type { UILabelsContent } from '@/types/database';
-import { ShieldCheck, Clock, Award, MessageCircle } from 'lucide-react';
+import { ShieldCheck, Clock, Award, MessageCircle, ChevronDown, Check } from 'lucide-react';
 
 const easing = [0.16, 1, 0.3, 1] as const;
+
+export type DeliveryChannel = 'whatsapp' | 'messenger' | 'instagram' | 'email';
+
+export interface ChannelConfig {
+  id: DeliveryChannel;
+  priorityRank: number;
+  labelEn: string;
+  labelBn: string;
+  badgeEn: string;
+  badgeBn: string;
+  inputPlaceholderEn: string;
+  inputPlaceholderBn: string;
+  noteEn: string;
+  noteBn: string;
+  type?: string;
+}
+
+export const CHANNELS: ChannelConfig[] = [
+  {
+    id: 'whatsapp',
+    priorityRank: 1,
+    labelEn: 'WhatsApp',
+    labelBn: 'হোয়াটসঅ্যাপ',
+    badgeEn: '⚡ #1 Priority · 2h Response',
+    badgeBn: '⚡ সর্বোচ্চ অগ্রাধিকার · ২ ঘণ্টায় রেসপন্স',
+    inputPlaceholderEn: 'WhatsApp Number (e.g. 01712345678 or +880 1...) *',
+    inputPlaceholderBn: 'হোয়াটসঅ্যাপ নম্বর (যেমন: 01712345678 বা +880 1...) *',
+    noteEn: 'Our Creative Director personally reviews and delivers your custom strategy teardown directly on WhatsApp.',
+    noteBn: 'আমাদের ক্রিয়েটিভ ডিরেক্টর আপনার ব্র্যান্ডের ৫-মিনিট ভিডিও অডিট ও স্ট্র্যাটেজি সরাসরি হোয়াটসঅ্যাপে পাঠাবেন।',
+    type: 'tel',
+  },
+  {
+    id: 'messenger',
+    priorityRank: 2,
+    labelEn: 'Facebook Messenger',
+    labelBn: 'ফেসবুক মেসেঞ্জার',
+    badgeEn: '#2 Priority · 6h Response',
+    badgeBn: '২য় অগ্রাধিকার · ৬ ঘণ্টার মধ্যে রেসপন্স',
+    inputPlaceholderEn: 'Facebook Profile / Page Link or Username (e.g. m.me/yourbrand) *',
+    inputPlaceholderBn: 'ফেসবুক প্রোফাইল / পেজ লিংক বা ইউজারনেম (যেমন: m.me/yourbrand) *',
+    noteEn: 'We will connect directly through Facebook Messenger to deliver your proposal and visual audit.',
+    noteBn: 'আমরা সরাসরি ফেসবুক মেসেঞ্জারে যুক্ত হয়ে আপনার সাথে প্রপোজাল শেয়ার করব।',
+    type: 'text',
+  },
+  {
+    id: 'instagram',
+    priorityRank: 3,
+    labelEn: 'Instagram DM',
+    labelBn: 'ইনস্টাগ্রাম ডিএম',
+    badgeEn: '#3 Priority · 12h Response',
+    badgeBn: '৩য় অগ্রাধিকার · ১২ ঘণ্টার মধ্যে রেসপন্স',
+    inputPlaceholderEn: 'Instagram Handle or Profile Link (e.g. @yourbrand) *',
+    inputPlaceholderBn: 'ইনস্টাগ্রাম হ্যান্ডেল বা প্রোফাইল লিংক (যেমন: @yourbrand) *',
+    noteEn: 'We will send the proposal directly to your brand’s official Instagram DM.',
+    noteBn: 'আপনার অফিসিয়াল ইনস্টাগ্রাম ইনবক্সে সরাসরি স্ট্র্যাটেজি ডেক পাঠানো হবে।',
+    type: 'text',
+  },
+  {
+    id: 'email',
+    priorityRank: 4,
+    labelEn: 'Business Email',
+    labelBn: 'বিজনেস ইমেইল',
+    badgeEn: '#4 Priority · 24h Response',
+    badgeBn: '৪র্থ অগ্রাধিকার · ২৪ ঘণ্টার মধ্যে রেসপন্স',
+    inputPlaceholderEn: 'Business Email Address (e.g. hello@yourbrand.com) *',
+    inputPlaceholderBn: 'বিজনেস ইমেইল অ্যাড্রেস (যেমন: hello@yourbrand.com) *',
+    noteEn: 'A formal executive PDF proposal and creative teardown will be delivered to your inbox.',
+    noteBn: 'ফর্মাল এক্সিকিউটিভ পিডিএফ প্রপোজাল ও ক্রিয়েটিভ অডিট আপনার ইনবক্সে পাঠানো হবে।',
+    type: 'email',
+  },
+];
 
 interface FormState {
   client_name: string;
@@ -20,6 +91,8 @@ interface FormState {
   project_details: string;
   diagnosed_revenue_loss: string;
   email: string;
+  delivery_channel: DeliveryChannel;
+  channel_handle: string;
 }
 
 const initialState: FormState = {
@@ -32,6 +105,8 @@ const initialState: FormState = {
   project_details: '',
   diagnosed_revenue_loss: '',
   email: '',
+  delivery_channel: 'whatsapp',
+  channel_handle: '',
 };
 
 const pick = (labels: UILabelsContent | null | undefined, key: keyof UILabelsContent, fallback: string) =>
@@ -51,6 +126,8 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [channelDropdownOpen, setChannelDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const TOTAL = 3;
   const L = (keyEn: keyof UILabelsContent, keyBn: keyof UILabelsContent, en: string, bn: string) =>
@@ -62,6 +139,21 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
     { value: '50k-plus',  label: L('budget3En', 'budget3Bn', '50,000 BDT and above', '৫০,০০০ টাকা ও তার বেশি') },
     { value: 'not-sure',  label: L('budget4En', 'budget4Bn', "I'm not sure yet", 'এখনো নিশ্চিত নই') },
   ];
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setChannelDropdownOpen(false);
+      }
+    };
+    if (channelDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [channelDropdownOpen]);
 
   // Listen for prefill events from ROAS calculator, services, or pricing
   useEffect(() => {
@@ -88,7 +180,30 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
   const stepValid = useMemo(() => {
     if (step === 0) return data.client_name.trim().length > 0 && data.brand_name.trim().length > 0;
     if (step === 1) return !!data.budget_range;
-    if (step === 2) return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim()) || data.whatsapp.trim().length >= 8;
+    if (step === 2) {
+      const ch = data.delivery_channel;
+      const handle = (
+        ch === 'whatsapp'
+          ? (data.channel_handle || data.whatsapp)
+          : ch === 'email'
+          ? (data.channel_handle || data.email)
+          : data.channel_handle
+      ).trim();
+
+      if (ch === 'whatsapp') {
+        return handle.replace(/\D/g, '').length >= 8;
+      }
+      if (ch === 'messenger') {
+        return handle.length >= 3;
+      }
+      if (ch === 'instagram') {
+        return handle.length >= 2;
+      }
+      if (ch === 'email') {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(handle);
+      }
+      return false;
+    }
     return false;
   }, [step, data]);
 
@@ -100,22 +215,38 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
     setSubmitting(true);
     setError(null);
 
+    const activeConfig = CHANNELS.find((c) => c.id === data.delivery_channel) || CHANNELS[0];
+    const finalHandle = (
+      data.delivery_channel === 'whatsapp'
+        ? (data.channel_handle || data.whatsapp)
+        : data.delivery_channel === 'email'
+        ? (data.channel_handle || data.email)
+        : data.channel_handle
+    ).trim();
+
     const metaSections: string[] = [];
     if (data.service_type) metaSections.push(`Service Focus: ${data.service_type}`);
-    if (data.whatsapp) metaSections.push(`WhatsApp / Phone: ${data.whatsapp}`);
+    metaSections.push(`Preferred Delivery Channel: ${activeConfig.labelEn} [${finalHandle}] (Priority #${activeConfig.priorityRank})`);
+    if (data.whatsapp && data.delivery_channel !== 'whatsapp') metaSections.push(`WhatsApp / Phone: ${data.whatsapp}`);
     if (data.diagnosed_revenue_loss) metaSections.push(`Diagnosed Revenue Loss: ${data.diagnosed_revenue_loss}`);
 
     const compiledScope = metaSections.length > 0
       ? `${metaSections.join(' | ')}\n\n${data.project_details.trim() || 'Direct Project Consultation Request'}`
       : (data.project_details.trim() || 'Direct Project Consultation Request');
 
-    const emailToUse = data.email.trim() || `${(data.whatsapp.replace(/\D/g, '') || 'client')}@inquiry.polished.studio`;
+    const emailToUse = data.delivery_channel === 'email' && finalHandle
+      ? finalHandle
+      : (data.email.trim() || `${(finalHandle || data.whatsapp || 'client').replace(/\D/g, '') || 'client'}@inquiry.polished.studio`);
+
+    const whatsappToUse = data.delivery_channel === 'whatsapp'
+      ? finalHandle
+      : (data.whatsapp.trim() || '');
 
     const payload = {
       client_name: data.client_name.trim(),
       brand_name: data.brand_name.trim(),
       email: emailToUse,
-      whatsapp: data.whatsapp.trim(),
+      whatsapp: whatsappToUse,
       service_type: data.service_type,
       store_url: data.store_url.trim() || null,
       budget_range: data.budget_range,
@@ -146,6 +277,28 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
     void sendInquiryEmail(payload);
     setDone(true);
   };
+
+  // Auto-sync Step 1 WhatsApp number to Step 3 handle when WhatsApp is chosen
+  useEffect(() => {
+    if (step === 2 && data.delivery_channel === 'whatsapp' && !data.channel_handle && data.whatsapp) {
+      setData((prev) => ({ ...prev, channel_handle: prev.whatsapp }));
+    }
+  }, [step, data.delivery_channel, data.channel_handle, data.whatsapp]);
+
+  const activeChannel = useMemo(
+    () => CHANNELS.find((c) => c.id === data.delivery_channel) || CHANNELS[0],
+    [data.delivery_channel],
+  );
+
+  const activeChannelValue = useMemo(() => {
+    if (data.delivery_channel === 'whatsapp') {
+      return data.channel_handle || data.whatsapp;
+    }
+    if (data.delivery_channel === 'email') {
+      return data.channel_handle || data.email;
+    }
+    return data.channel_handle;
+  }, [data.delivery_channel, data.channel_handle, data.whatsapp, data.email]);
 
   if (done) return <ThankYou isBn={isBn} labels={labels ?? null} onReset={() => { setDone(false); setStep(0); setData(initialState); }} />;
 
@@ -331,20 +484,154 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
                   eyebrow={L('leadFormStep3EyebrowEn', 'leadFormStep3EyebrowBn', 'Step 3 · Delivery Channel', 'ধাপ ৩ · যোগাযোগের মাধ্যম')}
                   title={L('leadFormStep3TitleEn', 'leadFormStep3TitleBn', 'Where should we send your strategy proposal?', 'প্রপোজাল কোথায় পাঠাব?')}
                 />
-                <PolishedInput
-                  type="email"
-                  value={data.email}
-                  onChange={(v) => update('email', v)}
-                  placeholder={L('leadFormEmailPlaceholderEn', 'leadFormEmailPlaceholderBn', 'Business Email Address *', 'বিজনেস ইমেইল অ্যাড্রেস *')}
-                  autoFocus
-                />
-                {data.whatsapp && (
-                  <div className="text-xs text-accent/90 flex items-center gap-2 px-1">
-                    <span>✓</span>
-                    <span>{isBn ? `হোয়াটসঅ্যাপ নম্বর সংরক্ষিত: ${data.whatsapp}` : `WhatsApp confirmed: ${data.whatsapp}`}</span>
+
+                {/* Quiet Luxury Channel Selection Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                  <p className="text-[10px] tracking-[2px] uppercase text-primary-foreground/50 mb-2">
+                    {isBn ? 'প্রপোজাল গ্রহণের মাধ্যম নির্বাচন করুন (অগ্রাধিকার অনুযায়ী সাজানো)' : 'Preferred Delivery Channel (Ranked by Priority)'}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => setChannelDropdownOpen((prev) => !prev)}
+                    className={`w-full flex items-center justify-between p-3.5 rounded-sm border transition-all duration-300 text-left min-h-[54px] bg-primary-foreground/5 ${
+                      channelDropdownOpen
+                        ? 'border-accent bg-primary-foreground/[0.08] shadow-[0_0_0_2px_rgba(251,146,60,0.2)]'
+                        : 'border-primary-foreground/15 hover:border-primary-foreground/30'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-primary-foreground/10 flex items-center justify-center shrink-0">
+                        <ChannelIcon channel={activeChannel.id} className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm font-medium text-primary-foreground">
+                            {isBn ? activeChannel.labelBn : activeChannel.labelEn}
+                          </span>
+                          <span
+                            className={`text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                              activeChannel.id === 'whatsapp'
+                                ? 'bg-accent/20 text-accent border border-accent/40'
+                                : activeChannel.id === 'messenger'
+                                ? 'bg-[#0099FF]/15 text-[#0099FF] border border-[#0099FF]/30'
+                                : activeChannel.id === 'instagram'
+                                ? 'bg-[#E1306C]/15 text-[#E1306C] border border-[#E1306C]/30'
+                                : 'bg-primary-foreground/10 text-primary-foreground/70 border border-primary-foreground/20'
+                            }`}
+                          >
+                            {isBn ? activeChannel.badgeBn : activeChannel.badgeEn}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronDown
+                      className={`w-4 h-4 text-primary-foreground/60 shrink-0 transition-transform duration-300 ${
+                        channelDropdownOpen ? 'rotate-180 text-accent' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown Menu Options */}
+                  <AnimatePresence>
+                    {channelDropdownOpen && (
+                      <m.div
+                        initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                        transition={{ duration: 0.2, ease: easing }}
+                        className="absolute top-full left-0 right-0 mt-2 z-50 rounded-sm bg-[#0b1329] border border-primary-foreground/20 shadow-[0_16px_40px_rgba(0,0,0,0.7)] backdrop-blur-xl overflow-hidden divide-y divide-primary-foreground/10"
+                      >
+                        {CHANNELS.map((ch) => {
+                          const isSelected = data.delivery_channel === ch.id;
+                          return (
+                            <button
+                              key={ch.id}
+                              type="button"
+                              onClick={() => {
+                                update('delivery_channel', ch.id);
+                                if (ch.id === 'whatsapp' && !data.channel_handle && data.whatsapp) {
+                                  update('channel_handle', data.whatsapp);
+                                }
+                                setChannelDropdownOpen(false);
+                              }}
+                              className={`w-full flex items-center justify-between p-3.5 transition-colors text-left ${
+                                isSelected
+                                  ? 'bg-accent/15 text-primary-foreground'
+                                  : 'hover:bg-primary-foreground/10 text-primary-foreground/80'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="w-7 h-7 rounded-full bg-primary-foreground/10 flex items-center justify-center shrink-0">
+                                  <ChannelIcon channel={ch.id} className="w-3.5 h-3.5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <span className="text-xs md:text-sm font-medium text-primary-foreground">
+                                      {isBn ? ch.labelBn : ch.labelEn}
+                                    </span>
+                                    <span
+                                      className={`text-[8.5px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                                        ch.id === 'whatsapp'
+                                          ? 'bg-accent/25 text-accent border border-accent/40'
+                                          : ch.id === 'messenger'
+                                          ? 'bg-[#0099FF]/20 text-[#0099FF] border border-[#0099FF]/30'
+                                          : ch.id === 'instagram'
+                                          ? 'bg-[#E1306C]/20 text-[#E1306C] border border-[#E1306C]/30'
+                                          : 'bg-primary-foreground/10 text-primary-foreground/60 border border-primary-foreground/20'
+                                      }`}
+                                    >
+                                      {isBn ? ch.badgeBn : ch.badgeEn}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              {isSelected && <Check className="w-4 h-4 text-accent shrink-0 ml-2" />}
+                            </button>
+                          );
+                        })}
+                      </m.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Dynamic Input based on Selected Channel */}
+                <div className="mt-1">
+                  <PolishedInput
+                    type={activeChannel.type || 'text'}
+                    value={activeChannelValue}
+                    onChange={(val) => {
+                      update('channel_handle', val);
+                      if (data.delivery_channel === 'whatsapp') {
+                        update('whatsapp', val);
+                      }
+                      if (data.delivery_channel === 'email') {
+                        update('email', val);
+                      }
+                    }}
+                    placeholder={isBn ? activeChannel.inputPlaceholderBn : activeChannel.inputPlaceholderEn}
+                    autoFocus
+                  />
+                </div>
+
+                {/* WhatsApp Auto-sync confirmation badge */}
+                {data.delivery_channel === 'whatsapp' && (data.whatsapp || data.channel_handle) && (
+                  <div className="text-xs text-accent flex items-center gap-2 px-1">
+                    <Check className="w-3.5 h-3.5 text-accent shrink-0" />
+                    <span>
+                      {isBn
+                        ? `ধাপ ১ থেকে নম্বর সংরক্ষিত (প্রয়োজনে পরিবর্তন করুন)`
+                        : `Prefilled from Step 1 (editable if you prefer another number)`}
+                    </span>
                   </div>
                 )}
-                <p className="text-[12px] text-primary-foreground/60 leading-relaxed mt-1">
+
+                {/* Channel Helper Note */}
+                <p className="text-[12px] text-primary-foreground/70 leading-relaxed mt-1">
+                  {isBn ? activeChannel.noteBn : activeChannel.noteEn}
+                </p>
+
+                <p className="text-[11px] text-primary-foreground/45 leading-relaxed">
                   {L(
                     'leadFormReassuranceEn',
                     'leadFormReassuranceBn',
@@ -562,5 +849,37 @@ function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsCo
         </button>
       </div>
     </m.div>
+  );
+}
+
+function ChannelIcon({ channel, className = 'w-4 h-4' }: { channel: DeliveryChannel; className?: string }) {
+  if (channel === 'whatsapp') {
+    return (
+      <svg className={`${className} text-[#25D366] fill-current`} viewBox="0 0 24 24">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 6.46 17.5 2 12.04 2M12.05 20.16C10.57 20.16 9.12 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.16 12.05 20.16M16.57 14.37C16.32 14.24 15.1 13.64 14.87 13.56C14.64 13.47 14.48 13.43 14.31 13.68C14.15 13.93 13.67 14.49 13.53 14.66C13.38 14.82 13.24 14.84 12.99 14.72C12.74 14.59 11.94 14.33 11 13.49C10.26 12.83 9.77 12.02 9.62 11.77C9.48 11.52 9.61 11.39 9.73 11.26C9.84 11.15 9.98 10.97 10.1 10.82C10.23 10.68 10.27 10.57 10.35 10.41C10.43 10.24 10.39 10.1 10.33 9.98C10.27 9.85 9.77 8.63 9.57 8.12C9.37 7.63 9.16 7.7 9.01 7.69C8.87 7.69 8.7 7.69 8.54 7.69C8.38 7.69 8.11 7.75 7.89 7.99C7.66 8.24 7.03 8.83 7.03 10.02C7.03 11.22 7.9 12.38 8.02 12.55C8.15 12.71 9.74 15.16 12.18 16.21C12.76 16.46 13.21 16.61 13.56 16.72C14.15 16.91 14.68 16.88 15.11 16.82C15.59 16.75 16.57 16.22 16.78 15.65C16.98 15.08 16.98 14.59 16.92 14.49C16.86 14.39 16.82 14.49 16.57 14.37Z" />
+      </svg>
+    );
+  }
+  if (channel === 'messenger') {
+    return (
+      <svg className={`${className} text-[#0099FF] fill-current`} viewBox="0 0 24 24">
+        <path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.19 5.44 3.14 7.17.16.14.26.35.26.57l-.37 2.14c-.06.33.27.59.56.44l2.5-1.28c.17-.09.37-.11.56-.06.87.23 1.79.35 2.85.35 5.64 0 10-4.13 10-9.7C22 6.13 17.64 2 12 2zm1.08 13.06l-2.61-2.78-5.1 2.78 5.61-5.96 2.67 2.78 5.04-2.78-5.61 5.96z" />
+      </svg>
+    );
+  }
+  if (channel === 'instagram') {
+    return (
+      <svg className={`${className} text-[#E1306C] fill-none stroke-current`} viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+      </svg>
+    );
+  }
+  return (
+    <svg className={`${className} text-accent fill-none stroke-current`} viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
   );
 }
