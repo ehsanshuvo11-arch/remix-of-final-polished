@@ -17,6 +17,7 @@ import MotionReveal from '@/components/landing/MotionReveal';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
 import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 import { useSiteSetting } from '@/hooks/use-site-content';
+import { useDragScroll } from '@/hooks/use-drag-scroll';
 import { DEFAULT_PRICING } from '@/lib/pricing-defaults';
 import type { Service, ServicesMetaContent, PricingContent, PricingTier } from '@/types/database';
 
@@ -156,42 +157,67 @@ export default function Services(_props: ServicesProps) {
     return null;
   }
 
-  // Mobile Carousel state & quiet scroll tracking
-  const [activeMobileIdx, setActiveMobileIdx] = useState(1);
+  // Mobile Carousel state & high-performance scroll tracking
+  const [activeMobileIdx, setActiveMobileIdx] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const handleMobileScroll = () => {
-    if (!carouselRef.current) return;
-    const { scrollLeft, offsetWidth } = carouselRef.current;
-    const index = Math.round(scrollLeft / (offsetWidth * 0.86));
-    if (index >= 0 && index < displayTiers.length) {
-      setActiveMobileIdx(index);
-    }
-  };
+  // Desktop click-and-pull drag scrolling (mouse only, never interferes with touch)
+  useDragScroll(carouselRef);
+
+  // High-performance native passive scroll listener with requestAnimationFrame
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+
+    let rafId = 0;
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        // Determine the card that best aligns with the left scroll padding (20px)
+        const scrollOffset = el.scrollLeft + 20;
+        let nearest = 0;
+        let minDiff = Infinity;
+
+        Array.from(el.children).forEach((child, i) => {
+          const c = child as HTMLElement;
+          const diff = Math.abs(c.offsetLeft - scrollOffset);
+          if (diff < minDiff) {
+            minDiff = diff;
+            nearest = i;
+          }
+        });
+
+        setActiveMobileIdx((prev) => (prev === nearest ? prev : nearest));
+      });
+    };
+
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [displayTiers.length]);
 
   const scrollToMobileCard = (idx: number, smooth: boolean = true) => {
     if (!carouselRef.current) return;
     const cardEl = carouselRef.current.children[idx] as HTMLElement;
     if (cardEl) {
-      const targetLeft = cardEl.offsetLeft - (carouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
-      carouselRef.current.scrollTo({ left: targetLeft, behavior: smooth ? 'smooth' : 'auto' });
+      const targetLeft = Math.max(0, cardEl.offsetLeft - 20);
+      carouselRef.current.scrollTo({
+        left: targetLeft,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
       setActiveMobileIdx(idx);
     }
   };
 
-  // Reset scroll on track switch
+  // Reset scroll to first card smoothly on track switch
   useEffect(() => {
     if (carouselRef.current && displayTiers.length > 0) {
-      const featuredIndex = displayTiers.findIndex((t) => t.featured);
-      const targetIndex = featuredIndex !== -1 ? featuredIndex : 0;
-      const cardEl = carouselRef.current.children[targetIndex] as HTMLElement;
-      if (cardEl) {
-        const targetLeft = cardEl.offsetLeft - (carouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
-        carouselRef.current.scrollLeft = targetLeft;
-        setActiveMobileIdx(targetIndex);
-      }
+      scrollToMobileCard(0, false);
     }
-  }, [activeTrack, displayTiers]);
+  }, [activeTrack]);
 
   const bookTier = (tier: PricingTier) => {
     const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
@@ -316,18 +342,24 @@ export default function Services(_props: ServicesProps) {
           </div>
         </MotionReveal>
 
-        {/* ── MOBILE: Quiet & Understated Swipeable Cards ── */}
+        {/* ── MOBILE: Ultra-Smooth Swipeable Cards ── */}
         <div className="md:hidden">
           <div
             ref={carouselRef}
-            onScroll={handleMobileScroll}
-            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2 scrollbar-none -mx-5"
-            style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2.5 scrollbar-none -mx-5 overscroll-x-contain touch-auto cursor-grab active:cursor-grabbing select-none"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              scrollSnapType: 'x mandatory',
+              scrollPaddingLeft: '1.25rem',
+              scrollPaddingRight: '1.25rem',
+              scrollBehavior: 'smooth',
+            }}
           >
             {displayTiers.map((tier) => (
               <div
                 key={tier.id}
-                className="w-[84vw] max-w-[335px] snap-center shrink-0 transition-transform duration-300"
+                className="w-[84vw] max-w-[335px] snap-start shrink-0"
+                style={{ scrollSnapStop: 'normal' }}
               >
                 <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
               </div>
@@ -342,7 +374,7 @@ export default function Services(_props: ServicesProps) {
                 type="button"
                 onClick={() => scrollToMobileCard(idx)}
                 className={`h-1 rounded-full transition-all duration-300 ${
-                  activeMobileIdx === idx ? 'w-3.5 bg-accent' : 'w-1 bg-accent/30 hover:bg-accent/50'
+                  activeMobileIdx === idx ? 'w-4 bg-accent' : 'w-1 bg-accent/30 hover:bg-accent/50'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
