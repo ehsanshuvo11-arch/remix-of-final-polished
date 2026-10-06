@@ -36,6 +36,51 @@ const SERVICE_META: Record<
     roiBn: string;
   }
 > = {
+  // ── TRACK 1: VOLUME ENGINE ──
+  'pkg-01': {
+    prefixEn: '01 / STARTER PACK',
+    prefixBn: '০১ / টেস্ট ড্রাইভ',
+    turnaroundEn: '48h Delivery',
+    turnaroundBn: '৪৮ ঘণ্টা ডেলিভারি',
+    roiEn: '৳200/Banner • 100% Bespoke Craft',
+    roiBn: '৳২০০/ব্যানার • ১০০% কাস্টম ক্রাফট',
+  },
+  'pkg-02': {
+    prefixEn: '02 / CORE RETAINER ★',
+    prefixBn: '০২ / গ্রোথ পার্টনার ★',
+    turnaroundEn: 'Weekly Delivery',
+    turnaroundBn: 'সাপ্তাহিক ৩টি ব্যানার',
+    roiEn: '৳191/Banner • Regular Page Growth',
+    roiBn: '৳১৯১/ব্যানার • নিয়মিত পেজ গ্রোথ',
+  },
+  'pkg-03': {
+    prefixEn: '03 / SCALE RETAINER',
+    prefixBn: '০৩ / হাই-ভলিউম স্কেল',
+    turnaroundEn: '5 Posts / Week',
+    turnaroundBn: 'সপ্তাহে ৫টি পোস্ট',
+    roiEn: '৳160/Banner • Combo Carousel Included',
+    roiBn: '৳১৬০/ব্যানার • কম্বো ক্যারোসেল অন্তর্ভুক্ত',
+  },
+
+  // ── TRACK 2: PERFORMANCE AD SPRINT ──
+  'pkg-04': {
+    prefixEn: '01 / AD RESCUE SPRINT',
+    prefixBn: '০১ / অ্যাড রেসকিউ স্প্রিন্ট',
+    turnaroundEn: '48h Delivery',
+    turnaroundBn: '৪৮ ঘণ্টা ডেলিভারি',
+    roiEn: '৳1,000/Ad Set • Slash CPR on ৳60k+ Spend',
+    roiBn: '৳১,০০০/অ্যাড সেট • CPR কমানোর জন্য',
+  },
+  'pkg-05': {
+    prefixEn: '02 / CREATIVE PARTNER ★',
+    prefixBn: '০২ / ক্রিয়েটিভ পার্টনার ★',
+    turnaroundEn: 'Monthly Retainer',
+    turnaroundBn: 'মাসিক পার্টনারশিপ',
+    roiEn: '৳750/Ad Asset • Scale ৳1.5L-৳3L+ Spend',
+    roiBn: '৳৭৫০/অ্যাড অ্যাসেট • ১.৫L-৩L+ স্পেন্ড স্কেলিং',
+  },
+
+  // Backward compatibility fallbacks
   'trial-pack': {
     prefixEn: '01 / TRIAL SPRINT',
     prefixBn: '০১ / টেস্ট ড্রাইভ',
@@ -91,6 +136,26 @@ export default function Services(_props: ServicesProps) {
   const content = pricingData || DEFAULT_PRICING;
   const tiers = (content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers) || [];
 
+  // Track switcher state: 'volume' (Track 1) vs 'performance' (Track 2)
+  const [activeTrack, setActiveTrack] = useState<'volume' | 'performance'>('volume');
+
+  // Segregate tiers by track (with backward compatibility)
+  const volumeTiers = tiers.filter(
+    (t) => t.track === 'volume' || t.id.startsWith('pkg-01') || t.id.startsWith('pkg-02') || t.id.startsWith('pkg-03') || t.id === 'trial-pack'
+  );
+  const performanceTiers = tiers.filter(
+    (t) => t.track === 'performance' || t.id.startsWith('pkg-04') || t.id.startsWith('pkg-05') || t.id === 'growth-pack' || t.id === 'agency-pack'
+  );
+
+  const displayTiers = activeTrack === 'volume'
+    ? (volumeTiers.length > 0 ? volumeTiers : tiers)
+    : (performanceTiers.length > 0 ? performanceTiers : tiers);
+
+  // If no pricing tiers exist, hide section
+  if (tiers.length === 0) {
+    return null;
+  }
+
   // Mobile Carousel state & quiet scroll tracking
   const [activeMobileIdx, setActiveMobileIdx] = useState(1);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -99,7 +164,7 @@ export default function Services(_props: ServicesProps) {
     if (!carouselRef.current) return;
     const { scrollLeft, offsetWidth } = carouselRef.current;
     const index = Math.round(scrollLeft / (offsetWidth * 0.86));
-    if (index >= 0 && index < tiers.length) {
+    if (index >= 0 && index < displayTiers.length) {
       setActiveMobileIdx(index);
     }
   };
@@ -114,20 +179,19 @@ export default function Services(_props: ServicesProps) {
     }
   };
 
-  // Default scroll to featured card on initial mount (CONTAINER ONLY, NEVER SCROLLS WINDOW)
+  // Reset scroll on track switch
   useEffect(() => {
-    if (carouselRef.current && tiers.length > 1) {
-      const featuredIndex = tiers.findIndex((t) => t.featured);
-      if (featuredIndex !== -1) {
-        const cardEl = carouselRef.current.children[featuredIndex] as HTMLElement;
-        if (cardEl) {
-          const targetLeft = cardEl.offsetLeft - (carouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
-          carouselRef.current.scrollLeft = targetLeft;
-          setActiveMobileIdx(featuredIndex);
-        }
+    if (carouselRef.current && displayTiers.length > 0) {
+      const featuredIndex = displayTiers.findIndex((t) => t.featured);
+      const targetIndex = featuredIndex !== -1 ? featuredIndex : 0;
+      const cardEl = carouselRef.current.children[targetIndex] as HTMLElement;
+      if (cardEl) {
+        const targetLeft = cardEl.offsetLeft - (carouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
+        carouselRef.current.scrollLeft = targetLeft;
+        setActiveMobileIdx(targetIndex);
       }
     }
-  }, [tiers]);
+  }, [activeTrack, displayTiers]);
 
   const bookTier = (tier: PricingTier) => {
     const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
@@ -166,7 +230,7 @@ export default function Services(_props: ServicesProps) {
 
       <div className="max-w-[1240px] mx-auto px-5 sm:px-8 md:px-12">
         {/* Section Header */}
-        <header className="max-w-2xl mx-auto text-center mb-12 sm:mb-14">
+        <header className="max-w-2xl mx-auto text-center mb-8 sm:mb-10">
           <MotionReveal>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
@@ -174,7 +238,7 @@ export default function Services(_props: ServicesProps) {
                 className="text-[11px] uppercase tracking-[2px] font-bold text-primary/80"
                 style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
               >
-                {isBn ? 'স্বচ্ছ বিনিয়োগ • নির্দিষ্ট ফলাফল' : 'Transparent Investment • Fixed Deliverables'}
+                {isBn ? 'ডুয়াল-ট্র্যাক প্রাইসিং • নো-রেজিস্ট্যান্স অফার' : 'Dual-Track Investment • Fixed Deliverables'}
               </span>
             </div>
           </MotionReveal>
@@ -207,11 +271,50 @@ export default function Services(_props: ServicesProps) {
               style={isBn ? bnFont : undefined}
             >
               {isBn
-                ? '৩টি নির্দিষ্ট স্প্রিন্ট—স্পষ্ট ডেলিভারেবল, নির্ধারিত বাজেট, কোনো লুকানো চার্জ নেই।'
-                : 'Three focused sprints — clear deliverables, fixed investment, real sales. Zero hidden charges.'}
+                ? (activeTrack === 'volume'
+                    ? 'ছোট ও মাঝারি ব্র্যান্ডের জন্য ৩টি নির্দিষ্ট ভলিউম প্যাক—জিরো-ঝুঁকি টেস্ট অফার থেকে রেগুলার মান্থলি রিটেইনার।'
+                    : 'মেটা বিজ্ঞাপনে স্কেলিং ও কম খরচে বেশি সেলস আনতে ২টি হাই-আরওআই পারফরম্যান্স অ্যাড স্প্রিন্ট।')
+                : (activeTrack === 'volume'
+                    ? 'Three volume-focused sprints — from zero-risk starter test to predictable monthly organic growth.'
+                    : 'Two high-impact performance ad sprints engineered to eliminate fatigue and cut CPR on Meta.')}
             </p>
           </MotionReveal>
         </header>
+
+        {/* ── ULTRA-MINIMAL DUAL-TRACK SEGMENTED SWITCHER ── */}
+        <MotionReveal delay={0.12}>
+          <div className="flex justify-center mb-10 sm:mb-12">
+            <div className="inline-flex items-center p-1 rounded-full bg-white border border-primary/10 shadow-[0_2px_12px_rgba(30,58,138,0.04)]">
+              <button
+                type="button"
+                onClick={() => setActiveTrack('volume')}
+                className={`px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+                  activeTrack === 'volume'
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-primary/65 hover:text-primary hover:bg-primary/[0.04]'
+                }`}
+                style={isBn ? bnFont : undefined}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${activeTrack === 'volume' ? 'bg-accent' : 'bg-primary/30'}`} />
+                <span>{isBn ? 'এফ-কমার্স ভলিউম প্যাক (৩টি)' : 'E-Commerce Volume Engine (3)'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTrack('performance')}
+                className={`px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+                  activeTrack === 'performance'
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-primary/65 hover:text-primary hover:bg-primary/[0.04]'
+                }`}
+                style={isBn ? bnFont : undefined}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${activeTrack === 'performance' ? 'bg-accent' : 'bg-primary/30'}`} />
+                <span>{isBn ? 'মেটা পারফরম্যান্স অ্যাড (২টি)' : 'Meta Performance Ads (2)'}</span>
+              </button>
+            </div>
+          </div>
+        </MotionReveal>
 
         {/* ── MOBILE: Quiet & Understated Swipeable Cards ── */}
         <div className="md:hidden">
@@ -221,7 +324,7 @@ export default function Services(_props: ServicesProps) {
             className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2 scrollbar-none -mx-5"
             style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
           >
-            {tiers.map((tier) => (
+            {displayTiers.map((tier) => (
               <div
                 key={tier.id}
                 className="w-[84vw] max-w-[335px] snap-center shrink-0 transition-transform duration-300"
@@ -233,7 +336,7 @@ export default function Services(_props: ServicesProps) {
 
           {/* Understated Minimal Dot Indicators in Brand Orange */}
           <div className="flex justify-center items-center gap-1.5 mt-2.5 mb-1.5">
-            {tiers.map((_, idx) => (
+            {displayTiers.map((_, idx) => (
               <button
                 key={idx}
                 type="button"
@@ -247,9 +350,17 @@ export default function Services(_props: ServicesProps) {
           </div>
         </div>
 
-        {/* ── DESKTOP: 3 Balanced Editorial Columns (Linear / Vercel Proportions) ── */}
-        <div className={`hidden md:grid gap-6 lg:gap-7 items-stretch ${tiers.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
-          {tiers.map((tier, idx) => (
+        {/* ── DESKTOP: Balanced Editorial Columns (Linear / Vercel Proportions) ── */}
+        <div
+          className={`hidden md:grid gap-6 lg:gap-7 items-stretch ${
+            displayTiers.length === 2
+              ? 'md:grid-cols-2 max-w-4xl mx-auto'
+              : displayTiers.length === 1
+              ? 'md:grid-cols-1 max-w-md mx-auto'
+              : 'md:grid-cols-3'
+          }`}
+        >
+          {displayTiers.map((tier, idx) => (
             <MotionReveal key={tier.id} delay={0.08 * (idx + 1)} className="h-full">
               <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
             </MotionReveal>

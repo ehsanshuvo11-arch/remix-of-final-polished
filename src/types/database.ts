@@ -347,6 +347,7 @@ export interface PricingTier {
   deliverables_en?: string[];
   deliverables_bn?: string[];
   whatsapp_url?: string;
+  track?: 'volume' | 'performance';
 }
 
 export interface PricingContent {
