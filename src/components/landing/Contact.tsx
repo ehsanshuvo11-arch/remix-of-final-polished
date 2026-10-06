@@ -40,19 +40,21 @@ export default function Contact({ contact }: ContactProps) {
   const { t, lang } = useLanguage();
   const isBn = lang === 'bn';
 
+  const fbHandle = (contact?.fb || 'polishedbd.online').replace(/^https?:\/\/(www\.)?facebook\.com\/?/, '').replace(/\/$/, '');
+
   const c = {
-    email: 'contact@polishedbd.com',
-    ig: '@polished.studio.bd',
-    fb: 'polished.studio.bd',
-    wa: '+8801346288210',
-    sectionLabelEn: 'Get In Touch',
-    sectionLabelBn: 'যোগাযোগ করুন',
-    titleLine1En: 'Stop Burning Ad Spend on Weak Creatives.',
-    titleLine1Bn: 'বিজ্ঞাপনে টাকা অপচয় বন্ধ করতে প্রস্তুত?',
-    titleLine2En: "Let's fix your conversions.",
-    titleLine2Bn: 'সরাসরি কথা বলুন।',
-    descEn: "Tired of spending money on Meta ads only to get ghosted in your inbox? We craft creatives and hooks that make shoppers order at full price. We accept strictly 3 brand sprints per week.",
-    descBn: 'প্রতিদিন বিজ্ঞাপনে টাকা ঢালছেন, কিন্তু ইনবক্সে এসে মানুষ দাম জিজ্ঞেস করে উধাও? আর নয়। আপনার ব্র্যান্ডের আসল সেলস নিশ্চিত করতে চলুন সরাসরি কথা বলি। প্রতি সপ্তাহে আমরা সর্বোচ্চ ৩টি ব্র্যান্ড নিয়ে কাজ করি।',
+    email: contact?.email || 'contact@polishedbd.com',
+    ig: contact?.ig || '@polished.studio.bd',
+    fb: fbHandle,
+    wa: contact?.wa || '+8801346288210',
+    sectionLabelEn: contact?.sectionLabelEn ?? 'Get In Touch',
+    sectionLabelBn: contact?.sectionLabelBn ?? 'যোগাযোগ করুন',
+    titleLine1En: contact?.titleLine1En ?? 'Stop Burning Ad Spend on Weak Creatives.',
+    titleLine1Bn: contact?.titleLine1Bn ?? 'বিজ্ঞাপনে টাকা অপচয় বন্ধ করতে প্রস্তুত?',
+    titleLine2En: contact?.titleLine2En ?? "Let's fix your conversions.",
+    titleLine2Bn: contact?.titleLine2Bn ?? 'সরাসরি কথা বলুন।',
+    descEn: contact?.descEn ?? "Tired of spending money on Meta ads only to get ghosted in your inbox? We craft creatives and hooks that make shoppers order at full price. We accept strictly 3 brand sprints per week.",
+    descBn: contact?.descBn ?? 'প্রতিদিন বিজ্ঞাপনে টাকা ঢালছেন, কিন্তু ইনবক্সে এসে মানুষ দাম জিজ্ঞেস করে উধাও? আর নয়। আপনার ব্র্যান্ডের আসল সেলস নিশ্চিত করতে চলুন সরাসরি কথা বলি। প্রতি সপ্তাহে আমরা সর্বোচ্চ ৩টি ব্র্যান্ড নিয়ে কাজ করি।',
   } as ContactContent;
 
   const links = [
