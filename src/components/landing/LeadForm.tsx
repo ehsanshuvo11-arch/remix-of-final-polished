@@ -127,6 +127,7 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [channelDropdownOpen, setChannelDropdownOpen] = useState(false);
+  const [submittedWaUrl, setSubmittedWaUrl] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const TOTAL = 3;
@@ -254,6 +255,35 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
       diagnosed_revenue_loss: data.diagnosed_revenue_loss,
     };
 
+    const selectedBudgetObj = BUDGETS.find((b) => b.value === data.budget_range);
+    const budgetDisplay = selectedBudgetObj ? selectedBudgetObj.label : data.budget_range;
+
+    const waMessageLines = [
+      `*New Strategy Inquiry — POLISHED*`,
+      `━━━━━━━━━━━━━━━━━━━━`,
+      `👤 *Client Name:* ${data.client_name.trim()}`,
+      `🏢 *Brand Name:* ${data.brand_name.trim()}`,
+      `📱 *Preferred Channel:* ${activeConfig.labelEn} (Priority #${activeConfig.priorityRank})`,
+      `📞 *Contact / Handle:* ${finalHandle}`,
+      data.service_type ? `🎯 *Service Focus:* ${data.service_type}` : null,
+      budgetDisplay ? `💰 *Budget:* ${budgetDisplay}` : null,
+      data.store_url ? `🌐 *Store / Link:* ${data.store_url.trim()}` : null,
+      data.diagnosed_revenue_loss ? `📊 *Diagnosed Loss:* ${data.diagnosed_revenue_loss}` : null,
+      data.project_details.trim() ? `📝 *Notes:* ${data.project_details.trim()}` : null,
+      `━━━━━━━━━━━━━━━━━━━━`,
+      `Hi POLISHED! Please review my inquiry and send my strategy proposal.`,
+    ].filter(Boolean);
+
+    const waDirectUrl = `https://wa.me/8801346288210?text=${encodeURIComponent(waMessageLines.join('\n'))}`;
+    setSubmittedWaUrl(waDirectUrl);
+
+    // Attempt direct WhatsApp popup in new tab
+    try {
+      window.open(waDirectUrl, '_blank');
+    } catch {
+      // browser popup blocker handled gracefully
+    }
+
     const { error: insertError } = await supabase.from('inquiries').insert({
       client_name: payload.client_name,
       brand_name: payload.brand_name,
@@ -300,7 +330,21 @@ export default function LeadForm({ isBn = false }: { isBn?: boolean }) {
     return data.channel_handle;
   }, [data.delivery_channel, data.channel_handle, data.whatsapp, data.email]);
 
-  if (done) return <ThankYou isBn={isBn} labels={labels ?? null} onReset={() => { setDone(false); setStep(0); setData(initialState); }} />;
+  if (done) {
+    return (
+      <ThankYou
+        isBn={isBn}
+        labels={labels ?? null}
+        waUrl={submittedWaUrl}
+        onReset={() => {
+          setDone(false);
+          setStep(0);
+          setData(initialState);
+          setSubmittedWaUrl('');
+        }}
+      />
+    );
+  }
 
   const progressPct = ((step + 1) / TOTAL) * 100;
 
@@ -798,9 +842,33 @@ function PolishedTextarea({
   );
 }
 
-function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsContent | null; onReset: () => void }) {
+function ThankYou({
+  isBn,
+  labels,
+  waUrl,
+  onReset,
+}: {
+  isBn: boolean;
+  labels: UILabelsContent | null;
+  waUrl?: string;
+  onReset: () => void;
+}) {
   const L = (keyEn: keyof UILabelsContent, keyBn: keyof UILabelsContent, en: string, bn: string) =>
     isBn ? pick(labels, keyBn, bn) : pick(labels, keyEn, en);
+
+  const fallbackWa = 'https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20just%20submitted%20an%20inquiry%20on%20your%20website.';
+  const directLink = waUrl || fallbackWa;
+
+  // Auto-redirect to WhatsApp after 1 second so the user lands in WhatsApp with their prepared inquiry!
+  useEffect(() => {
+    if (waUrl) {
+      const timer = setTimeout(() => {
+        window.location.href = waUrl;
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [waUrl]);
+
   return (
     <m.div
       initial={{ opacity: 0, y: 24 }}
@@ -812,38 +880,57 @@ function ThankYou({ isBn, labels, onReset }: { isBn: boolean; labels: UILabelsCo
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.15, duration: 0.7, ease: easing }}
-        className="w-16 h-16 mx-auto mb-6 rounded-full border border-accent/40 flex items-center justify-center bg-accent/10"
+        className="w-16 h-16 mx-auto mb-6 rounded-full border border-[#25D366]/40 flex items-center justify-center bg-[#25D366]/10"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#25D366]">
           <path d="M5 12l5 5L20 7" />
         </svg>
       </m.div>
-      <p className="text-[10px] tracking-[4px] uppercase text-accent mb-3 font-semibold">
+      <p className="text-[10px] tracking-[4px] uppercase text-[#25D366] mb-3 font-semibold">
         {L('leadFormReceivedEn', 'leadFormReceivedBn', 'Received', 'প্রাপ্ত')}
       </p>
       <h3 className="font-heading italic text-primary-foreground text-[clamp(28px,3.5vw,40px)] font-light leading-tight mb-4">
         {L('leadFormThankTitleEn', 'leadFormThankTitleBn', 'Thank you. We’ll be in touch.', 'ধন্যবাদ। আমরা দ্রুত যোগাযোগ করব।')}
       </h3>
-      <p className="text-primary-foreground/60 text-sm leading-relaxed max-w-md mx-auto mb-6">
+      <p className="text-primary-foreground/75 text-sm leading-relaxed max-w-md mx-auto mb-6">
         {L(
           'leadFormThankSubEn',
           'leadFormThankSubBn',
-          'Your inquiry just landed in our studio. Expect a personal reply via WhatsApp or Email within 24 hours.',
-          'আপনার বার্তা আমাদের স্টুডিওতে পৌঁছেছে। ২৪ ঘণ্টার মধ্যে হোয়াটসঅ্যাপ অথবা ইমেইলে যোগাযোগ করা হবে।',
+          'Your inquiry details have been saved. WhatsApp is opening automatically to send your proposal request directly to our Creative Director.',
+          'আপনার ইনকোয়ারির তথ্য সংরক্ষিত হয়েছে। আমাদের ক্রিয়েটিভ ডিরেক্টরের কাছে মেসেজটি পাঠাতে হোয়াটসঅ্যাপ স্বয়ংক্রিয়ভাবে ওপেন হচ্ছে।',
         )}
       </p>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+      {/* Prominent WhatsApp Send Action Box */}
+      <div className="max-w-md mx-auto mb-6 p-4 rounded-sm bg-[#25D366]/10 border border-[#25D366]/30 text-left">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366] shrink-0 mt-0.5">
+            <MessageCircle className="w-4 h-4" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-primary-foreground">
+              {isBn ? 'হোয়াটসঅ্যাপে সরাসরি মেসেজ পাঠান' : 'Direct WhatsApp Inquiry Delivery'}
+            </p>
+            <p className="text-[11px] text-primary-foreground/70 mt-1 leading-relaxed">
+              {isBn
+                ? 'ব্রাউজার নিজে থেকে হোয়াটসঅ্যাপ ওপেন না করলে নিচের সবুজ বাটনে ক্লিক করুন। আপনার সমস্ত তথ্য মেসেজ বক্সে প্রস্তুত করা আছে।'
+                : 'If WhatsApp does not open automatically, click the button below. Your complete inquiry is pre-filled and ready to send.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <a
-          href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20just%20submitted%20an%20inquiry%20on%20your%20website."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white text-xs font-semibold uppercase tracking-wider rounded-sm hover:bg-[#20ba59] transition-colors"
+          href={directLink}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#25D366] text-white text-xs font-bold uppercase tracking-wider rounded-sm hover:bg-[#20ba59] transition-all shadow-[0_8px_30px_rgba(37,211,102,0.4)] hover:shadow-[0_12px_40px_rgba(37,211,102,0.6)] hover:-translate-y-0.5 active:scale-95"
         >
-          <span>Chat on WhatsApp Now</span>
+          <MessageCircle className="w-4 h-4 shrink-0" />
+          <span>{isBn ? 'হোয়াটসঅ্যাপে মেসেজ পাঠান →' : 'Send Message on WhatsApp Now →'}</span>
         </a>
         <button
           onClick={onReset}
-          className="text-[11px] tracking-[2px] uppercase text-accent border border-accent px-6 py-3 min-h-[44px] rounded-sm hover:bg-accent/10 transition-colors"
+          className="w-full sm:w-auto text-[11px] tracking-[2px] uppercase text-primary-foreground/60 border border-primary-foreground/20 px-6 py-3 min-h-[44px] rounded-sm hover:bg-primary-foreground/10 transition-colors"
         >
           {L('leadFormResetEn', 'leadFormResetBn', 'Submit another inquiry', 'আরেকটি বার্তা পাঠান')}
         </button>
