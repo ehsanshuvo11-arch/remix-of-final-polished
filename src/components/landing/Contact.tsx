@@ -173,12 +173,12 @@ export default function Contact({ contact }: ContactProps) {
                 </span>
                 <div>
                   <p className="text-xs font-medium text-primary-foreground">
-                    {isBn ? '৪৮ ঘণ্টার টেস্ট ড্রাইভ স্প্রিন্ট' : '48-Hour Sprint Delivery'}
+                    {isBn ? '৭২ ঘণ্টার টেস্ট ড্রাইভ স্প্রিন্ট' : '72-Hour Sprint Delivery'}
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? 'কোনো দীর্ঘ চুক্তি ছাড়া ৫টি হাই-কনভার্টিং ক্রিয়েটিভ আর ধারালো সেলস কপি সরাসরি আপনার হাতে।'
-                      : '5 conversion-ready ad creatives and punchy copy, 100% ready to launch with zero guesswork.'}
+                      ? 'কোনো দীর্ঘ চুক্তি ছাড়া ৫টি হাই-কোয়ালিটি ডিজাইন আর ধারালো সেলস কপি সরাসরি আপনার হাতে।'
+                      : '5 custom product designs and punchy copy, 100% ready to launch with zero guesswork.'}
                   </p>
                 </div>
               </div>

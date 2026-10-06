@@ -40,8 +40,8 @@ const SERVICE_META: Record<
   'pkg-01': {
     prefixEn: '01 / STARTER PACK',
     prefixBn: '০১ / টেস্ট ড্রাইভ',
-    turnaroundEn: '48h Delivery',
-    turnaroundBn: '৪৮ ঘণ্টা ডেলিভারি',
+    turnaroundEn: '72h Delivery',
+    turnaroundBn: '৭২ ঘণ্টা ডেলিভারি',
     roiEn: '৳200/Banner • 100% Bespoke Craft',
     roiBn: '৳২০০/ব্যানার • ১০০% কাস্টম ক্রাফট',
   },

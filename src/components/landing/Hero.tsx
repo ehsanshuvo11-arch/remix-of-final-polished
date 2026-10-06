@@ -137,8 +137,8 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
               price: '৳3,999',
               priceBn: '৳৩,৯৯৯',
-              delivery: '48-Hour Rapid Delivery',
-              deliveryBn: '৪৮ ঘণ্টায় দ্রুত ডেলিভারি',
+              delivery: '72-Hour Rapid Delivery',
+              deliveryBn: '৭২ ঘণ্টায় দ্রুত ডেলিভারি',
               source: 'Hero Primary CTA',
             })}
             className="w-full h-[50px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]"
@@ -170,7 +170,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
         >
           <span className="flex items-center gap-1.5">
             <span className="text-accent">⚡</span>
-            <span>{isBn ? '৪৮ ঘণ্টায় ৫টি অ্যাড' : '48h Rapid Delivery'}</span>
+            <span>{isBn ? '৭২ ঘণ্টায় ৫টি ডিজাইন' : '72h 5-Design Delivery'}</span>
           </span>
           <span className="text-white/25">•</span>
           <span className="flex items-center gap-1.5">

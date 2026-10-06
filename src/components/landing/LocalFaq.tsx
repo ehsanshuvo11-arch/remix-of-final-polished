@@ -20,8 +20,8 @@ const FAQS: FaqItem[] = [
   {
     qBn: '৩,৯৯৯ টাকার টেস্ট ড্রাইভ স্প্রিন্টে আমি ঠিক কী কী পাব এবং ডেলিভারি কবে?',
     qEn: 'What exactly do I get in the ৳3,999 sprint and how fast is delivery?',
-    aBn: 'আপনার একটি নির্দিষ্ট হিরো প্রোডাক্টের জন্য পাচ্ছেন ৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ (ফিড স্কয়ার ও ৯:১৬ স্টোরি/রিলস সাইজ)। সাথে থাকছে ধারালো বাংলা ও ইংরেজি সেলস কপি, যা বিজ্ঞাপনের ক্লিকের সংখ্যা বাড়ায় ও প্রতি অর্ডারের খরচ কমায়। ব্রিফ পাওয়ার ঠিক ৪৮ ঘণ্টার মধ্যে রেডি-টু-রান ক্রিয়েটিভ আপনার হাতে পৌঁছে যাবে।',
-    aEn: 'You receive 5 conversion-ready Meta ad creatives tailored to your hero product (Feed + 9:16 Story/Reels), complete with punchy Bengali & English hooks engineered to cut cost-per-result. Delivered in 48 hours flat, 100% ready to run.',
+    aBn: 'আপনার একটি নির্দিষ্ট হিরো প্রোডাক্টের জন্য পাচ্ছেন ৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ (ফিড স্কয়ার ও ৯:১৬ স্টোরি/রিলস সাইজ)। সাথে থাকছে ধারালো বাংলা ও ইংরেজি সেলস কপি, যা বিজ্ঞাপনের ক্লিকের সংখ্যা বাড়ায় ও প্রতি অর্ডারের খরচ কমায়। ব্রিফ পাওয়ার ঠিক ৭২ ঘণ্টার মধ্যে রেডি-টু-রান ক্রিয়েটিভ আপনার হাতে পৌঁছে যাবে।',
+    aEn: 'You receive 5 conversion-ready Meta ad creatives tailored to your hero product (Feed + 9:16 Story/Reels), complete with punchy Bengali & English hooks engineered to cut cost-per-result. Delivered in 72 hours flat, 100% ready to run.',
   },
   {
     qBn: 'পেমেন্ট কীভাবে করব? বিকাশ বা নগদে কি দেওয়া যাবে?',
@@ -32,8 +32,8 @@ const FAQS: FaqItem[] = [
   {
     qBn: 'ডিজাইন পছন্দ না হলে বা কোনো পরিবর্তন লাগলে কী হবে?',
     qEn: 'What if I need revisions or changes to the creatives?',
-    aBn: '৪৮ ঘণ্টায় ডেলিভারি পাওয়ার পর আপনি টেক্সট, কালার, সাইজ বা লেআউট পরিবর্তন চাইতে পারেন। যতক্ষণ না মনে হবে ক্রিয়েটিভটি দিয়ে বিজ্ঞাপনে নামলে আসল সেলস আসবে, ততক্ষণ পর্যন্ত আমরা বিনামূল্যে সম্পূর্ণ রিভিশন সাপোর্ট দেব।',
-    aEn: 'Once you review your 48-hour delivery, you can request any layout, hook, or visual adjustments. We provide unlimited fine-tuning until you are completely confident in running the ads.',
+    aBn: '৭২ ঘণ্টায় ডেলিভারি পাওয়ার পর আপনি টেক্সট, কালার, সাইজ বা লেআউট পরিবর্তন চাইতে পারেন। যতক্ষণ না মনে হবে ক্রিয়েটিভটি দিয়ে বিজ্ঞাপনে নামলে আসল সেলস আসবে, ততক্ষণ পর্যন্ত আমরা বিনামূল্যে সম্পূর্ণ রিভিশন সাপোর্ট দেব।',
+    aEn: 'Once you review your 72-hour delivery, you can request any layout, hook, or visual adjustments. We provide unlimited fine-tuning until you are completely confident in running the ads.',
   },
   {
     qBn: 'আমার কাস্টমাররা তো সবসময় ডিসকাউন্ট খোঁজে, ভালো ক্রিয়েটিভে কি ফুল প্রাইসে বিক্রি হবে?',

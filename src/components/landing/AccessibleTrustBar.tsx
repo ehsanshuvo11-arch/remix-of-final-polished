@@ -11,8 +11,8 @@ export default function AccessibleTrustBar() {
       icon: Zap,
       titleBn: 'বিজ্ঞাপন টেস্ট ড্রাইভ',
       titleEn: 'No-Risk Test Drive',
-      subBn: '৳৩,৯৯৯-তে ৪৮ ঘণ্টায় ৫টি অ্যাড',
-      subEn: '৳3,999 • 5 Creatives in 48h',
+      subBn: '৭২ ঘণ্টায় ৫টি ব্যানার ডিজাইন',
+      subEn: '5 Bespoke Creatives in 72h',
     },
     {
       icon: CreditCard,

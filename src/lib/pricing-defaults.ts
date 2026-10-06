@@ -18,7 +18,7 @@ export const DEFAULT_PRICING_TIERS: PricingTier[] = [
     deliverables_en: [
       '5 High-Quality Product Banners (Offer, Ingredients, Benefits, Review, Combo)',
       'Professional High-Converting Bengali Sales Copy',
-      'Strict 48-Hour Rapid Delivery Guarantee',
+      'Strict 72-Hour Rapid Delivery Guarantee',
       '100% Bespoke Craft (Zero Recycled Templates)',
       'bKash, Nagad & Local Bank Payment Support',
       'Free Minor Revisions Guarantee',
@@ -26,7 +26,7 @@ export const DEFAULT_PRICING_TIERS: PricingTier[] = [
     deliverables_bn: [
       '৫টি হাই-কোয়ালিটি স্কিনকেয়ার ব্যানার (অফার, উপাদান, বেনিফিট, রিভিউ, কম্বো)',
       'প্রফেশনাল ও কনভার্শন-অপটিমাইজড বাংলা সেলস কপি',
-      '৪৮ ঘণ্টার নিশ্চিত দ্রুত ডেলিভারি',
+      '৭২ ঘণ্টার নির্ভরযোগ্য ডেলিভারি',
       '১০০% কাস্টম ক্রাফট (কোনো তৈরি টেমপ্লেট নয়)',
       'বিকাশ, নগদ ও ব্যাংক পেমেন্ট সাপোর্ট',
       'বিনামূল্যে রিভিশন সাপোর্ট',

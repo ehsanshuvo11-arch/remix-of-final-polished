@@ -31,8 +31,8 @@ const DEFAULT_DETAILS: QuickBookingDetail = {
   tierTitleBn: 'বিজ্ঞাপন টেস্ট ড্রাইভ স্প্রিন্ট (বিজ্ঞাপনের টাকা অপচয় বন্ধের ট্রায়াল)',
   price: '৳3,999',
   priceBn: '৳৩,৯৯৯',
-  delivery: '48-Hour Rapid Delivery',
-  deliveryBn: '৪৮ ঘণ্টায় দ্রুত ডেলিভারি',
+  delivery: '72-Hour Rapid Delivery',
+  deliveryBn: '৭২ ঘণ্টায় দ্রুত ডেলিভারি',
   deliverables: [
     '5 High-Converting Meta Ad Creatives (1:1 Feed & 9:16 Story/Reels)',
     'Persuasive Bengali & English Ad Copy & Strategic Hooks',
