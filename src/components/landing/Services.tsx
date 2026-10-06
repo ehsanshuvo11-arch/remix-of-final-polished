@@ -150,7 +150,7 @@ export default function Services(_props: ServicesProps) {
     <section
       id="services"
       aria-labelledby="services-pricing-heading"
-      className="relative py-16 sm:py-20 md:py-24 bg-[#faf7f2] text-primary border-y border-primary/10 overflow-hidden"
+      className="relative py-16 sm:py-20 md:py-24 bg-[#f9fafb] text-primary border-y border-primary/10 overflow-hidden"
     >
       <span id="pricing" className="absolute -top-20" aria-hidden="true" />
       <span id="investment" className="absolute -top-20" aria-hidden="true" />
