@@ -60,7 +60,7 @@ export default function RoasCalculator() {
   const fontBody = isBn ? '"Noto Serif Bengali", sans-serif' : 'inherit';
 
   return (
-    <section className="py-12 sm:py-16 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
+    <section id="calculator" className="py-12 sm:py-16 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#fb923c]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1e3a8a]/5 rounded-full blur-3xl pointer-events-none" />

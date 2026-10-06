@@ -36,6 +36,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
 
   return (
     <section
+      id="hero"
       className="min-h-[85svh] pt-20 pb-8 px-4 flex flex-col justify-center items-center relative overflow-hidden sm:px-8 md:min-h-screen md:px-14 md:pt-28 md:pb-36 lg:pb-40 bg-primary"
     >
       {/* Elegant quiet luxury ambient lighting without harsh blueprint lines */}

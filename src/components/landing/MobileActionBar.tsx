@@ -110,8 +110,8 @@ export default function MobileActionBar() {
                   tierId: 'trial-pack',
                   tierTitle: 'No-Risk Test Drive Sprint',
                   tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
-                  price: '৳3,999',
-                  priceBn: '৳৩,৯৯৯',
+                  price: '৳999',
+                  priceBn: '৳৯৯৯',
                   source: 'Mobile Action Bar',
                 });
               }}
@@ -127,7 +127,7 @@ export default function MobileActionBar() {
                   className={`text-[11px] font-extrabold truncate ${isBn ? 'text-[12px]' : ''}`}
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                 >
-                  {isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ' : 'START ৳3,999 SPRINT'}
+                  {isBn ? '৳৯৯৯ টেস্ট ড্রাইভ' : 'START ৳999 SPRINT'}
                 </span>
               </div>
 
