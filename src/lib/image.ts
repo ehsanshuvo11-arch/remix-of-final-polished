@@ -15,8 +15,12 @@ const RENDER_PATH = '/storage/v1/render/image/public/';
 
 export const DEFAULT_WIDTHS = [480, 640, 828, 1080, 1440] as const;
 
-export function isTransformable(src: string | undefined | null): boolean {
-  return !!src && src.includes(OBJECT_PATH);
+export function isTransformable(_src: string | undefined | null): boolean {
+  // Supabase project does not have the paid Image Transformation add-on enabled,
+  // causing /storage/v1/render/image/ to return 403 Forbidden on every asset.
+  // Using direct /storage/v1/object/public/ URLs loads assets immediately with HTTP 200,
+  // eliminating network stalls, onError re-render cascades, and scroll jank.
+  return false;
 }
 
 export function transformedUrl(src: string, width: number, quality = 72): string {

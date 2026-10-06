@@ -24,11 +24,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // With CSS scroll-behavior: smooth removed, Lenis delivers 100% pure 60/120fps glide
     // without frame collision or stutter.
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.05,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: 1.0,
+      wheelMultiplier: 1.15,
       autoRaf: true,
     });
     lenisInstance = lenis;
