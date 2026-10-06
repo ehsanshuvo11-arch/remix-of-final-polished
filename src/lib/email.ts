@@ -37,7 +37,7 @@ export interface InquiryEmailPayload {
  * IMPORTANT: Your EmailJS template MUST use these exact variable names
  * inside double curly braces: {{client_name}}, {{brand_name}}, {{email}},
  * {{store_url}}, {{budget_range}}, {{project_details}}, {{submitted_at}}.
- * Set the template's "To Email" to: polished.bd@gmail.com
+ * Set the template's "To Email" to: contact@polishedbd.com
  * Set "Reply To" to: {{email}}
  */
 export async function sendInquiryEmail(

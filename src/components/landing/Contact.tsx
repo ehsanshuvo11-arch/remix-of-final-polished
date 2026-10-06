@@ -41,7 +41,7 @@ export default function Contact({ contact }: ContactProps) {
   const isBn = lang === 'bn';
 
   const c = {
-    email: 'polished.bd@gmail.com',
+    email: 'contact@polishedbd.com',
     ig: '@polished.studio.bd',
     fb: 'polished.studio.bd',
     wa: '+8801346288210',
