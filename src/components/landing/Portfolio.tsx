@@ -37,34 +37,6 @@ interface PortfolioProps {
   isLoading?: boolean;
 }
 
-const CATEGORIES = [
-  { id: 'all', labelEn: 'All Works', labelBn: 'সব কাজ' },
-  { id: 'skincare', labelEn: 'Skincare & D2C', labelBn: 'স্কিনকেয়ার ও ডি২সি' },
-  { id: 'ads', labelEn: 'Meta Performance Ads', labelBn: 'মেটা অ্যাড ক্রিয়েটিভ' },
-  { id: 'perfume', labelEn: 'Luxury Fragrance', labelBn: 'লাক্সারি পারফিউম' },
-  { id: 'branding', labelEn: 'Brand Identity', labelBn: 'ব্র্যান্ড আইডেন্টিটি' },
-] as const;
-
-function matchesCategory(project: PortfolioProject, catId: string): boolean {
-  if (catId === 'all') return true;
-  const en = (project.category_en || '').toLowerCase();
-  const bn = (project.category_bn || '').toLowerCase();
-  const title = (project.title_en || '').toLowerCase();
-  
-  if (catId === 'skincare') {
-    return en.includes('skincare') || bn.includes('স্কিনকেয়ার') || en.includes('serum') || en.includes('elixir') || en.includes('masque') || en.includes('glow') || title.includes('lumin') || title.includes('aurora') || title.includes('cleanser') || en.includes('d2c') || bn.includes('ডি২সি');
-  }
-  if (catId === 'ads') {
-    return en.includes('ad') || en.includes('performance') || en.includes('campaign') || bn.includes('অ্যাড') || en.includes('sprint') || en.includes('funnel') || en.includes('creative');
-  }
-  if (catId === 'perfume') {
-    return en.includes('perfume') || en.includes('parfum') || bn.includes('পারফিউম') || en.includes('fragrance') || en.includes('scent') || bn.includes('সুগন্ধি');
-  }
-  if (catId === 'branding') {
-    return en.includes('identity') || bn.includes('ব্র্যান্ডিং') || en.includes('brand') || en.includes('design') || bn.includes('ডিজাইন');
-  }
-  return true;
-}
 
 export default function Portfolio({ projects, content, isLoading = false }: PortfolioProps) {
   const { lang } = useLanguage();
@@ -112,10 +84,8 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
     }
   }, [validProjects.length]);
 
-  // Filter matching projects
-  const filteredProjects = useMemo(() => {
-    return displayProjects.filter((p) => matchesCategory(p, selectedCategory));
-  }, [displayProjects, selectedCategory]);
+  // Curated live projects (all displayed with editorial elegance)
+  const filteredProjects = displayProjects;
 
   const visibleProjects = useMemo(() => {
     return filteredProjects.slice(0, visibleCount);
@@ -144,16 +114,6 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
       const targetLeft = cardEl.offsetLeft - (mobileCarouselRef.current.offsetWidth - cardEl.offsetWidth) / 2;
       mobileCarouselRef.current.scrollTo({ left: targetLeft, behavior: 'smooth' });
       setMobileIdx(idx);
-    }
-  };
-
-  // Reset mobile carousel index when category changes
-  const handleCategoryChange = (catId: string) => {
-    setSelectedCategory(catId);
-    setVisibleCount(4);
-    setMobileIdx(0);
-    if (mobileCarouselRef.current) {
-      mobileCarouselRef.current.scrollLeft = 0;
     }
   };
 
@@ -203,36 +163,41 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         </div>
       </MotionReveal>
 
-      {/* ── Category Filter Pills Bar (Mobile Swipeable) ── */}
-      <MotionReveal delay={0.15}>
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 mb-8 md:mb-12 -mx-4 px-4 sm:mx-0 sm:px-0">
-          {CATEGORIES.map((cat) => {
-            const active = selectedCategory === cat.id;
-            const count = cat.id === 'all' 
-              ? displayProjects.length 
-              : displayProjects.filter((p) => matchesCategory(p, cat.id)).length;
+      {/* ── Editorial Spec & Curation Strip (Replaces category pills row) ── */}
+      <MotionReveal delay={0.12}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3 px-4 sm:px-5 mb-8 md:mb-12 rounded-xl sm:rounded-2xl bg-white border border-primary/10 shadow-[0_2px_14px_rgba(30,58,138,0.03)] text-[12px] sm:text-[12.5px]">
+          {/* Left: Curated Sprint Pillars */}
+          <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-primary/75 font-medium">
+            <span className="inline-flex items-center gap-1.5 text-accent font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              {isBn ? 'সিলেক্টেড পারফরম্যান্স স্প্রিন্ট' : 'Selected Performance Sprints'}
+            </span>
+            <span className="hidden sm:inline text-primary/20">•</span>
+            <span className="inline-flex items-center gap-1 text-primary/70">
+              <Clock className="w-3.5 h-3.5 text-accent/80" />
+              {isBn ? '৪৮ ঘণ্টা টার্নঅ্যারাউন্ড' : '48-Hour SLA Delivery'}
+            </span>
+            <span className="hidden sm:inline text-primary/20">•</span>
+            <span className="inline-flex items-center gap-1 text-primary/70">
+              <ShieldCheck className="w-3.5 h-3.5 text-accent/80" />
+              {isBn ? '১০০% কাস্টম ক্রাফট ও কপি' : '100% Bespoke Craft & Copy'}
+            </span>
+          </div>
 
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategoryChange(cat.id)}
-                className={`relative shrink-0 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1.5 cursor-pointer select-none ${
-                  active
-                    ? 'bg-primary text-white font-semibold shadow-md'
-                    : 'bg-white/80 text-primary/70 border border-primary/10 hover:border-primary/30 hover:bg-white'
-                }`}
-                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-              >
-                <span>{isBn ? cat.labelBn : cat.labelEn}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                  active ? 'bg-white/20 text-white' : 'bg-primary/5 text-primary/60'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+          {/* Right: Curated Case Studies Counter */}
+          <div className="flex items-center gap-2 self-start sm:self-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-primary/5 sm:border-none w-full sm:w-auto justify-between sm:justify-end">
+            <span
+              className="text-[11px] uppercase tracking-wider font-mono text-primary/50 font-semibold"
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: 0 } : undefined}
+            >
+              {isBn ? 'প্রদর্শিত কাজ' : 'Curated Works'}
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full bg-primary/5 text-primary font-mono font-bold text-[11px] border border-primary/10">
+              {isBn
+                ? `${displayProjects.length.toLocaleString('bn-BD', { minimumIntegerDigits: 2 })}টি কেস স্টাডি`
+                : `${String(displayProjects.length).padStart(2, '0')} Case Studies`}
+            </span>
+          </div>
         </div>
       </MotionReveal>
 
