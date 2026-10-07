@@ -262,6 +262,7 @@ export default function Navbar({ content }: NavbarProps) {
               ? 'py-3 px-5 sm:px-8 md:px-12 bg-white/95 md:backdrop-blur-xl border-b border-primary/10 shadow-[0_4px_24px_rgba(30,58,138,0.06)] text-primary'
               : 'py-4 sm:py-5 px-5 sm:px-8 md:px-12 bg-gradient-to-b from-primary/85 via-primary/40 to-transparent border-b border-transparent text-primary-foreground'
           }`}
+          style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden', isolation: 'isolate' }}
         >
           {/* Left Brand Identity + Live Sprint Status */}
           <div className="flex items-center gap-3.5 sm:gap-5">

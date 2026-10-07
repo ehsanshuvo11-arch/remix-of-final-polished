@@ -115,6 +115,12 @@
     width: 100%;
     overflow-x: clip;
   }
+  /* GPU memory & fill-rate preservation: skips composite work of offscreen sections
+     until scrolled near, keeping 100% of luxury visuals & zero design loss. */
+  section:not(#hero) {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 750px;
+  }
   h1, h2, h3, h4 {
     font-family: 'Cormorant Garamond', serif;
     /* Avoid awkward word breaks on small screens */

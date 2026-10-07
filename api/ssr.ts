@@ -566,17 +566,33 @@ function getTemplate(): string {
   throw new Error('SSR: could not locate built index.html');
 }
 
+const BOT_UA_REGEX =
+  /googlebot|bingbot|yandex|baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest|slackbot|vkshare|w3c_validator|whatsapp|telegrambot|applebot|duckduckbot/i;
+
 // ─── Vercel handler ────────────────────────────────────────────────────────
 export default async function handler(req: any, res: any) {
   try {
     const template = getTemplate();
+    const userAgent = req.headers['user-agent'] || '';
+    const isBot = BOT_UA_REGEX.test(userAgent) || req.query?.bot === '1';
+
+    // Human users get the ultra-fast 6KB static SPA template immediately from Edge CDN.
+    // This gives live visitors the exact same zero-latency, butter-smooth launch speed as localhost!
+    if (!isBot) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader(
+        'Cache-Control',
+        'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400'
+      );
+      return res.status(200).send(template);
+    }
+
+    // Search crawlers & social share bots get the full semantic live SEO block
     const data = await fetchLiveContent();
     const seoBlock = renderSeoBlock(data);
     const html = template.replace('<!--SSR-CONTENT-->', seoBlock);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    // Bots get fresh data; humans get a fast CDN edge cache that revalidates
-    // in the background. Tune as needed.
     res.setHeader(
       'Cache-Control',
       'public, max-age=0, s-maxage=60, stale-while-revalidate=300'
