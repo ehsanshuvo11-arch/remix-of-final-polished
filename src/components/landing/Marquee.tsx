@@ -39,7 +39,14 @@ function Marquee({ items }: MarqueeProps) {
 
   return (
     <div className="bg-accent overflow-hidden py-3.5">
-      <div className="flex whitespace-nowrap" style={{ animation: 'marquee 22s linear infinite' }}>
+      <div 
+        className="flex whitespace-nowrap" 
+        style={{ 
+          animation: 'marquee 22s linear infinite',
+          transform: 'translate3d(0, 0, 0)',
+          willChange: 'transform'
+        }}
+      >
         {trackContent}
         {trackContent}
       </div>

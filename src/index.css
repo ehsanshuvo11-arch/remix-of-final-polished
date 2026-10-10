@@ -115,11 +115,9 @@
     width: 100%;
     overflow-x: clip;
   }
-  /* GPU memory & fill-rate preservation: skips composite work of offscreen sections
-     until scrolled near, keeping 100% of luxury visuals & zero design loss. */
+  /* Keep document geometry 100% stable: avoids layout shift and scrollbar jumps during scroll */
   section:not(#hero) {
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 750px;
+    content-visibility: visible;
   }
   h1, h2, h3, h4 {
     font-family: 'Cormorant Garamond', serif;
@@ -419,19 +417,12 @@ html[data-lang="bn"] li:not([lang="en"]),
 html[data-lang="bn"] blockquote:not([lang="en"]) {
   line-height: 1.7;
 }
-/* Reveal/clip containers must not crop ascenders or descenders.
-   WordReveal and RevealText wrap each word/line in `overflow-hidden`
-   spans for slide-up animations — those crop Bengali reph/matras.
-   In Bengali mode, swap to overflow-visible (slide animation still
-   works, it just won't be clipped — acceptable trade-off for legibility). */
-html[data-lang="bn"] .reveal-element,
-html[data-lang="bn"] .reveal-left,
-html[data-lang="bn"] .reveal-right {
-  overflow: visible !important;
-}
-html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6, p) .overflow-hidden,
+/* Reveal/clip containers: preserve overflow clipping for clean slide-up masking
+   while providing vertical breathing room for Bengali ascenders and descenders. */
+html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6, p) span.overflow-hidden,
 html[data-lang="bn"] span.overflow-hidden {
-  overflow: visible !important;
+  padding-block: 0.12em;
+  margin-block: -0.12em;
 }
 /* Italic accent lines (e.g. "Unmissable!") - Bengali italics not desired,
    but if any italic Bengali appears, give it room */
@@ -477,6 +468,7 @@ html[data-lang="bn"] .brand-wordmark {
 .reveal-element.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  will-change: auto;
 }
 
 .reveal-left {
@@ -489,6 +481,7 @@ html[data-lang="bn"] .brand-wordmark {
 .reveal-left.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  will-change: auto;
 }
 
 .reveal-right {
@@ -501,6 +494,7 @@ html[data-lang="bn"] .brand-wordmark {
 .reveal-right.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  will-change: auto;
 }
 
 /* Global interactive motion layer — every clickable element settles
@@ -712,13 +706,9 @@ body.admin-panel textarea {
   animation-play-state: paused;
 }
 
-/* 5. Letter-spacing breathe on hero eyebrow */
-@keyframes letterBreath {
-  0%, 100% { letter-spacing: 4px; }
-  50% { letter-spacing: 5px; }
-}
+/* 5. Static crisp tracking on hero eyebrow without continuous layout reflow */
 section.bg-primary > .max-w-\[900px\] > p:first-of-type {
-  animation: letterBreath 6s ease-in-out infinite 2s;
+  letter-spacing: 4px;
 }
 
 /* 6. Soft underline draw on links */

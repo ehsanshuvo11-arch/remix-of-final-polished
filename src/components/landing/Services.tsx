@@ -310,17 +310,24 @@ export default function Services(_props: ServicesProps) {
         {/* ── ULTRA-MINIMAL DUAL-TRACK SEGMENTED SWITCHER ── */}
         <MotionReveal delay={0.12}>
           <div className="flex justify-center mb-10 sm:mb-12">
-            <div className="inline-flex items-center p-1 rounded-full bg-white border border-primary/10 shadow-[0_2px_12px_rgba(30,58,138,0.04)]">
+            <div className="inline-flex items-center p-1 rounded-full bg-white border border-primary/10 shadow-[0_2px_12px_rgba(30,58,138,0.04)] relative">
               <button
                 type="button"
                 onClick={() => setActiveTrack('volume')}
-                className={`px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+                className={`relative z-10 px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer ${
                   activeTrack === 'volume'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-primary/65 hover:text-primary hover:bg-primary/[0.04]'
+                    ? 'text-white'
+                    : 'text-primary/65 hover:text-primary'
                 }`}
                 style={isBn ? bnFont : undefined}
               >
+                {activeTrack === 'volume' && (
+                  <m.div
+                    layoutId="activeTrackPill"
+                    className="absolute inset-0 rounded-full bg-primary -z-10 shadow-sm"
+                    transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                  />
+                )}
                 <span className={`w-1.5 h-1.5 rounded-full ${activeTrack === 'volume' ? 'bg-accent' : 'bg-primary/30'}`} />
                 <span>{isBn ? 'এফ-কমার্স ভলিউম প্যাক (৩টি)' : 'E-Commerce Volume Engine (3)'}</span>
               </button>
@@ -328,13 +335,20 @@ export default function Services(_props: ServicesProps) {
               <button
                 type="button"
                 onClick={() => setActiveTrack('performance')}
-                className={`px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+                className={`relative z-10 px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer ${
                   activeTrack === 'performance'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-primary/65 hover:text-primary hover:bg-primary/[0.04]'
+                    ? 'text-white'
+                    : 'text-primary/65 hover:text-primary'
                 }`}
                 style={isBn ? bnFont : undefined}
               >
+                {activeTrack === 'performance' && (
+                  <m.div
+                    layoutId="activeTrackPill"
+                    className="absolute inset-0 rounded-full bg-primary -z-10 shadow-sm"
+                    transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                  />
+                )}
                 <span className={`w-1.5 h-1.5 rounded-full ${activeTrack === 'performance' ? 'bg-accent' : 'bg-primary/30'}`} />
                 <span>{isBn ? 'মেটা পারফরম্যান্স অ্যাড (২টি)' : 'Meta Performance Ads (2)'}</span>
               </button>
@@ -681,11 +695,14 @@ function ServiceCard({
       {/* Conversion Actions Group — Confident Dual CTAs */}
       <div className="space-y-2.5 pt-1">
         {/* Primary Sprint Trigger Button */}
-        <button
+        <m.button
           id={`services-book-${tier.id}`}
           type="button"
           onClick={onBook}
-          className={`w-full h-11.5 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-[0.98] cursor-pointer shadow-md btn-shimmer ${
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          className={`w-full h-11.5 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[13px] font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer shadow-md btn-shimmer ${
             featured
               ? 'bg-accent hover:bg-accent/90 text-white shadow-[0_6px_20px_-6px_rgba(251,146,60,0.6)]'
               : 'bg-primary hover:bg-primary/90 text-white shadow-[0_4px_16px_-4px_rgba(30,58,138,0.25)]'
@@ -694,15 +711,18 @@ function ServiceCard({
         >
           <span>{isBn ? tier.cta_bn : tier.cta_en}</span>
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </m.button>
 
         {/* Secondary Sleek Outline WhatsApp CTA */}
-        <a
+        <m.a
           id={`services-wa-${tier.id}`}
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`w-full h-9.5 rounded-xl inline-flex items-center justify-center gap-2 text-[12px] font-semibold transition-all active:scale-[0.98] ${
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+          className={`w-full h-9.5 rounded-xl inline-flex items-center justify-center gap-2 text-[12px] font-semibold transition-colors ${
             featured
               ? 'border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/10'
               : 'border border-primary/15 text-primary/80 hover:border-primary/35 hover:bg-primary/[0.04]'
@@ -711,7 +731,7 @@ function ServiceCard({
         >
           <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
           <span>{isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}</span>
-        </a>
+        </m.a>
       </div>
     </article>
   );

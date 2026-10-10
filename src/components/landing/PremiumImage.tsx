@@ -82,7 +82,7 @@ export default function PremiumImage({
           }
           setLoaded(true);
         }}
-        className={cn('relative z-10 block w-full h-full will-change-[opacity]', className)}
+        className={cn('relative z-10 block w-full h-full', !loaded && 'will-change-[opacity]', className)}
         style={{
           opacity: loaded ? 1 : 0,
           transition: `opacity ${fadeDuration}s ease-out`,

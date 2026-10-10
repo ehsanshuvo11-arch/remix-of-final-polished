@@ -16,7 +16,7 @@ interface RevealTextProps {
 }
 
 
-const LUXURY_EASE = [0.76, 0, 0.24, 1] as const;
+const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
  * Cinematic Scroll Masking — Quiet Luxury
@@ -68,7 +68,7 @@ export default function RevealText({
               className="reveal-mask-up transform-gpu"
               style={{
                 ['--reveal-dur' as string]: `${dur}s`,
-                ['--reveal-delay' as string]: `${delay + 0.15 + i * step}s`,
+                ['--reveal-delay' as string]: `${delay + i * step}s`,
               }}
             >
               {part}
@@ -84,16 +84,16 @@ export default function RevealText({
       {parts.map((part, i) => (
         <span key={i} className="inline-block overflow-hidden align-bottom" style={maskStyle}>
           <m.span
-            className="inline-block transform-gpu will-change-transform"
+            className="inline-block transform-gpu"
             style={{ transform: 'translate3d(0, 100%, 0)', backfaceVisibility: 'hidden' }}
             initial={{ y: '100%', opacity: 0 }}
             whileInView={rest}
-            viewport={{ once: true, margin: '50px' }}
+            viewport={{ once: true, margin: '20px' }}
             transition={{
               duration: dur,
-              delay: delay + 0.15 + i * step,
+              delay: delay + i * step,
               ease: LUXURY_EASE as any,
-              opacity: { duration: dur * 0.5, delay: delay + 0.15 + i * step, ease: 'linear' },
+              opacity: { duration: dur * 0.5, delay: delay + i * step, ease: 'linear' },
             }}
           >
             {part}

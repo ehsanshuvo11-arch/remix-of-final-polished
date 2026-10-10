@@ -20,23 +20,29 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       return;
     }
 
-    // Luxury butter-smooth inertial glide for desktop, wheel, and trackpad:
-    // With CSS scroll-behavior: smooth removed, Lenis delivers 100% pure 60/120fps glide
-    // without frame collision or stutter.
+    // Ultra-smooth, responsive inertial glide:
+    // duration 0.85s with exponential ease-out provides instant, zero-latency response
+    // without sluggish lag or rubbery floatiness, matching high-end luxury sites.
     const lenis = new Lenis({
-      duration: 1.05,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 0.85,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: 1.15,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.0,
       autoRaf: true,
     });
     lenisInstance = lenis;
     (window as any).__lenis = lenis;
+    (window as any).lenis = lenis;
 
     return () => {
       lenis.destroy();
       lenisInstance = null;
+      (window as any).__lenis = null;
+      (window as any).lenis = null;
     };
   }, []);
 

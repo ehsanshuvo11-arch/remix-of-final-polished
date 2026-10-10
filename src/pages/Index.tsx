@@ -78,14 +78,9 @@ export default function Index() {
 
         {/* 2. Bold Hero with Quiet Luxury Aesthetics */}
         <m.div
-          initial={false}
-          animate={
-            heroReady
-              ? { opacity: 1, scale: 1 }
-              : { opacity: 0, scale: 1.05 }
-          }
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformOrigin: '50% 50%', willChange: 'transform, opacity' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: heroReady ? 1 : 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <Hero
             content={null}

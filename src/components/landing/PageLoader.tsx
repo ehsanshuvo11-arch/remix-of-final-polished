@@ -131,12 +131,12 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
                 >
                   <m.span
                     className="inline-block"
-                    initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
-                    animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
+                    initial={{ y: '100%', opacity: 0 }}
+                    animate={{ y: '0%', opacity: 1 }}
                     transition={{
-                      duration: 0.42,
-                      delay: 0.03 + i * 0.018,
-                      ease: [0.22, 1, 0.36, 1],
+                      duration: 0.45,
+                      delay: 0.03 + i * 0.02,
+                      ease: [0.16, 1, 0.3, 1],
                     }}
                   >
                     {letter}
@@ -149,12 +149,12 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
               >
                 <m.span
                   className="inline-block text-accent"
-                  initial={{ y: '110%', filter: 'blur(14px)', opacity: 0 }}
-                  animate={{ y: '0%', filter: 'blur(0px)', opacity: 1 }}
+                  initial={{ y: '100%', opacity: 0 }}
+                  animate={{ y: '0%', opacity: 1 }}
                   transition={{
-                    duration: 0.42,
-                    delay: 0.03 + letters.length * 0.018,
-                    ease: [0.22, 1, 0.36, 1],
+                    duration: 0.45,
+                    delay: 0.03 + letters.length * 0.02,
+                    ease: [0.16, 1, 0.3, 1],
                   }}
                 >
                   .

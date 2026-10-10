@@ -469,10 +469,12 @@ function ProjectCard({
 
   return (
     <m.article
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.08 * (index % 4) }}
-      className="group relative flex flex-col justify-between rounded-2xl bg-white border border-primary/10 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(30,58,138,0.08)] hover:border-primary/20 transition-all duration-500 overflow-hidden p-4 sm:p-5"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.4, delay: 0.05 * (index % 4), ease: [0.16, 1, 0.3, 1] }}
+      style={{ transform: 'translateZ(0)' }}
+      className="group relative flex flex-col justify-between rounded-2xl bg-white border border-primary/10 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(30,58,138,0.08)] hover:border-primary/20 transition-shadow duration-300 overflow-hidden p-4 sm:p-5"
     >
       <div>
         {/* Top Meta Bar */}
@@ -505,7 +507,7 @@ function ProjectCard({
 
           {/* Quick Hover / Tap Badge */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 text-primary text-xs font-semibold backdrop-blur-md shadow-md">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 text-primary text-xs font-semibold shadow-md">
               <Eye className="w-3.5 h-3.5 text-accent" />
               <span>{isBn ? 'কেস স্টাডি দেখতে ট্যাপ করুন' : 'View Full Case Study'}</span>
             </span>

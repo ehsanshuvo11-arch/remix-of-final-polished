@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Globe } from 'lucide-react';
 
 type Lang = 'en' | 'bn';
@@ -114,7 +114,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       {/* Language selection popup with slide-in animations */}
       <AnimatePresence>
         {showPopup && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
@@ -122,7 +122,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             data-language-overlay="true"
             className="fixed inset-0 bg-[rgba(15,30,74,0.97)] z-[10000] flex items-center justify-center flex-col gap-12"
           >
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -134,10 +134,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
               <p className="text-[13px] tracking-[2px] uppercase text-primary-foreground/40">
                 Choose Your Language
               </p>
-            </motion.div>
+            </m.div>
             <div className="flex gap-5">
               {/* English slides in from LEFT */}
-              <motion.button
+              <m.button
                 initial={{ opacity: 0, x: -80 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -145,9 +145,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
                 className="px-12 py-4 text-sm tracking-[3px] uppercase bg-accent text-accent-foreground rounded-sm font-normal transition-all duration-300 hover:bg-[hsl(28,96%,55%)] hover:-translate-y-1 hover:shadow-[0_10px_28px_rgba(251,146,60,0.4)] active:scale-[0.96]"
               >
                 English
-              </motion.button>
+              </m.button>
               {/* Bengali slides in from RIGHT */}
-              <motion.button
+              <m.button
                 initial={{ opacity: 0, x: 80 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -156,16 +156,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
                 style={{ fontFamily: "'Noto Serif Bengali', serif" }}
               >
                 বাংলা
-              </motion.button>
+              </m.button>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* Luxurious transition overlay after language selection */}
       <AnimatePresence>
         {transitioning && (
-          <motion.div
+          <m.div
             initial={{ opacity: 1 }}
             animate={{ opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: 'easeInOut' }}
@@ -177,20 +177,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       {/* Children stay mounted across language swaps so scroll position,
           Lenis state, and layout are preserved. We only crossfade the
           contents in place — never unmount. */}
-      <motion.div
+      <m.div
         key="lang-content"
         animate={{ opacity: curtain ? 0.999 : 1 }}
         transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
-        style={{ willChange: 'opacity' }}
       >
         {children}
-      </motion.div>
+      </m.div>
 
       {/* Curtain Drop overlay — drops in, holds while content swaps, lifts away.
           Scroll position is preserved underneath. */}
       <AnimatePresence>
         {curtain && (
-          <motion.div
+          <m.div
             key="curtain-drop"
             initial={{ y: '-100%' }}
             animate={{ y: '0%' }}
@@ -218,7 +217,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             >
               POLISHED<span className="text-accent">.</span>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 

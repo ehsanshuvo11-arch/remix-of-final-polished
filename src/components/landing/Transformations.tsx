@@ -163,12 +163,12 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel }: Sl
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        style={{ touchAction: 'pan-y' }}
+        style={{ touchAction: 'pan-y', transform: 'translateZ(0)' }}
         className="relative w-full overflow-hidden rounded-2xl md:rounded-sm border border-primary/10 select-none touch-pan-y aspect-[4/3] sm:aspect-[16/10] cursor-ew-resize bg-primary/5"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '50px' }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, margin: '0px 0px -20px 0px' }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* AFTER (base) */}
         <img

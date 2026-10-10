@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { m } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import MagneticButton from '@/components/landing/MagneticButton';
 import { getLenis } from '@/components/landing/SmoothScroll';
@@ -54,9 +55,11 @@ export default function Hero({ content, logoUrl }: HeroProps) {
       <div className="max-w-[960px] text-center relative z-10 pt-2 md:pt-8">
         <div className="w-full flex flex-col items-center justify-center mb-4 md:mb-8 gap-2.5">
           {/* Subtle live availability pill */}
-          <div
+          <m.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-white/[0.07] border border-white/15 text-[10px] md:text-[11px] tracking-[1.5px] uppercase text-primary-foreground/95 font-medium shadow-sm"
-            style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s both' }}
           >
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
@@ -65,24 +68,26 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             <span>
               {isBn ? 'নতুন ব্র্যান্ড নেওয়া হচ্ছে • ৭২ ঘণ্টার স্প্রিন্ট' : 'Now Accepting New Brands • 72h Sprint Available'}
             </span>
-          </div>
+          </m.div>
 
-          <p
+          <m.p
             lang={isBn ? 'bn' : 'en'}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="font-sans-eyebrow text-[9px] tracking-[0.25em] text-accent md:text-[11px] md:tracking-[4px] uppercase font-semibold"
             style={{ 
-              animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both', 
               fontFamily: isBn ? "'Noto Serif Bengali', serif" : '"Inter", sans-serif',
               letterSpacing: isBn ? '1px' : undefined
             }}
           >
             {isBn ? hero.eyebrowBn : hero.eyebrowEn}
-          </p>
+          </m.p>
         </div>
 
         {(() => {
-          const BASE = 0.4;
-          const STAGGER = 0.15;
+          const BASE = 0.15;
+          const STAGGER = 0.08;
           const line2Delay = BASE + 2 * STAGGER;
           return (
             <h1
@@ -117,21 +122,31 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           );
         })()}
 
-        <p
+        <m.p
           lang={isBn ? 'bn' : 'en'}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="block font-sans-body text-primary-foreground/90 leading-[1.6] md:leading-[1.75] max-w-[360px] md:max-w-[620px] mx-auto mb-5 md:mb-8 text-[13px] md:text-[16px] px-2 md:px-0"
           style={{
             fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
-            animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.85s both',
           }}
         >
           {isBn ? hero.subBn : hero.subEn}
-        </p>
+        </m.p>
 
-        {/* Streamlined Action Container — Single Primary Conversion Action on Mobile */}
-        <div className="flex flex-col w-full max-w-[320px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-2 justify-center items-center" style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.05s both' }}>
-          <button
+        {/* Streamlined Action Container — Butter-smooth interactive CTA buttons */}
+        <m.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col w-full max-w-[320px] md:max-w-none mx-auto gap-3 md:flex-row md:gap-4 md:mt-8 md:mb-2 justify-center items-center"
+        >
+          <m.button
             type="button"
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             onClick={() => openQuickBookingModal({
               tierId: 'trial-pack',
               tierTitle: 'No-Risk Test Drive Sprint',
@@ -142,32 +157,37 @@ export default function Hero({ content, logoUrl }: HeroProps) {
               deliveryBn: '৭২ ঘণ্টায় দ্রুত ডেলিভারি',
               source: 'Hero Primary CTA',
             })}
-            className="w-full h-[50px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] active:scale-[0.98] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]"
+            className="w-full h-[50px] md:h-[54px] px-6 text-[13px] md:text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-accent-foreground border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]"
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ শুরু করুন' : 'Start ৳3,999 Test Drive'}
             </span>
             <span className="text-base font-bold">→</span>
-          </button>
+          </m.button>
 
           {/* WhatsApp CTA visible on desktop; mobile has dedicated thumb-zone action bar */}
-          <a
+          <m.a
             href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20free%20advice%20regarding%20my%20brand%20design%20and%20ads."
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex h-[54px] px-7 text-[13px] tracking-[0.5px] justify-center items-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 md:w-auto md:px-8 font-medium rounded-xl transition-all duration-300 hover:border-accent active:scale-[0.98] cursor-pointer"
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="hidden md:inline-flex h-[54px] px-7 text-[13px] tracking-[0.5px] justify-center items-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 md:w-auto md:px-8 font-medium rounded-xl transition-all duration-300 hover:border-accent cursor-pointer"
           >
             <span>💬</span>
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
               {isBn ? 'হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}
             </span>
-          </a>
-        </div>
+          </m.a>
+        </m.div>
 
         {/* Minimalist Quiet Luxury Reassurance Strip */}
-        <div 
+        <m.div 
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1.5 mt-5 md:mt-10 text-[11px] sm:text-[12px] md:text-[13px] text-primary-foreground/80 font-sans tracking-wide"
-          style={{ animation: 'fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 1.15s both' }}
         >
           <span className="flex items-center gap-1.5">
             <span className="text-accent">⚡</span>
@@ -188,13 +208,18 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             <span className="text-accent">★</span>
             <span>{isBn ? '১০০% কাস্টম, জিরো টেমপ্লেট' : '100% Custom, Zero Templates'}</span>
           </span>
-        </div>
+        </m.div>
       </div>
 
-      <div className="hidden md:flex absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform" style={{ animation: 'fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.45s both' }}>
+      <m.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        className="hidden md:flex absolute bottom-8 md:bottom-9 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-primary-foreground/40 md:text-primary-foreground/30 text-[9px] md:text-[10px] tracking-[3px] uppercase transform-gpu will-change-transform"
+      >
         {hero.scrollEn ?? 'Scroll'}
         <span className="w-px bg-primary-foreground/20" style={{ animation: 'lineGrow 1.5s cubic-bezier(0.22,1,0.36,1) 1.7s both' }} />
-      </div>
+      </m.div>
 
       <div className="absolute bottom-0 left-0 w-full h-px bg-accent/40" />
     </section>

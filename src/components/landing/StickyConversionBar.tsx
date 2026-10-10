@@ -14,6 +14,7 @@ export default function StickyConversionBar() {
   useEffect(() => {
     if (isDismissed) return;
     let ticking = false;
+    let lastVisible = false;
     const handleScroll = () => {
       if (ticking) return;
       ticking = true;
@@ -21,7 +22,11 @@ export default function StickyConversionBar() {
         ticking = false;
         const scrollY = window.scrollY;
         const threshold = 550;
-        setIsVisible(scrollY > threshold);
+        const next = scrollY > threshold;
+        if (next !== lastVisible) {
+          lastVisible = next;
+          setIsVisible(next);
+        }
       });
     };
 
@@ -72,35 +77,42 @@ export default function StickyConversionBar() {
 
             {/* Conversion CTA Group */}
             <div className="flex items-center gap-2 shrink-0">
-              <button
+              <m.button
                 type="button"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 onClick={() => openQuickBookingModal({ source: 'Sticky Conversion Bar' })}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[10px] sm:text-xs uppercase tracking-wider rounded-full transition-all duration-300 shadow-[0_2px_12px_rgba(251,146,60,0.4)] hover:shadow-[0_4px_18px_rgba(251,146,60,0.6)] cursor-pointer active:scale-95 btn-shimmer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-5 sm:py-2 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[10px] sm:text-xs uppercase tracking-wider rounded-full shadow-[0_2px_12px_rgba(251,146,60,0.4)] hover:shadow-[0_4px_18px_rgba(251,146,60,0.6)] cursor-pointer btn-shimmer"
               >
                 <Sparkles className="w-3 h-3 hidden sm:inline" />
                 <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভ' : 'Start ৳3,999 Sprint'}</span>
                 <ArrowRight className="w-3 h-3" />
-              </button>
+              </m.button>
 
-              <a
+              <m.a
                 href="https://wa.me/8801346288210?text=Hi%20POLISHED%20Studio%2C%20I'd%20like%20to%20discuss%20a%20visual%20identity%20partnership%20for%20my%20brand."
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Direct WhatsApp"
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#25D366] text-white hover:text-white flex items-center justify-center transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.92 }}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#25D366] text-white hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="WhatsApp Contact"
               >
                 <MessageCircle className="w-4 h-4" />
-              </a>
+              </m.a>
 
-              <button
+              <m.button
                 type="button"
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.85 }}
                 onClick={() => setIsDismissed(true)}
-                className="w-6 h-6 rounded-full text-white/40 hover:text-white flex items-center justify-center transition-colors"
+                className="w-6 h-6 rounded-full text-white/40 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Dismiss banner"
               >
                 <X className="w-3.5 h-3.5" />
-              </button>
+              </m.button>
             </div>
           </div>
         </m.div>

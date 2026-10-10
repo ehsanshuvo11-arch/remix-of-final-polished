@@ -10,7 +10,7 @@ interface WordRevealProps {
   renderWord?: (word: string, index: number) => React.ReactNode;
 }
 
-const LUXURY_EASE = [0.22, 1, 0.36, 1] as const;
+const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function WordReveal({
   children,
@@ -19,19 +19,15 @@ export default function WordReveal({
   as: Tag = 'span',
 }: WordRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '0px 0px -40px 0px', amount: 0.2 });
+  const isInView = useInView(ref, { once: true, margin: '0px 0px 30px 0px', amount: 'some' });
   const isMobile = useIsMobileDevice();
 
   const words = children.split(' ');
-  // Snappy stagger so words appear swiftly without lagging user reading speed.
-  const step = isMobile ? 0.015 : 0.022;
+  const step = isMobile ? 0.012 : 0.018;
 
   return (
     <Tag ref={ref as any} className={className}>
       {words.map((word, i) => (
-        // The mask needs overflow:hidden for the slide-up, which would otherwise
-        // clip descenders (g, y, p) and italic tails. Pad the mask and pull the
-        // extra space back with negative margins so layout stays identical.
         <span
           key={i}
           className="inline-block overflow-hidden align-bottom"
@@ -43,12 +39,15 @@ export default function WordReveal({
           }}
         >
           <m.span
-            className="inline-block transform-gpu will-change-transform"
-            style={{ backfaceVisibility: 'hidden' }}
+            className="inline-block transform-gpu"
+            style={{
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+            }}
             initial={{ y: '110%', opacity: 0 }}
             animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
             transition={{
-              duration: isMobile ? 0.32 : 0.42,
+              duration: isMobile ? 0.28 : 0.36,
               delay: delay + i * step,
               ease: LUXURY_EASE as any,
             }}

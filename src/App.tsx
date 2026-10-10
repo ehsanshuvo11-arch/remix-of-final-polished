@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from "react";
-import { LazyMotion } from "framer-motion";
+import { LazyMotion, domMax } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -17,10 +17,6 @@ const Sonner = lazy(() => import("@/components/ui/sonner").then((m) => ({ defaul
 const FilmGrain = lazy(() => import("./components/FilmGrain"));
 const CustomCursor = lazy(() => import("./components/landing/CustomCursor"));
 const Analytics = lazy(() => import("@vercel/analytics/react").then((m) => ({ default: m.Analytics })));
-
-// Framer Motion features are loaded asynchronously AFTER first paint, keeping
-// the initial JS payload lean. `domMax` is required because Portfolio uses drag.
-const loadMotionFeatures = () => import("framer-motion").then((mod) => mod.domMax);
 
 // Fewer retries + longer cache = far less network chatter on first load.
 const queryClient = new QueryClient({
@@ -89,7 +85,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <ErrorBoundary>
-        <LazyMotion features={loadMotionFeatures}>
+        <LazyMotion features={domMax}>
           <BrowserRouter>
             <RouteCursorScope />
             <Suspense fallback={<div className="min-h-screen bg-background" />}>

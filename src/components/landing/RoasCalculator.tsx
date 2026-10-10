@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { m } from 'framer-motion';
 import { triggerInquiry } from '@/lib/inquiry-events';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
 import { useLanguage } from '@/contexts/LanguageContext';
+import MotionReveal from '@/components/landing/MotionReveal';
 import { ArrowRight, Sparkles, RotateCcw } from 'lucide-react';
 
 export default function RoasCalculator() {
@@ -61,39 +63,47 @@ export default function RoasCalculator() {
 
   return (
     <section id="calculator" className="py-12 sm:py-16 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#fb923c]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#1e3a8a]/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Background Ambient Glows (Zero-cost radial gradients) */}
+      <div 
+        className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none" 
+        style={{ background: 'radial-gradient(circle, rgba(251, 146, 60, 0.06) 0%, transparent 70%)' }}
+      />
+      <div 
+        className="absolute bottom-0 left-0 w-96 h-96 rounded-full pointer-events-none" 
+        style={{ background: 'radial-gradient(circle, rgba(30, 58, 138, 0.06) 0%, transparent 70%)' }}
+      />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <span 
-            className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] mb-3" 
-            style={{ fontFamily: fontBody }}
-          >
-            {isBn ? "বিজ্ঞাপনের অপচয় নির্ণয়" : "Revenue Diagnostic"}
-          </span>
-          <h2 
-            className="text-[#1e3a8a] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 leading-tight" 
-            style={{ fontFamily: fontPrimary }}
-          >
-            {isBn ? (
-              <>দুর্বল ডিজাইনের কারণে বিজ্ঞাপনে কত টাকা <span className="text-[#fb923c] font-bold">অপচয়</span> হচ্ছে?</>
-            ) : (
-              <>How Much Ad Spend Is Leaking From <span className="text-[#fb923c] font-bold">Weak Creatives</span>?</>
-            )}
-          </h2>
-          <p 
-            className="text-[#1e3a8a]/70 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed" 
-            style={{ fontFamily: fontBody }}
-          >
-            {isBn 
-              ? "আপনার মাসিক বাজেট ও ডেটা বসিয়ে দেখুন—সস্তা টেমপ্লেটের কারণে প্রতি মাসে কত নিশ্চিত সেলস হাতছাড়া হচ্ছে।"
-              : "Adjust your metrics to calculate how much sales revenue is slipping away every month from low-trust, scroll-past visuals."}
-          </p>
-        </div>
+        <MotionReveal>
+          <div className="text-center mb-8 sm:mb-12">
+            <span 
+              className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] mb-3" 
+              style={{ fontFamily: fontBody }}
+            >
+              {isBn ? "বিজ্ঞাপনের অপচয় নির্ণয়" : "Revenue Diagnostic"}
+            </span>
+            <h2 
+              className="text-[#1e3a8a] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 leading-tight" 
+              style={{ fontFamily: fontPrimary }}
+            >
+              {isBn ? (
+                <>দুর্বল ডিজাইনের কারণে বিজ্ঞাপনে কত টাকা <span className="text-[#fb923c] font-bold">অপচয়</span> হচ্ছে?</>
+              ) : (
+                <>How Much Ad Spend Is Leaking From <span className="text-[#fb923c] font-bold">Weak Creatives</span>?</>
+              )}
+            </h2>
+            <p 
+              className="text-[#1e3a8a]/70 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed" 
+              style={{ fontFamily: fontBody }}
+            >
+              {isBn 
+                ? "আপনার মাসিক বাজেট ও ডেটা বসিয়ে দেখুন—সস্তা টেমপ্লেটের কারণে প্রতি মাসে কত নিশ্চিত সেলস হাতছাড়া হচ্ছে।"
+                : "Adjust your metrics to calculate how much sales revenue is slipping away every month from low-trust, scroll-past visuals."}
+            </p>
+          </div>
+        </MotionReveal>
 
         {/* 2-Column Split: Clean 4-Row Inputs + High-Impact Results Card */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
@@ -253,7 +263,10 @@ export default function RoasCalculator() {
           <div className="lg:col-span-5 bg-[#1e3a8a] text-white rounded-2xl md:rounded-3xl border border-white/10 p-5 sm:p-7 md:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
             
             {/* Ambient Background Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#fb923c]/10 rounded-full blur-3xl pointer-events-none" />
+            <div 
+              className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none" 
+              style={{ background: 'radial-gradient(circle, rgba(251, 146, 60, 0.12) 0%, transparent 70%)' }}
+            />
 
             <div className="relative z-10 flex flex-col h-full justify-between gap-5 sm:gap-6">
               
@@ -300,18 +313,21 @@ export default function RoasCalculator() {
 
               {/* BOTTOM: Direct Actions */}
               <div className="flex flex-col gap-2.5 pt-2">
-                <a
+                <m.a
                   href={`https://wa.me/8801346288210?text=${encodeURIComponent(
                     `Hi POLISHED, I ran the numbers. Losing around ৳${formatCurrency(revenueLost)}/mo on weak ads with a ৳${formatCurrency(adSpend)} budget. I want to test the ৳3,999 sprint to stop the leak!`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#fb923c] hover:bg-[#fb923c]/95 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-200 active:scale-[0.98] btn-shimmer"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#fb923c] hover:bg-[#fb923c]/95 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/25 cursor-pointer btn-shimmer"
                   style={{ fontFamily: fontBody }}
                 >
                   <span>{isBn ? "৳৩,৯৯৯ স্প্রিন্টে অপচয় বন্ধ করুন" : "Stop The Leak With ৳3,999 Sprint"}</span>
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </m.a>
 
                 <button
                   type="button"

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ChevronDown, MessageCircle, HelpCircle } from 'lucide-react';
 import MotionReveal from '@/components/landing/MotionReveal';
@@ -120,13 +121,24 @@ export default function LocalFaq() {
                     </span>
                   </button>
 
-                  {isOpen && (
-                    <div className="px-5 md:px-6 pb-5 pt-1 border-t border-primary/5 text-xs md:text-sm text-primary/80 leading-relaxed font-sans animate-in fade-in duration-300">
-                      <p style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}>
-                        {isBn ? faq.aBn : faq.aEn}
-                      </p>
-                    </div>
-                  )}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <m.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-5 md:px-6 pb-5 pt-1 border-t border-primary/5 text-xs md:text-sm text-primary/80 leading-relaxed font-sans">
+                          <p style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}>
+                            {isBn ? faq.aBn : faq.aEn}
+                          </p>
+                        </div>
+                      </m.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </MotionReveal>
             );

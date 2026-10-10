@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { m, AnimatePresence, useScroll } from 'framer-motion';
+import { m, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import {
   Globe,
   ArrowRight,
@@ -34,64 +34,79 @@ export default function Navbar({ content }: NavbarProps) {
   const { lang, toggleLanguage } = useLanguage();
   const isBn = lang === 'bn';
   const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 300,
+    damping: 30,
+    restDelta: 0.001,
+  });
   const { data: labels } = useUILabels();
 
-  // Scroll detection for sticky navbar background styling
+  // 1. Lightweight sticky navbar background trigger (passive, no layout queries)
   useEffect(() => {
     let frame = 0;
-    let last = false;
-    const handleScroll = () => {
+    let lastScrolled = false;
+
+    const onScroll = () => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        const next = window.scrollY > 50;
-        if (next !== last) {
-          last = next;
-          setScrolled(next);
+        const nextScrolled = window.scrollY > 40;
+        if (nextScrolled !== lastScrolled) {
+          lastScrolled = nextScrolled;
+          setScrolled(nextScrolled);
         }
       });
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
 
-  // ScrollSpy: Real-time active section tracking
+  // 2. Ultra-smooth ScrollSpy via IntersectionObserver (ZERO forced reflows or offsetTop queries)
   useEffect(() => {
     const sectionIds = ['work', 'evolution', 'process', 'calculator', 'services', 'faq', 'contact'];
-    let frame = 0;
+    const visibilityMap = new Map<string, number>();
 
-    const handleScrollSpy = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const triggerY = window.scrollY + 160;
-        let current = '';
-
-        for (let i = sectionIds.length - 1; i >= 0; i--) {
-          const id = sectionIds[i];
-          const el = document.getElementById(id);
-          if (el) {
-            const top = el.offsetTop;
-            if (triggerY >= top) {
-              current = id === 'services' ? 'pricing' : id;
-              break;
-            }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (entry.isIntersecting) {
+            visibilityMap.set(id, entry.intersectionRatio);
+          } else {
+            visibilityMap.delete(id);
           }
-        }
-        setActiveSection(current);
-      });
-    };
+        });
 
-    window.addEventListener('scroll', handleScrollSpy, { passive: true });
-    handleScrollSpy();
-    return () => {
-      window.removeEventListener('scroll', handleScrollSpy);
-      if (frame) cancelAnimationFrame(frame);
-    };
+        let highestRatio = 0;
+        let bestSection = '';
+        visibilityMap.forEach((ratio, id) => {
+          if (ratio > highestRatio) {
+            highestRatio = ratio;
+            bestSection = id;
+          }
+        });
+
+        if (bestSection) {
+          setActiveSection(bestSection === 'services' ? 'pricing' : bestSection);
+        }
+      },
+      {
+        rootMargin: '-70px 0px -30% 0px',
+        threshold: [0.1, 0.3, 0.6],
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   // Sync with mobile bottom action bar dock
@@ -228,7 +243,7 @@ export default function Navbar({ content }: NavbarProps) {
     if (el) {
       const lenis = getLenis();
       if (lenis) {
-        lenis.scrollTo(el, { duration: 1.2, offset: -70 });
+        lenis.scrollTo(el, { duration: 0.85, offset: -70 });
       } else {
         const top = el.getBoundingClientRect().top + window.scrollY - 70;
         window.scrollTo({ top, behavior: 'smooth' });
@@ -243,11 +258,11 @@ export default function Navbar({ content }: NavbarProps) {
 
   return (
     <>
-      {/* Reading Progress hairline on mobile */}
+      {/* Ultra-smooth Framer Motion spring reading progress hairline */}
       <m.div
         aria-hidden
-        style={{ scaleX: scrollYProgress }}
-        className="md:hidden fixed top-0 left-0 right-0 z-[140] h-[2px] origin-left bg-accent pointer-events-none"
+        style={{ scaleX: smoothProgress }}
+        className="fixed top-0 left-0 right-0 z-[150] h-[2px] origin-left bg-gradient-to-r from-accent via-amber-400 to-accent pointer-events-none shadow-[0_1px_6px_rgba(251,146,60,0.4)]"
       />
 
       <header>
@@ -271,7 +286,7 @@ export default function Navbar({ content }: NavbarProps) {
               onClick={(e) => {
                 e.preventDefault();
                 const lenis = getLenis();
-                if (lenis) lenis.scrollTo(0, { duration: 1.2 });
+                if (lenis) lenis.scrollTo(0, { duration: 0.85 });
                 else window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               lang="en"

@@ -44,17 +44,17 @@ export default function MobileActionBar() {
         const delta = currentScrollY - lastScrollYRef.current;
 
         if (!pastHero) {
-          setVisible(false);
+          setVisible(prev => !prev ? prev : false);
         } else if (delta < -8) {
           // Scrolling up: reveal conversion bar
-          setVisible(true);
+          setVisible(prev => prev ? prev : true);
         } else if (delta > 8) {
           // Scrolling down: auto-hide bar to avoid blocking content
-          setVisible(false);
+          setVisible(prev => !prev ? prev : false);
           // When user pauses scrolling for 1.2s, gently reveal conversion bar
           idleTimer = setTimeout(() => {
             if (window.scrollY > window.innerHeight * 0.35) {
-              setVisible(true);
+              setVisible(prev => prev ? prev : true);
             }
           }, 1200);
         }

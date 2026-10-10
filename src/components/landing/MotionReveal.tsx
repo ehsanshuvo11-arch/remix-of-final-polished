@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { m, useInView } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useIsMobileDevice } from '@/lib/use-is-mobile-device';
 
 type Direction = 'up' | 'left' | 'right';
@@ -15,13 +14,13 @@ interface MotionRevealProps {
 }
 
 const directionMap: Record<Direction, { x?: number; y?: number }> = {
-  up: { y: 24 },
-  left: { x: -40 },
-  right: { x: 40 },
+  up: { y: 20 },
+  left: { x: -24 },
+  right: { x: 24 },
 };
 
-// Crisp modern easing: swift, responsive settle without lagging behind user scroll.
-const SNAPPY_EASE = [0.22, 1, 0.36, 1] as const;
+// Luxury butter-smooth easing: gentle, responsive glide without lag
+const BUTTER_EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function MotionReveal({
   children,
@@ -32,37 +31,39 @@ export default function MotionReveal({
   className,
   once = true,
 }: MotionRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: '0px 0px -40px 0px', amount: 0.05 });
   const isMobile = useIsMobileDevice();
-  const [settled, setSettled] = useState(false);
-
   const offset = directionMap[direction];
-  const rest = { opacity: 1, x: 0, y: 0, scale: 1 };
-  const initial = {
-    opacity: 0,
-    x: distance !== undefined && direction !== 'up' ? (direction === 'left' ? -distance : distance) : (offset.x ?? 0),
-    y: distance !== undefined && direction === 'up' ? distance : (offset.y ?? 0),
-    scale: isMobile ? 1 : 0.99,
-  };
 
-  const dur = isMobile ? Math.min(duration, 0.35) : duration;
-  const delayed = isMobile ? Math.min(delay * 0.5, 0.15) : Math.min(delay, 0.25);
+  const dur = isMobile ? Math.min(duration, 0.32) : Math.min(duration, 0.44);
+  const delayed = isMobile ? Math.min(delay * 0.4, 0.08) : Math.min(delay * 0.7, 0.15);
+
+  const defaultY = isMobile ? 14 : (offset.y ?? 0);
+  const defaultX = isMobile ? (offset.x ? (offset.x > 0 ? 16 : -16) : 0) : (offset.x ?? 0);
+
+  const initialX = distance !== undefined && direction !== 'up' ? (direction === 'left' ? -distance : distance) : defaultX;
+  const initialY = distance !== undefined && direction === 'up' ? distance : defaultY;
 
   return (
     <m.div
-      ref={ref}
-      style={{
-        willChange: settled ? 'auto' : 'transform, opacity',
-        backfaceVisibility: 'hidden',
+      initial={{
+        opacity: 0,
+        x: initialX,
+        y: initialY,
       }}
-      initial={initial}
-      animate={isInView ? rest : initial}
-      onAnimationComplete={() => isInView && setSettled(true)}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+      }}
+      viewport={{ once, margin: '0px 0px -10px 0px', amount: 0.04 }}
       transition={{
         duration: dur,
         delay: delayed,
-        ease: SNAPPY_EASE,
+        ease: BUTTER_EASE,
+      }}
+      style={{
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
       }}
       className={`transform-gpu ${className ?? ''}`}
     >

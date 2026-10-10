@@ -375,8 +375,13 @@ export default function LuxuryBottle3D({
 
     window.addEventListener('resize', handleResize);
 
+    // Intersection Observer to stop WebGL render loop when off-screen
+    let inViewport = true;
+    let observer: IntersectionObserver | null = null;
+
     // Animation Loop
     const animate = () => {
+      if (!inViewport) return;
       animationFrameId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
@@ -412,10 +417,25 @@ export default function LuxuryBottle3D({
       renderer.render(scene, camera);
     };
 
-    animate();
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(([entry]) => {
+        const next = entry.isIntersecting;
+        if (next !== inViewport) {
+          inViewport = next;
+          if (next) {
+            cancelAnimationFrame(animationFrameId);
+            animate();
+          }
+        }
+      }, { threshold: 0.02 });
+      observer.observe(container);
+    } else {
+      animate();
+    }
 
     // Cleanup
     return () => {
+      if (observer) observer.disconnect();
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       if (interactive) {

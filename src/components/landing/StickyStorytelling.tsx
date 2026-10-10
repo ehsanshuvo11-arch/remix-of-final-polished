@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { openAuditModal } from '@/components/landing/VisualAuditModal';
 import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
@@ -187,12 +187,18 @@ export default function StickyStorytelling() {
         }}
       />
 
-      {/* Elegant Warm Amber & Off-White Ambient Lighting */}
+      {/* Elegant Warm Amber & Off-White Ambient Lighting (Hardware-accelerated radial glow with zero blur filter overhead) */}
       <div 
-        className="absolute -top-32 -right-32 w-96 h-96 bg-[#fb923c]/10 rounded-full blur-[120px] pointer-events-none" 
+        className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none" 
+        style={{
+          background: 'radial-gradient(circle, rgba(251, 146, 60, 0.12) 0%, rgba(251, 146, 60, 0.03) 45%, transparent 70%)',
+        }}
       />
       <div 
-        className="absolute -bottom-32 -left-32 w-96 h-96 bg-[#f9fafb]/5 rounded-full blur-[120px] pointer-events-none" 
+        className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none" 
+        style={{
+          background: 'radial-gradient(circle, rgba(249, 250, 251, 0.07) 0%, rgba(249, 250, 251, 0.02) 45%, transparent 70%)',
+        }}
       />
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -277,91 +283,110 @@ export default function StickyStorytelling() {
               </button>
             </div>
 
-            {/* Breathable Full-Width Active Card */}
-            {mobileComparisonTab === 'polished' ? (
-              <div className="p-3.5 sm:p-4 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-bold text-accent uppercase tracking-wider">
-                      {isBn ? 'POLISHED সিস্টেম ✨' : 'POLISHED System ✨'}
-                    </span>
-                    <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-accent/20 text-accent font-semibold">
-                      {isBn ? 'সুপারিশকৃত মডেল' : 'Proven Standard'}
-                    </span>
+            {/* Breathable Full-Width Active Card with Butter-Smooth Framer Motion Transition */}
+            <AnimatePresence mode="wait">
+              {mobileComparisonTab === 'polished' ? (
+                <m.div
+                  key="polished"
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="p-3.5 sm:p-4 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-accent uppercase tracking-wider">
+                        {isBn ? 'POLISHED সিস্টেম ✨' : 'POLISHED System ✨'}
+                      </span>
+                      <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-accent/20 text-accent font-semibold">
+                        {isBn ? 'সুপারিশকৃত মডেল' : 'Proven Standard'}
+                      </span>
+                    </div>
+                    <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/95">
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent font-bold mt-0.5">✓</span>
+                        <span>{isBn ? 'আস্থার প্রতীক বাংলা সেলস আর্ট' : 'Authority visual & copy'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent font-bold mt-0.5">✓</span>
+                        <span>{isBn ? 'হাই-কনভার্শন আর্কিটেকচার' : 'High-conversion architecture'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent font-bold mt-0.5">✓</span>
+                        <span>{isBn ? 'COD রিটার্ন এক ধাক্কায় কমে' : 'Dramatic drop in returns'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent font-bold mt-0.5">✓</span>
+                        <span>{isBn ? 'ছাড় ছাড়াই নিশ্চিন্ত অর্ডার' : 'Full-price orders without discounts'}</span>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/95">
-                    <li className="flex items-start gap-2">
-                      <span className="text-accent font-bold mt-0.5">✓</span>
-                      <span>{isBn ? 'আস্থার প্রতীক বাংলা সেলস আর্ট' : 'Authority visual & copy'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-accent font-bold mt-0.5">✓</span>
-                      <span>{isBn ? 'হাই-কনভার্শন আর্কিটেকচার' : 'High-conversion architecture'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-accent font-bold mt-0.5">✓</span>
-                      <span>{isBn ? 'COD রিটার্ন এক ধাক্কায় কমে' : 'Dramatic drop in returns'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-accent font-bold mt-0.5">✓</span>
-                      <span>{isBn ? 'ছাড় ছাড়াই নিশ্চিন্ত অর্ডার' : 'Full-price orders without discounts'}</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="mt-3.5 pt-2 border-t border-accent/20 text-[10px] text-accent font-mono font-bold flex items-center justify-between">
-                  <span>{isBn ? '১০০% কাস্টম ক্রাফট' : '100% Custom Craft'}</span>
-                  <span>•</span>
-                  <span>{isBn ? '৭২ ঘণ্টার স্প্রিন্ট' : '72h Sprint'}</span>
-                </div>
-              </div>
-            ) : (
-              <div className="p-3.5 sm:p-4 rounded-xl bg-red-950/30 border border-red-500/25 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-bold text-red-400 uppercase tracking-wider">
-                      {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
-                    </span>
-                    <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-semibold">
-                      {isBn ? 'বাজেট অপচয়' : 'Budget Leak'}
-                    </span>
+                  <div className="mt-3.5 pt-2 border-t border-accent/20 text-[10px] text-accent font-mono font-bold flex items-center justify-between">
+                    <span>{isBn ? '১০০% কাস্টম ক্রাফট' : '100% Custom Craft'}</span>
+                    <span>•</span>
+                    <span>{isBn ? '৭২ ঘণ্টার স্প্রিন্ট' : '72h Sprint'}</span>
                   </div>
-                  <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/80">
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-400 font-bold mt-0.5">✕</span>
-                      <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল কপি' : 'Recycled template, weak copy'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-400 font-bold mt-0.5">✕</span>
-                      <span>{isBn ? '০.৮x - ১.২x ROAS (লস)' : '0.8x - 1.2x ROAS (Losing money)'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-400 font-bold mt-0.5">✕</span>
-                      <span>{isBn ? '৩৫% - ৪৫% COD রিটার্ন' : '35% - 45% COD returns'}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-400 font-bold mt-0.5">✕</span>
-                      <span>{isBn ? 'ইনবক্সে "দাম কত" বলে উধাও' : 'Inbox "Price please?" ghosting'}</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="mt-3.5 pt-2 border-t border-red-500/15 text-[10px] text-red-300/80 font-mono">
-                  {isBn ? 'ডলার অপচয় ও শূন্য লাভ' : 'Budget Drain & Zero Profit'}
-                </div>
-              </div>
-            )}
+                </m.div>
+              ) : (
+                <m.div
+                  key="canva"
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="p-3.5 sm:p-4 rounded-xl bg-red-950/30 border border-red-500/25 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-red-400 uppercase tracking-wider">
+                        {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
+                      </span>
+                      <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-semibold">
+                        {isBn ? 'বাজেট অপচয়' : 'Budget Leak'}
+                      </span>
+                    </div>
+                    <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/80">
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400 font-bold mt-0.5">✕</span>
+                        <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল কপি' : 'Recycled template, weak copy'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400 font-bold mt-0.5">✕</span>
+                        <span>{isBn ? '০.৮x - ১.২x ROAS (লস)' : '0.8x - 1.2x ROAS (Losing money)'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400 font-bold mt-0.5">✕</span>
+                        <span>{isBn ? '৩৫% - ৪৫% COD রিটার্ন' : '35% - 45% COD returns'}</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-400 font-bold mt-0.5">✕</span>
+                        <span>{isBn ? 'ইনবক্সে "দাম কত" বলে উধাও' : 'Inbox "Price please?" ghosting'}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="mt-3.5 pt-2 border-t border-red-500/15 text-[10px] text-red-300/80 font-mono">
+                    {isBn ? 'ডলার অপচয় ও শূন্য লাভ' : 'Budget Drain & Zero Profit'}
+                  </div>
+                </m.div>
+              )}
+            </AnimatePresence>
 
             {/* Single High-Converting CTA */}
             <div className="mt-3.5 pt-3 border-t border-white/10">
-              <button
+              <m.button
                 type="button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 onClick={() => openQuickBookingModal({
                   source: 'Mobile Comparison Card',
                 })}
-                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md cursor-pointer"
               >
                 <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভে তফাত দেখুন' : 'Experience ৳3,999 Sprint'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </m.button>
             </div>
           </div>
         </div>
@@ -382,7 +407,7 @@ export default function StickyStorytelling() {
                 }`}
               >
                 {activeTab === idx && (
-                  <motion.div
+                  <m.div
                     layoutId="activeTabIndicator"
                     className="absolute inset-0 rounded-xl bg-[#fb923c]"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
@@ -405,7 +430,7 @@ export default function StickyStorytelling() {
         <div className="rounded-3xl border border-white/15 bg-white/[0.05] backdrop-blur-xl p-6 sm:p-10 md:p-12 shadow-2xl relative overflow-hidden">
           
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={current.id}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -484,7 +509,7 @@ export default function StickyStorytelling() {
 
               {/* Right Column: High-End Quiet Luxury Editorial Showcase */}
               <div className="lg:col-span-6">
-                <div className="rounded-2xl border border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 sm:p-8 backdrop-blur-xl shadow-xl relative overflow-hidden">
+                <div className="rounded-2xl border border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-6 sm:p-8 shadow-xl relative overflow-hidden">
                   
                   {/* Card Header Bar */}
                   <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
@@ -561,7 +586,7 @@ export default function StickyStorytelling() {
                 </div>
               </div>
 
-            </motion.div>
+            </m.div>
           </AnimatePresence>
 
         </div>
