@@ -218,16 +218,16 @@ export default function Services(_props: ServicesProps) {
     <section
       id="services"
       aria-labelledby="services-pricing-heading"
-      className="relative py-16 sm:py-20 md:py-24 bg-[#f9fafb] text-primary border-y border-primary/10 overflow-hidden"
+      className="relative py-10 sm:py-14 md:py-24 bg-[#f9fafb] text-primary border-y border-primary/10 overflow-hidden"
     >
       <span id="pricing" className="absolute -top-20" aria-hidden="true" />
       <span id="investment" className="absolute -top-20" aria-hidden="true" />
 
-      <div className="max-w-[1240px] mx-auto px-5 sm:px-8 md:px-12">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-8 md:px-12">
         {/* Section Header */}
-        <header className="max-w-2xl mx-auto text-center mb-10 sm:mb-14">
+        <header className="max-w-2xl mx-auto text-center mb-6 sm:mb-10 md:mb-14">
           <MotionReveal>
-            <div className="eyebrow-pill-kicker inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-3.5">
+            <div className="eyebrow-pill-kicker inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-2.5 sm:mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               <span>TRANSPARENT INVESTMENT</span>
             </div>
@@ -312,33 +312,33 @@ export default function Services(_props: ServicesProps) {
 
         {/* ── BESPOKE / CUSTOM PRICING BANNER (Vercel Enterprise Style) ── */}
         <MotionReveal delay={0.15}>
-          <div className="mt-8 sm:mt-10 rounded-2xl sm:rounded-3xl border border-primary/15 bg-white/80 backdrop-blur-md p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm hover:border-primary/25 transition-all">
+          <div className="mt-5 sm:mt-7 md:mt-10 rounded-2xl sm:rounded-3xl border border-primary/15 bg-white/80 backdrop-blur-md p-4 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6 shadow-sm hover:border-primary/25 transition-all">
             <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[11px] font-bold uppercase tracking-wider mb-2.5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-[10.5px] sm:text-[11px] font-bold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{isBn ? 'বেসপোক পার্টনারশিপ' : 'Bespoke Visual Partnership'}</span>
               </div>
               <h3
-                className={`text-[20px] sm:text-[23px] text-primary font-bold mb-1.5 leading-snug`}
+                className={`text-[18px] sm:text-[23px] text-primary font-bold mb-1 leading-snug`}
                 style={isBn ? bnFont : serifFont}
               >
                 {isBn
                   ? 'আপনার ব্র্যান্ডের কি কাস্টম স্কেল বা বিশেষ রিটেইনার প্রয়োজন?'
                   : 'Need custom creative volume or dedicated retainers?'}
               </h3>
-              <p className="text-[13px] sm:text-[14px] text-primary/70 leading-relaxed" style={isBn ? bnFont : undefined}>
+              <p className="text-[12.5px] sm:text-[14px] text-primary/70 leading-relaxed" style={isBn ? bnFont : undefined}>
                 {isBn
                   ? 'নির্দিষ্ট মাসিক ভলিউম, হোয়াইট-লেবেল এজেন্সি স্কেলিং বা ফুল-ফানেল আর্কিটেকচারের জন্য সরাসরি কাস্টম কোট নিন।'
                   : 'Custom creative volume, white-label scaling, or full-funnel revamp tailored specifically for your brand goals.'}
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full md:w-auto shrink-0">
               <button
                 id="services-custom-quote"
                 type="button"
                 onClick={requestCustomQuote}
-                className="h-11.5 px-6 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[13px] inline-flex items-center justify-center gap-2 shadow-md btn-shimmer active:scale-[0.98] transition-all cursor-pointer"
+                className="h-10.5 sm:h-11.5 px-5 sm:px-6 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-[12.5px] sm:text-[13px] inline-flex items-center justify-center gap-2 shadow-md btn-shimmer active:scale-[0.98] transition-all cursor-pointer"
                 style={isBn ? bnFont : undefined}
               >
                 <span>{isBn ? 'কাস্টম কোটেশন নিন' : 'Request Custom Quote'}</span>
@@ -348,7 +348,7 @@ export default function Services(_props: ServicesProps) {
                 href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20need%20a%20custom%20branding%20%26%20creative%20retainer."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="h-11.5 px-5 rounded-xl border border-primary/20 hover:border-primary/40 text-primary font-semibold text-[12px] inline-flex items-center justify-center gap-2 hover:bg-primary/5 transition-all"
+                className="h-10.5 sm:h-11.5 px-4.5 sm:px-5 rounded-xl border border-primary/20 hover:border-primary/40 text-primary font-semibold text-[12px] inline-flex items-center justify-center gap-2 hover:bg-primary/5 transition-all"
                 style={isBn ? bnFont : undefined}
               >
                 <MessageCircle className="w-4 h-4 text-[#25D366]" />

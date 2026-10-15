@@ -54,24 +54,25 @@ export default function LocalFaq() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [showAllMobile, setShowAllMobile] = useState(false);
 
   const toggle = (idx: number) => {
     setOpenIndex((prev) => (prev === idx ? null : idx));
   };
 
   return (
-    <section id="faq" className="py-14 md:py-28 px-4 sm:px-6 md:px-14 bg-[#f9fafb] text-primary border-t border-primary/10">
+    <section id="faq" className="py-10 sm:py-14 md:py-28 px-4 sm:px-6 md:px-14 bg-[#f9fafb] text-primary border-t border-primary/10">
       <div className="max-w-[880px] mx-auto">
         <MotionReveal>
-          <div className="text-center mb-12">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
             <span 
-              className="eyebrow-pill-kicker inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary mb-3.5"
+              className="eyebrow-pill-kicker inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary mb-2.5 sm:mb-3.5"
             >
               <HelpCircle className="w-3.5 h-3.5 text-accent" />
               <span>{isBn ? 'সচরাচর জিজ্ঞাসা' : 'FREQUENTLY ASKED QUESTIONS'}</span>
             </span>
             <h2 
-              className="section-heading-h2 font-heading font-normal text-primary mx-auto mb-3.5 text-center"
+              className="section-heading-h2 font-heading font-normal text-primary mx-auto mb-2.5 sm:mb-3.5 text-center"
               style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
             >
               {isBn ? (
@@ -91,63 +92,79 @@ export default function LocalFaq() {
           </div>
         </MotionReveal>
 
-        <div className="space-y-3.5">
+        <div className="space-y-2.5 md:space-y-3.5">
           {FAQS.map((faq, i) => {
             const isOpen = openIndex === i;
-            return (
-              <MotionReveal key={i} delay={0.06 * i}>
-                <div 
-                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                    isOpen 
-                      ? 'bg-white border-accent/50 shadow-[0_8px_24px_rgba(0,0,0,0.06)]' 
-                      : 'bg-white/70 border-primary/10 hover:border-primary/20 hover:bg-white'
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => toggle(i)}
-                    className="w-full py-4.5 px-5 md:px-6 text-left flex items-center justify-between gap-4 font-heading cursor-pointer select-none"
-                    aria-expanded={isOpen}
-                  >
-                    <span 
-                      className={`text-[15px] md:text-[17px] font-medium transition-colors ${
-                        isOpen ? 'text-primary font-semibold' : 'text-primary/90'
-                      }`}
-                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                    >
-                      {isBn ? faq.qBn : faq.qEn}
-                    </span>
-                    <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 ${
-                      isOpen ? 'rotate-180 bg-accent/15 text-accent' : 'bg-primary/5 text-primary/60'
-                    }`}>
-                      <ChevronDown className="w-4 h-4" />
-                    </span>
-                  </button>
+            const isHiddenOnMobile = i >= 3 && !showAllMobile;
 
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <m.div
-                        key="content"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
+            return (
+              <div key={i} className={isHiddenOnMobile ? 'hidden md:block' : 'block'}>
+                <MotionReveal delay={0.04 * i}>
+                  <div 
+                    className={`rounded-xl md:rounded-2xl border transition-all duration-300 overflow-hidden ${
+                      isOpen 
+                        ? 'bg-white border-accent/50 shadow-[0_8px_24px_rgba(0,0,0,0.06)]' 
+                        : 'bg-white/70 border-primary/10 hover:border-primary/20 hover:bg-white'
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggle(i)}
+                      className="w-full py-3.5 md:py-4.5 px-4 md:px-6 text-left flex items-center justify-between gap-3 md:gap-4 font-heading cursor-pointer select-none"
+                      aria-expanded={isOpen}
+                    >
+                      <span 
+                        className={`text-[14px] md:text-[17px] font-medium transition-colors ${
+                          isOpen ? 'text-primary font-semibold' : 'text-primary/90'
+                        }`}
+                        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                       >
-                        <div className="px-5 md:px-6 pb-5 pt-1 border-t border-primary/5 text-xs md:text-sm text-primary/80 leading-relaxed font-sans">
-                          <p style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}>
-                            {isBn ? faq.aBn : faq.aEn}
-                          </p>
-                        </div>
-                      </m.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </MotionReveal>
+                        {isBn ? faq.qBn : faq.qEn}
+                      </span>
+                      <span className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 ${
+                        isOpen ? 'rotate-180 bg-accent/15 text-accent' : 'bg-primary/5 text-primary/60'
+                      }`}>
+                        <ChevronDown className="w-4 h-4" />
+                      </span>
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <m.div
+                          key="content"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-4 md:px-6 pb-4 md:pb-5 pt-1 border-t border-primary/5 text-xs md:text-sm text-primary/80 leading-relaxed font-sans">
+                            <p style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.8 } : { lineHeight: 1.7 }}>
+                              {isBn ? faq.aBn : faq.aEn}
+                            </p>
+                          </div>
+                        </m.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </MotionReveal>
+              </div>
             );
           })}
         </div>
 
+        {/* Mobile Show More / Show Less Toggle Button (<768px) */}
+        <div className="md:hidden mt-4 text-center">
+          <button
+            type="button"
+            onClick={() => setShowAllMobile((prev) => !prev)}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-primary/20 bg-white/80 text-[12px] font-semibold text-primary/80 hover:text-accent hover:border-accent shadow-xs cursor-pointer transition-colors"
+            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+          >
+            <span>{isBn ? (showAllMobile ? 'সংক্ষিপ্ত করুন' : 'আরও ৩টি সাধারণ প্রশ্ন দেখুন') : (showAllMobile ? 'Show Less' : 'Show 3 More Questions')}</span>
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showAllMobile ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
         {/* Minimal Reassuring WhatsApp Link below FAQ */}
         <MotionReveal delay={0.2}>
           <div className="mt-10 text-center">

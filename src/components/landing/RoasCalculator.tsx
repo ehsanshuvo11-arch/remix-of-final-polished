@@ -62,7 +62,7 @@ export default function RoasCalculator() {
   const fontBody = isBn ? '"Noto Serif Bengali", sans-serif' : 'inherit';
 
   return (
-    <section id="calculator" className="py-12 sm:py-16 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
+    <section id="calculator" className="py-10 sm:py-14 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
       {/* Background Ambient Glows (Zero-cost radial gradients) */}
       <div 
         className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none" 
@@ -77,16 +77,16 @@ export default function RoasCalculator() {
         
         {/* Section Header */}
         <MotionReveal>
-          <div className="text-center mb-8 sm:mb-12">
+          <div className="text-center mb-5 sm:mb-8 md:mb-12">
             <span 
-              className="eyebrow-pill-kicker inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full font-bold uppercase mb-3" 
+              className="eyebrow-pill-kicker inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full font-bold uppercase mb-2.5 sm:mb-3" 
               style={{ fontFamily: fontBody }}
             >
               REVENUE DIAGNOSTIC
             </span>
             <h2 
               lang="en"
-              className="section-heading-h2 text-[#1e3a8a] font-normal mx-auto mb-3 text-center" 
+              className="section-heading-h2 text-[#1e3a8a] font-normal mx-auto mb-2.5 sm:mb-3 text-center" 
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               How Much Ad Spend Is <span className="text-[#fb923c] italic font-normal">Leaking?</span>
@@ -103,25 +103,25 @@ export default function RoasCalculator() {
         </MotionReveal>
 
         {/* 2-Column Split: Clean 4-Row Inputs + High-Impact Results Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-stretch">
           
           {/* LEFT: 4 CLEAN, BREATHABLE INPUT ROWS */}
-          <div className="lg:col-span-7 bg-white rounded-2xl md:rounded-3xl border border-[#1e3a8a]/10 p-5 sm:p-7 md:p-8 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-7 bg-white rounded-2xl md:rounded-3xl border border-[#1e3a8a]/10 p-4 sm:p-7 md:p-8 shadow-sm flex flex-col justify-between">
             
             {/* Mobile Live Diagnostic Quick Pill (Instant Feedback While Sliding) */}
-            <div className="block lg:hidden mb-4 p-3 rounded-xl bg-[#fb923c]/10 border border-[#fb923c]/25 shadow-sm">
+            <div className="block lg:hidden mb-3.5 p-2.5 sm:p-3 rounded-xl bg-[#fb923c]/10 border border-[#fb923c]/25 shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-[#1e3a8a] flex items-center gap-1.5" style={{ fontFamily: fontBody }}>
+                <span className="text-[10.5px] sm:text-[11px] font-semibold text-[#1e3a8a] flex items-center gap-1.5" style={{ fontFamily: fontBody }}>
                   <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
                   <span>{isBn ? "দুর্বল ডিজাইনে সম্ভাব্য মাসিক লস:" : "Est. Monthly Sales Leak:"}</span>
                 </span>
-                <span className="text-sm font-bold text-[#fb923c] font-mono">
+                <span className="text-xs sm:text-sm font-bold text-[#fb923c] font-mono">
                   -৳{formatCurrency(revenueLost)}
                 </span>
               </div>
             </div>
 
-            <div className="space-y-5 sm:space-y-6">
+            <div className="space-y-3.5 sm:space-y-6">
               
               {/* Row 1: Monthly Ad Spend */}
               <div className="group">
@@ -257,7 +257,7 @@ export default function RoasCalculator() {
           </div>
 
           {/* RIGHT: HIGH-IMPACT DEEP NAVY RESULTS CARD */}
-          <div className="lg:col-span-5 bg-[#1e3a8a] text-white rounded-2xl md:rounded-3xl border border-white/10 p-5 sm:p-7 md:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div className="lg:col-span-5 bg-[#1e3a8a] text-white rounded-2xl md:rounded-3xl border border-white/10 p-4 sm:p-7 md:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
             
             {/* Ambient Background Glow */}
             <div 

@@ -15,18 +15,42 @@ export default function Transformations({ items, content }: TransformationsProps
   const active = items?.filter((i) => i.is_active && i.before_image_url && i.after_image_url) ?? [];
   if (active.length === 0) return null;
 
+  const [activeMobileIdx, setActiveMobileIdx] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const cardWidth = el.firstElementChild?.clientWidth || 320;
+      const idx = Math.round(scrollLeft / (cardWidth + 16));
+      setActiveMobileIdx(Math.min(active.length - 1, Math.max(0, idx)));
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [active.length]);
+
+  const scrollToMobileCard = (idx: number) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const cardWidth = el.firstElementChild?.clientWidth || 320;
+    el.scrollTo({ left: idx * (cardWidth + 16), behavior: 'smooth' });
+    setActiveMobileIdx(idx);
+  };
+
   return (
     <section
       id="transformations"
-      className="py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto"
+      className="py-10 sm:py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto overflow-hidden"
     >
       <MotionReveal>
-        <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+        <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-2 sm:mb-4 font-medium">
           {content?.labelEn ?? 'Transformations'}
         </p>
       </MotionReveal>
       <MotionReveal delay={0.1}>
-        <h2 lang="en" className="font-heading font-normal text-primary mb-8 md:mb-12 text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.1]">
+        <h2 lang="en" className="font-heading font-normal text-primary mb-3 sm:mb-6 md:mb-12 text-[clamp(26px,7vw,36px)] md:text-[clamp(36px,5vw,60px)] leading-[1.1]">
           <WordReveal delay={0.1}>
             {content?.titleLine1En ?? 'Before'}
           </WordReveal>{' '}
@@ -38,7 +62,55 @@ export default function Transformations({ items, content }: TransformationsProps
         </h2>
       </MotionReveal>
 
-      <div className="flex flex-col gap-20 mt-14">
+      {/* ── MOBILE: Horizontal Snap Carousel with Card Peek (<768px) ── */}
+      <div className="md:hidden">
+        <div
+          ref={carouselRef}
+          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-4 pb-3 pt-1 px-4 -mx-4 touch-pan-x"
+          style={{
+            scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+          }}
+        >
+          {active.map((item) => (
+            <div
+              key={item.id}
+              className="w-[88vw] max-w-[360px] shrink-0 snap-start flex flex-col"
+            >
+              <TransformationCard item={item} content={content ?? null} />
+            </div>
+          ))}
+        </div>
+
+        {/* Micro Indicator Dots & Counter (<768px) */}
+        {active.length > 1 && (
+          <div className="flex items-center justify-between px-2 mt-3" aria-label="Transformations pagination">
+            <div className="flex items-center gap-1.5">
+              {active.map((item, idx) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => scrollToMobileCard(idx)}
+                  className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
+                    activeMobileIdx === idx
+                      ? 'w-5 bg-accent shadow-[0_0_8px_rgba(251,146,60,0.5)]'
+                      : 'w-1.5 bg-primary/25 hover:bg-primary/40'
+                  }`}
+                  aria-label={`Go to transformation ${idx + 1}`}
+                />
+              ))}
+            </div>
+            <span className="text-[11px] font-medium text-primary/50 tracking-wider">
+              {activeMobileIdx + 1} / {active.length}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* ── DESKTOP: Vertical Flow (>=768px) 100% Preserved ── */}
+      <div className="hidden md:flex flex-col md:gap-20 mt-6 md:mt-14">
         {active.map((item, i) => (
           <MotionReveal key={item.id} delay={0.05 * i}>
             <TransformationCard item={item} content={content ?? null} />

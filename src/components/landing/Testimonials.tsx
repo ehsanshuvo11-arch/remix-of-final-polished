@@ -170,29 +170,29 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative bg-[#1e3a8a] text-primary-foreground overflow-x-clip py-24 md:py-32 px-6 md:px-14"
+      className="relative bg-[#1e3a8a] text-primary-foreground overflow-x-clip py-10 sm:py-14 md:py-32 px-4 sm:px-6 md:px-14"
     >
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
-            <p lang="bn" className="eyebrow-pill-kicker text-accent mb-3 md:mb-4" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+            <p lang="bn" className="eyebrow-pill-kicker text-accent mb-2 sm:mb-3 md:mb-4" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
               {label}
             </p>
           ) : (
-            <p lang="en" className="eyebrow-pill-kicker text-accent mb-3 md:mb-4">
+            <p lang="en" className="eyebrow-pill-kicker text-accent mb-2 sm:mb-3 md:mb-4">
               {label}
             </p>
           )}
         </MotionReveal>
 
         <MotionReveal delay={0.1}>
-          <h2 lang={isBn ? 'bn' : 'en'} className="section-heading-h2 font-heading font-normal text-primary-foreground mb-4 md:mb-5">
+          <h2 lang={isBn ? 'bn' : 'en'} className="section-heading-h2 font-heading font-normal text-primary-foreground mb-3 sm:mb-4 md:mb-5">
             <WordReveal delay={0.1}>{heading}</WordReveal>
           </h2>
         </MotionReveal>
 
         <MotionReveal delay={0.2}>
-          <p className="section-lead-subtitle text-primary-foreground/75 mb-10 md:mb-14" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : undefined}>
+          <p className="section-lead-subtitle text-primary-foreground/75 mb-5 sm:mb-8 md:mb-14" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : undefined}>
             {sub}
           </p>
         </MotionReveal>
@@ -323,12 +323,12 @@ function TestimonialCard({
 }) {
   return (
     <div
-      className={`relative flex flex-col justify-between p-7 md:p-8 rounded-sm border md:backdrop-blur-md min-h-[260px] ${dimmed
+      className={`relative flex flex-col justify-between p-5 sm:p-7 md:p-8 rounded-2xl md:rounded-sm border md:backdrop-blur-md min-h-[210px] sm:min-h-[240px] md:min-h-[260px] ${dimmed
           ? 'bg-primary-foreground/[0.03] border-primary-foreground/10'
           : 'bg-[#1e3a8a] border-primary-foreground/15 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.35)]'
         }`}
     >
-      <div className="flex items-center gap-1 mb-5">
+      <div className="flex items-center gap-1 mb-3.5 sm:mb-5">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} size={13} className="text-accent fill-accent" />
         ))}
@@ -336,7 +336,7 @@ function TestimonialCard({
 
       <blockquote
         lang={isBn ? 'bn' : 'en'}
-        className="font-heading italic text-primary-foreground text-[clamp(16px,1.5vw,20px)] leading-[1.5] mb-6"
+        className="font-heading italic text-primary-foreground text-[clamp(15px,1.5vw,20px)] leading-[1.45] mb-4 sm:mb-6"
       >
         “{testimonial.quote}”
       </blockquote>

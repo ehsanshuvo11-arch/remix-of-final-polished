@@ -70,10 +70,10 @@ export default function Contact({ contact }: ContactProps) {
 
   return (
     <div id="contact" className="bg-[#1e3a8a]">
-      <div className="py-6 md:py-24 px-6 md:px-14 max-w-[1200px] mx-auto">
+      <div className="py-4 md:py-24 px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
         <hr className="border-t border-white/10" />
       </div>
-      <div className="pb-14 pt-2 md:py-[110px] px-5 sm:px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-start">
+      <div className="pb-10 pt-1 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-20 items-start">
         <div>
           <MotionReveal>
             {isBn ? (
@@ -188,14 +188,14 @@ export default function Contact({ contact }: ContactProps) {
         </div>
 
         <MotionReveal delay={0.2}>
-          <div className="rounded-2xl sm:rounded-3xl bg-white/[0.05] border border-white/15 p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden flex flex-col justify-between">
+          <div className="rounded-2xl sm:rounded-3xl bg-white/[0.05] border border-white/15 p-4.5 sm:p-7 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden flex flex-col justify-between">
             {/* Ambient subtle glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/15 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20" />
 
             <div className="relative z-10">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 border border-accent/40 text-accent text-[10.5px] font-bold uppercase tracking-wider mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 border border-accent/40 text-accent text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider mb-3 sm:mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                 <span>{isBn ? 'সরাসরি হোয়াটসঅ্যাপে কথা • কোনো ফর্ম পূরণের ঝামেলা নেই' : 'DIRECT WHATSAPP ONBOARDING • ZERO MEETINGS'}</span>
               </div>

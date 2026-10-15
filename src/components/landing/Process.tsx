@@ -55,18 +55,18 @@ export default function Process({ steps, content }: ProcessProps) {
 
   return (
     <div className="bg-secondary">
-      <section id="process" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
+      <section id="process" className="py-10 sm:py-14 md:py-[110px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
-          <p className="eyebrow-pill-kicker text-accent mb-4 font-semibold" style={enFont}>
+          <p className="eyebrow-pill-kicker text-accent mb-2 sm:mb-3 md:mb-4 font-semibold" style={enFont}>
             SIMPLE PROCESS
           </p>
         </MotionReveal>
-        <h2 lang="en" className="section-heading-h2 font-heading font-normal text-primary mb-7 leading-[1.2]">
+        <h2 lang="en" className="section-heading-h2 font-heading font-normal text-primary mb-5 md:mb-7 leading-[1.2]">
           Fresh Creatives in <span className="italic text-accent">72 Hours.</span>
         </h2>
 
-        {/* Mobile Vertical Connected Timeline (100% Frictionless & Minimalist) */}
-        <div className="flex md:hidden flex-col gap-8 relative pl-6 border-l-2 border-primary/20 ml-3 my-8">
+        {/* Mobile Vertical Connected Timeline (Ultra-Compact Single-Screen View) */}
+        <div className="flex md:hidden flex-col gap-3 relative pl-5 border-l-2 border-primary/20 ml-2.5 my-4">
           {displaySteps.map((step, i) => (
             <MobileTimelineStep
               key={step.id}
@@ -97,19 +97,19 @@ function MobileTimelineStep({ step, index, total }: { step: ProcessStep; index: 
   return (
     <div className="relative group">
       {/* Node indicator sitting on the timeline */}
-      <div className="absolute -left-[37px] top-0 w-6 h-6 rounded-full bg-primary border-2 border-accent text-accent text-[10px] font-mono font-bold flex items-center justify-center shadow-sm">
+      <div className="absolute -left-[31px] top-1 w-5 h-5 rounded-full bg-primary border border-accent text-accent text-[9px] font-mono font-bold flex items-center justify-center shadow-sm">
         0{index + 1}
       </div>
 
-      <div className="bg-white/80 rounded-xl p-5 border border-primary/10 shadow-sm transition-all duration-300">
+      <div className="bg-white/80 rounded-xl p-3 border border-primary/10 shadow-sm transition-all duration-300">
         <h3
-          className="card-title-h3 font-heading text-primary mb-2 leading-snug"
+          className="text-[13.5px] font-bold text-primary mb-1 leading-snug"
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
         >
           {title}
         </h3>
         <p
-          className="card-body-text text-muted-foreground leading-relaxed"
+          className="text-[11.5px] text-muted-foreground leading-snug"
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
         >
           {desc}

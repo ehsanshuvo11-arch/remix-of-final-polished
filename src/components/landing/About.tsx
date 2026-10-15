@@ -37,7 +37,7 @@ export default function About({ content, stats }: AboutProps) {
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
 
   return (
-    <section id="about" className="py-14 md:py-[100px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
+    <section id="about" className="py-10 sm:py-14 md:py-[100px] px-4 sm:px-6 md:px-14 max-w-[1200px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
           <MotionReveal>
