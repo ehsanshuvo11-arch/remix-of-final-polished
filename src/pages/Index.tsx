@@ -146,7 +146,7 @@ export default function Index() {
           </ErrorBoundary>
         </Suspense>
 
-        {/* 11. THE OFFER: SERVICES & PRICING (Transparent Sprints, ৳3,999 No-Risk Trial) */}
+        {/* 11. THE OFFER: SERVICES & PRICING (Transparent Sprints, ৳2,500 72h Test Drive) */}
         <Services services={[]} content={null} />
 
         {/* 12. LOCAL FAQ & PAYMENT ASSURANCE (bKash/Nagad, 100% Free Revisions) */}

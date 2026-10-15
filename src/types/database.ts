@@ -348,6 +348,10 @@ export interface PricingTier {
   deliverables_bn?: string[];
   whatsapp_url?: string;
   track?: 'volume' | 'performance';
+  badge_en?: string;
+  badge_bn?: string;
+  concession_en?: string;
+  concession_bn?: string;
 }
 
 export interface PricingContent {

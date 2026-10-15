@@ -66,47 +66,94 @@ export default function Navbar({ content }: NavbarProps) {
     };
   }, []);
 
-  // 2. Ultra-smooth ScrollSpy via IntersectionObserver (ZERO forced reflows or offsetTop queries)
+  // 2. Ultra-smooth Real-Time ScrollSpy (Accurately highlights current section and clears at top)
   useEffect(() => {
-    const sectionIds = ['work', 'evolution', 'process', 'calculator', 'services', 'faq', 'contact'];
-    const visibilityMap = new Map<string, number>();
+    const sectionList = [
+      { navId: 'brand-positioning', domId: 'brand-positioning' },
+      { navId: 'work', domId: 'work' },
+      { navId: 'evolution', domId: 'evolution' },
+      { navId: 'process', domId: 'process' },
+      { navId: 'calculator', domId: 'calculator' },
+      { navId: 'pricing', domId: 'services' },
+      { navId: 'faq', domId: 'faq' },
+      { navId: 'contact', domId: 'contact' },
+    ];
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const id = entry.target.id;
-          if (entry.isIntersecting) {
-            visibilityMap.set(id, entry.intersectionRatio);
-          } else {
-            visibilityMap.delete(id);
-          }
-        });
+    let frame = 0;
+    const updateActiveSection = () => {
+      frame = 0;
+      const scrollY = window.scrollY;
 
-        let highestRatio = 0;
-        let bestSection = '';
-        visibilityMap.forEach((ratio, id) => {
-          if (ratio > highestRatio) {
-            highestRatio = ratio;
-            bestSection = id;
-          }
-        });
-
-        if (bestSection) {
-          setActiveSection(bestSection === 'services' ? 'pricing' : bestSection);
-        }
-      },
-      {
-        rootMargin: '-70px 0px -30% 0px',
-        threshold: [0.1, 0.3, 0.6],
+      // Top of page (Hero fold): clear active section
+      if (scrollY < 300) {
+        setActiveSection('');
+        return;
       }
-    );
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+      // Check bottom of page (Near Contact / Footer)
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      if (scrollY + windowHeight >= docHeight - 80) {
+        setActiveSection('contact');
+        return;
+      }
 
-    return () => observer.disconnect();
+      // Reading trigger line: 160px from top of screen (just below the 64px navbar)
+      const targetY = 160;
+      let current = '';
+      for (let i = sectionList.length - 1; i >= 0; i--) {
+        const { navId, domId } = sectionList[i];
+        const el = document.getElementById(domId);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= targetY) {
+            current = navId;
+            break;
+          }
+        }
+      }
+
+      setActiveSection(current);
+    };
+
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(updateActiveSection);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    // Also bind to smooth Lenis scroll instance if active
+    let lenisHandler: any = null;
+    const bindLenis = () => {
+      const lenis = getLenis() || (window as any).lenis || (window as any).__lenis;
+      if (lenis && !lenisHandler) {
+        lenisHandler = () => onScroll();
+        lenis.on('scroll', lenisHandler);
+        return true;
+      }
+      return false;
+    };
+
+    if (!bindLenis()) {
+      const interval = setInterval(() => {
+        if (bindLenis()) clearInterval(interval);
+      }, 150);
+      setTimeout(() => clearInterval(interval), 3000);
+    }
+
+    updateActiveSection();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      const lenis = getLenis() || (window as any).lenis || (window as any).__lenis;
+      if (lenis && lenisHandler) {
+        lenis.off?.('scroll', lenisHandler);
+      }
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   // Sync with mobile bottom action bar dock
@@ -135,19 +182,19 @@ export default function Navbar({ content }: NavbarProps) {
   // Desktop Navigation Items (Ordered strictly by visitor decision hierarchy)
   const desktopNavItems = isBn
     ? [
-        { id: 'work', label: labels?.navWorkBn ?? 'শোকেস', href: '#work' },
-        { id: 'evolution', label: labels?.navEvolutionBn ?? 'বিবর্তন', href: '#evolution' },
-        { id: 'process', label: 'প্রসেস', href: '#process' },
-        { id: 'calculator', label: 'ক্যালকুলেটর', href: '#calculator' },
-        { id: 'pricing', label: labels?.navServicesBn ?? 'প্রাইসিং', href: '#services' },
-        { id: 'faq', label: 'এফএকিউ', href: '#faq' },
+        { id: 'brand-positioning', label: 'কেন অর্ডার মিস হয়', href: '#brand-positioning' },
+        { id: 'work', label: 'কাজের নমুনা', href: '#work' },
+        { id: 'evolution', label: 'আগে ও পরে', href: '#evolution' },
+        { id: 'calculator', label: 'লস ক্যালকুলেটর', href: '#calculator' },
+        { id: 'pricing', label: 'প্যাকেজ', href: '#services' },
+        { id: 'faq', label: 'প্রশ্নোত্তর', href: '#faq' },
       ]
     : [
-        { id: 'work', label: 'WORK', href: '#work' },
-        { id: 'evolution', label: 'EVOLUTION', href: '#evolution' },
-        { id: 'process', label: 'PROCESS', href: '#process' },
-        { id: 'calculator', label: 'CALCULATOR', href: '#calculator' },
-        { id: 'pricing', label: 'PRICING', href: '#services' },
+        { id: 'brand-positioning', label: 'WHY ADS FAIL', href: '#brand-positioning' },
+        { id: 'work', label: 'OUR WORK', href: '#work' },
+        { id: 'evolution', label: 'BEFORE & AFTER', href: '#evolution' },
+        { id: 'calculator', label: 'LEAK CALCULATOR', href: '#calculator' },
+        { id: 'pricing', label: 'PACKAGES', href: '#services' },
         { id: 'faq', label: 'FAQ', href: '#faq' },
       ];
 
@@ -189,7 +236,6 @@ export default function Navbar({ content }: NavbarProps) {
           subBn: '৳৯৯৯ ট্রায়াল, গ্রোথ রিটেইনার ও মেটা স্প্রিন্ট',
           subEn: 'Dual-track fixed investment models',
           href: '#services',
-          highlight: true,
         },
         {
           id: 'process',
@@ -241,6 +287,14 @@ export default function Navbar({ content }: NavbarProps) {
     const id = href.replace('#', '');
     const el = document.getElementById(id);
     if (el) {
+      if (id === 'services' || id === 'pricing') {
+        setActiveSection('pricing');
+      } else if (id === 'hero') {
+        setActiveSection('');
+      } else {
+        setActiveSection(id);
+      }
+
       const lenis = getLenis();
       if (lenis) {
         lenis.scrollTo(el, { duration: 0.85, offset: -70 });
@@ -301,17 +355,17 @@ export default function Navbar({ content }: NavbarProps) {
 
             {/* Live Availability Badge */}
             <div
-              className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[10.5px] font-semibold tracking-wide border transition-all ${
+              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] sm:text-[11px] font-semibold tracking-wide border transition-all ${
                 scrolled && !open
-                  ? 'bg-accent/10 border-accent/30 text-accent'
-                  : 'bg-white/10 border-white/20 text-primary-foreground/90'
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700'
+                  : 'bg-white/10 border-white/20 text-primary-foreground/95'
               }`}
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span>{isBn ? '৭২ ঘণ্টার স্প্রিন্ট ওপেন' : '72h Sprints Open'}</span>
+              <span>{isBn ? 'প্রতি সপ্তাহে মাত্র ৩টি পেজের কাজ নেওয়া হয় • ডেলিভারি: ৪৮–৭২ ঘণ্টা' : 'Only 3 Brands Weekly • 48–72h Turnaround'}</span>
             </div>
           </div>
 
@@ -369,33 +423,61 @@ export default function Navbar({ content }: NavbarProps) {
                 e.preventDefault();
                 scrollTo('#services');
               }}
-              className="inline-flex items-center gap-1.5 px-4.5 py-2 bg-accent hover:bg-accent/90 text-accent-foreground text-[11.5px] font-bold tracking-[1px] uppercase rounded-xl transition-all shadow-[0_4px_16px_rgba(251,146,60,0.35)] hover:shadow-[0_6px_22px_rgba(251,146,60,0.45)] active:scale-[0.98] cursor-pointer btn-shimmer"
+              className="inline-flex items-center gap-1.5 px-4.5 py-2 bg-accent hover:bg-accent/90 text-[#f9fafb] text-[11.5px] font-bold tracking-[1px] uppercase rounded-xl transition-all shadow-[0_4px_16px_rgba(251,146,60,0.35)] hover:shadow-[0_6px_22px_rgba(251,146,60,0.45)] active:scale-[0.98] cursor-pointer btn-shimmer"
             >
-              <span>{isBn ? 'প্যাকেজ দেখুন' : 'Explore Plans'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>{isBn ? '৳২,৫০০ টেস্ট প্যাক →' : '৳2,500 Test Pack →'}</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#f9fafb]" />
             </a>
           </div>
 
-          {/* Mobile Hamburger / Close Button */}
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            aria-label={open ? 'Close site map menu' : 'Open site map menu'}
-            aria-expanded={open}
-            className={`md:hidden relative w-11 h-11 flex flex-col items-center justify-center gap-[5.5px] z-[140] rounded-full transition-colors ${
-              open ? 'text-primary-foreground bg-white/10' : scrolled ? 'text-primary' : 'text-primary-foreground'
-            }`}
-          >
-            {open ? (
-              <X className="w-6 h-6 text-white" />
-            ) : (
-              <>
-                <span className="block h-[1.5px] w-5.5 bg-current transition-all" />
-                <span className="block h-[1.5px] w-4 bg-current transition-all self-end mr-2.5" />
-                <span className="block h-[1.5px] w-5.5 bg-current transition-all" />
-              </>
-            )}
-          </button>
+          {/* Mobile Right Action Group: Compact Language Pill + Orange Button + Menu */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              type="button"
+              onClick={() => toggleLanguage()}
+              className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-full border transition-all cursor-pointer ${
+                scrolled && !open
+                  ? 'border-primary/15 bg-primary/5 text-primary'
+                  : 'border-white/20 bg-white/10 text-primary-foreground'
+              }`}
+              title={isBn ? 'Switch to English' : 'বাংলা ভার্সন দেখুন'}
+            >
+              <Globe className="w-3 h-3 text-accent" />
+              <span>{isBn ? 'EN' : 'বাংলা'}</span>
+            </button>
+
+            <a
+              href="#services"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo('#services');
+              }}
+              className="inline-flex items-center gap-1 px-3 py-1.5 bg-accent hover:bg-accent/90 text-[#f9fafb] text-[12px] font-bold rounded-lg shadow-sm"
+            >
+              <span>{isBn ? '৳২,৫০০ প্যাক →' : '৳2,500 Pack →'}</span>
+            </a>
+
+            {/* Mobile Hamburger / Close Button */}
+            <button
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              aria-label={open ? 'Close site map menu' : 'Open site map menu'}
+              aria-expanded={open}
+              className={`relative w-9 h-9 flex flex-col items-center justify-center gap-[4.5px] z-[140] rounded-full transition-colors ${
+                open ? 'text-primary-foreground bg-white/10' : scrolled ? 'text-primary' : 'text-primary-foreground'
+              }`}
+            >
+              {open ? (
+                <X className="w-5 h-5 text-white" />
+              ) : (
+                <>
+                  <span className="block h-[1.5px] w-4.5 bg-current transition-all" />
+                  <span className="block h-[1.5px] w-3.5 bg-current transition-all self-end mr-1" />
+                  <span className="block h-[1.5px] w-4.5 bg-current transition-all" />
+                </>
+              )}
+            </button>
+          </div>
         </nav>
       </header>
 
@@ -463,18 +545,16 @@ export default function Navbar({ content }: NavbarProps) {
                               handleMobileNavClick(item.href);
                             }}
                             className={`group flex items-center justify-between p-3 rounded-xl border transition-all active:scale-[0.98] ${
-                              item.highlight
-                                ? 'bg-accent/15 border-accent/40 text-white'
-                                : isCurrent
-                                ? 'bg-white/10 border-accent/50 text-white'
+                              isCurrent
+                                ? 'bg-accent/15 border-accent/40 text-white shadow-[0_2px_12px_rgba(251,146,60,0.15)]'
                                 : 'bg-white/[0.04] border-white/10 text-white/90 hover:bg-white/[0.08] hover:border-white/20'
                             }`}
                           >
                             <div className="flex items-center gap-3 min-w-0">
                               <div
                                 className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                                  item.highlight
-                                    ? 'bg-accent text-accent-foreground'
+                                  isCurrent
+                                    ? 'bg-accent text-accent-foreground shadow-sm'
                                     : 'bg-white/10 text-accent group-hover:bg-accent/20'
                                 }`}
                               >
@@ -484,14 +564,14 @@ export default function Navbar({ content }: NavbarProps) {
                                 <div className="flex items-center gap-2">
                                   <h4
                                     className={`text-[14px] sm:text-[15px] font-semibold truncate ${
-                                      item.highlight ? 'text-accent' : 'text-white'
+                                      isCurrent ? 'text-accent' : 'text-white'
                                     }`}
                                     style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                                   >
                                     {isBn ? item.labelBn : item.labelEn}
                                   </h4>
                                   {isCurrent && (
-                                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shrink-0" />
                                   )}
                                 </div>
                                 <p className="text-[11.5px] text-white/55 truncate">
@@ -520,7 +600,7 @@ export default function Navbar({ content }: NavbarProps) {
                   href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20learn%20more%20about%20your%20design%20services."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-5 rounded-xl bg-accent text-accent-foreground text-center font-bold text-[13px] uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_6px_24px_rgba(251,146,60,0.35)] btn-shimmer active:scale-[0.98]"
+                  className="w-full py-3.5 px-5 rounded-xl bg-accent text-[#f9fafb] text-center font-bold text-[13px] uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_6px_24px_rgba(251,146,60,0.35)] btn-shimmer active:scale-[0.98]"
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                 >
                   <MessageCircle className="w-4 h-4" />

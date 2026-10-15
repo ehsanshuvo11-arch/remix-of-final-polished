@@ -37,74 +37,62 @@ const SERVICE_META: Record<
     roiBn: string;
   }
 > = {
-  // ── TRACK 1: VOLUME ENGINE ──
+  'test-drive': {
+    prefixEn: '01 / TEST PACK',
+    prefixBn: '০১ / টেস্ট প্যাক',
+    turnaroundEn: 'Ready in 48–72h',
+    turnaroundBn: '৪৮–৭২ ঘণ্টায় রেডি',
+    roiEn: '⚡ 2–3 orders recoup the entire cost',
+    roiBn: '⚡ ২–৩টি অর্ডার এলেই এই খরচ উঠে আসে',
+  },
+  'monthly-partner': {
+    prefixEn: '02 / MONTHLY PARTNER',
+    prefixBn: '০২ / মাসিক পার্টনার',
+    turnaroundEn: '48h Delivery',
+    turnaroundBn: '৪৮ ঘণ্টায় ডেলিভারি',
+    roiEn: "★ Designer salary replacement (৳9,999/mo)",
+    roiBn: "★ ২০–২৫ হাজার টাকার ডিজাইনারের বদলে মাত্র ৳৯,৯৯৯/মাস",
+  },
+  'campaign-pack': {
+    prefixEn: '03 / 4-AD PACK',
+    prefixBn: '০৩ / বড় প্যাক',
+    turnaroundEn: 'One-Time',
+    turnaroundBn: 'এককালীন',
+    roiEn: '💡 Add just ৳2,000 for 8 ads all month!',
+    roiBn: '💡 মাত্র ৳২,০০০ বাড়ালেই পুরো মাসের ৮টি বিজ্ঞাপন!',
+  },
+  // Backward compatibility fallbacks
   'pkg-01': {
-    prefixEn: '01 / STARTER PACK',
-    prefixBn: '০১ / টেস্ট ড্রাইভ',
-    turnaroundEn: '72h Delivery',
-    turnaroundBn: '৭২ ঘণ্টা ডেলিভারি',
-    roiEn: '৳200/Banner • 100% Bespoke Craft',
-    roiBn: '৳২০০/ব্যানার • ১০০% কাস্টম ক্রাফট',
+    prefixEn: '01 / TEST PACK',
+    prefixBn: '০১ / টেস্ট প্যাক',
+    turnaroundEn: 'Ready in 48–72h',
+    turnaroundBn: '৪৮–৭২ ঘণ্টায় রেডি',
+    roiEn: '⚡ 2–3 orders recoup the entire cost',
+    roiBn: '⚡ ২–৩টি অর্ডার এলেই এই খরচ উঠে আসে',
   },
   'pkg-02': {
-    prefixEn: '02 / CORE RETAINER ★',
-    prefixBn: '০২ / গ্রোথ পার্টনার ★',
-    turnaroundEn: 'Weekly Delivery',
-    turnaroundBn: 'সাপ্তাহিক ৩টি ব্যানার',
-    roiEn: '৳191/Banner • Regular Page Growth',
-    roiBn: '৳১৯১/ব্যানার • নিয়মিত পেজ গ্রোথ',
+    prefixEn: '02 / MONTHLY PARTNER',
+    prefixBn: '০২ / মাসিক পার্টনার',
+    turnaroundEn: '48h Delivery',
+    turnaroundBn: '৪৮ ঘণ্টায় ডেলিভারি',
+    roiEn: "★ Designer salary replacement (৳9,999/mo)",
+    roiBn: "★ ২০–২৫ হাজার টাকার ডিজাইনারের বদলে মাত্র ৳৯,৯৯৯/মাস",
   },
   'pkg-03': {
-    prefixEn: '03 / SCALE RETAINER',
-    prefixBn: '০৩ / হাই-ভলিউম স্কেল',
-    turnaroundEn: '5 Posts / Week',
-    turnaroundBn: 'সপ্তাহে ৫টি পোস্ট',
-    roiEn: '৳160/Banner • Combo Carousel Included',
-    roiBn: '৳১৬০/ব্যানার • কম্বো ক্যারোসেল অন্তর্ভুক্ত',
+    prefixEn: '03 / 4-AD PACK',
+    prefixBn: '০৩ / বড় প্যাক',
+    turnaroundEn: 'One-Time',
+    turnaroundBn: 'এককালীন',
+    roiEn: '💡 Add just ৳2,000 for 8 ads all month!',
+    roiBn: '💡 মাত্র ৳২,০০০ বাড়ালেই পুরো মাসের ৮টি বিজ্ঞাপন!',
   },
-
-  // ── TRACK 2: PERFORMANCE AD SPRINT ──
-  'pkg-04': {
-    prefixEn: '01 / AD RESCUE SPRINT',
-    prefixBn: '০১ / অ্যাড রেসকিউ স্প্রিন্ট',
-    turnaroundEn: '48h Delivery',
-    turnaroundBn: '৪৮ ঘণ্টা ডেলিভারি',
-    roiEn: '৳1,000/Ad Set • Slash CPR on ৳60k+ Spend',
-    roiBn: '৳১,০০০/অ্যাড সেট • CPR কমানোর জন্য',
-  },
-  'pkg-05': {
-    prefixEn: '02 / CREATIVE PARTNER ★',
-    prefixBn: '০২ / ক্রিয়েটিভ পার্টনার ★',
-    turnaroundEn: 'Monthly Retainer',
-    turnaroundBn: 'মাসিক পার্টনারশিপ',
-    roiEn: '৳750/Ad Asset • Scale ৳1.5L-৳3L+ Spend',
-    roiBn: '৳৭৫০/অ্যাড অ্যাসেট • ১.৫L-৩L+ স্পেন্ড স্কেলিং',
-  },
-
-  // Backward compatibility fallbacks
   'trial-pack': {
-    prefixEn: '01 / TRIAL SPRINT',
-    prefixBn: '০১ / টেস্ট ড্রাইভ',
-    turnaroundEn: '48h Delivery',
-    turnaroundBn: '৪৮ ঘণ্টা ডেলিভারি',
-    roiEn: '100% bespoke craft, zero templates',
-    roiBn: '১০০% কাস্টম ক্রাফট, জিরো টেমপ্লেট',
-  },
-  'growth-pack': {
-    prefixEn: '02 / D2C GROWTH ★',
-    prefixBn: '০২ / গ্রোথ পার্টনার ★',
-    turnaroundEn: 'Monthly Sprint',
-    turnaroundBn: 'মাসিক ডেডিকেটেড স্প্রিন্ট',
-    roiEn: 'Engineered for 3x+ ROAS ad scaling',
-    roiBn: 'বিজ্ঞাপনে ৩ গুণ+ সেলস স্কেলিংয়ের জন্য তৈরি',
-  },
-  'agency-pack': {
-    prefixEn: '03 / SCALE & AGENCY',
-    prefixBn: '০৩ / এজেন্সি হোয়াইট-লেবেল',
-    turnaroundEn: '48h Fast SLA',
-    turnaroundBn: '৪৮ ঘণ্টা ফাস্ট SLA',
-    roiEn: 'Scale client output with zero design hiring',
-    roiBn: 'হায়ারিং ছাড়া হোয়াইট-লেবেল ক্রিয়েটিভ স্কেলিং',
+    prefixEn: '01 / TEST PACK',
+    prefixBn: '০১ / টেস্ট প্যাক',
+    turnaroundEn: 'Ready in 48–72h',
+    turnaroundBn: '৪৮–৭২ ঘণ্টায় রেডি',
+    roiEn: '⚡ 2–3 orders recoup the entire cost',
+    roiBn: '⚡ ২–৩টি অর্ডার এলেই এই খরচ উঠে আসে',
   },
 };
 
@@ -137,20 +125,8 @@ export default function Services(_props: ServicesProps) {
   const content = pricingData || DEFAULT_PRICING;
   const tiers = (content.tiers && content.tiers.length > 0 ? content.tiers : DEFAULT_PRICING.tiers) || [];
 
-  // Track switcher state: 'volume' (Track 1) vs 'performance' (Track 2)
-  const [activeTrack, setActiveTrack] = useState<'volume' | 'performance'>('volume');
-
-  // Segregate tiers by track (with backward compatibility)
-  const volumeTiers = tiers.filter(
-    (t) => t.track === 'volume' || t.id.startsWith('pkg-01') || t.id.startsWith('pkg-02') || t.id.startsWith('pkg-03') || t.id === 'trial-pack'
-  );
-  const performanceTiers = tiers.filter(
-    (t) => t.track === 'performance' || t.id.startsWith('pkg-04') || t.id.startsWith('pkg-05') || t.id === 'growth-pack' || t.id === 'agency-pack'
-  );
-
-  const displayTiers = activeTrack === 'volume'
-    ? (volumeTiers.length > 0 ? volumeTiers : tiers)
-    : (performanceTiers.length > 0 ? performanceTiers : tiers);
+  // Playbook 3 Tiers (Test Drive, Monthly Partner, Campaign Pack)
+  const displayTiers = tiers;
 
   // If no pricing tiers exist, hide section
   if (tiers.length === 0) {
@@ -212,13 +188,6 @@ export default function Services(_props: ServicesProps) {
     }
   };
 
-  // Reset scroll to first card smoothly on track switch
-  useEffect(() => {
-    if (carouselRef.current && displayTiers.length > 0) {
-      scrollToMobileCard(0, false);
-    }
-  }, [activeTrack]);
-
   const bookTier = (tier: PricingTier) => {
     const meta = SERVICE_META[tier.id] ?? FALLBACK_META;
     openQuickBookingModal({
@@ -256,139 +225,67 @@ export default function Services(_props: ServicesProps) {
 
       <div className="max-w-[1240px] mx-auto px-5 sm:px-8 md:px-12">
         {/* Section Header */}
-        <header className="max-w-2xl mx-auto text-center mb-8 sm:mb-10">
+        <header className="max-w-2xl mx-auto text-center mb-10 sm:mb-14">
           <MotionReveal>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-3.5">
+            <div className="eyebrow-pill-kicker inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/5 border border-primary/10 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span
-                className="text-[11px] uppercase tracking-[2px] font-bold text-primary/80"
-                style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
-              >
-                {isBn ? 'ডুয়াল-ট্র্যাক প্রাইসিং • নো-রেজিস্ট্যান্স অফার' : 'Dual-Track Investment • Fixed Deliverables'}
-              </span>
+              <span>TRANSPARENT INVESTMENT</span>
             </div>
           </MotionReveal>
 
           <MotionReveal delay={0.05}>
             <h2
               id="services-pricing-heading"
-              className={`tracking-tight text-primary leading-[1.14] mb-3.5 ${
-                isBn ? 'text-[28px] sm:text-[36px] md:text-[44px] font-bold' : 'text-[32px] sm:text-[42px] md:text-[50px] font-normal'
-              }`}
-              style={isBn ? bnFont : serifFont}
+              className="section-heading-h2 mx-auto tracking-tight text-primary mb-3.5 font-normal"
+              style={serifFont}
             >
-              {isBn ? (
-                <>
-                  বিজ্ঞাপনে আর লস নয়।{' '}
-                  <em className="italic text-accent">আসল সেলস আনার সিস্টেমে আসুন।</em>
-                </>
-              ) : (
-                <>
-                  Stop Guessing on Ads.{' '}
-                  <em className="italic text-accent">Pay for creatives that actually convert.</em>
-                </>
-              )}
+              Simple, Clear <em className="italic text-accent">Packages.</em>
             </h2>
           </MotionReveal>
 
           <MotionReveal delay={0.1}>
             <p
-              className="text-primary/70 text-[14px] md:text-[15.5px] leading-relaxed max-w-xl mx-auto"
-              style={isBn ? bnFont : undefined}
+              className="section-lead-subtitle mx-auto text-primary/85"
+              style={{ ...bnFont, lineHeight: 1.85 }}
             >
-              {isBn
-                ? (activeTrack === 'volume'
-                    ? 'ছোট ও মাঝারি ব্র্যান্ডের জন্য ৩টি নির্দিষ্ট ভলিউম প্যাক—জিরো-ঝুঁকি টেস্ট অফার থেকে রেগুলার মান্থলি রিটেইনার।'
-                    : 'মেটা বিজ্ঞাপনে স্কেলিং ও কম খরচে বেশি সেলস আনতে ২টি হাই-আরওআই পারফরম্যান্স অ্যাড স্প্রিন্ট।')
-                : (activeTrack === 'volume'
-                    ? 'Three volume-focused sprints — from zero-risk starter test to predictable monthly organic growth.'
-                    : 'Two high-impact performance ad sprints engineered to eliminate fatigue and cut CPR on Meta.')}
+              মাত্র ২–৩টি অতিরিক্ত অর্ডার এলেই আপনার টেস্ট প্যাকের পুরো খরচ উঠে আসে।
             </p>
           </MotionReveal>
         </header>
 
-        {/* ── ULTRA-MINIMAL DUAL-TRACK SEGMENTED SWITCHER ── */}
-        <MotionReveal delay={0.12}>
-          <div className="flex justify-center mb-10 sm:mb-12">
-            <div className="inline-flex items-center p-1 rounded-full bg-white border border-primary/10 shadow-[0_2px_12px_rgba(30,58,138,0.04)] relative">
-              <button
-                type="button"
-                onClick={() => setActiveTrack('volume')}
-                className={`relative z-10 px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer ${
-                  activeTrack === 'volume'
-                    ? 'text-white'
-                    : 'text-primary/65 hover:text-primary'
-                }`}
-                style={isBn ? bnFont : undefined}
-              >
-                {activeTrack === 'volume' && (
-                  <m.div
-                    layoutId="activeTrackPill"
-                    className="absolute inset-0 rounded-full bg-primary -z-10 shadow-sm"
-                    transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                  />
-                )}
-                <span className={`w-1.5 h-1.5 rounded-full ${activeTrack === 'volume' ? 'bg-accent' : 'bg-primary/30'}`} />
-                <span>{isBn ? 'এফ-কমার্স ভলিউম প্যাক (৩টি)' : 'E-Commerce Volume Engine (3)'}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTrack('performance')}
-                className={`relative z-10 px-4 sm:px-5 py-2 rounded-full text-[12px] sm:text-[13px] font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer ${
-                  activeTrack === 'performance'
-                    ? 'text-white'
-                    : 'text-primary/65 hover:text-primary'
-                }`}
-                style={isBn ? bnFont : undefined}
-              >
-                {activeTrack === 'performance' && (
-                  <m.div
-                    layoutId="activeTrackPill"
-                    className="absolute inset-0 rounded-full bg-primary -z-10 shadow-sm"
-                    transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                  />
-                )}
-                <span className={`w-1.5 h-1.5 rounded-full ${activeTrack === 'performance' ? 'bg-accent' : 'bg-primary/30'}`} />
-                <span>{isBn ? 'মেটা পারফরম্যান্স অ্যাড (২টি)' : 'Meta Performance Ads (2)'}</span>
-              </button>
-            </div>
-          </div>
-        </MotionReveal>
-
-        {/* ── MOBILE: Ultra-Smooth Swipeable Cards ── */}
+        {/* ── MOBILE: Horizontal Snap Carousel with Card Peek (<768px) ── */}
         <div className="md:hidden">
           <div
             ref={carouselRef}
-            className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory px-5 py-2.5 scrollbar-none -mx-5 overscroll-x-contain touch-pan-x cursor-grab active:cursor-grabbing select-none"
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-3.5 pb-4 pt-2 px-4 -mx-4 touch-pan-x"
             style={{
-              WebkitOverflowScrolling: 'touch',
               scrollSnapType: 'x mandatory',
-              scrollPaddingLeft: '1.25rem',
-              scrollPaddingRight: '1.25rem',
-              touchAction: 'pan-x pan-y',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
             }}
           >
             {displayTiers.map((tier) => (
               <div
                 key={tier.id}
-                className="w-[84vw] max-w-[335px] snap-start shrink-0"
-                style={{ scrollSnapStop: 'normal' }}
+                className="w-[85vw] max-w-[340px] shrink-0 snap-start flex flex-col"
               >
                 <ServiceCard tier={tier} isBn={isBn} onBook={() => bookTier(tier)} />
               </div>
             ))}
           </div>
 
-          {/* Understated Minimal Dot Indicators in Brand Orange */}
-          <div className="flex justify-center items-center gap-1.5 mt-2.5 mb-1.5">
-            {displayTiers.map((_, idx) => (
+          {/* Micro Indicator Dots (<768px) */}
+          <div className="flex items-center justify-center gap-1.5 mt-2 mb-1" aria-label="Pricing package pagination">
+            {displayTiers.map((tier, idx) => (
               <button
-                key={idx}
+                key={tier.id}
                 type="button"
                 onClick={() => scrollToMobileCard(idx)}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  activeMobileIdx === idx ? 'w-4 bg-accent' : 'w-1 bg-accent/30 hover:bg-accent/50'
+                className={`transition-all duration-300 rounded-full h-1.5 cursor-pointer ${
+                  activeMobileIdx === idx
+                    ? 'w-5 bg-accent shadow-[0_0_8px_rgba(251,146,60,0.5)]'
+                    : 'w-1.5 bg-primary/25 hover:bg-primary/40'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
@@ -465,33 +362,34 @@ export default function Services(_props: ServicesProps) {
         <MotionReveal delay={0.2}>
           <div className="mt-8 pt-6 border-t border-primary/10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <ul
-              className="flex flex-wrap items-center justify-center sm:justify-start gap-y-2.5 gap-x-6 text-[12.5px] text-primary/70 font-medium"
+              className="flex flex-wrap items-center justify-center sm:justify-start gap-y-2.5 gap-x-6 text-[12.5px] text-primary/75 font-medium"
               style={isBn ? bnFont : undefined}
             >
               <li className="flex items-center gap-2">
                 <CreditCard className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
-                <span>{isBn ? 'বিকাশ, নগদ ও ব্যাংক ট্রান্সফার' : 'bKash, Nagad & Bank Transfer'}</span>
+                <span>{isBn ? '💳 বিকাশ, নগদ ও ব্যাংক' : '💳 bKash, Nagad & Bank'}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
+                <span>{isBn ? '⚡ ৪৮–৭২ ঘণ্টায় দ্রুত ডেলিভারি' : '⚡ 48–72h Delivery'}</span>
               </li>
               <li className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
-                <span>{isBn ? 'সন্তুষ্ট না হওয়া পর্যন্ত ১০০% ফ্রি রিভিশন' : '100% Free Revisions Until Approved'}</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <FileCheck className="w-4 h-4 text-accent shrink-0" strokeWidth={1.75} />
-                <span>{isBn ? 'অফিসিয়াল ইনভয়েস ও চুক্তি' : 'Official Invoice & Agreement'}</span>
+                <span>{isBn ? '🔄 ২ বার পরিবর্তনের সুযোগ' : '🔄 Up to 2 Rounds of Minor Refinements'}</span>
               </li>
             </ul>
 
-            <button
+            <a
               id="services-free-audit"
-              type="button"
-              onClick={() => openAuditModal({ source: 'Services & Pricing' })}
-              className="inline-flex items-center gap-1.5 text-primary/70 hover:text-accent transition-colors font-medium text-[12.5px] cursor-pointer"
+              href="https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20Skincare%2FBeauty%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A6%BF%E0%A6%82%20%E0%A6%85%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%A1%E0%A7%87%E0%A6%B0%20%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF%20Free%205-Min%20Video%20Audit%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B2%E0%A6%BF%E0%A6%82%E0%A6%95%3A%20"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-primary/75 hover:text-accent transition-colors font-semibold text-[12.5px] cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-accent" />
-              <span>{isBn ? 'ফ্রি ৫-মিনিট অডিট চান?' : 'Want a free 5-min audit?'}</span>
+              <span>{isBn ? '💬 ফ্রি ৫-মিনিট ভিডিও রিভিউ চান?' : '💬 Want a free 5-min review?'}</span>
               <ArrowRight className="w-3 h-3 ml-0.5" />
-            </button>
+            </a>
           </div>
         </MotionReveal>
       </div>
@@ -516,7 +414,7 @@ function ServiceCard({
 
   const { amount, period } = splitPrice(isBn ? tier.price_bn ?? tier.price_en : tier.price_en ?? tier.price_bn);
   const deliverables = (isBn ? tier.deliverables_bn : tier.deliverables_en) ?? [];
-  const previewCount = 3;
+  const previewCount = 4;
   const initialItems = deliverables.slice(0, previewCount);
   const remainingItems = deliverables.slice(previewCount);
 
@@ -552,16 +450,25 @@ function ServiceCard({
   return (
     <article
       data-service-card={tier.id}
-      className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border p-6 sm:p-7 md:p-7.5 transition-all duration-300 ${tone.card}`}
+      className={`relative h-full flex flex-col justify-between rounded-2xl sm:rounded-3xl border p-5 sm:p-7 md:p-7.5 transition-all duration-300 ${tone.card}`}
     >
-      {featured && (
+      {featured ? (
         <span
-          className="absolute -top-3 left-6 px-3.5 py-0.5 sm:py-1 rounded-full bg-accent text-white text-[10px] sm:text-[10.5px] font-bold tracking-[1.5px] uppercase shadow-sm"
+          className="absolute -top-3.5 left-6 px-3.5 py-1 rounded-full bg-accent text-[#1e3a8a] text-[10px] sm:text-[10.5px] font-extrabold tracking-[1px] uppercase shadow-md flex items-center gap-1.5"
           style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
         >
-          {isBn ? 'সবচেয়ে জনপ্রিয় গ্রোথ স্প্রিন্ট' : 'Most Popular Growth Sprint'}
+          {isBn
+            ? (tier.badge_bn || '⭐ MOST POPULAR • 50% LESS THAN A DESIGNER')
+            : (tier.badge_en || '⭐ MOST POPULAR • 50% LESS THAN A DESIGNER')}
         </span>
-      )}
+      ) : tier.badge_bn ? (
+        <span
+          className="absolute -top-3.5 left-6 px-3 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold tracking-wider uppercase border border-primary/15"
+          style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
+        >
+          {isBn ? tier.badge_bn : tier.badge_en}
+        </span>
+      ) : null}
 
       <div>
         {/* Top row: Numbered prefix + SLA Turnaround Pill */}
@@ -583,16 +490,23 @@ function ServiceCard({
 
         {/* Title */}
         <h3
-          className={`leading-tight mb-2.5 ${isBn ? 'text-[21px] sm:text-[23px] font-bold' : 'text-[23px] sm:text-[26px] font-normal'}`}
+          className={`card-title-h3 leading-tight mb-2.5 ${isBn ? 'font-bold' : 'font-normal'}`}
           style={isBn ? bnFont : serifFont}
         >
           {isBn ? tier.title_bn : tier.title_en}
         </h3>
 
+        {/* Concession Pill (if applicable) */}
+        {(tier.concession_bn || tier.concession_en) && (
+          <div className="mb-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/15 border border-accent/30 text-accent text-[11px] font-semibold">
+            <span>{isBn ? tier.concession_bn : tier.concession_en}</span>
+          </div>
+        )}
+
         {/* Price Row */}
         {amount && (
           <div className={`flex items-baseline gap-2 pb-3.5 mb-3.5 border-b ${tone.divider}`}>
-            <span className="text-[32px] sm:text-[38px] font-bold tracking-tight leading-none font-sans text-accent">
+            <span className={`text-[32px] sm:text-[38px] font-bold tracking-tight leading-none font-sans ${featured ? 'text-[#fb923c]' : 'text-accent'}`}>
               {amount.startsWith('৳') ? (
                 <>
                   <span className="text-[0.6em] font-semibold align-[0.45em] mr-0.5 opacity-80">৳</span>
@@ -608,24 +522,24 @@ function ServiceCard({
               </span>
             ) : (
               <span className="text-[10.5px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full bg-accent/15 text-accent">
-                {isBn ? 'এককালীন টেস্ট স্প্রিন্ট' : 'One-Time Sprint'}
+                {isBn ? 'এককালীন' : 'One-Time'}
               </span>
             )}
           </div>
         )}
 
         {/* Value Proposition Description */}
-        <p className={`text-[12.5px] sm:text-[13px] leading-relaxed mb-4 ${tone.muted}`} style={isBn ? bnFont : undefined}>
+        <p className={`card-body-text mb-4 ${tone.muted}`} style={isBn ? bnFont : undefined}>
           {isBn ? tier.desc_bn : tier.desc_en}
         </p>
 
-        {/* Deliverables Checklist: 3 Preview Items + Expandable See More Toggle */}
+        {/* Deliverables Checklist: 4 Core Items */}
         <div className="mb-4">
           <ul className="space-y-2.5">
             {initialItems.map((item, i) => (
               <li
                 key={i}
-                className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
+                className={`pricing-bullet-text flex items-start gap-2.5 ${tone.soft}`}
                 style={isBn ? bnFont : undefined}
               >
                 <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
@@ -636,7 +550,7 @@ function ServiceCard({
             ))}
           </ul>
 
-          {/* Smooth Collapsible remaining items */}
+          {/* Smooth Collapsible remaining items (if > 4) */}
           <AnimatePresence>
             {expanded && remainingItems.length > 0 && (
               <m.ul
@@ -649,7 +563,7 @@ function ServiceCard({
                 {remainingItems.map((item, i) => (
                   <li
                     key={i}
-                    className={`flex items-start gap-2.5 text-[12.5px] sm:text-[13px] leading-snug ${tone.soft}`}
+                    className={`pricing-bullet-text flex items-start gap-2.5 ${tone.soft}`}
                     style={isBn ? bnFont : undefined}
                   >
                     <div className="w-4 h-4 rounded-full bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
@@ -702,15 +616,14 @@ function ServiceCard({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-          className={`w-full h-11.5 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[13px] font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer shadow-md btn-shimmer ${
+          className={`w-full min-h-[44px] sm:min-h-[48px] h-11 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[12.5px] sm:text-[13px] uppercase tracking-wider transition-colors duration-200 cursor-pointer shadow-md btn-shimmer ${
             featured
-              ? 'bg-accent hover:bg-accent/90 text-white shadow-[0_6px_20px_-6px_rgba(251,146,60,0.6)]'
-              : 'bg-primary hover:bg-primary/90 text-white shadow-[0_4px_16px_-4px_rgba(30,58,138,0.25)]'
+              ? 'bg-[#fb923c] hover:bg-[#fb923c]/90 text-[#f9fafb] font-extrabold shadow-[0_6px_20px_-6px_rgba(251,146,60,0.6)]'
+              : 'bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white font-bold shadow-[0_4px_16px_-4px_rgba(30,58,138,0.25)]'
           }`}
           style={isBn ? { ...bnFont, letterSpacing: 0 } : undefined}
         >
           <span>{isBn ? tier.cta_bn : tier.cta_en}</span>
-          <ArrowRight className="w-4 h-4" />
         </m.button>
 
         {/* Secondary Sleek Outline WhatsApp CTA */}
@@ -722,7 +635,7 @@ function ServiceCard({
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.98 }}
           transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-          className={`w-full h-9.5 rounded-xl inline-flex items-center justify-center gap-2 text-[12px] font-semibold transition-colors ${
+          className={`w-full min-h-[40px] sm:min-h-[48px] h-10 sm:h-12 rounded-xl inline-flex items-center justify-center gap-2 text-[12px] sm:text-[12.5px] font-semibold transition-colors ${
             featured
               ? 'border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/10'
               : 'border border-primary/15 text-primary/80 hover:border-primary/35 hover:bg-primary/[0.04]'

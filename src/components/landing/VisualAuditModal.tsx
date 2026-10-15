@@ -144,7 +144,7 @@ export default function VisualAuditModal() {
               <div className="flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-2 text-[#fb923c] text-[10px] md:text-xs font-bold uppercase tracking-[2.5px]">
                   <span className="w-2 h-2 rounded-full bg-[#fb923c] animate-ping" />
-                  <span>{isBn ? 'ফ্রি ক্রিয়েটিভ অডিট' : 'Complimentary Creative Audit'}</span>
+                  <span>{isBn ? 'ফ্রি ৫-মিনিট ভিডিও রিভিউ' : 'Complimentary Creative Review'}</span>
                 </div>
                 <button
                   type="button"
@@ -158,14 +158,14 @@ export default function VisualAuditModal() {
 
               <h3 className="font-heading text-2xl md:text-3xl font-light text-white mt-2 leading-tight">
                 {isBn ? (
-                  <>৫-মিনিটের ফ্রি <span className="text-[#fb923c] italic font-normal">ভিডিও টিয়ারডাউন</span> বুক করুন</>
+                  <>৫-মিনিটের ফ্রি <span className="text-[#fb923c] italic font-normal">ভিডিও রিভিউ</span> বুক করুন</>
                 ) : (
-                  <>Claim Your 5-Minute <span className="text-[#fb923c] italic font-normal">Ad Creative Teardown</span></>
+                  <>Claim Your 5-Minute <span className="text-[#fb923c] italic font-normal">Ad Creative Review</span></>
                 )}
               </h3>
               <p className="text-white/70 text-xs md:text-sm mt-1.5 font-light leading-relaxed">
                 {isBn
-                  ? 'আমরা আপনার বর্তমান বিজ্ঞাপন ও পেজ পর্যালোচনা করে সরাসরি ভিডিওতে দেখিয়ে দেব বিজ্ঞাপনে কোথায় টাকা নষ্ট হচ্ছে এবং কীভাবে সেলস রিকভার করবেন।'
+                  ? 'আমরা আপনার বর্তমান বিজ্ঞাপন ও পেজ পর্যালোচনা করে সরাসরি ৫ মিনিটের ভিডিওতে দেখিয়ে দেব বিজ্ঞাপনে কোথায় টাকা নষ্ট হচ্ছে এবং কীভাবে সেলস রিকভার করবেন।'
                   : 'We personally analyze your live ads and page, showing you the exact bottlenecks bleeding your budget and how to fix your conversions.'}
               </p>
 
@@ -280,7 +280,7 @@ export default function VisualAuditModal() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full sm:flex-1 py-3.5 px-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs uppercase tracking-[2px] rounded-sm transition-all duration-300 shadow-[0_4px_16px_rgba(251,146,60,0.3)] hover:shadow-[0_6px_24px_rgba(251,146,60,0.45)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                      className="w-full sm:flex-1 py-3.5 px-6 bg-accent hover:bg-accent/90 text-[#f9fafb] font-bold text-xs uppercase tracking-[2px] rounded-sm transition-all duration-300 shadow-[0_4px_16px_rgba(251,146,60,0.3)] hover:shadow-[0_6px_24px_rgba(251,146,60,0.45)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                     >
                       <span>{isSubmitting ? (isBn ? 'প্রসেসিং হচ্ছে...' : 'Submitting Request...') : (isBn ? 'ফ্রি অডিট বুক করুন' : 'Confirm Free 5-Min Video Teardown')}</span>
                       <ArrowRight className="w-4 h-4" />

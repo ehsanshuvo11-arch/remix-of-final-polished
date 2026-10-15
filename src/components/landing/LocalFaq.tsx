@@ -13,40 +13,40 @@ interface FaqItem {
 
 const FAQS: FaqItem[] = [
   {
-    qBn: 'ক্যানভা দিয়ে নিজে বানালেই তো হয়, আপনাদের কেন টাকা দেব?',
-    qEn: "Can't I just design on Canva myself? Why hire you?",
-    aBn: 'ক্যানভার ফ্রি টেমপ্লেট এখন ফেসবুকের হাজারটা পেজ ব্যবহার করছে। কাস্টমার স্ক্রল করার আধা সেকেন্ডের মধ্যেই বুঝে ফেলে এটা সস্তা কোনো প্রোডাক্ট। ফলাফল? বিজ্ঞাপনে ক্লিক ঠিকই পড়ে, কিন্তু ইনবক্সে এসে "দাম কত" বলেই মানুষ উধাও হয়ে যায়। আমরা কোনো সাধারণ ছবি বানাই না; আমরা প্রোডাক্টের আসল গুণ আর ক্রেতার কেনার মনস্তত্ত্ব ফ্রেম করি। এতে বিজ্ঞাপন খরচ কমে, কাস্টমার দ্বিধা ছাড়া ফুল প্রাইসে কেনে।',
-    aEn: "Everyone on Facebook uses the same Canva templates. Shoppers spot them in 0.5 seconds. They assume your product is cheap, drop a lazy 'Price please?' in comments, and vanish. We do not make generic graphics. We build trust triggers and sharp copy that make people order at full price without bargaining.",
+    qBn: 'আমি তো নিজেই ক্যানভা দিয়ে ডিজাইন করতে পারি, আপনাদের কেন লাগবে?',
+    qEn: "Can't I just design on Canva myself? Why do I need you?",
+    aBn: 'ক্যানভার ফ্রি টেমপ্লেটটি আজ আপনার পেজেও আছে, আবার চকবাজারের নকল প্রোডাক্টের পেজেও আছে। কাস্টমার দুটোকে আলাদা করতে পারে না বলেই ভয়ে অর্ডার করে না। আমরা আপনার প্রোডাক্টকে এমন একটা চেহারা দিই—যা দেখলেই কাস্টমার বোঝে এটি আসল।',
+    aEn: "Free Canva templates are used everywhere, including counterfeit pages. Shoppers can't tell the difference, so they hesitate. We craft visuals that instantly prove your product is genuine.",
   },
   {
-    qBn: '৩,৯৯৯ টাকার টেস্ট ড্রাইভ স্প্রিন্টে আমি ঠিক কী কী পাব এবং ডেলিভারি কবে?',
-    qEn: 'What exactly do I get in the ৳3,999 sprint and how fast is delivery?',
-    aBn: 'আপনার একটি নির্দিষ্ট হিরো প্রোডাক্টের জন্য পাচ্ছেন ৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ (ফিড স্কয়ার ও ৯:১৬ স্টোরি/রিলস সাইজ)। সাথে থাকছে ধারালো বাংলা ও ইংরেজি সেলস কপি, যা বিজ্ঞাপনের ক্লিকের সংখ্যা বাড়ায় ও প্রতি অর্ডারের খরচ কমায়। ব্রিফ পাওয়ার ঠিক ৭২ ঘণ্টার মধ্যে রেডি-টু-রান ক্রিয়েটিভ আপনার হাতে পৌঁছে যাবে।',
-    aEn: 'You receive 5 conversion-ready Meta ad creatives tailored to your hero product (Feed + 9:16 Story/Reels), complete with punchy Bengali & English hooks engineered to cut cost-per-result. Delivered in 72 hours flat, 100% ready to run.',
+    qBn: '৳২,৫০০ টাকার টেস্ট প্যাকে কয় দিনে কী কী পাব?',
+    qEn: 'What do I get in the ৳2,500 Test Pack and in how many days?',
+    aBn: '৪৮ থেকে ৭২ ঘণ্টার মধ্যে ১টি ভিডিও রিল (9:16), ২টি ছবির পোস্ট (1:1) এবং বাংলা ক্যাপশন সরাসরি আপনার হোয়াটসঅ্যাপে পেয়ে যাবেন।',
+    aEn: 'Within 48 to 72 hours, you get 1x video reel (9:16), 2x static feed posts (1:1), and persuasive Bengali copy delivered directly to your WhatsApp.',
   },
   {
-    qBn: 'পেমেন্ট কীভাবে করব? বিকাশ বা নগদে কি দেওয়া যাবে?',
-    qEn: 'How do I pay? Do you accept bKash or Nagad?',
-    aBn: 'কোনো ডলার কার্ড বা পাসপোর্ট এনডোর্সমেন্টের ঝামেলা নেই। বিকাশ, নগদ, রকেট কিংবা যেকোনো দেশি ব্যাংক ট্রান্সফারের মাধ্যমে সহজেই পেমেন্ট করতে পারবেন। পেমেন্ট কনফার্ম হওয়ার সাথে সাথেই ডিজিটাল ইনভয়েস ও ডেলিভারি কাউন্টডাউন শুরু হয়ে যাবে।',
-    aEn: 'Zero dollar card or passport endorsement hassle. You can pay directly via bKash, Nagad, Rocket, or local bank transfer. An official invoice and delivery schedule are issued immediately.',
+    qBn: 'পেমেন্ট কীভাবে করব?',
+    qEn: 'How do I make the payment?',
+    aBn: 'বিকাশ, নগদ অথবা ব্যাংকে ১০০% অগ্রিম পেমেন্ট করে প্রোডাক্টের ছবি পাঠালেই কাজ শুরু হয়ে যাবে।',
+    aEn: 'Simply complete 100% upfront payment via bKash, Nagad, or Bank Transfer and send product photos to begin.',
   },
   {
-    qBn: 'ডিজাইন পছন্দ না হলে বা কোনো পরিবর্তন লাগলে কী হবে?',
-    qEn: 'What if I need revisions or changes to the creatives?',
-    aBn: '৭২ ঘণ্টায় ডেলিভারি পাওয়ার পর আপনি টেক্সট, কালার, সাইজ বা লেআউট পরিবর্তন চাইতে পারেন। যতক্ষণ না মনে হবে ক্রিয়েটিভটি দিয়ে বিজ্ঞাপনে নামলে আসল সেলস আসবে, ততক্ষণ পর্যন্ত আমরা বিনামূল্যে সম্পূর্ণ রিভিশন সাপোর্ট দেব।',
-    aEn: 'Once you review your 72-hour delivery, you can request any layout, hook, or visual adjustments. We provide unlimited fine-tuning until you are completely confident in running the ads.',
+    qBn: 'ডিজাইনে কিছু বদলাতে চাইলে?',
+    qEn: 'What if I want changes to the design?',
+    aBn: 'প্রতিটি কাজে সর্বোচ্চ ২ বার লেখা বা রঙের ছোটখাটো পরিবর্তন একদম ফ্রি করে দেওয়া হবে।',
+    aEn: 'Every order includes up to 2 rounds of minor copy or color refinements completely free of charge.',
   },
   {
-    qBn: 'আমার কাস্টমাররা তো সবসময় ডিসকাউন্ট খোঁজে, ভালো ক্রিয়েটিভে কি ফুল প্রাইসে বিক্রি হবে?',
-    qEn: 'My customers always demand discounts. Will better creatives fix this?',
-    aBn: 'কাস্টমার তখনই ডিসকাউন্ট চায় যখন সে বিজ্ঞাপনে প্রোডাক্টের বিশ্বাসযোগ্যতা পায় না। সস্তা বিজ্ঞাপন মানেই প্রোডাক্ট সস্তা। যখন আপনার ক্রিয়েটিভ দেখতে হাই-এন্ড ব্র্যান্ডের মতো হবে এবং কথায় স্পষ্ট যুক্তি থাকবে, তখন মানুষ দাম নিয়ে দরদাম করা বন্ধ করে সরাসরি পুরো দামে অর্ডার করবে।',
-    aEn: "Shoppers haggle when an ad looks cheap and generic. When your creative carries unquestionable authority and sharp copy, buyers realize it is premium. They stop bargaining and place orders at full price.",
+    qBn: 'আমার কাস্টমাররা সবসময় ডিসকাউন্ট চায়—এটা কি বন্ধ হবে?',
+    qEn: 'My customers always ask for discounts—will this stop?',
+    aBn: 'মানুষ তখনই দামাদামি করে যখন সে প্রোডাক্টের মান নিয়ে সন্দিহান থাকে। ছবি ও ভিডিও দেখে প্রোডাক্টটিকে ভরসা করতে পারলে কাস্টমার পুরো দাম দিয়েই কেনে।',
+    aEn: 'People only bargain when they doubt the product quality. Once visuals build genuine trust, customers happily order at full price.',
   },
   {
-    qBn: 'ক্যাশ অন ডেলিভারিতে (COD) রিটার্ন রেট কি এতে কমবে?',
-    qEn: 'Will this help reduce high Cash-on-Delivery (COD) return rates?',
-    aBn: 'অবশ্যই। যারা ভুল প্রত্যাশা নিয়ে হুজুগে ক্লিক করে, তারাই ডেলিভারিম্যান দরজায় গেলে পার্সেল ফিরিয়ে দেয়। আমাদের প্রতিটি ক্রিয়েটিভে প্রোডাক্টের ব্যবহার, ফলাফল এবং কার্যকারিতা স্বচ্ছভাবে তুলে ধরা হয়। ফলে শুধু সিরিয়াস বায়াররাই অর্ডার করে, যা আপনার পার্সেল রিটার্নের লোকসান নাটকীয়ভাবে কমিয়ে দেয়।',
-    aEn: 'Confused or impulse-click shoppers cancel at the door. When your ads set crystal-clear expectations and showcase genuine product proof upfront, frivolous clicks drop. Only serious buyers order, drastically slashing your return loss.',
+    qBn: 'পার্সেল রিটার্ন (COD Return) কি সত্যিই কমবে?',
+    qEn: 'Will Cash-on-Delivery (COD) parcel returns really decrease?',
+    aBn: 'হ্যাঁ। হুজুগে বা ছাড়ের লোভে অর্ডার করা মানুষই পার্সেল ফিরিয়ে দেয়। জেনে-বুঝে যারা অর্ডার করে, তারা ডেলিভারি ম্যানের কল মিস করে না।',
+    aEn: 'Yes. Impulse buyers seeking cheap discounts are the ones who return parcels. Serious buyers who trust genuine quality eagerly wait for the rider.',
   },
 ];
 
@@ -65,20 +65,23 @@ export default function LocalFaq() {
         <MotionReveal>
           <div className="text-center mb-12">
             <span 
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-[2px] uppercase bg-primary/10 text-primary mb-3"
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", letterSpacing: '1px' } : undefined}
+              className="eyebrow-pill-kicker inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary mb-3.5"
             >
               <HelpCircle className="w-3.5 h-3.5 text-accent" />
-              {isBn ? 'সচরাচর জিজ্ঞাসা ও ভয় দূরীকরণ' : 'Frequently Asked Questions'}
+              <span>{isBn ? 'সচরাচর জিজ্ঞাসা' : 'FREQUENTLY ASKED QUESTIONS'}</span>
             </span>
             <h2 
-              className="text-2xl md:text-4xl font-heading font-normal text-primary leading-tight mb-3"
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+              className="section-heading-h2 font-heading font-normal text-primary mx-auto mb-3.5 text-center"
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
             >
-              {isBn ? 'কোনো সংশয় বা প্রশ্ন? জেনে নিন সরাসরি।' : 'Got Questions? Everything You Need to Know.'}
+              {isBn ? (
+                <>কোনো সংশয় বা প্রশ্ন? <span className="italic text-accent">জেনে নিন সরাসরি।</span></>
+              ) : (
+                <>Clear Answers for <span className="italic text-accent">Ambitious Brands.</span></>
+              )}
             </h2>
             <p 
-              className="text-sm md:text-base text-primary/70 max-w-lg mx-auto"
+              className="section-lead-subtitle text-primary/75 max-w-xl mx-auto text-center"
               style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
             >
               {isBn 

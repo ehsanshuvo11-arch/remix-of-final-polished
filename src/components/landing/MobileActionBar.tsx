@@ -1,25 +1,42 @@
-import { useEffect, useState, useRef } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { openQuickBookingModal } from '@/components/landing/QuickBookingModal';
 
 export const MOBILE_MENU_EVENT = 'polished:toggle-menu';
 
-const LUXE = [0.22, 1, 0.36, 1] as const;
+const WA_AUDIT_URL = "https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20Skincare%2FBeauty%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A6%BF%E0%A6%82%20%E0%A6%85%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%A1%E0%A7%87%E0%A6%B0%20%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF%20Free%205-Min%20Video%20Audit%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B2%E0%A6%BF%E0%A6%82%E0%A6%95%3A%20";
+const WA_TEST_PACK_URL = "https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A7%B3%E0%A7%A8%2C%E0%A7%AB%E0%A7%A6%E0%A7%A6%20%E0%A6%9F%E0%A7%87%E0%A6%B8%E0%A7%8D%E0%A6%9F%20%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%20%E0%A6%A8%E0%A6%BF%E0%A6%AF%E0%A6%BC%E0%A7%87%20%E0%A6%B6%E0%A7%81%E0%A6%B0%E0%A7%81%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4";
 
 /**
- * Ultra-minimalist luxury thumb-zone conversion dock for mobile.
- * Features Smart Auto-Hide: hides on scroll down to free up reading space,
- * glides into view on scroll up or stop with direct 1-tap WhatsApp and ৳3,999 sprint trigger.
+ * Native-App Fixed Bottom Conversion Bar on Mobile (<768px Only)
+ * High conversion thumb bar locked to the bottom edge of the screen.
+ * Desktop (>=768px) is strictly display: none.
  */
 export default function MobileActionBar() {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
-  const [visible, setVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const lastScrollYRef = useRef(0);
+  const [isVisible, setIsVisible] = useState(false);
 
-  // Listen for modal state to tuck dock away
+  // Show only after scrolling past the hero fold (scrollY > 260px)
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          setIsVisible(scrollY > 260);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Listen for modal state to tuck bar away when modal is active
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<{ open: boolean }>).detail;
@@ -29,115 +46,80 @@ export default function MobileActionBar() {
     return () => window.removeEventListener('polished:modal-state', handler);
   }, []);
 
-  // Smart Auto-Hide Scroll Listener with Idle Reveal
-  useEffect(() => {
-    let frame = 0;
-    let idleTimer: any = null;
-
-    const onScroll = () => {
-      if (idleTimer) clearTimeout(idleTimer);
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const currentScrollY = window.scrollY;
-        const pastHero = currentScrollY > window.innerHeight * 0.35;
-        const delta = currentScrollY - lastScrollYRef.current;
-
-        if (!pastHero) {
-          setVisible(prev => !prev ? prev : false);
-        } else if (delta < -8) {
-          // Scrolling up: reveal conversion bar
-          setVisible(prev => prev ? prev : true);
-        } else if (delta > 8) {
-          // Scrolling down: auto-hide bar to avoid blocking content
-          setVisible(prev => !prev ? prev : false);
-          // When user pauses scrolling for 1.2s, gently reveal conversion bar
-          idleTimer = setTimeout(() => {
-            if (window.scrollY > window.innerHeight * 0.35) {
-              setVisible(prev => prev ? prev : true);
-            }
-          }, 1200);
-        }
-        lastScrollYRef.current = Math.max(0, currentScrollY);
-      });
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (frame) cancelAnimationFrame(frame);
-      if (idleTimer) clearTimeout(idleTimer);
-    };
-  }, []);
-
   const tap = () => {
     if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate?.(10);
   };
 
+  if (isModalOpen) return null;
+
   return (
-    <AnimatePresence>
-      {visible && !isModalOpen && (
-        <m.div
-          initial={{ y: 90, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 90, opacity: 0 }}
-          transition={{ duration: 0.35, ease: LUXE }}
-          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
-          className="md:hidden fixed bottom-0 inset-x-0 z-[400] px-4 pointer-events-none flex justify-center"
-        >
-          <div className="pointer-events-auto w-full max-w-[360px] mx-auto flex items-center justify-between gap-2.5 rounded-full border border-white/15 bg-[#1e3a8a]/95 backdrop-blur-2xl p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.65)]">
-            {/* Direct WhatsApp Quick Chat */}
-            <a
-              href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20am%20interested%20in%20scaling%20my%20brand%27s%20visual%20identity."
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={tap}
-              aria-label="Direct WhatsApp"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#25D366]/20 text-[#25D366] border border-[#25D366]/40 transition-all duration-300 active:scale-95 hover:bg-[#25D366]/30 shadow-sm"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 2a8 8 0 00-6.93 12L2 18l4.07-1.07A8 8 0 1010 2z" stroke="currentColor" strokeWidth="1.8"/>
-                <path d="M7.5 8.5s.5 1 1.5 2 2 1.5 2 1.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-            </a>
+    <nav
+      id="mobile-bottom-conversion-bar"
+      aria-label="Mobile quick actions"
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 999,
+        background: 'rgba(15, 29, 70, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+        padding: '7px 10px',
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 7px)',
+        transform: isVisible ? 'translateY(0)' : 'translateY(110%)',
+        opacity: isVisible ? 1 : 0,
+        pointerEvents: isVisible ? 'auto' : 'none',
+        transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease',
+      }}
+      className="flex md:hidden items-center gap-2 shadow-[0_-6px_25px_rgba(0,0,0,0.35)]"
+    >
+      {/* Left Button: 42% width, border-white, Free Video Review */}
+      <a
+        id="mobile-bar-video-audit"
+        href={WA_AUDIT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={tap}
+        style={{
+          width: '42%',
+          minHeight: '38px',
+          height: '38px',
+          border: '1px solid rgba(249, 250, 251, 0.25)',
+          color: '#f9fafb',
+          borderRadius: '8px',
+          fontSize: '11.5px',
+          fontWeight: 600,
+          fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
+        }}
+        className="inline-flex items-center justify-center text-center px-1.5 transition-transform active:scale-[0.98] cursor-pointer hover:bg-white/10"
+      >
+        <span className="truncate">{isBn ? '💬 ফ্রি অডিট' : '💬 Free Audit'}</span>
+      </a>
 
-            {/* Primary Conversion Action: 1-Tap ৳3,999 Quick Booking */}
-            <button
-              type="button"
-              onClick={() => {
-                tap();
-                openQuickBookingModal({
-                  tierId: 'trial-pack',
-                  tierTitle: 'No-Risk Test Drive Sprint',
-                  tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
-                  price: '৳999',
-                  priceBn: '৳৯৯৯',
-                  source: 'Mobile Action Bar',
-                });
-              }}
-              lang={isBn ? 'bn' : 'en'}
-              className="flex h-11 flex-1 items-center justify-between gap-2 rounded-full bg-accent px-4 text-accent-foreground font-bold tracking-wider uppercase transition-all duration-200 active:scale-[0.98] shadow-[0_4px_20px_rgba(251,146,60,0.4)] btn-shimmer cursor-pointer"
-            >
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-85" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
-                </span>
-                <span
-                  className={`text-[11px] font-extrabold truncate ${isBn ? 'text-[12px]' : ''}`}
-                  style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                >
-                  {isBn ? '৳৯৯৯ টেস্ট ড্রাইভ' : 'START ৳999 SPRINT'}
-                </span>
-              </div>
-
-              <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs">
-                →
-              </span>
-            </button>
-          </div>
-        </m.div>
-      )}
-    </AnimatePresence>
+      {/* Right Button: 58% width, orange, ৳২,৫০০ Test Pack */}
+      <a
+        id="mobile-bar-test-pack"
+        href={WA_TEST_PACK_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={tap}
+        style={{
+          width: '58%',
+          minHeight: '38px',
+          height: '38px',
+          background: '#fb923c',
+          color: '#f9fafb',
+          borderRadius: '8px',
+          fontSize: '12px',
+          fontWeight: 700,
+          fontFamily: isBn ? "'Noto Serif Bengali', serif" : "'DM Sans', sans-serif",
+        }}
+        className="inline-flex items-center justify-center text-center px-2 transition-transform active:scale-[0.98] cursor-pointer shadow-[0_3px_12px_rgba(251,146,60,0.35)] btn-shimmer"
+      >
+        <span className="truncate">{isBn ? '⚡ ৳২,৫০০ টেস্ট প্যাক →' : '⚡ ৳2,500 Test Pack →'}</span>
+      </a>
+    </nav>
   );
 }

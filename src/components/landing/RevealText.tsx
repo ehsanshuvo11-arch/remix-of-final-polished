@@ -46,15 +46,13 @@ export default function RevealText({
   const step = isMobile ? Math.min(stagger, 0.02) : stagger;
   const dur = isMobile ? Math.min(duration, 0.35) : duration;
 
-  const rest = { y: '0%', opacity: 1 } as const;
+  const rest = { y: 0, opacity: 1 } as const;
 
   const maskStyle = {
     marginRight: splitBy === 'word' ? '0.28em' : 0,
-    // Italic glyphs (esp. trailing punctuation like "!") lean right and get
-    // clipped by overflow:hidden. Pad the mask and offset to keep layout stable.
-    paddingRight: '0.15em',
-    marginLeft: '-0.05em',
-    paddingBottom: '0.15em',
+    paddingRight: '0.1em',
+    paddingTop: '0.06em',
+    paddingBottom: '0.12em',
   } as const;
 
   // Mount-triggered reveals run on pure CSS so above-the-fold copy can never
@@ -63,7 +61,7 @@ export default function RevealText({
     return (
       <Wrapper className={className}>
         {parts.map((part, i) => (
-          <span key={i} className="inline-block overflow-hidden align-bottom" style={maskStyle}>
+          <span key={i} className="inline-block" style={maskStyle}>
             <span
               className="reveal-mask-up transform-gpu"
               style={{
@@ -80,27 +78,26 @@ export default function RevealText({
   }
 
   return (
-    <Wrapper className={className}>
+    <Wrapper className={`overflow-visible ${className}`}>
       {parts.map((part, i) => (
-        <span key={i} className="inline-block overflow-hidden align-bottom" style={maskStyle}>
+        <span key={i} className="inline-block overflow-visible" style={maskStyle}>
           <m.span
-            className="inline-block transform-gpu"
-            style={{ transform: 'translate3d(0, 100%, 0)', backfaceVisibility: 'hidden' }}
-            initial={{ y: '100%', opacity: 0 }}
+            className="inline-block transform-gpu overflow-visible"
+            style={{ backfaceVisibility: 'hidden' }}
+            initial={{ y: 6, opacity: 0.85 }}
             whileInView={rest}
-            viewport={{ once: true, margin: '20px' }}
+            viewport={{ once: true, margin: '150px 0px 50px 0px' }}
             transition={{
               duration: dur,
               delay: delay + i * step,
               ease: LUXURY_EASE as any,
-              opacity: { duration: dur * 0.5, delay: delay + i * step, ease: 'linear' },
+              opacity: { duration: 0.25, ease: 'easeOut' },
             }}
           >
             {part}
           </m.span>
         </span>
       ))}
-
     </Wrapper>
   );
 }

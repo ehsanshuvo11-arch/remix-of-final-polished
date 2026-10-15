@@ -26,24 +26,24 @@ export function openQuickBookingModal(detail?: QuickBookingDetail) {
 }
 
 const DEFAULT_DETAILS: QuickBookingDetail = {
-  tierId: 'trial-pack',
-  tierTitle: 'Ad Test Drive Sprint (Stop Budget Leak)',
-  tierTitleBn: 'বিজ্ঞাপন টেস্ট ড্রাইভ স্প্রিন্ট (বিজ্ঞাপনের টাকা অপচয় বন্ধের ট্রায়াল)',
-  price: '৳3,999',
-  priceBn: '৳৩,৯৯৯',
-  delivery: '72-Hour Rapid Delivery',
-  deliveryBn: '৭২ ঘণ্টায় দ্রুত ডেলিভারি',
+  tierId: 'test-drive',
+  tierTitle: 'Test Pack (1x Video Reel + 2x Statics)',
+  tierTitleBn: 'টেস্ট প্যাক (১টি ভিডিও রিল + ২টি ছবির পোস্ট)',
+  price: '৳2,500',
+  priceBn: '৳২,৫০০',
+  delivery: '48–72h Turnaround',
+  deliveryBn: '৪৮–৭২ ঘণ্টায় দ্রুত ডেলিভারি',
   deliverables: [
-    '5 High-Converting Meta Ad Creatives (1:1 Feed & 9:16 Story/Reels)',
-    'Persuasive Bengali & English Ad Copy & Strategic Hooks',
-    '100% Free Unlimited Revisions until fully satisfied',
-    'bKash, Nagad & Local Bank Transfer supported',
+    '1x Scroll-stopping product video reel (9:16)',
+    '2x Authentic & credible product feed posts (1:1)',
+    'Heart-touching Bengali sales copy',
+    'Up to 2 revision rounds included • Delivery in 48–72h',
   ],
   deliverablesBn: [
-    '৫টি হাই-কনভার্টিং মেটা অ্যাড ক্রিয়েটিভ (১:১ ফিড ও ৯:১৬ রিলস)',
-    'অর্ডার বাড়ানোর ধারালো বাংলা ও ইংরেজি সেলস কপিরাইটিং',
-    '১০০% ফ্রি আনলিমিটেড রিভিশন নিশ্চয়তা',
-    'বিকাশ, নগদ ও দেশি ব্যাংক ট্রান্সফারে সহজ পেমেন্ট',
+    '১টি স্ক্রল-থামানো প্রোডাক্ট ভিডিও রিল (9:16)',
+    '২টি আসল প্রোডাক্টের বিশ্বাসযোগ্য ছবির পোস্ট (1:1)',
+    'মন ছুঁয়ে যাওয়া বাংলা সেলস ক্যাপশন',
+    '৪৮–৭২ ঘণ্টায় ডেলিভারি (২ বার পরিবর্তনের সুযোগ)',
   ],
 };
 
@@ -102,7 +102,9 @@ export default function QuickBookingModal() {
 
   // Construct instant WhatsApp deep link
   const waMessage = encodeURIComponent(
-    `Hi POLISHED! I want to confirm the ${details.tierTitle} (${details.price}). My brand is: `
+    isBn
+      ? `হ্যালো POLISHED, আমি "${activeTitle}" (${activePrice}) প্যাকেজটি কনফার্ম করতে চাই। আমার পেজের লিংক: `
+      : `Hi POLISHED! I want to confirm the ${activeTitle} (${activePrice}). My page link: `
   );
   const waUrl = `https://wa.me/8801346288210?text=${waMessage}`;
 
@@ -298,7 +300,7 @@ export default function QuickBookingModal() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-2.5 bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
+                      className="w-full py-2.5 bg-accent hover:bg-accent/90 text-[#f9fafb] font-bold text-xs uppercase tracking-wider rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
                         <span>{isBn ? 'পাঠানো হচ্ছে...' : 'Sending...'}</span>

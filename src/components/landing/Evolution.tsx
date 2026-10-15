@@ -17,48 +17,45 @@ export default function Evolution() {
   const { data } = useSiteSetting<EvolutionContent>('evolution');
 
   const title = isBn
-    ? (data?.title_bn || 'একই প্রোডাক্ট। সম্পূর্ণ ভিন্ন বিক্রির ক্ষমতা।')
-    : (data?.title_en || 'Same Product. 10x More Sales Authority.');
+    ? 'The Evolution.'
+    : 'The Evolution.';
   const subtitle = isBn
-    ? (data?.subtitle_bn || 'বাম পাশের চেনা ক্যানভা ডিজাইন দেখে মানুষ স্ক্রোল করে চলে যায়। ডান পাশের ক্রিয়েটিভ দেখে মানুষ ফুল প্রাইসে অর্ডার করে। স্লাইডারটি টেনে তফাত দেখুন।')
-    : (data?.subtitle_en || 'The left side looks like a cheap flyer people scroll past. The right side commands high trust and full-price orders. Drag to compare.');
-  const label = isBn ? 'বাস্তব তফাত' : 'Visual Proof';
+    ? 'বাম পাশের ছবিটি দেখলে কাস্টমার শুধু দাম জিজ্ঞেস করে হারিয়ে যায়; ডান পাশেরটি দেখলে অর্ডার করে।'
+    : 'The left image makes shoppers ask the price and vanish; the right one makes them order.';
+  const label = 'VISUAL PROOF';
   const beforeLabel = isBn
-    ? (data?.before_label_bn || 'ক্যানভা টেমপ্লেট ❌')
-    : (data?.before_label_en || 'Cheap Canva Ad ❌');
+    ? (data?.before_label_bn || 'সাধারণ পোস্ট ❌')
+    : (data?.before_label_en || 'Cheap Post ❌');
   const afterLabel = isBn
-    ? (data?.after_label_bn || 'POLISHED ক্রিয়েটিভ ✨')
+    ? (data?.after_label_bn || 'আমাদের তৈরি বিজ্ঞাপন ✨')
     : (data?.after_label_en || 'POLISHED Standard ✨');
-  const hint = isBn ? 'টেনে তুলনা দেখুন' : 'Drag slider to compare';
+  const hint = isBn ? 'বাটনটি টেনে তফাত দেখুন' : 'Drag slider to compare';
 
   const beforeSrc = resolveStorageUrl(data?.before_image_url) || beforeImg;
   const afterSrc = resolveStorageUrl(data?.after_image_url) || afterImg;
 
-
-
   return (
     <section id="evolution" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
-      <MotionReveal>
-        {isBn ? (
-          <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+      <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
+        <MotionReveal>
+          <p className="eyebrow-pill-kicker text-accent mb-3.5 font-semibold mx-auto" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             {label}
           </p>
-        ) : (
-          <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-            {label}
+        </MotionReveal>
+        <MotionReveal delay={0.1}>
+          <h2 lang="en" className="section-heading-h2 font-heading font-normal text-primary mb-3 text-center mx-auto">
+            The <span className="italic text-accent">Evolution.</span>
+          </h2>
+        </MotionReveal>
+        <MotionReveal delay={0.2}>
+          <p 
+            className="section-lead-subtitle text-primary/75 mx-auto text-center"
+            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
+          >
+            {subtitle}
           </p>
-        )}
-      </MotionReveal>
-      <MotionReveal delay={0.1}>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-5 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
-          <WordReveal delay={0.1}>{title}</WordReveal>
-        </h2>
-      </MotionReveal>
-      <MotionReveal delay={0.2}>
-        <p className="font-heading italic text-primary/60 text-[15px] md:text-[clamp(16px,1.6vw,20px)] max-w-xl mb-8 md:mb-12">
-          {subtitle}
-        </p>
-      </MotionReveal>
+        </MotionReveal>
+      </div>
 
       <MotionReveal delay={0.15}>
         <div className="mx-auto w-full max-w-[640px]">

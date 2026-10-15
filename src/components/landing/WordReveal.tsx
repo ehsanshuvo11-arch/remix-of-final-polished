@@ -19,37 +19,37 @@ export default function WordReveal({
   as: Tag = 'span',
 }: WordRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '0px 0px 30px 0px', amount: 'some' });
+  const isInView = useInView(ref, { once: true, margin: '150px 0px 50px 0px' });
   const isMobile = useIsMobileDevice();
 
   const words = children.split(' ');
-  const step = isMobile ? 0.012 : 0.018;
+  const step = isMobile ? 0.012 : 0.02;
 
   return (
-    <Tag ref={ref as any} className={className}>
+    <Tag ref={ref as any} className={`inline-block overflow-visible ${className}`}>
       {words.map((word, i) => (
         <span
           key={i}
-          className="inline-block overflow-hidden align-bottom"
+          className="inline-block overflow-visible"
           style={{
-            paddingBottom: '0.18em',
-            marginBottom: '-0.18em',
-            paddingRight: '0.12em',
-            marginRight: '0.18em',
+            marginRight: '0.24em',
+            paddingTop: '0.1em',
+            paddingBottom: '0.16em',
           }}
         >
           <m.span
-            className="inline-block transform-gpu"
+            className="inline-block transform-gpu overflow-visible"
             style={{
               backfaceVisibility: 'hidden',
               transform: 'translateZ(0)',
             }}
-            initial={{ y: '110%', opacity: 0 }}
-            animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
+            initial={{ y: 6, opacity: 0.85 }}
+            animate={isInView ? { y: 0, opacity: 1 } : { y: 6, opacity: 0.85 }}
             transition={{
-              duration: isMobile ? 0.28 : 0.36,
+              duration: isMobile ? 0.25 : 0.35,
               delay: delay + i * step,
               ease: LUXURY_EASE as any,
+              opacity: { duration: 0.2, ease: 'easeOut' },
             }}
           >
             {word}

@@ -25,145 +25,145 @@ export default function StickyStorytelling() {
     {
       id: 'trap',
       num: isBn ? '০১' : '01',
-      tabLabelEn: '1. The Real Trap',
-      tabLabelBn: '১. আসল ফাঁদ',
-      eyebrowEn: 'Where Your Budget Disappears',
-      eyebrowBn: 'বিজ্ঞাপনের টাকা যেভাবে নষ্ট হয়',
-      titleEn: 'Inbox Full of "Price Please?" and Zero Sales',
-      titleBn: 'ইনবক্সে "দাম কত" বলে মানুষ উধাও?',
+      tabLabelEn: "The Shopper's Eyes",
+      tabLabelBn: 'কাস্টমারের চোখ',
+      eyebrowEn: 'Late Night Scrolling',
+      eyebrowBn: 'রাত ১১টায় বিছানায় শুয়ে স্ক্রল',
+      titleEn: 'রাত ১১টায় সস্তা ডিজাইন দেখলে আঙুল থামে না।',
+      titleBn: 'রাত ১১টায় সস্তা ডিজাইন দেখলে আঙুল থামে না।',
       descEn:
-        'Generic discount ads attract bargain hunters who ghost at checkout. Heavy discounts and 35% COD return charges quickly turn ad spend into pure loss.',
+        'When your ad looks like another free Canva template, shoppers instantly scroll past without feeling trust.',
       descBn:
-        'সস্তা টেমপ্লেট বিজ্ঞাপনে শুধু ডিসকাউন্ট শিকারী আসে। বাধ্য হয়ে ছাড় দেওয়া এবং ৩৫% সিওডি রিটার্ন চার্জের পর বিজ্ঞাপনের টাকা লোকসানে পরিণত হয়।',
+        '১০ মিনিটের ফ্রি টেমপ্লেট দেখলেই কাস্টমারের মনে সন্দেহ জাগে—আর ত্বকের জন্য কেউ সন্দেহ নিয়ে কোনো প্রোডাক্ট কেনে না।',
       bulletPoints: [
         {
-          en: 'Recycled Canva templates that buyers scroll past in 0.5 seconds',
-          bn: 'ক্যানভার পরিচিত টেমপ্লেট দেখে কাস্টমার পলকেই স্ক্রোল করে চলে যায়',
+          en: '✓ সবাই একই ক্যানভা টেমপ্লেট ব্যবহার করে।',
+          bn: '✓ সবাই একই ক্যানভা টেমপ্লেট ব্যবহার করে।',
           negative: true,
         },
         {
-          en: 'Zero visual authority—local shoppers assume the product is cheap or fake',
-          bn: 'আস্থার চরম সংকট—ক্রেতারা পণ্যটিকে কমদামী বা সন্দেহজনক মনে করে',
+          en: '✓ বারকোড বা টেকক্সচার না দেখলে রেপ্লিকা মনে হয়।',
+          bn: '✓ বারকোড বা টেক্সচার না দেখলে রেপ্লিকা মনে হয়।',
           negative: true,
         },
         {
-          en: 'Heavy discount traps that destroy profit margins after COD return losses',
-          bn: 'অতিরিক্ত ছাড় দেওয়ার ফাঁদ—যা রিটার্ন চার্জের পর আসল পুঁজি নষ্ট করে',
+          en: '✓ দাম শুনেই কাস্টমার নীরবে ইনবক্স ছাড়ে।',
+          bn: '✓ দাম শুনেই কাস্টমার নীরবে ইনবক্স ছাড়ে।',
           negative: true,
         },
       ],
       showcase: {
-        badgeEn: 'Typical Ad Model',
-        badgeBn: 'সাধারণ বিজ্ঞাপনের চিত্র',
-        cardTitleEn: 'Generic Template Approach',
-        cardTitleBn: 'সাধারণ টেমপ্লেট বিজ্ঞাপন',
-        headlineEn: '"50% MEGA DISCOUNT - BEST WHITENING CREAM"',
-        headlineBn: '"৫০% মেগা ডিসকাউন্ট! সেরা ক্রিম এখনই অর্ডার করুন"',
-        sublineEn: 'Bargain hunters flood comments, but nobody completes checkout.',
-        sublineBn: 'ডিসকাউন্ট চেয়ে ইনবক্স ভরে যাবে, কিন্তু কেউ অর্ডার রিসিভ করবে না।',
+        badgeEn: 'Common Canva Ad',
+        badgeBn: 'সাধারণ ক্যানভা বিজ্ঞাপন',
+        cardTitleEn: 'Cheap Discount Angle',
+        cardTitleBn: 'সস্তা ডিসকাউন্টের পোস্ট',
+        headlineEn: '"50% MEGA DISCOUNT - BEST CREAM"',
+        headlineBn: '"৫০% বিশাল ডিসকাউন্ট! এখনই কিনুন"',
+        sublineEn: 'সস্তা বিজ্ঞাপন কেনার অনুরোধ করে। ভালো বিজ্ঞাপন শুধু নিজের মান দেখায়।',
+        sublineBn: 'সস্তা বিজ্ঞাপন কেনার অনুরোধ করে। ভালো বিজ্ঞাপন শুধু নিজের মান দেখায়।',
         metrics: [
-          { label: isBn ? 'আসল বিক্রি' : 'Net Sales', val: isBn ? 'অস্থির' : 'Unstable', alert: true },
-          { label: isBn ? 'সিওডি রিটার্ন' : 'COD Returns', val: '35% - 45%', alert: true },
-          { label: isBn ? 'দিনশেষে লাভ' : 'Net Margin', val: isBn ? 'পকেট খালি' : 'Bleeding', alert: true },
+          { label: isBn ? 'ইনবক্স সাড়া' : 'Inbox Reply', val: isBn ? 'Price Please?' : 'Ghosting', alert: true },
+          { label: isBn ? 'পার্সেল রিটার্ন' : 'COD Return', val: '35%+', alert: true },
+          { label: isBn ? 'দিনশেষে লাভ' : 'Profit', val: isBn ? 'লোকসান' : 'Bleeding', alert: true },
         ],
-        footerNoteEn: 'Daily ad spend is wasted while customer acquisition costs spiral out of control.',
-        footerNoteBn: 'বিজ্ঞাপনের টাকা অপচয় হয় এবং দিনশেষে ডেলিভারি চার্জে পুঁজি আটকে যায়।',
+        footerNoteEn: 'Every morning Meta charges your card while shoppers vanish after asking the price.',
+        footerNoteBn: 'প্রতিদিন সকালে বিজ্ঞাপনের টাকা ঠিকই কাটা যায়, কিন্তু দিনশেষে কোনো স্থায়ী কাস্টমার থাকে না।',
       },
     },
     {
       id: 'solution',
       num: isBn ? '০২' : '02',
-      tabLabelEn: '2. The Fix',
-      tabLabelBn: '২. আসল সমাধান',
-      eyebrowEn: 'The Conversion Engine',
-      eyebrowBn: 'আমাদের সিগনেচার সিস্টেম',
-      titleEn: 'Visuals That Command Full Price Without Discounts',
-      titleBn: 'এমন ডিজাইন যা ছাড় ছাড়াই ফুল-প্রাইস অর্ডার আনে',
+      tabLabelEn: 'Inbox Silence',
+      tabLabelBn: 'ইনবক্সের নীরবতা',
+      eyebrowEn: 'Value Over Bargaining',
+      eyebrowBn: 'দাম নয়, আসল ভরসা',
+      titleEn: 'কাস্টমার দাম দেখে পালায় না, ভরসা পায় না বলে পালায়।',
+      titleBn: 'কাস্টমার দাম দেখে পালায় না, ভরসা পায় না বলে পালায়।',
       descEn:
-        'We engineer performance creatives built on Bangladeshi consumer psychology—pairing high-status framing with persuasive Bengali copy that removes buying doubts instantly.',
+        'Show the barcode, active ingredients, and true texture right inside the visual so buyers never ask for discounts.',
       descBn:
-        'আমরা বাঙালি ক্রেতার মনস্তত্ত্ব বুঝে এমন পারফরম্যান্স ক্রিয়েটিভ ও মার্জিত বাংলা কপি তৈরি করি, যা প্রথম দেখাতেই পণ্যের খাঁটি মর্যাদা প্রতিষ্ঠা করে এবং কেনার সংশয় দূর করে।',
+        'ভিডিও ও ছবিতে যখন প্রোডাক্টের আসল আভিজাত্য ফুটে ওঠে, কাস্টমার আর ১০০ টাকা ছাড় খোঁজে না—সরাসরি অর্ডার করে।',
       bulletPoints: [
         {
-          en: 'Thumb-stopping 0.8-second visual hooks that eliminate banner blindness',
-          bn: 'প্রথম ০.৮ সেকেন্ডেই কাস্টমারের আঙুলের স্ক্রল থামিয়ে দেওয়ার মতো ভিজ্যুয়াল হুক',
+          en: '✓ প্রথম সেকেন্ডেই ক্রিম বা সিরামের আসল ঘনত্ব দেখানো হয়।',
+          bn: '✓ প্রথম সেকেন্ডেই ক্রিম বা সিরামের আসল ঘনত্ব দেখানো হয়।',
           negative: false,
         },
         {
-          en: 'Culturally persuasive Bengali sales copy that triggers immediate desire',
-          bn: 'মার্জিত বাংলা সেলস কপি যা কাস্টমারের মনে গভীর আস্থা ও কেনার তাগিদ জাগায়',
+          en: '✓ ছবির ভেতরেই থাকে বারকোড ও আসল উপাদানের প্রমাণ।',
+          bn: '✓ ছবির ভেতরেই থাকে বারকোড ও আসল উপাদানের প্রমাণ।',
           negative: false,
         },
         {
-          en: '100% Meta Ad Policy Safe—zero fear of sudden ad account suspensions',
-          bn: '১০০% মেটা পলিসি সুরক্ষিত—অ্যাকাউন্ট রেস্ট্রিকশন বা পলিসি ভায়োলেশনের ভয় নেই',
+          en: '✓ সন্দেহ দূর হলে কাস্টমার আর ডিসকাউন্ট চায় না।',
+          bn: '✓ সন্দেহ দূর হলে কাস্টমার আর ডিসকাউন্ট চায় না।',
           negative: false,
         },
       ],
       showcase: {
-        badgeEn: 'POLISHED Signature Standard',
-        badgeBn: 'POLISHED সিগনেচার স্ট্যান্ডার্ড',
-        cardTitleEn: 'High-Status Visual Craft',
-        cardTitleBn: 'আভিজাত্যপূর্ণ বাংলা ক্রাফট',
+        badgeEn: 'POLISHED Craft',
+        badgeBn: 'নীরব আভিজাত্য',
+        cardTitleEn: 'Signature Polish',
+        cardTitleBn: 'আমাদের কাজের মান',
         headlineEn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন।”',
         headlineBn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন।”',
-        sublineEn: 'High-status framing that justifies a premium price tag instantly.',
-        sublineBn: 'এমন পরিচ্ছন্ন ফিনিশ যা দেখে কাস্টমার পণ্যের কোয়ালিটি নিয়ে নিশ্চিত হয়।',
+        sublineEn: 'সস্তা বিজ্ঞাপন কেনার অনুরোধ করে। ভালো বিজ্ঞাপন শুধু নিজের মান দেখায়।',
+        sublineBn: 'সস্তা বিজ্ঞাপন কেনার অনুরোধ করে। ভালো বিজ্ঞাপন শুধু নিজের মান দেখায়।',
         metrics: [
-          { label: isBn ? 'আস্থার মাত্রা' : 'Perceived Value', val: isBn ? 'হাই-স্ট্যাটাস' : 'High-Status', alert: false },
-          { label: isBn ? 'মেটা পলিসি' : 'Meta Policy', val: '100% Safe', alert: false },
-          { label: isBn ? 'ব্র্যান্ড ভাষা' : 'Brand Voice', val: isBn ? 'মার্জিত বাংলা' : 'Bespoke', alert: false },
+          { label: isBn ? 'ডিজাইন' : 'Design', val: isBn ? '১০০% নিজস্ব' : '100% Bespoke', alert: false },
+          { label: isBn ? 'ভাষা' : 'Language', val: isBn ? 'মার্জিত বাংলা' : 'Refined Bengali', alert: false },
+          { label: isBn ? 'সময়' : 'Delivery', val: isBn ? '৪৮–৭২ ঘণ্টা' : '48–72 Hours', alert: false },
         ],
-        footerNoteEn: 'Engineered specifically for ambitious direct-to-consumer lifestyle brands.',
-        footerNoteBn: 'উচ্চাকাঙ্ক্ষী D2C স্কিনকেয়ার ও লাইফস্টাইল ব্র্যান্ডের জন্য বিশেষভাবে তৈরি।',
+        footerNoteEn: 'Start with 1x Video Reel + 2x Image Ads for ৳2,500 — zero long-term commitments.',
+        footerNoteBn: 'মাত্র ৳২,৫০০ টাকায় ১টি ভিডিও রিল + ২টি ছবির বিজ্ঞাপন দিয়ে আজই শুরু করুন।',
       },
     },
     {
       id: 'payoff',
       num: isBn ? '০৩' : '03',
-      tabLabelEn: '3. Real Profit',
-      tabLabelBn: '৩. আসল লাভ',
-      eyebrowEn: 'Conversion Architecture',
-      eyebrowBn: 'কনভার্শন আর্কিটেকচার',
-      titleEn: 'Optimized CPR & Predictable Profit In Your Bank',
-      titleBn: 'বিজ্ঞাপনের অপচয় বন্ধ এবং সুরক্ষিত নেট প্রফিট',
+      tabLabelEn: "The Rider's Call",
+      tabLabelBn: 'ডেলিভারি ম্যানের কল',
+      eyebrowEn: 'Delivery at the Gate',
+      eyebrowBn: 'গেটে ডেলিভারি ম্যানের ফোন',
+      titleEn: 'ডেলিভারি ম্যান ফোন দিলে কাস্টমারের নম্বর আর বন্ধ থাকে না।',
+      titleBn: 'ডেলিভারি ম্যান ফোন দিলে কাস্টমারের নম্বর আর বন্ধ থাকে না।',
       descEn:
-        'When your creatives look 10x more trustworthy than competitors, Meta delivers cheaper reach and COD returns plummet because customers are proud of what they ordered.',
+        'People who buy from trust wait eagerly for their parcel. COD returns drop by half.',
       descBn:
-        'প্রতিযোগীদের চেয়ে আপনার ডিজাইন যখন বেশি বিশ্বাসযোগ্য দেখায়, মেটা কম খরচে সঠিক ক্রেতা দেয় এবং ডেলিভারি নেওয়ার হার বহুগুণ বেড়ে যায়।',
+        'বিশ্বাস নিয়ে যারা ফুল-প্রাইসে অর্ডার করে, তারা ডেলিভারি ম্যানের ফোন মিস করে না। পার্সেল রিটার্ন অর্ধেকে নেমে আসে।',
       bulletPoints: [
         {
-          en: 'Bespoke direct-response design engineered for local consumer psychology',
-          bn: 'বাঙালি ক্রেতার সাইকোলজি অনুযায়ী তৈরি সম্পূর্ণ কাস্টম ভিজ্যুয়াল আর্কিটেকচার',
+          en: '✓ ভুয়া ছাড়ের লোভে অর্ডার করা মানুষই পার্সেল ফিরিয়ে দেয়।',
+          bn: '✓ ভুয়া ছাড়ের লোভে অর্ডার করা মানুষই পার্সেল ফিরিয়ে দেয়।',
           negative: false,
         },
         {
-          en: 'Higher click-through trust and significantly reduced Cost Per Result (CPR)',
-          bn: 'উচ্চ আস্থার কারণে বিজ্ঞাপনে বেশি ক্লিক এবং কম খরচে কোয়ালিটি কাস্টমার',
+          en: '✓ মান দেখে যারা অর্ডার করে, তারা পার্সেলের অপেক্ষায় থাকে।',
+          bn: '✓ মান দেখে যারা অর্ডার করে, তারা পার্সেলের অপেক্ষায় থাকে।',
           negative: false,
         },
         {
-          en: 'White-label agency & brand partnership with strict 72-hour delivery SLAs',
-          bn: 'ইন-হাউস ডিজাইনারের প্যারা ছাড়া এজেন্সি ও ব্র্যান্ডের জন্য ৭২ ঘণ্টার স্প্রিন্ট',
+          en: '✓ ডিসকাউন্ট ছাড়াই ফুল-প্রাইসে বিক্রি ও কম রিটার্ন।',
+          bn: '✓ ডিসকাউন্ট ছাড়াই ফুল-প্রাইসে বিক্রি ও কম রিটার্ন।',
           negative: false,
         },
       ],
       showcase: {
-        badgeEn: 'Creative Architecture',
-        badgeBn: 'ক্রিয়েটিভ আর্কিটেকচার',
-        cardTitleEn: 'Direct-Response Creative Spec',
-        cardTitleBn: 'ডিরেক্ট-রেসপন্স ক্রিয়েটিভ স্পেক',
-        headlineEn: '100% Bespoke Craft & Clear Message Hierarchy',
-        headlineBn: '১০০% কাস্টম ডিজাইন ও নিখুঁত মেসেজিং হায়ারার্কি',
-        sublineEn: 'Turning daily ad spend from a bleeding expense into predictable profit.',
-        sublineBn: 'বিজ্ঞাপনের ব্যয়কে লোকসান থেকে একটি স্থায়ী লাভের ইঞ্জিনে রূপান্তর করুন।',
+        badgeEn: 'Real Result',
+        badgeBn: 'বাস্তব ফলাফল',
+        cardTitleEn: 'Low Returns & Predictable Margin',
+        cardTitleBn: 'সুরক্ষিত লাভ ও জিরো রিটার্ন ভয়',
+        headlineEn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন।”',
+        headlineBn: '“অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন।”',
+        sublineEn: 'সস্তা বিজ্ঞাপন কেনার অনুরোধ করে। ভালো বিজ্ঞাপন শুধু নিজের মান দেখায়।',
+        sublineBn: 'সস্তা বিজ্ঞাপন কেনার অনুরোধ করে। ভালো বিজ্ঞাপন শুধু নিজের মান দেখায়।',
         metrics: [
-          { label: isBn ? 'ক্রাফট কোয়ালিটি' : 'Craft Quality', val: '100% Bespoke', alert: false },
-          { label: isBn ? 'সেলস কপি' : 'Sales Copy', val: isBn ? 'বাং+EN' : 'Bilingual', alert: false },
-          { label: isBn ? 'ডেলিভারি স্প্রিন্ট' : 'Delivery Sprint', val: isBn ? '৭২ ঘণ্টা' : '72 Hours', alert: false },
+          { label: isBn ? 'অর্ডার কোয়ালিটি' : 'Order Quality', val: isBn ? 'ফুল-প্রাইস' : 'Full-Price', alert: false },
+          { label: isBn ? 'সিওডি রিটার্ন' : 'COD Returns', val: isBn ? 'অর্ধেক হ্রাস' : 'Cut by 50%', alert: false },
+          { label: isBn ? 'ডেলিভারি' : 'Delivery', val: isBn ? '৪৮–৭২ ঘণ্টা' : '48–72h', alert: false },
         ],
-        footerNoteEn: 'Start with 5 conversion creatives for ৳3,999 — zero long-term lock-in.',
-        footerNoteBn: 'কোনো দীর্ঘমেয়াদী চুক্তি ছাড়াই মাত্র ৳৩,৯৯৯-তে ৫টি ক্রিয়েটিভ দিয়ে ট্রায়াল শুরু করুন।',
+        footerNoteEn: 'Stop wasting ad money on cheap Canva templates. Upgrade your creatives in 72h.',
+        footerNoteBn: 'বিজ্ঞাপনের টাকা পানিতে ফেলা বন্ধ করুন। মাত্র ৪৮–৭২ ঘণ্টায় নিজের পেজের ফলাফল পরখ করুন।',
       },
     },
   ];
@@ -204,203 +204,41 @@ export default function StickyStorytelling() {
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-14">
           <span 
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fb923c]/15 text-[#fb923c] border border-[#fb923c]/30 text-[10px] md:text-[11px] font-semibold uppercase mb-2.5 md:mb-4 shadow-sm ${
-              isBn ? 'tracking-normal' : 'tracking-[0.25em]'
-            }`}
+            className="eyebrow-pill-kicker inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fb923c]/15 text-[#fb923c] border border-[#fb923c]/30 mb-2.5 md:mb-4 shadow-sm"
           >
             <Compass className="w-3.5 h-3.5" />
-            <span>{isBn ? 'কেন বেশিরভাগ বিজ্ঞাপন ফেইল করে?' : 'Why Most Meta Ads Bleed Money'}</span>
+            <span>WHY ADS BLEED MONEY</span>
           </span>
 
           <h2 
-            className="text-xl sm:text-3xl md:text-5xl font-heading font-normal text-[#f9fafb] tracking-tight leading-snug mb-2 md:mb-4"
-            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+            className="section-heading-h2 font-heading font-normal text-[#f9fafb] tracking-tight mx-auto mb-2 md:mb-4 text-center"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
-            {isBn ? (
-              <>
-                সমস্যা আপনার প্রোডাক্টে না, সমস্যা <span className="text-[#fb923c] italic font-semibold">বিজ্ঞাপনের চেহারায়</span>
-              </>
-            ) : (
-              <>
-                The Problem Isn't Your Product. It’s <span className="text-[#fb923c] italic font-semibold">How It Looks.</span>
-              </>
-            )}
+            The Problem Is <span className="text-[#fb923c] italic font-normal">How It Looks.</span>
           </h2>
 
           <p 
-            className="text-[#f9fafb]/80 text-[12px] sm:text-[14px] md:text-[16px] leading-relaxed font-light max-w-2xl mx-auto"
-            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+            className="section-lead-subtitle text-[#f9fafb]/85 mx-auto text-center"
+            style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : undefined}
           >
             {isBn 
-              ? 'ভালো প্রোডাক্ট বানিয়েও লাভ নেই, যদি বিজ্ঞাপনে সেটাকে সাধারণ ক্যানভা টেমপ্লেট মনে হয়। মানুষ চোখে বিশ্বাস না পেলে কখনো ফুল প্রাইস দিয়ে অর্ডার করে না।'
-              : 'You can make the finest product in Bangladesh. But if your ad looks like a 10-minute Canva template, people assume it is cheap. Trust drives orders. Not discounts.'
+              ? '১০ মিনিটের ক্যানভা টেমপ্লেট দেখলেই কাস্টমারের মনে সন্দেহ জাগে—আর সন্দেহ নিয়ে কেউ ত্বকের ক্রিম কেনে না।'
+              : 'When an ad looks like a 10-minute Canva template, doubt creeps in—and nobody buys skincare with doubt.'
             }
           </p>
         </div>
 
-        {/* MOBILE VIEW: Premium Segmented Switcher & Breathable Full-Width Card */}
-        <div className="block lg:hidden mb-4">
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.06] border border-white/12 shadow-xl backdrop-blur-md">
-            <div className="text-center mb-3">
-              <span className="text-[10px] font-mono uppercase tracking-[1.5px] text-accent font-semibold">
-                {isBn ? 'বাস্তব তুলনামূলক পার্থক্য' : 'Side-by-Side Reality'}
-              </span>
-              <h3 
-                className="text-base sm:text-lg font-bold text-white mt-1 leading-snug"
-                style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
-              >
-                {isBn ? 'সস্তা ক্যানভা টেমপ্লেট ❌ বনাম POLISHED সিস্টেম ✨' : 'Cheap Canva Ads ❌ vs POLISHED System ✨'}
-              </h3>
-            </div>
-
-            {/* Segmented Switcher Pills */}
-            <div className="grid grid-cols-2 p-1 rounded-xl bg-white/[0.07] border border-white/12 mb-3.5">
-              <button
-                type="button"
-                onClick={() => setMobileComparisonTab('polished')}
-                className={`py-2 px-2.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
-                  mobileComparisonTab === 'polished'
-                    ? 'bg-accent text-accent-foreground shadow-md'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                <span>✨</span>
-                <span>{isBn ? 'POLISHED সিস্টেম' : 'POLISHED System'}</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setMobileComparisonTab('canva')}
-                className={`py-2 px-2.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer ${
-                  mobileComparisonTab === 'canva'
-                    ? 'bg-red-500/30 text-red-100 shadow-md border border-red-500/40'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                <span>❌</span>
-                <span>{isBn ? 'সাধারণ ক্যানভা' : 'Generic Canva'}</span>
-              </button>
-            </div>
-
-            {/* Breathable Full-Width Active Card with Butter-Smooth Framer Motion Transition */}
-            <AnimatePresence mode="wait">
-              {mobileComparisonTab === 'polished' ? (
-                <m.div
-                  key="polished"
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="p-3.5 sm:p-4 rounded-xl bg-accent/15 border border-accent/30 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-bold text-accent uppercase tracking-wider">
-                        {isBn ? 'POLISHED সিস্টেম ✨' : 'POLISHED System ✨'}
-                      </span>
-                      <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-accent/20 text-accent font-semibold">
-                        {isBn ? 'সুপারিশকৃত মডেল' : 'Proven Standard'}
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/95">
-                      <li className="flex items-start gap-2">
-                        <span className="text-accent font-bold mt-0.5">✓</span>
-                        <span>{isBn ? 'আস্থার প্রতীক বাংলা সেলস আর্ট' : 'Authority visual & copy'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-accent font-bold mt-0.5">✓</span>
-                        <span>{isBn ? 'হাই-কনভার্শন আর্কিটেকচার' : 'High-conversion architecture'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-accent font-bold mt-0.5">✓</span>
-                        <span>{isBn ? 'COD রিটার্ন এক ধাক্কায় কমে' : 'Dramatic drop in returns'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-accent font-bold mt-0.5">✓</span>
-                        <span>{isBn ? 'ছাড় ছাড়াই নিশ্চিন্ত অর্ডার' : 'Full-price orders without discounts'}</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="mt-3.5 pt-2 border-t border-accent/20 text-[10px] text-accent font-mono font-bold flex items-center justify-between">
-                    <span>{isBn ? '১০০% কাস্টম ক্রাফট' : '100% Custom Craft'}</span>
-                    <span>•</span>
-                    <span>{isBn ? '৭২ ঘণ্টার স্প্রিন্ট' : '72h Sprint'}</span>
-                  </div>
-                </m.div>
-              ) : (
-                <m.div
-                  key="canva"
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="p-3.5 sm:p-4 rounded-xl bg-red-950/30 border border-red-500/25 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-bold text-red-400 uppercase tracking-wider">
-                        {isBn ? 'সাধারণ ক্যানভা ❌' : 'Generic Canva ❌'}
-                      </span>
-                      <span className="text-[9.5px] font-mono px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-semibold">
-                        {isBn ? 'বাজেট অপচয়' : 'Budget Leak'}
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-[12px] sm:text-[13px] text-white/80">
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-400 font-bold mt-0.5">✕</span>
-                        <span>{isBn ? 'চেনা টেমপ্লেট ও দুর্বল কপি' : 'Recycled template, weak copy'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-400 font-bold mt-0.5">✕</span>
-                        <span>{isBn ? '০.৮x - ১.২x ROAS (লস)' : '0.8x - 1.2x ROAS (Losing money)'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-400 font-bold mt-0.5">✕</span>
-                        <span>{isBn ? '৩৫% - ৪৫% COD রিটার্ন' : '35% - 45% COD returns'}</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-red-400 font-bold mt-0.5">✕</span>
-                        <span>{isBn ? 'ইনবক্সে "দাম কত" বলে উধাও' : 'Inbox "Price please?" ghosting'}</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="mt-3.5 pt-2 border-t border-red-500/15 text-[10px] text-red-300/80 font-mono">
-                    {isBn ? 'ডলার অপচয় ও শূন্য লাভ' : 'Budget Drain & Zero Profit'}
-                  </div>
-                </m.div>
-              )}
-            </AnimatePresence>
-
-            {/* Single High-Converting CTA */}
-            <div className="mt-3.5 pt-3 border-t border-white/10">
-              <m.button
-                type="button"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                onClick={() => openQuickBookingModal({
-                  source: 'Mobile Comparison Card',
-                })}
-                className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md cursor-pointer"
-              >
-                <span>{isBn ? '৳৩,৯৯৯ টেস্ট ড্রাইভে তফাত দেখুন' : 'Experience ৳3,999 Sprint'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </m.button>
-            </div>
-          </div>
-        </div>
-
-        {/* DESKTOP VIEW: Quiet Luxury Interactive Chapter Tabs & Showcase */}
-        <div className="hidden lg:block">
-          <div className="flex justify-center mb-8 md:mb-14 px-1">
-            <div className="grid grid-cols-3 p-1 sm:p-1.5 rounded-2xl bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-lg w-full max-w-md sm:max-w-2xl">
-              {chapters.map((ch, idx) => (
+        {/* UNIFIED INTERACTIVE 3 CHAPTER TABS: Swipeable on Mobile (<768px), 3-col on Desktop */}
+        <div className="flex justify-center mb-6 md:mb-12 px-1">
+          <div className="flex overflow-x-auto whitespace-nowrap scrollbar-none gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-lg w-full max-w-2xl sm:grid sm:grid-cols-3">
+            {chapters.map((ch, idx) => (
               <button
                 key={ch.id}
                 type="button"
                 onClick={() => setActiveTab(idx)}
-                className={`relative py-2 sm:py-2.5 px-2 sm:px-4 rounded-xl text-[11px] sm:text-sm font-medium transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2 text-center ${
+                className={`relative min-h-[40px] py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 text-center shrink-0 sm:shrink cursor-pointer ${
                   activeTab === idx
                     ? 'text-white font-semibold shadow-md'
                     : 'text-white/60 hover:text-white/90 hover:bg-white/[0.04]'
@@ -414,13 +252,7 @@ export default function StickyStorytelling() {
                   />
                 )}
                 <span className="relative z-10 font-mono text-[10px] sm:text-[11px] opacity-80">{ch.num}.</span>
-                <span className="relative z-10 hidden sm:inline">{isBn ? ch.tabLabelBn : ch.tabLabelEn}</span>
-                <span className="relative z-10 inline sm:hidden">
-                  {isBn 
-                    ? (idx === 0 ? 'ভুল ফাঁদ' : idx === 1 ? 'সমাধান' : 'ফলাফল')
-                    : (idx === 0 ? 'The Flaw' : idx === 1 ? 'Solution' : 'Payoff')
-                  }
-                </span>
+                <span className="relative z-10">{isBn ? ch.tabLabelBn : ch.tabLabelEn}</span>
               </button>
             ))}
           </div>
@@ -449,7 +281,7 @@ export default function StickyStorytelling() {
 
                 {/* Chapter Title */}
                 <h3 
-                  className="text-2xl sm:text-3xl md:text-4xl font-heading font-normal text-white leading-snug"
+                  className="card-title-h3 font-heading font-normal text-white leading-snug"
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   {isBn ? current.titleBn : current.titleEn}
@@ -457,7 +289,7 @@ export default function StickyStorytelling() {
 
                 {/* Description */}
                 <p 
-                  className="text-[#f9fafb]/85 text-[14px] sm:text-[15px] leading-relaxed font-light"
+                  className="section-lead-subtitle text-[#f9fafb]/85 leading-relaxed font-light"
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                 >
                   {isBn ? current.descBn : current.descEn}
@@ -466,7 +298,7 @@ export default function StickyStorytelling() {
                 {/* Strategic Proofpoints */}
                 <ul className="space-y-3 pt-2">
                   {current.bulletPoints.map((pt, pIdx) => (
-                    <li key={pIdx} className="flex items-start gap-3 text-[13px] sm:text-[14px] text-white/90">
+                    <li key={pIdx} className="pricing-bullet-text flex items-start gap-3 text-white/90">
                       <div className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 border ${
                         pt.negative
                           ? 'border-white/30 bg-white/10 text-white/70'
@@ -486,12 +318,12 @@ export default function StickyStorytelling() {
                 {/* Action Buttons */}
                 <div className="pt-4 flex flex-wrap items-center gap-4">
                   <a
-                    href="https://wa.me/8801346288210?text=Hi%20POLISHED%2C%20I%20want%20to%20start%20the%20%E0%A7%B33999%20Skincare%20Trial%20Pack!"
+                    href="https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A7%B3%E0%A7%A8%2C%E0%A7%AB%E0%A7%A6%E0%A7%A6%20%E0%A6%9F%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%B0%2072h%20Test%20Drive%20%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%20%E0%A6%A6%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%B6%E0%A7%81%E0%A6%B0%E0%A7%81%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B2%E0%A6%BF%E0%A6%82%E0%A6%95%3A%20"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#fb923c] text-white font-bold text-xs uppercase tracking-wider shadow-[0_8px_25px_rgba(251,146,60,0.35)] hover:bg-[#f97316] transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    <span>{isBn ? '৳৩,৯৯৯ ট্রায়াল শুরু করুন' : 'Start ৳3,999 Trial'}</span>
+                    <span>{isBn ? '৳২,৫০০ টেস্ট প্যাক নিন →' : 'Get ৳2,500 Test Pack →'}</span>
                     <ArrowRight className="w-4 h-4" />
                   </a>
 
@@ -501,7 +333,7 @@ export default function StickyStorytelling() {
                     className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-[#f9fafb] text-xs font-semibold tracking-wider transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
-                    <span>{isBn ? 'ফ্রি ৫-মিনিট ভিজ্যুয়াল অডিট' : 'Free 5-Min Visual Audit'}</span>
+                    <span>{isBn ? 'ফ্রি ৫-মিনিট ভিডিও রিভিউ' : 'Free 5-Min Video Review'}</span>
                   </button>
                 </div>
 
@@ -534,7 +366,7 @@ export default function StickyStorytelling() {
                     <div className="absolute bottom-2 right-2 text-[10px] font-mono text-white/30">✦</div>
 
                     <h4 
-                      className={`text-xl sm:text-2xl md:text-3xl font-heading mb-3 leading-snug ${
+                      className={`text-[18px] md:text-[22px] font-heading mb-3 leading-snug ${
                         activeTab === 0 
                           ? 'text-white/80 line-through opacity-70' 
                           : 'text-[#f9fafb] font-normal italic'
@@ -545,7 +377,7 @@ export default function StickyStorytelling() {
                     </h4>
 
                     <p 
-                      className="text-xs sm:text-sm text-[#f9fafb]/75 font-light max-w-md mx-auto leading-relaxed"
+                      className="card-body-text text-[#f9fafb]/80 font-light max-w-md mx-auto leading-relaxed"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? current.showcase.sublineBn : current.showcase.sublineEn}
@@ -589,7 +421,6 @@ export default function StickyStorytelling() {
             </m.div>
           </AnimatePresence>
 
-        </div>
         </div>
 
       </div>

@@ -142,36 +142,33 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 md:mb-8">
           <div>
             <p 
-              lang={isBn ? 'bn' : 'en'} 
-              className={`text-accent mb-3 font-medium uppercase tracking-[2.5px] ${isBn ? 'text-[13px] tracking-normal font-semibold' : 'text-[11px]'}`} 
-              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
+              className="eyebrow-pill-kicker text-accent mb-3 font-semibold" 
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              {isBn ? 'কৌশলগত রিডিজাইন ও কনসেপ্ট কেস স্টাডি' : (content?.labelEn ?? 'Strategic Concept Sprints & Redesigns')}
+              CURATED WORKS
             </p>
             <h2 
-              lang={isBn ? 'bn' : 'en'} 
-              className={`font-heading font-normal text-primary leading-[1.15] ${
-                isBn ? 'text-[clamp(24px,6vw,34px)] md:text-[clamp(32px,4vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,56px)]'
-              }`}
+              lang="en" 
+              className="section-heading-h2 font-heading font-normal text-primary mb-2"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              {isBn ? (
-                <>বাস্তব ব্র্যান্ডের জন্য তৈরি <em className="italic text-accent">হাই-কনভার্শন আর্কিটেকচার।</em></>
-              ) : (
-                <>
-                  <WordReveal delay={0.1}>Strategic Concept Sprints.</WordReveal>{' '}
-                  <em className="italic text-accent">
-                    <WordReveal delay={0.25}>Crafted For Conversion.</WordReveal>
-                  </em>
-                </>
-              )}
+              Crafted For <span className="italic text-accent">Conversion.</span>
             </h2>
+            <p 
+              className="section-lead-subtitle text-primary/75"
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : { fontFamily: "'DM Sans', sans-serif" }}
+            >
+              {isBn 
+                ? 'মানুষ শুধু প্রোডাক্ট কেনে না—প্রোডাক্টটি মাখার পরের অনুভূতিটা কেনে।'
+                : "Shoppers don't just buy a product—they buy the feeling of using it."}
+            </p>
           </div>
 
           {/* ── Badge: 100% Bespoke Craft ── */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/[0.04] border border-primary/10 self-start md:self-end">
             <Sparkles className="w-3.5 h-3.5 text-accent" />
             <span className="text-xs font-semibold text-primary" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? '১০০% কাস্টম পারফরম্যান্স আর্ট' : '100% Bespoke Performance Art'}
+              {isBn ? '১০০% কাস্টম ক্রাফট' : '100% Handcrafted'}
             </span>
           </div>
         </div>
@@ -385,6 +382,60 @@ function formatRichContent(content: unknown): string {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Hybrid Bangla-English 3 Pillars for Curated Case Studies
+───────────────────────────────────────────────────────────────────────────── */
+
+const CASE_STUDY_PILLARS: Record<
+  string,
+  {
+    pillarEn: string;
+    pillarBn: string;
+    descBn: string;
+    descEn: string;
+  }
+> = {
+  shopivo: {
+    pillarEn: 'The Charm of Your Own Language',
+    pillarBn: 'নিজের ভাষার মায়া',
+    descBn:
+      '"Skin Moisturizing" বললে শুধু মাথা বোঝে; আর "অনুভবে স্নিগ্ধতা, পরিচর্যায় খাঁটি যত্ন" বললে মন ছুঁয়ে যায়।',
+    descEn:
+      'Saying "Skin Moisturizing" speaks only to the mind; "Soft to the touch, pure in care" touches the heart.',
+  },
+  glowcart: {
+    pillarEn: 'The Courage to Stand Before the Mirror',
+    pillarBn: 'আয়নার সামনে দাঁড়ানোর সাহস',
+    descBn:
+      'জটিল কেমিক্যালের নাম না শুনিয়ে আমরা ব্রণমুক্ত হয়ে মানুষের সামনে দাঁড়ানোর আত্মবিশ্বাসের কথা বলেছি।',
+    descEn:
+      'Instead of complex chemicals, we spoke about the confidence of stepping out with clear skin.',
+  },
+  skinology: {
+    pillarEn: 'Not Fear of the Sun, but Joy of Stepping Out',
+    pillarBn: 'রোদের ভয় নয়, বাইরে যাওয়ার আনন্দ',
+    descBn:
+      'ত্বক পুড়ে যাওয়ার ভয় না দেখিয়ে কড়া রোদেও নিশ্চিন্তে বাইরে যাওয়ার স্বাধীনতা তুলে ধরা হয়েছে।',
+    descEn:
+      'Instead of fear of sunburn, we highlighted the carefree freedom of stepping out into the sun.',
+  },
+};
+
+function getPillarForProject(project: PortfolioProject) {
+  const id = project.id || '';
+  const text = `${project.title_en || ''} ${project.title_bn || ''} ${project.category_en || ''}`.toLowerCase();
+  if (id === 'c7de48bc-236f-48f7-bd3f-051db4a23683' || text.includes('shopivo') || text.includes('nivea')) {
+    return CASE_STUDY_PILLARS.shopivo;
+  }
+  if (id === 'f3076c97-2b28-4ee6-af1b-b78f43341b88' || text.includes('glow cart') || text.includes('cosprof')) {
+    return CASE_STUDY_PILLARS.glowcart;
+  }
+  if (id === '825cc2b0-c8fb-4b79-a5b5-35de0dd99003' || text.includes('skinology') || text.includes('neutrogena')) {
+    return CASE_STUDY_PILLARS.skinology;
+  }
+  return null;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Individual Project Card (Optimized for both Visual & Impact modes)
 ───────────────────────────────────────────────────────────────────────────── */
 
@@ -459,13 +510,20 @@ function ProjectCard({
       ? resolveStorageUrl(mockupUrls[0] as string)
       : '/portfolio/lumin-botanical.jpg';
 
+  const pillar = useMemo(() => getPillarForProject(project), [project]);
+
   const displayHook = useMemo(() => {
+    if (pillar) {
+      const pTitle = isBn ? pillar.pillarBn : pillar.pillarEn;
+      const pDesc = isBn ? pillar.descBn : pillar.descEn;
+      return `<p class="font-semibold text-accent text-[12px] mb-1">${pTitle}</p><p class="card-body-text text-foreground/80 text-[13.5px] leading-relaxed">${pDesc}</p>`;
+    }
     if (hook && hook.trim()) return formatRichContent(hook);
     if (!caseStudy || !caseStudy.trim()) return '';
     const stripped = caseStudy.replace(/<[^>]*>?/gm, '').trim();
     if (!stripped) return '';
-    return `<p>${stripped.slice(0, 150)}${stripped.length > 150 ? '...' : ''}</p>`;
-  }, [hook, caseStudy]);
+    return `<p class="card-body-text text-[13.5px]">${stripped.slice(0, 150)}${stripped.length > 150 ? '...' : ''}</p>`;
+  }, [pillar, isBn, hook, caseStudy]);
 
   return (
     <m.article
@@ -517,19 +575,34 @@ function ProjectCard({
         {/* Project Title */}
         <h3 
           onClick={onOpenCaseStudy}
-          className="mt-4 font-heading text-lg sm:text-xl md:text-2xl text-primary font-normal leading-snug tracking-tight cursor-pointer hover:text-accent transition-colors"
+          className="card-title-h3 mt-4 text-primary font-normal leading-snug tracking-tight cursor-pointer hover:text-accent transition-colors"
           style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
         >
           {title}
         </h3>
 
-        {/* Hook / Teaser text */}
-        {displayHook && (
+        {/* Emotional Pillar Subtitle & 1-Line Copy */}
+        {pillar ? (
+          <div className="mt-2 space-y-1">
+            <span 
+              className="text-[12px] font-semibold text-accent block tracking-wide"
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+            >
+              ✦ {isBn ? pillar.pillarBn : pillar.pillarEn}
+            </span>
+            <p 
+              className="card-body-text text-foreground/80 leading-relaxed font-light"
+              style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.6 } : undefined}
+            >
+              {isBn ? pillar.descBn : pillar.descEn}
+            </p>
+          </div>
+        ) : displayHook ? (
           <div
-            className="mt-2 text-xs sm:text-sm text-foreground/75 leading-relaxed line-clamp-2 prose prose-sm max-w-none [&_p]:my-0"
+            className="mt-2 text-xs sm:text-[13.5px] text-foreground/75 leading-relaxed line-clamp-3 prose prose-sm max-w-none [&_p]:my-0"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(displayHook) }}
           />
-        )}
+        ) : null}
       </div>
 
       {/* Action Row */}
@@ -727,8 +800,12 @@ function CaseStudyDrawer({
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose, goPrev, goNext]);
 
+  const pillar = useMemo(() => getPillarForProject(project), [project]);
+
   const whatsappMessage = encodeURIComponent(
-    `Hi POLISHED, I am reviewing your case study for "${project.title_en || project.title_bn}" and would like to build a similar high-converting design sprint for my brand.`
+    isBn
+      ? `হ্যালো POLISHED, আমি "${project.title_bn || project.title_en}" কেস স্টাডি দেখে মেসেজ দিচ্ছি। আমার ব্র্যান্ডের জন্য ৳২,৫০০ টাকার 72h Test Drive প্যাক দিয়ে শুরু করতে চাই। আমার পেজের লিংক: `
+      : `Hi POLISHED, I am reviewing your case study for "${project.title_en || project.title_bn}" and would like to start the ৳2,500 Test Drive for my brand. My page link: `
   );
 
   return createPortal(
@@ -899,13 +976,24 @@ function CaseStudyDrawer({
             <div className="lg:col-span-6 p-5 sm:p-7 space-y-5 flex flex-col justify-between">
               <div className="space-y-4">
                 {/* Strategic Hook */}
-                {hook && (
+                {(pillar || hook) && (
                   <div className="p-3.5 rounded-xl bg-accent/10 border-l-4 border-accent text-primary">
-                    <div 
-                      className="text-xs sm:text-sm font-medium leading-relaxed prose prose-sm max-w-none text-primary [&_p]:my-1"
-                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
-                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatRichContent(hook)) }}
-                    />
+                    {pillar ? (
+                      <div>
+                        <p className="text-xs font-bold text-accent mb-1" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+                          {isBn ? pillar.pillarBn : pillar.pillarEn}
+                        </p>
+                        <p className="text-xs sm:text-sm font-medium leading-relaxed text-primary" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
+                          {isBn ? pillar.descBn : pillar.descEn}
+                        </p>
+                      </div>
+                    ) : (
+                      <div 
+                        className="text-xs sm:text-sm font-medium leading-relaxed prose prose-sm max-w-none text-primary [&_p]:my-1"
+                        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(formatRichContent(hook)) }}
+                      />
+                    )}
                   </div>
                 )}
 
@@ -996,17 +1084,17 @@ function CaseStudyDrawer({
                   onClick={() => {
                     onClose();
                     openQuickBookingModal({
-                      tierId: 'trial-pack',
-                      tierTitle: 'No-Risk Test Drive Sprint',
-                      tierTitleBn: 'নো-রিস্ক টেস্ট ড্রাইভ স্প্রিন্ট',
-                      price: '৳3,999',
-                      priceBn: '৳৩,৯৯৯',
+                      tierId: 'test-drive',
+                      tierTitle: 'The 72h Test Drive (টেস্ট প্যাক)',
+                      tierTitleBn: '৭২ ঘণ্টা টেস্ট ড্রাইভ (টেস্ট প্যাক)',
+                      price: '৳2,500',
+                      priceBn: '৳২,৫০০',
                       source: `Case Study: ${project.title_en || project.title_bn}`,
                     });
                   }}
                   className="w-full sm:flex-1 h-10 rounded-xl bg-accent hover:bg-accent/90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
                 >
-                  <span>{isBn ? '৳৩,৯৯৯ স্প্রিন্ট শুরু' : 'Book ৳3,999 Sprint'}</span>
+                  <span>{isBn ? '৳২,৫০০ টেস্ট ড্রাইভ শুরু' : 'Book ৳2,500 Test Drive'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

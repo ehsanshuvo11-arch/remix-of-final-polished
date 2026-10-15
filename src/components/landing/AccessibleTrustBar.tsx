@@ -9,31 +9,31 @@ export default function AccessibleTrustBar() {
   const pillars = [
     {
       icon: Zap,
-      titleBn: 'বিজ্ঞাপন টেস্ট ড্রাইভ',
-      titleEn: 'No-Risk Test Drive',
-      subBn: '৭২ ঘণ্টায় ৫টি ব্যানার ডিজাইন',
-      subEn: '5 Bespoke Creatives in 72h',
+      titleBn: '৭২ ঘণ্টার টেস্ট প্যাক',
+      titleEn: '72h Test Pack',
+      subBn: '১টি ভিডিও রিল + ২টি ইমেজ অ্যাড',
+      subEn: '1 Video Reel + 2 Image Ads',
     },
     {
       icon: CreditCard,
-      titleBn: 'বিকাশ ও নগদ সাপোর্ট',
-      titleEn: 'bKash & Nagad Accepted',
-      subBn: 'ডলার কার্ড ছাড়াই সহজ পেমেন্ট',
+      titleBn: 'বিকাশ ও নগদ',
+      titleEn: 'bKash & Nagad',
+      subBn: 'আন্তর্জাতিক কার্ডের প্রয়োজন নেই',
       subEn: 'No international card needed',
     },
     {
       icon: MessageCircle,
       titleBn: 'সরাসরি হোয়াটসঅ্যাপ',
       titleEn: 'Direct WhatsApp',
-      subBn: 'কোনো লম্বা মিটিং নেই, সরাসরি চ্যাট',
-      subEn: 'Zero boring meetings. Instant chat',
+      subBn: 'জিরো মিটিং, সরাসরি চ্যাট',
+      subEn: 'Zero meetings. Instant chat',
     },
     {
       icon: ShieldCheck,
-      titleBn: 'ফ্রি রিভিশন গ্যারান্টি',
-      titleEn: 'Free Revision Guarantee',
-      subBn: 'মনমতো না হওয়া পর্যন্ত ঠিক করে দেব',
-      subEn: 'We adjust until you are happy',
+      titleBn: '২টি ফ্রি রিভিশন',
+      titleEn: '2 Free Revisions',
+      subBn: 'যতক্ষণ না দেখতে নিখুঁত হয়',
+      subEn: 'Refined until it looks right',
     },
   ];
 
@@ -48,22 +48,22 @@ export default function AccessibleTrustBar() {
               return (
                 <div 
                   key={i} 
-                  className={`flex flex-col sm:flex-row sm:items-center items-start gap-2 sm:gap-2.5 bg-white/[0.05] hover:bg-white/[0.08] md:bg-transparent p-3 sm:p-3.5 md:p-0 rounded-2xl md:rounded-none border border-white/12 md:border-none transition-colors duration-300 ${
+                  className={`flex flex-col sm:flex-row sm:items-center items-start gap-2 sm:gap-2.5 bg-white/[0.04] hover:bg-white/[0.07] md:bg-transparent p-2.5 sm:p-3.5 md:p-0 rounded-xl md:rounded-none border border-white/10 md:border-none transition-colors duration-300 ${
                     i > 0 ? 'md:pl-6' : ''
                   }`}
                 >
-                  <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center shrink-0 shadow-sm">
-                    <Icon className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center shrink-0 shadow-sm">
+                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 
-                      className="font-bold text-[11.5px] sm:text-xs md:text-sm text-white tracking-tight leading-snug"
+                      className="font-bold text-[11px] sm:text-xs md:text-sm text-white tracking-tight leading-snug"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? pillar.titleBn : pillar.titleEn}
                     </h3>
                     <p 
-                      className="text-[10px] sm:text-[10.5px] md:text-xs text-white/70 font-sans leading-snug mt-0.5"
+                      className="text-[9.5px] sm:text-[10.5px] md:text-xs text-white/70 font-sans leading-snug mt-0.5"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? pillar.subBn : pillar.subEn}

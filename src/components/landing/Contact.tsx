@@ -1,7 +1,6 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import MotionReveal from '@/components/landing/MotionReveal';
 import WordReveal from '@/components/landing/WordReveal';
-import LeadForm from '@/components/landing/LeadForm';
 import type { ContactContent } from '@/types/database';
 
 interface ContactProps {
@@ -78,38 +77,38 @@ export default function Contact({ contact }: ContactProps) {
         <div>
           <MotionReveal>
             {isBn ? (
-              <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-3 md:mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+              <p lang="bn" className="eyebrow-pill-kicker text-accent mb-3 md:mb-4 font-medium" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
                 সরাসরি যোগাযোগ
               </p>
             ) : (
-              <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-3 md:mb-4 font-medium">
+              <p lang="en" style={enFont} className="eyebrow-pill-kicker text-accent mb-3 md:mb-4 font-medium">
                 {c.sectionLabelEn ?? 'Get In Touch'}
               </p>
             )}
           </MotionReveal>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-4 md:mb-7 leading-[1.15] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className="section-heading-h2 font-heading font-normal text-primary-foreground mb-4 md:mb-6">
             {isBn ? (
               <>
-                <WordReveal delay={0.1}>বিজ্ঞাপনে টাকা অপচয় বন্ধ করতে প্রস্তুত?</WordReveal>
+                <WordReveal delay={0.1}>আপনার প্রোডাক্টটি ভালো। এবার বিজ্ঞাপনটিকেও</WordReveal>
                 <br />
-                <em className="italic text-accent">
-                  <WordReveal delay={0.25}>সরাসরি কথা বলুন।</WordReveal>
+                <em className="hero-accent-line not-italic text-accent">
+                  <WordReveal delay={0.25}>প্রোডাক্টের মতোই বিশ্বাসযোগ্য করে তুলুন।</WordReveal>
                 </em>
               </>
             ) : (
               <>
                 <WordReveal delay={0.1}>{line1}</WordReveal>
                 <br />
-                <em className="italic text-accent">
+                <em className="hero-accent-line not-italic text-accent">
                   <WordReveal delay={0.25}>{line2}</WordReveal>
                 </em>
               </>
             )}
           </h2>
           <MotionReveal delay={0.15}>
-            <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : enFont} className={`${isBn ? 'text-[13px] md:text-[14px]' : 'text-[15px]'} leading-[1.8] text-primary-foreground/60 mb-6 md:mb-10`}>
+            <p lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : { ...enFont, lineHeight: 1.75 }} className="section-lead-subtitle text-primary-foreground/80 mb-6 md:mb-10">
               {isBn
-                ? (c.descBn ?? 'প্রতিদিন বিজ্ঞাপনে টাকা ঢালছেন, কিন্তু ইনবক্সে এসে মানুষ দাম জিজ্ঞেস করে উধাও? আর নয়। আপনার ব্র্যান্ডের আসল সেলস নিশ্চিত করতে চলুন সরাসরি কথা বলি। প্রতি সপ্তাহে আমরা সর্বোচ্চ ৩টি ব্র্যান্ড নিয়ে কাজ করি।')
+                ? 'নিজের মুখের ত্বকে কেউ সন্দেহ নিয়ে সস্তা জিনিস মাখে না। আপনার বিজ্ঞাপনের ছবি ও ভিডিও দেখেই যখন কাস্টমার বোঝে প্রোডাক্টটি আসল—তখন সে পুরো দাম দিয়েই অর্ডার করে।'
                 : (c.descEn ?? "Tired of spending money on Meta ads only to get ghosted in your inbox? We craft creatives and hooks that make shoppers order at full price. We accept strictly 3 brand sprints per week.")}
             </p>
           </MotionReveal>
@@ -149,7 +148,7 @@ export default function Contact({ contact }: ContactProps) {
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? '২৪ ঘণ্টার মধ্যে আমরা আপনার বর্তমান বিজ্ঞাপন ও ফেসবুক পেজ যাচাই করে কোথায় সেলস লিক হচ্ছে বের করব।'
+                      ? '২৪ ঘণ্টার মধ্যে আমরা আপনার বর্তমান বিজ্ঞাপন ও ফেসবুক পেজ দেখে কোথায় সেলস আটকাচ্ছে তা বের করব।'
                       : 'Within 24 hours, our creative director reviews your live ads to pinpoint why shoppers bounce.'}
                   </p>
                 </div>
@@ -160,11 +159,11 @@ export default function Contact({ contact }: ContactProps) {
                 </span>
                 <div>
                   <p className="text-xs font-medium text-primary-foreground">
-                    {isBn ? '৫-মিনিটের ভিডিও টিয়ারডাউন' : '5-Minute Video Teardown'}
+                    {isBn ? '৫-মিনিটের ভিডিও রিভিউ' : '5-Minute Video Review'}
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? 'হোয়াটসঅ্যাপে ৫ মিনিটের একটি কাস্টম ভিডিও পাবেন, যেখানে দেখিয়ে দেওয়া হবে কোন কোন ডিজাইনে বিজ্ঞাপনের টাকা নষ্ট হচ্ছে।'
+                      ? 'হোয়াটসঅ্যাপে ৫ মিনিটের একটি কাস্টম ভিডিও পাবেন, যেখানে দেখিয়ে দেওয়া হবে কেন কাস্টমার দাম শুনে চলে যাচ্ছে।'
                       : 'A private 5-minute video sent to your WhatsApp breaking down exact drop-off points.'}
                   </p>
                 </div>
@@ -175,12 +174,12 @@ export default function Contact({ contact }: ContactProps) {
                 </span>
                 <div>
                   <p className="text-xs font-medium text-primary-foreground">
-                    {isBn ? '৭২ ঘণ্টার টেস্ট ড্রাইভ স্প্রিন্ট' : '72-Hour Sprint Delivery'}
+                    {isBn ? '৪৮–৭২ ঘণ্টায় টেস্ট প্যাক ডেলিভারি' : '48–72h Test Pack Delivery'}
                   </p>
                   <p className="text-[11px] text-primary-foreground/50 leading-relaxed">
                     {isBn
-                      ? 'কোনো দীর্ঘ চুক্তি ছাড়া ৫টি হাই-কোয়ালিটি ডিজাইন আর ধারালো সেলস কপি সরাসরি আপনার হাতে।'
-                      : '5 custom product designs and punchy copy, 100% ready to launch with zero guesswork.'}
+                      ? '১টি ভিডিও রিল, ২টি আসল প্রোডাক্টের ছবির পোস্ট ও মন ছুঁয়ে যাওয়া বাংলা ক্যাপশন রেডি।'
+                      : '1x video reel and 2x authentic product static posts with heart-touching Bengali copy, ready to launch.'}
                   </p>
                 </div>
               </div>
@@ -189,7 +188,86 @@ export default function Contact({ contact }: ContactProps) {
         </div>
 
         <MotionReveal delay={0.2}>
-          <LeadForm isBn={isBn} />
+          <div className="rounded-2xl sm:rounded-3xl bg-white/[0.05] border border-white/15 p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden flex flex-col justify-between">
+            {/* Ambient subtle glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/15 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20" />
+
+            <div className="relative z-10">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 border border-accent/40 text-accent text-[10.5px] font-bold uppercase tracking-wider mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <span>{isBn ? 'সরাসরি হোয়াটসঅ্যাপে কথা • কোনো ফর্ম পূরণের ঝামেলা নেই' : 'DIRECT WHATSAPP ONBOARDING • ZERO MEETINGS'}</span>
+              </div>
+
+              {/* Headline */}
+              <h3 
+                className="text-xl sm:text-2xl md:text-[26px] font-bold text-white leading-snug mb-3"
+                style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+              >
+                {isBn ? '"আপনার পেজের জন্য কোনটা দিয়ে শুরু করতে চান?"' : '"Which package would you like to start with?"'}
+              </h3>
+
+              {/* Sub-copy */}
+              <p 
+                className="text-xs sm:text-[13px] text-white/70 leading-relaxed mb-6"
+                style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+              >
+                "কোনো ফর্ম পূরণের দরকার নেই। নিচের যেকোনো একটি অপশনে ক্লিক করলেই সরাসরি আমাদের হোয়াটসঅ্যাপে (+8801346288210) কথা শুরু হবে:"
+              </p>
+
+              {/* 3 Direct Action Buttons */}
+              <div className="space-y-3.5">
+                {/* Button 1: ⚡ ১. টেস্ট প্যাক নিন (৳২,৫০০ • ১টি ভিডিও + ২টি ছবি) */}
+                <a
+                  href="https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A7%B3%E0%A7%A8%2C%E0%A7%AB%E0%A7%A6%E0%A7%A6%20%E0%A6%9F%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%B0%20%E0%A6%9F%E0%A7%87%E0%A6%B8%E0%A7%8D%E0%A6%9F%20%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%20%E0%A6%A6%E0%A6%BF%E0%A7%9F%E0%A7%87%20%E0%A6%B6%E0%A7%81%E0%A6%B0%E0%A7%81%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B2%E0%A6%BF%E0%A6%82%E0%A6%95%3A%20"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-4 px-4 rounded-xl bg-[#fb923c] hover:bg-[#fb923c]/90 text-[#f9fafb] font-bold text-xs sm:text-[13px] flex items-center justify-between shadow-lg hover:shadow-orange-500/25 transition-all group active:scale-[0.98]"
+                  style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>⚡ ১. টেস্ট প্যাক নিন (৳২,৫০০ • ১টি ভিডিও + ২টি ছবি)</span>
+                  </span>
+                  <span className="font-sans text-base transition-transform group-hover:translate-x-1">→</span>
+                </a>
+
+                {/* Button 2: 🚀 ২. মাসিক পার্টনার হোন (৳৯,৯৯৯/মাস • ৮টি বিজ্ঞাপন + কম্বো সেট) */}
+                <a
+                  href="https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A7%B3%E0%A7%AF%2C%E0%A7%AF%E0%A7%AF%E0%A7%AF%2F%E0%A6%AE%E0%A6%BE%E0%A6%B8%20%E0%A6%AE%E0%A6%BE%E0%A6%B8%E0%A6%BF%E0%A6%95%20%E0%A6%AA%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%9F%E0%A6%A8%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%E0%A7%87%E0%A6%9C%E0%A7%87%20%E0%A6%AF%E0%A7%81%E0%A6%95%E0%A7%8D%E0%A6%A4%20%E0%A6%B9%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B2%E0%A6%BF%E0%A6%82%E0%A6%95%3A%20"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold text-xs sm:text-[13px] flex items-center justify-between transition-all group active:scale-[0.98]"
+                  style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>🚀 ২. মাসিক পার্টনার হোন (৳৯,৯৯৯/মাস • ৮টি বিজ্ঞাপন + কম্বো সেট)</span>
+                  </span>
+                  <span className="font-sans text-base transition-transform group-hover:translate-x-1">→</span>
+                </a>
+
+                {/* Button 3: 🎥 আপনার পেজের ফ্রি ৫-মিনিট ভিডিও রিভিউ নিন */}
+                <a
+                  href="https://wa.me/8801346288210?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%20POLISHED%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20Skincare%2FBeauty%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B0%E0%A6%BE%E0%A6%A8%E0%A6%BF%E0%A6%82%20%E0%A6%85%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%A1%E0%A7%87%E0%A6%B0%20%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF%20Free%205-Min%20Video%20Audit%20%E0%A6%AA%E0%A7%87%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%87%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%B2%E0%A6%BF%E0%A6%82%E0%A6%95%3A%20"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 px-4 rounded-xl border border-[#fb923c]/50 text-[#fb923c] hover:bg-[#fb923c]/10 font-semibold text-xs sm:text-[13px] flex items-center justify-between transition-all group active:scale-[0.98]"
+                  style={{ fontFamily: "'Noto Serif Bengali', serif" }}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>🎥 ৩. আপনার পেজের ফ্রি ৫-মিনিট ভিডিও রিভিউ নিন</span>
+                  </span>
+                  <span className="font-sans text-base transition-transform group-hover:translate-x-1">→</span>
+                </a>
+              </div>
+
+              {/* Bottom Reassurance Micro-Copy */}
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+                <span>⚡ গড় রেসপন্স টাইম: ৫–১০ মিনিট</span>
+                <span>💳 বিকাশ, নগদ ও ব্যাংক পেমেন্ট</span>
+              </div>
+            </div>
+          </div>
         </MotionReveal>
       </div>
     </div>

@@ -79,28 +79,25 @@ export default function RoasCalculator() {
         <MotionReveal>
           <div className="text-center mb-8 sm:mb-12">
             <span 
-              className="inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full text-[11px] font-bold uppercase tracking-[0.2em] mb-3" 
+              className="eyebrow-pill-kicker inline-block px-3 py-1 bg-[#fb923c]/10 text-[#fb923c] border border-[#fb923c]/20 rounded-full font-bold uppercase mb-3" 
               style={{ fontFamily: fontBody }}
             >
-              {isBn ? "বিজ্ঞাপনের অপচয় নির্ণয়" : "Revenue Diagnostic"}
+              REVENUE DIAGNOSTIC
             </span>
             <h2 
-              className="text-[#1e3a8a] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-3 leading-tight" 
-              style={{ fontFamily: fontPrimary }}
+              lang="en"
+              className="section-heading-h2 text-[#1e3a8a] font-normal mx-auto mb-3 text-center" 
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              {isBn ? (
-                <>দুর্বল ডিজাইনের কারণে বিজ্ঞাপনে কত টাকা <span className="text-[#fb923c] font-bold">অপচয়</span> হচ্ছে?</>
-              ) : (
-                <>How Much Ad Spend Is Leaking From <span className="text-[#fb923c] font-bold">Weak Creatives</span>?</>
-              )}
+              How Much Ad Spend Is <span className="text-[#fb923c] italic font-normal">Leaking?</span>
             </h2>
             <p 
-              className="text-[#1e3a8a]/70 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed" 
-              style={{ fontFamily: fontBody }}
+              className="section-lead-subtitle text-[#1e3a8a]/75 mx-auto text-center" 
+              style={{ fontFamily: isBn ? "'Noto Serif Bengali', serif" : fontBody, lineHeight: isBn ? 1.85 : 1.7 }}
             >
               {isBn 
-                ? "আপনার মাসিক বাজেট ও ডেটা বসিয়ে দেখুন—সস্তা টেমপ্লেটের কারণে প্রতি মাসে কত নিশ্চিত সেলস হাতছাড়া হচ্ছে।"
-                : "Adjust your metrics to calculate how much sales revenue is slipping away every month from low-trust, scroll-past visuals."}
+                ? "যারা শুধু দাম শুনে চলে যাচ্ছিল, তাদের মধ্যে ১০০ জনে মাত্র ২ জনও যদি ভরসা পেয়ে অর্ডার করে:"
+                : "If just 2 more shoppers out of 100 buy with trust instead of walking away:"}
             </p>
           </div>
         </MotionReveal>
@@ -133,7 +130,7 @@ export default function RoasCalculator() {
                     className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
                     style={{ fontFamily: fontBody }}
                   >
-                    {isBn ? "মাসিক অ্যাড বাজেট" : "Monthly Ad Spend"}
+                    {isBn ? "মাসিক ফেসবুক অ্যাড খরচ" : "Monthly Facebook Ad Spend"}
                   </label>
                   <div className="text-right">
                     <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
@@ -150,7 +147,7 @@ export default function RoasCalculator() {
                   value={adSpend} 
                   onChange={(e) => setAdSpend(Number(e.target.value))}
                   className="w-full h-2 bg-gray-100 hover:bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fb923c] touch-pan-x transition-colors"
-                  aria-label="Monthly Ad Spend"
+                  aria-label="Monthly Facebook Ad Spend"
                 />
               </div>
 
@@ -161,7 +158,7 @@ export default function RoasCalculator() {
                     className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
                     style={{ fontFamily: fontBody }}
                   >
-                    {isBn ? "গড় ক্লিক খরচ (CPC)" : "Avg. Cost Per Click (CPC)"}
+                    {isBn ? "প্রতি ক্লিকের খরচ (CPC)" : "Cost Per Click (CPC)"}
                   </label>
                   <div className="text-right">
                     <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
@@ -178,7 +175,7 @@ export default function RoasCalculator() {
                   value={cpc} 
                   onChange={(e) => setCpc(Number(e.target.value))}
                   className="w-full h-2 bg-gray-100 hover:bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#fb923c] touch-pan-x transition-colors"
-                  aria-label="Average CPC"
+                  aria-label="Cost Per Click"
                 />
               </div>
 
@@ -189,7 +186,7 @@ export default function RoasCalculator() {
                     className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
                     style={{ fontFamily: fontBody }}
                   >
-                    {isBn ? "কনভার্শন রেট (CR)" : "Conversion Rate"}
+                    {isBn ? "১০০ জনে কতজন অর্ডার করে (%)" : "Conversion Rate (%)"}
                   </label>
                   <div className="text-right">
                     <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
@@ -216,7 +213,7 @@ export default function RoasCalculator() {
                     className="text-xs sm:text-sm font-semibold text-[#1e3a8a] tracking-wide"
                     style={{ fontFamily: fontBody }}
                   >
-                    {isBn ? "গড় অর্ডার সাইজ (AOV)" : "Average Order Value"}
+                    {isBn ? "প্রতি অর্ডারের গড় মূল্য" : "Average Order Value"}
                   </label>
                   <div className="text-right">
                     <span className="text-base sm:text-lg font-bold text-[#1e3a8a] font-mono">
@@ -297,7 +294,7 @@ export default function RoasCalculator() {
                   <span>{isBn ? "বিজ্ঞাপনে প্রতি মাসে অপচয়" : "Revenue Leaking Monthly"}</span>
                 </div>
 
-                <div className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none mb-2 font-mono">
+                <div className="text-[2rem] sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none mb-2 font-mono">
                   ৳{formatCurrency(revenueLost)}{' '}
                   <span className="text-base sm:text-lg text-[#fb923c] font-bold">
                     {isBn ? "/মাস" : "/mo"}
@@ -313,9 +310,23 @@ export default function RoasCalculator() {
 
               {/* BOTTOM: Direct Actions */}
               <div className="flex flex-col gap-2.5 pt-2">
+                {/* Loss-Prevention Pitch in Noto Serif Bengali */}
+                <div className="p-3.5 rounded-xl bg-white/[0.06] border border-white/10 text-center">
+                  <p 
+                    className="text-[13.5px] sm:text-[14px] text-[#fb923c] leading-relaxed font-normal italic tracking-wide"
+                    style={{ fontFamily: isBn ? "'Noto Serif Bengali', serif" : undefined }}
+                  >
+                    {isBn
+                      ? '"ফেসবুক প্রতিদিন ঠিকই কার্ড থেকে টাকা কাটছে। কিন্তু ছবিটা দেখে আসল মনে না হলে পুরো টাকাটাই জলে যাচ্ছে।"'
+                      : '"Facebook deducts card charges every day. But if the creative doesn\'t feel authentic, every single penny is wasted."'}
+                  </p>
+                </div>
+
                 <m.a
                   href={`https://wa.me/8801346288210?text=${encodeURIComponent(
-                    `Hi POLISHED, I ran the numbers. Losing around ৳${formatCurrency(revenueLost)}/mo on weak ads with a ৳${formatCurrency(adSpend)} budget. I want to test the ৳3,999 sprint to stop the leak!`
+                    isBn
+                      ? `হ্যালো POLISHED, আমি ক্যালকুলেটরে হিসাব করলাম—আমার ৳${formatCurrency(adSpend)} অ্যাড বাজেটে প্রতি মাসে প্রায় ৳${formatCurrency(revenueLost)} লস হচ্ছে। এই অপচয় বন্ধ করতে আমি ৳২,৫০০ টাকার টেস্ট প্যাক দিয়ে শুরু করতে চাই। আমার পেজের লিংক: `
+                      : `Hi POLISHED, I ran the numbers. Losing around ৳${formatCurrency(revenueLost)}/mo on weak ads with a ৳${formatCurrency(adSpend)} budget. I want to test the ৳2,500 Test Pack to stop the leak! My page link: `
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -325,7 +336,7 @@ export default function RoasCalculator() {
                   className="w-full inline-flex items-center justify-center gap-2 bg-[#fb923c] hover:bg-[#fb923c]/95 text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-5 py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/25 cursor-pointer btn-shimmer"
                   style={{ fontFamily: fontBody }}
                 >
-                  <span>{isBn ? "৳৩,৯৯৯ স্প্রিন্টে অপচয় বন্ধ করুন" : "Stop The Leak With ৳3,999 Sprint"}</span>
+                  <span>{isBn ? "৳২,৫০০ টেস্ট প্যাক দিয়ে শুরু করুন →" : "START WITH ৳২,৫০০ TEST PACK →"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </m.a>
 

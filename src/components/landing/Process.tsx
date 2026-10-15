@@ -16,34 +16,34 @@ export default function Process({ steps, content }: ProcessProps) {
     { 
       id: '1', 
       sort_order: 1, 
-      title_en: '1. Audit & Angle Strategy', 
-      title_bn: '১. অডিট ও হুক স্ট্র্যাটেজি', 
-      desc_en: 'We diagnose past ad leaks and identify the psychological hooks needed to win local trust.', 
-      desc_bn: 'আগের বিজ্ঞাপনে ক্রেতাদের যে দ্বিধা ছিল তা দূর করার কৌশল ও মনস্তাত্ত্বিক হুক নির্ধারণ করি।' 
+      title_en: '01. WhatsApp & Payment', 
+      title_bn: '01. WhatsApp & Payment', 
+      desc_en: 'Send product photos and confirm payment via bKash or Nagad.', 
+      desc_bn: 'প্রোডাক্টের ছবি পাঠিয়ে বিকাশ বা নগদে পেমেন্ট কনফার্ম করুন।' 
     },
     { 
       id: '2', 
       sort_order: 2, 
-      title_en: '2. Bespoke Copy & Visual Craft', 
-      title_bn: '২. মার্জিত বাংলা কপি ও ক্রাফট', 
-      desc_en: 'Zero recycled templates. High-status visual design paired with culturally sharp Bengali sales copy.', 
-      desc_bn: 'জিরো টেমপ্লেট। সম্পূর্ণ কাস্টম ডিজাইন ও খাঁটি বাংলা কপি যা দেখে মানুষ বিশ্বাস পায়।' 
+      title_en: '02. Visual & Copy Craft', 
+      title_bn: '02. Visual & Copy Craft', 
+      desc_en: 'We craft 1 video reel, 2 images, and Bengali copy.', 
+      desc_bn: 'আমরা ১টি ভিডিও রিল, ২টি ছবি ও বাংলা ক্যাপশন সাজাই।' 
     },
     { 
       id: '3', 
       sort_order: 3, 
-      title_en: '3. 48-Hour Rapid Delivery', 
-      title_bn: '৩. ৪৮ ঘণ্টার দ্রুত ডেলিভারি', 
-      desc_en: 'Strict SLA. Ready-to-launch 1:1 and 9:16 Meta creatives delivered straight to your WhatsApp or Drive.', 
-      desc_bn: 'কঠোর ৪৮ ঘণ্টার মধ্যে মেটা ও টিকটক রেডি ফিড + স্টোরি সাইজের অ্যাসেট ডেলিভারি।' 
+      title_en: '03. 48–72h Delivery', 
+      title_bn: '03. 48–72h Delivery', 
+      desc_en: 'Receive all campaign files directly on WhatsApp within 3 days.', 
+      desc_bn: '৩ দিনের মধ্যে সব ফাইল সরাসরি হোয়াটসঅ্যাপে ডেলিভারি পাবেন।' 
     },
     { 
       id: '4', 
       sort_order: 4, 
-      title_en: '4. Launch, Cut CPR & Scale', 
-      title_bn: '৪. লঞ্চ ও লাভজনক স্কেলিং', 
-      desc_en: 'Launch with confidence. Scale winning creatives to drive full-price orders with lower acquisition costs.', 
-      desc_bn: 'বিজ্ঞাপন লাইভ করে কম খরচে (CPR) নিশ্চিত ফুল-প্রাইস সেলস ও ব্র্যান্ড অথরিটি বৃদ্ধি।' 
+      title_en: '04. Launch & Scale', 
+      title_bn: '04. Launch & Scale', 
+      desc_en: 'Refine with 2 free revisions and launch your ads.', 
+      desc_bn: 'প্রয়োজনে ২ বার ছোটখাটো পরিবর্তন করে অ্যাড চালু করুন।' 
     },
   ];
 
@@ -52,35 +52,17 @@ export default function Process({ steps, content }: ProcessProps) {
 
   // Process headings/labels
   const enFont = { fontFamily: "'DM Sans', sans-serif" } as const;
-  const line1 = 'No endless meetings.';
-  const line2 = 'Fresh creatives in 48 hours.';
 
   return (
     <div className="bg-secondary">
       <section id="process" className="py-20 md:py-[110px] px-6 md:px-14 max-w-[1200px] mx-auto">
         <MotionReveal>
-          {isBn ? (
-            <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
-              জিরো-প্যারা ডেলিভারি
-            </p>
-          ) : (
-            <p lang="en" style={enFont} className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
-              {content?.labelEn ?? 'Zero-Friction Execution'}
-            </p>
-          )}
+          <p className="eyebrow-pill-kicker text-accent mb-4 font-semibold" style={enFont}>
+            SIMPLE PROCESS
+          </p>
         </MotionReveal>
-        <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary mb-7 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
-          {isBn ? (
-            <WordReveal delay={0.1}>কোনো লম্বা মিটিং নেই। ৪৮ ঘণ্টার স্প্রিন্ট।</WordReveal>
-          ) : (
-            <>
-              <WordReveal delay={0.1}>{line1}</WordReveal>
-              <br />
-              <em className="italic">
-                <WordReveal delay={0.25}>{line2}</WordReveal>
-              </em>
-            </>
-          )}
+        <h2 lang="en" className="section-heading-h2 font-heading font-normal text-primary mb-7 leading-[1.2]">
+          Fresh Creatives in <span className="italic text-accent">72 Hours.</span>
         </h2>
 
         {/* Mobile Vertical Connected Timeline (100% Frictionless & Minimalist) */}
@@ -112,14 +94,6 @@ function MobileTimelineStep({ step, index, total }: { step: ProcessStep; index: 
   const title = isBn ? (step.title_bn?.trim() || step.title_en) : step.title_en;
   const desc = isBn ? (step.desc_bn?.trim() || step.desc_en) : step.desc_en;
 
-  const phaseLabels = [
-    { en: 'Phase 01 • Deep Audit & Analysis', bn: 'পর্যায় ০১ • অডিট ও হুক অ্যানালাইসিস' },
-    { en: 'Phase 02 • Copy & Art Direction', bn: 'পর্যায় ০২ • বাংলা কপি ও আর্ট ডিরেকশন' },
-    { en: 'Phase 03 • 48-Hour Rapid Sprint', bn: 'পর্যায় ০৩ • ৪৮ ঘণ্টার র্যাপিড স্প্রিন্ট' },
-    { en: 'Phase 04 • Launch, Track & Scale', bn: 'পর্যায় ০৪ • মেটা অ্যাড লঞ্চ ও অপটিমাইজেশন' },
-  ];
-  const phase = phaseLabels[index] || { en: `Phase 0${index + 1}`, bn: `পর্যায় ০${index + 1}` };
-
   return (
     <div className="relative group">
       {/* Node indicator sitting on the timeline */}
@@ -128,19 +102,15 @@ function MobileTimelineStep({ step, index, total }: { step: ProcessStep; index: 
       </div>
 
       <div className="bg-white/80 rounded-xl p-5 border border-primary/10 shadow-sm transition-all duration-300">
-        <span className="inline-block text-[10px] tracking-[2px] uppercase text-accent font-semibold mb-2">
-          {isBn ? phase.bn : phase.en}
-        </span>
         <h3
-          lang={isBn ? 'bn' : 'en'}
-          className="font-heading text-xl font-medium text-primary mb-2 leading-snug"
-          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+          className="card-title-h3 font-heading text-primary mb-2 leading-snug"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
         >
           {title}
         </h3>
         <p
-          lang={isBn ? 'bn' : 'en'}
-          className={`text-[13px] leading-[1.75] text-muted-foreground ${isBn ? 'leading-[1.8]' : ''}`}
+          className="card-body-text text-muted-foreground leading-relaxed"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
         >
           {desc}
         </p>
@@ -160,13 +130,19 @@ function StepCard({ step, index }: { step: ProcessStep; index: number }) {
       <div
         className="relative pt-5 transition-all duration-700 ease-out hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,0,0,0.05)] before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-border before:transition-colors before:duration-700 hover:before:bg-accent"
       >
-        <div className="font-heading text-[40px] font-light text-primary/20 mb-4">
+        <div className="font-heading text-[32px] font-semibold text-accent mb-2">
           {String(index + 1).padStart(2, '0')}
         </div>
-        <div lang={isBn ? 'bn' : 'en'} className={`font-heading text-xl font-medium text-primary mb-2.5 ${isBn ? 'leading-snug' : ''}`}>
+        <h3 
+          className="card-title-h3 font-heading font-medium text-primary mb-2 leading-snug"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
+        >
           {title}
-        </div>
-        <p lang={isBn ? 'bn' : 'en'} style={isBn ? undefined : { fontFamily: "'DM Sans', sans-serif" }} className={`text-[13px] leading-[1.75] text-muted-foreground ${isBn ? 'leading-[1.85]' : ''}`}>
+        </h3>
+        <p 
+          className="card-body-text text-muted-foreground leading-relaxed"
+          style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'DM Sans', sans-serif" }}
+        >
           {desc}
         </p>
       </div>

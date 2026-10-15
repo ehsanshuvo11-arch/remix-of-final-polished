@@ -175,24 +175,24 @@ export default function Testimonials() {
       <div className="relative max-w-[1200px] mx-auto">
         <MotionReveal>
           {isBn ? (
-            <p lang="bn" className="text-[15px] tracking-[2px] text-accent mb-4 font-medium leading-[1]" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
+            <p lang="bn" className="eyebrow-pill-kicker text-accent mb-3 md:mb-4" style={{ fontFamily: "'Noto Serif Bengali', serif" }}>
               {label}
             </p>
           ) : (
-            <p lang="en" className="text-[10px] tracking-[4px] uppercase text-accent mb-4 font-medium">
+            <p lang="en" className="eyebrow-pill-kicker text-accent mb-3 md:mb-4">
               {label}
             </p>
           )}
         </MotionReveal>
 
         <MotionReveal delay={0.1}>
-          <h2 lang={isBn ? 'bn' : 'en'} className={`font-heading font-normal text-primary-foreground mb-5 leading-[1.1] ${isBn ? 'text-[clamp(20px,5.2vw,30px)] md:text-[clamp(30px,4.2vw,50px)]' : 'text-[clamp(28px,7.5vw,36px)] md:text-[clamp(36px,5vw,60px)]'}`}>
+          <h2 lang={isBn ? 'bn' : 'en'} className="section-heading-h2 font-heading font-normal text-primary-foreground mb-4 md:mb-5">
             <WordReveal delay={0.1}>{heading}</WordReveal>
           </h2>
         </MotionReveal>
 
         <MotionReveal delay={0.2}>
-          <p className="font-heading italic text-primary-foreground/60 text-[clamp(16px,1.6vw,20px)] max-w-xl mb-10 md:mb-16">
+          <p className="section-lead-subtitle text-primary-foreground/75 mb-10 md:mb-14" style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : undefined}>
             {sub}
           </p>
         </MotionReveal>

@@ -123,7 +123,7 @@
     font-family: 'Cormorant Garamond', serif;
     /* Avoid awkward word breaks on small screens */
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: none;
   }
   /* iOS auto-zoom prevention: form fields must be ≥16px on mobile */
   @media (max-width: 767px) {
@@ -140,69 +140,123 @@
     }
   }
 
-  /* ─── MOBILE EDITORIAL TYPOGRAPHY LAYER ───
-     Keeps the cinematic Navy/Orange voice legible at small widths:
-     slightly looser leading, tighter tracking on display type, and
-     comfortable measure so nothing feels cramped. */
+  /* ─── MOBILE EDITORIAL TYPOGRAPHY & VIEWPORT LAYER ─── */
   @media (max-width: 767px) {
+    /* Step 1: Mobile Viewport Lock & Compact Spacing */
+    html,
     body {
-      font-size: 15.5px;
-      line-height: 1.7;
-      letter-spacing: 0.006em;
+      overflow-x: hidden !important;
+      max-width: 100vw !important;
     }
-    h1, h2, h3 {
-      letter-spacing: -0.012em;
-      text-wrap: balance;
-      hyphens: none;
+    body {
+      font-size: 14.5px;
+      line-height: 1.6;
+      padding-bottom: 76px !important;
     }
-    h2 {
-      line-height: 1.16;
+
+    /* Reduce mobile section padding to 3.25rem (52px) */
+    section:not(#hero) {
+      padding-top: 3.25rem !important;
+      padding-bottom: 3.25rem !important;
+      padding-inline: 1rem !important;
     }
-    h3 {
-      line-height: 1.25;
+    #hero {
+      padding-top: 4.5rem !important;
+      padding-bottom: 2.5rem !important;
+      padding-inline: 1rem !important;
+      min-height: auto !important;
     }
-    p {
-      max-width: 62ch;
-      text-wrap: pretty;
+
+    /* Reduce mobile card internal padding to 1.25rem (20px) with 16px radius */
+    .card-compact-mobile,
+    [data-service-card],
+    article[data-service-card],
+    .stat-box {
+      padding: 1.25rem !important;
+      border-radius: 16px !important;
+      transform: none !important;
+      margin: 0 !important;
     }
-    /* Bengali needs more vertical breathing room than Latin */
+
+    /* Step 2: Mobile-Specific Typography Scale */
+    /* 1. Hero h1: clamp(1.95rem, 8vw, 2.35rem) !important; line-height: 1.15 !important; */
+    h1,
+    .hero-display-h1,
+    .hero-headline {
+      font-size: clamp(1.95rem, 8vw, 2.35rem) !important;
+      line-height: 1.15 !important;
+      letter-spacing: -0.015em !important;
+      max-width: 100% !important;
+      hyphens: none !important;
+    }
+
+    /* 2. Section h2: clamp(1.5rem, 6.5vw, 1.85rem) !important; line-height: 1.2 !important; */
+    h2,
+    .section-heading-h2,
+    .section-headline {
+      font-size: clamp(1.5rem, 6.5vw, 1.85rem) !important;
+      line-height: 1.2 !important;
+      letter-spacing: -0.012em !important;
+      max-width: 100% !important;
+      hyphens: none !important;
+    }
+
+    /* 3. Subtitles / Lead Paragraphs: 0.875rem (14px) !important; line-height: 1.55 !important; */
+    .section-lead-subtitle,
+    .section-subtitle,
+    p.section-lead-subtitle,
+    .font-heading.italic {
+      font-size: 0.875rem !important;
+      line-height: 1.55 !important;
+      max-width: 100% !important;
+    }
+
+    /* 4. Card Titles h3: 1.05rem (16.8px) !important; line-height: 1.3 !important; */
+    h3,
+    .card-title-h3,
+    .card-title {
+      font-size: 1.05rem !important;
+      line-height: 1.3 !important;
+    }
+
+    /* 5. Card Bullets & Body (li, p): 0.8125rem (13px) !important; line-height: 1.45 !important; */
+    li,
+    p,
+    .card-body-text,
+    .card-body-p,
+    .pricing-bullet-text {
+      font-size: 0.8125rem !important;
+      line-height: 1.45 !important;
+    }
+
+    /* 6. Stat Numbers & Prices: 2rem (32px) on mobile */
+    .pricing-stat-number,
+    [data-price-number],
+    .stat-number {
+      font-size: 2rem !important;
+      line-height: 1.1 !important;
+    }
+
+    /* Bengali typography adjustments */
     [lang="bn"] {
-      line-height: 1.85;
+      line-height: 1.65;
       letter-spacing: 0;
-      word-spacing: 0.04em;
     }
-    [lang="bn"] h1, [lang="bn"] h2, [lang="bn"] h3 {
-      line-height: 1.5;
-    }
-    /* Eyebrow / kicker labels: never below readable size */
-    .eyebrow, [class*="tracking-[3px]"], [class*="tracking-[4px]"] {
-      font-size: max(10.5px, 0.68rem);
+    [lang="bn"] h1,
+    [lang="bn"] h2,
+    [lang="bn"] h3 {
+      line-height: 1.25 !important;
     }
 
-    /* ── Quiet Luxury display scale (mobile only) ──
-       Slightly smaller, tighter-set headings so display type breathes
-       inside a 360–430px viewport instead of shouting. */
-    h1 {
-      font-size: clamp(30px, 8.4vw, 40px) !important;
-      line-height: 1.08 !important;
-      letter-spacing: -0.02em;
+    /* Eyebrow / kicker labels */
+    .eyebrow,
+    .eyebrow-pill-kicker,
+    [class*="tracking-[3px]"],
+    [class*="tracking-[4px]"] {
+      font-size: 0.6875rem !important; /* 11px */
     }
-    h2 {
-      font-size: clamp(24px, 6.6vw, 32px) !important;
-      line-height: 1.12 !important;
-      letter-spacing: -0.016em;
-    }
-    h3 {
-      font-size: clamp(18px, 4.8vw, 22px) !important;
-      line-height: 1.22 !important;
-    }
-    [lang="bn"] h1 { font-size: clamp(24px, 6.6vw, 32px) !important; line-height: 1.45 !important; }
-    [lang="bn"] h2 { font-size: clamp(20px, 5.4vw, 27px) !important; line-height: 1.45 !important; }
-    [lang="bn"] h3 { font-size: clamp(17px, 4.4vw, 20px) !important; line-height: 1.5 !important; }
 
-    /* ── Accessible contrast on navy surfaces ──
-       Faded body copy at 40–50% opacity failed WCAG AA against #1e3a8a.
-       Floor it at a compliant tone while keeping the muted feel. */
+    /* Accessible contrast on navy surfaces */
     .bg-primary [class*="text-primary-foreground/4"],
     .bg-primary [class*="text-primary-foreground/5"],
     .bg-primary [class*="text-white/4"],
@@ -215,28 +269,23 @@
       color: hsl(215 25% 38%);
     }
 
-    /* ── No accidental horizontal scroll ──
-       Uses `clip` so neither <html> nor <body> becomes a nested scroll
-       container — that is what kills touch scrolling on iOS Safari.
-       Intentional carousels opt out via .snap-x / [data-carousel]. */
-    html, body, #root {
-      max-width: 100%;
+    /* Range slider thumb touch enhancement */
+    input[type="range"]::-webkit-slider-thumb {
+      width: 22px !important;
+      height: 22px !important;
+      border-radius: 50% !important;
+      cursor: pointer;
     }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px !important;
+      height: 22px !important;
+      border-radius: 50% !important;
+      cursor: pointer;
+    }
+
+    /* Viewport stability */
     #root {
-      /* Keep the root out of mobile scroll-container creation entirely.
-         The document is the only vertical scroller on touch browsers. */
       overflow: visible !important;
-    }
-    html,
-    body {
-      height: auto !important;
-      min-height: 100%;
-      overflow-y: auto !important;
-    }
-    main {
-      height: auto !important;
-      min-height: 0;
-      overflow-y: auto !important;
     }
     section > *:not(.snap-x):not([data-carousel]),
     main > *:not(.snap-x):not([data-carousel]) {
@@ -274,6 +323,95 @@
   }
 }
 
+/* ─── MASTER EDITORIAL TYPOGRAPHY SYSTEM (EMOTIONAL & QUIET LUXURY) ─── */
+.hero-display-h1,
+.hero-headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.75rem, 5.2vw, 4.5rem) !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.022em !important;
+  font-weight: 350;
+  max-width: 24ch !important;
+  margin-inline: auto !important;
+  text-wrap: balance;
+  hyphens: none !important;
+}
+
+.hero-accent-line {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  color: #fb923c !important;
+  text-shadow: 0 0 28px rgba(251, 146, 60, 0.22);
+}
+
+.section-heading-h2,
+.section-headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.1rem, 3.6vw, 3.25rem) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.018em !important;
+  font-weight: 400;
+  max-width: 28ch !important;
+  text-wrap: balance;
+  hyphens: none !important;
+}
+
+/* Serif Italic Accent Swash for Emotional Punchlines */
+.font-heading em,
+.font-heading .italic,
+.hero-display-h1 em,
+.hero-display-h1 .italic,
+.section-heading-h2 em,
+.section-heading-h2 .italic,
+.card-title-h3 em,
+.card-title-h3 .italic {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Emotional Editorial Deck / Subtitle */
+.section-lead-subtitle,
+.section-subtitle {
+  font-size: clamp(0.95rem, 1.12vw, 1.05rem) !important; /* 15px - 17px */
+  line-height: 1.75 !important;
+  letter-spacing: 0.008em;
+  font-weight: 300;
+  max-width: 58ch !important;
+  opacity: 0.88;
+  text-wrap: pretty;
+}
+
+/* Card Typography */
+.card-title-h3,
+.card-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.2rem, 1.4vw, 1.42rem) !important; /* 19px - 23px */
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.card-body-text,
+.card-body-p,
+.pricing-bullet-text {
+  font-size: 0.875rem !important; /* 14px */
+  line-height: 1.55 !important;
+  letter-spacing: 0.006em;
+}
+
+/* Refined Eyebrow Kickers */
+.eyebrow-pill-kicker,
+.eyebrow-pill {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem !important; /* 11.5px */
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 600;
+}
 
 /* Animations */
 @keyframes fadeUp {
@@ -287,6 +425,40 @@
 @keyframes gridMove {
   from { background-position: 0 0; }
   to { background-position: 80px 80px; }
+}
+@keyframes heroGridDrift {
+  from { background-position: 0px 0px; }
+  to { background-position: 72px 72px; }
+}
+
+/* Subtle slow moving grid for Hero (Quiet Luxury depth across devices) */
+.hero-desktop-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: heroGridDrift 28s linear infinite;
+  mask-image: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 85%);
+  transform: translateZ(0);
+  will-change: background-position;
+}
+@media (min-width: 768px) {
+  .hero-desktop-grid {
+    background-size: 72px 72px;
+  }
+}
+
+/* Explicit responsive viewport height for Hero */
+#hero {
+  height: 100svh;
+  min-height: 560px;
+}
+@media (min-width: 768px) {
+  #hero {
+    height: auto;
+    min-height: 100vh;
+  }
 }
 @keyframes orbFloat {
   0%, 100% { transform: translate(0, 0); }
@@ -998,3 +1170,15 @@ input[type="range"]::-moz-range-thumb {
   border: 2px solid #ffffff;
   transition: transform 0.15s ease;
 }
+
+/* Hide scrollbars cleanly across all browsers */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+

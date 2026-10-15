@@ -15,25 +15,29 @@ function Marquee({ items }: MarqueeProps) {
   const { lang } = useLanguage();
   const isBn = lang === 'bn';
 
-  const defaultItems = [
-    'E-Commerce Visual Systems',
-    'Brand Identity Systems',
+  const defaultItemsBn = [
+    'প্রথম ১ সেকেন্ডে আঙুল থামানো ভিডিও',
+    'নকলের ভয় দূর করা ছবির পোস্ট',
+    'মন ছুঁয়ে যাওয়া বাংলা ক্যাপশন',
+    'কম্বো সেট ডিজাইন',
   ];
-  const sourceItems = items.length > 0 ? items : defaultItems;
-
-  const displayItems = isBn
-    ? sourceItems.map((item) => bnMap[item.trim().toLowerCase()] ?? item)
-    : sourceItems;
+  const defaultItemsEn = [
+    'Scroll-Stopping Video Reels',
+    'High-Trust Image Posts',
+    'Persuasive Sales Copy',
+    'High-Converting Combo Designs',
+  ];
+  const displayItems = isBn ? defaultItemsBn : defaultItemsEn;
 
   const trackContent = displayItems.map((item, i) => (
     <span key={i} lang={isBn ? 'bn' : 'en'}>
       <span
-        className={`${isBn ? 'text-[15px] tracking-[1px] normal-case' : 'font-heading text-[15px] font-medium tracking-[3px] uppercase'} text-accent-foreground px-10`}
-        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", fontWeight: 200 } : undefined}
+        className={`${isBn ? 'text-[14px] sm:text-[15px] tracking-normal font-medium' : 'font-heading text-[13px] sm:text-[14px] font-semibold tracking-[2.5px] uppercase'} text-[#1e3a8a] px-8 sm:px-10`}
+        style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
       >
         {item}
       </span>
-      <span className="text-accent-foreground/50 text-[8px] align-middle px-1">●</span>
+      <span className="text-[#1e3a8a]/40 text-[8px] align-middle px-1">●</span>
     </span>
   ));
 
