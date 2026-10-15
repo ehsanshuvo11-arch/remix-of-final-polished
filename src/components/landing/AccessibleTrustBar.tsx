@@ -38,32 +38,63 @@ export default function AccessibleTrustBar() {
   ];
 
   return (
-    <section className="relative z-20 py-4 sm:py-5 md:py-8 bg-[#1e3a8a] text-[#f9fafb] border-y border-white/10">
+    <section className="relative z-20 py-2.5 sm:py-3 md:py-8 bg-white text-primary border-y border-primary/10 md:bg-[#1e3a8a] md:text-[#f9fafb] md:border-white/10">
       <div className="max-w-[1200px] mx-auto px-4 md:px-14">
         <MotionReveal>
-          {/* Mobile: 2-column luxury breathing grid with zero truncation; Desktop: 4-col hairline grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 md:gap-8 items-stretch py-0.5 md:divide-x divide-white/10">
+          {/* ── MOBILE: Clean, Subtle Minimal Horizontal Bar (<768px) ── */}
+          <div className="md:hidden flex overflow-x-auto scrollbar-none items-center gap-2 py-1 px-1 -mx-2 touch-pan-x">
+            {pillars.map((pillar, i) => {
+              const Icon = pillar.icon;
+              return (
+                <div
+                  key={i}
+                  className="shrink-0 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f9fafb] border border-primary/10 text-primary shadow-2xs"
+                >
+                  <div className="w-5 h-5 rounded-full bg-accent/15 flex items-center justify-center shrink-0">
+                    <Icon className="w-3 h-3 text-accent" />
+                  </div>
+                  <div className="flex items-baseline gap-1.5 whitespace-nowrap">
+                    <span
+                      className="text-[11.5px] font-bold tracking-tight text-primary font-heading"
+                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                    >
+                      {isBn ? pillar.titleBn : pillar.titleEn}
+                    </span>
+                    <span
+                      className="text-[10px] text-primary/60 font-sans"
+                      style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
+                    >
+                      • {isBn ? pillar.subBn : pillar.subEn}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ── DESKTOP: 4-col Hairline Divided Grid (>=768px) 100% UNTOUCHED ── */}
+          <div className="hidden md:grid md:grid-cols-4 md:gap-8 items-stretch py-0.5 md:divide-x divide-white/10">
             {pillars.map((pillar, i) => {
               const Icon = pillar.icon;
               return (
                 <div 
                   key={i} 
-                  className={`flex flex-col sm:flex-row sm:items-center items-start gap-2 sm:gap-2.5 bg-white/[0.04] hover:bg-white/[0.07] md:bg-transparent p-2.5 sm:p-3.5 md:p-0 rounded-xl md:rounded-none border border-white/10 md:border-none transition-colors duration-300 ${
+                  className={`flex items-center gap-2.5 md:bg-transparent md:p-0 md:rounded-none md:border-none ${
                     i > 0 ? 'md:pl-6' : ''
                   }`}
                 >
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center shrink-0 shadow-sm">
-                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/30 text-accent flex items-center justify-center shrink-0 shadow-sm">
+                    <Icon className="w-4 h-4" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 
-                      className="font-bold text-[11px] sm:text-xs md:text-sm text-white tracking-tight leading-snug"
+                      className="font-bold text-xs md:text-sm text-white tracking-tight leading-snug"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? pillar.titleBn : pillar.titleEn}
                     </h3>
                     <p 
-                      className="text-[9.5px] sm:text-[10.5px] md:text-xs text-white/70 font-sans leading-snug mt-0.5"
+                      className="text-[10.5px] md:text-xs text-white/70 font-sans leading-snug mt-0.5"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? pillar.subBn : pillar.subEn}

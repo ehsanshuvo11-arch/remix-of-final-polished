@@ -173,11 +173,11 @@ export default function StickyStorytelling() {
   return (
     <section 
       id="brand-positioning" 
-      className="relative bg-[#1e3a8a] text-[#f9fafb] py-10 sm:py-16 md:py-28 px-4 sm:px-8 md:px-14 overflow-hidden border-t border-b border-white/10"
+      className="relative bg-white text-primary border-t border-b border-primary/10 md:bg-[#1e3a8a] md:text-[#f9fafb] md:border-white/10 py-10 sm:py-16 md:py-28 px-4 sm:px-8 md:px-14 overflow-hidden"
     >
-      {/* Brand Subtle Moving Grid Texture matching Hero */}
+      {/* Brand Subtle Moving Grid Texture matching Hero (Desktop Only) */}
       <div 
-        className="absolute inset-0 pointer-events-none opacity-40" 
+        className="hidden md:block absolute inset-0 pointer-events-none opacity-40" 
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
@@ -187,15 +187,15 @@ export default function StickyStorytelling() {
         }}
       />
 
-      {/* Elegant Warm Amber & Off-White Ambient Lighting (Hardware-accelerated radial glow with zero blur filter overhead) */}
+      {/* Elegant Warm Amber & Off-White Ambient Lighting (Hardware-accelerated radial glow with zero blur filter overhead - Desktop Only) */}
       <div 
-        className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none" 
+        className="hidden md:block absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none" 
         style={{
           background: 'radial-gradient(circle, rgba(251, 146, 60, 0.12) 0%, rgba(251, 146, 60, 0.03) 45%, transparent 70%)',
         }}
       />
       <div 
-        className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none" 
+        className="hidden md:block absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none" 
         style={{
           background: 'radial-gradient(circle, rgba(249, 250, 251, 0.07) 0%, rgba(249, 250, 251, 0.02) 45%, transparent 70%)',
         }}
@@ -213,14 +213,14 @@ export default function StickyStorytelling() {
           </span>
 
           <h2 
-            className="section-heading-h2 font-heading font-normal text-[#f9fafb] tracking-tight mx-auto mb-2 md:mb-4 text-center"
+            className="section-heading-h2 font-heading font-normal text-primary md:text-[#f9fafb] tracking-tight mx-auto mb-2 md:mb-4 text-center"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             The Problem Is <span className="text-[#fb923c] italic font-normal">How It Looks.</span>
           </h2>
 
           <p 
-            className="section-lead-subtitle text-[#f9fafb]/85 mx-auto text-center"
+            className="section-lead-subtitle text-primary/75 md:text-[#f9fafb]/85 mx-auto text-center"
             style={isBn ? { fontFamily: "'Noto Serif Bengali', serif", lineHeight: 1.85 } : undefined}
           >
             {isBn 
@@ -232,7 +232,7 @@ export default function StickyStorytelling() {
 
         {/* UNIFIED INTERACTIVE 3 CHAPTER TABS: Swipeable on Mobile (<768px), 3-col on Desktop */}
         <div className="flex justify-center mb-4 md:mb-12 px-1">
-          <div className="flex overflow-x-auto whitespace-nowrap scrollbar-none gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-white/[0.07] border border-white/15 backdrop-blur-md shadow-lg w-full max-w-2xl sm:grid sm:grid-cols-3">
+          <div className="flex overflow-x-auto whitespace-nowrap scrollbar-none gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-primary/[0.04] border border-primary/10 md:bg-white/[0.07] md:border-white/15 backdrop-blur-md shadow-xs md:shadow-lg w-full max-w-2xl sm:grid sm:grid-cols-3">
             {chapters.map((ch, idx) => (
               <button
                 key={ch.id}
@@ -241,7 +241,7 @@ export default function StickyStorytelling() {
                 className={`relative min-h-[38px] sm:min-h-[40px] py-1.5 sm:py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 text-center shrink-0 sm:shrink cursor-pointer ${
                   activeTab === idx
                     ? 'text-white font-semibold shadow-md'
-                    : 'text-white/60 hover:text-white/90 hover:bg-white/[0.04]'
+                    : 'text-primary/60 hover:text-primary hover:bg-primary/[0.04] md:text-white/60 md:hover:text-white/90 md:hover:bg-white/[0.04]'
                 }`}
               >
                 {activeTab === idx && (
@@ -259,7 +259,7 @@ export default function StickyStorytelling() {
         </div>
 
         {/* Dynamic Presentation Content Box */}
-        <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/[0.05] backdrop-blur-xl p-4 sm:p-8 md:p-12 shadow-2xl relative overflow-hidden">
+        <div className="rounded-2xl sm:rounded-3xl border border-primary/10 md:border-white/15 bg-[#f9fafb] md:bg-white/[0.05] md:backdrop-blur-xl p-4 sm:p-8 md:p-12 shadow-sm md:shadow-2xl relative overflow-hidden">
           
           <AnimatePresence mode="wait">
             <m.div
@@ -275,13 +275,13 @@ export default function StickyStorytelling() {
               <div className="lg:col-span-6 space-y-3.5 md:space-y-6">
                 
                 {/* Eyebrow badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[10.5px] sm:text-[11px] font-mono tracking-wider uppercase text-[#fb923c]">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fb923c]/10 border border-[#fb923c]/20 md:bg-white/10 md:border-white/15 text-[10.5px] sm:text-[11px] font-mono tracking-wider uppercase text-[#fb923c]">
                   <span>{isBn ? current.eyebrowBn : current.eyebrowEn}</span>
                 </div>
 
                 {/* Chapter Title */}
                 <h3 
-                  className="text-lg sm:text-2xl md:text-[28px] font-heading font-normal text-white leading-snug"
+                  className="text-lg sm:text-2xl md:text-[28px] font-heading font-normal text-primary md:text-white leading-snug"
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   {isBn ? current.titleBn : current.titleEn}
@@ -289,7 +289,7 @@ export default function StickyStorytelling() {
 
                 {/* Description */}
                 <p 
-                  className="text-xs sm:text-sm md:text-base text-[#f9fafb]/85 leading-relaxed font-light"
+                  className="text-xs sm:text-sm md:text-base text-primary/75 md:text-[#f9fafb]/85 leading-relaxed font-light"
                   style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                 >
                   {isBn ? current.descBn : current.descEn}
@@ -298,14 +298,14 @@ export default function StickyStorytelling() {
                 {/* Strategic Proofpoints */}
                 <ul className="space-y-2 md:space-y-3 pt-1 md:pt-2">
                   {current.bulletPoints.map((pt, pIdx) => (
-                    <li key={pIdx} className="text-xs sm:text-[13px] md:text-sm flex items-start gap-2.5 text-white/90">
+                    <li key={pIdx} className="text-xs sm:text-[13px] md:text-sm flex items-start gap-2.5 text-primary/85 md:text-white/90">
                       <div className={`mt-0.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shrink-0 border ${
                         pt.negative
-                          ? 'border-white/30 bg-white/10 text-white/70'
-                          : 'border-[#fb923c]/50 bg-[#fb923c]/20 text-[#fb923c]'
+                          ? 'border-primary/20 bg-primary/5 text-primary/60 md:border-white/30 md:bg-white/10 md:text-white/70'
+                          : 'border-[#fb923c]/40 bg-[#fb923c]/10 text-[#fb923c] md:border-[#fb923c]/50 md:bg-[#fb923c]/20'
                       }`}>
                         {pt.negative ? (
-                          <AlertCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white/70" />
+                          <AlertCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                         ) : (
                           <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#fb923c]" />
                         )}
@@ -330,7 +330,7 @@ export default function StickyStorytelling() {
                   <button
                     type="button"
                     onClick={() => openAuditModal({ source: 'Brand Positioning Section' })}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-[#f9fafb] text-xs font-semibold tracking-wider transition-all"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2.5 sm:px-5 sm:py-3.5 rounded-xl bg-primary/5 hover:bg-primary/10 border border-primary/15 text-primary md:bg-white/10 md:hover:bg-white/15 md:border-white/20 md:text-[#f9fafb] text-xs font-semibold tracking-wider transition-all"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
                     <span>{isBn ? 'ফ্রি ভিডিও রিভিউ' : 'Free 5-Min Video Review'}</span>
@@ -341,35 +341,35 @@ export default function StickyStorytelling() {
 
               {/* Right Column: High-End Quiet Luxury Editorial Showcase */}
               <div className="lg:col-span-6">
-                <div className="rounded-2xl border border-white/20 bg-gradient-to-b from-white/[0.08] to-white/[0.03] p-4 sm:p-8 shadow-xl relative overflow-hidden">
+                <div className="rounded-2xl border border-primary/10 md:border-white/20 bg-white md:bg-gradient-to-b md:from-white/[0.08] md:to-white/[0.03] p-4 sm:p-8 shadow-xs md:shadow-xl relative overflow-hidden">
                   
                   {/* Card Header Bar */}
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4 sm:mb-6">
+                  <div className="flex items-center justify-between border-b border-primary/10 md:border-white/10 pb-3 mb-4 sm:mb-6">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#fb923c]" />
-                      <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-[#f9fafb]/70">
+                      <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-primary/70 md:text-[#f9fafb]/70">
                         {isBn ? current.showcase.cardTitleBn : current.showcase.cardTitleEn}
                       </span>
                     </div>
-                    <span className="text-[9.5px] sm:text-[10px] font-mono uppercase px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/10 border border-white/15 text-[#fb923c] font-semibold">
+                    <span className="text-[9.5px] sm:text-[10px] font-mono uppercase px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-[#fb923c]/10 border border-[#fb923c]/20 text-[#fb923c] font-semibold md:bg-white/10 md:border-white/15">
                       {isBn ? current.showcase.badgeBn : current.showcase.badgeEn}
                     </span>
                   </div>
 
                   {/* Stage Mockup Frame */}
-                  <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4 sm:p-8 flex flex-col justify-center text-center relative overflow-hidden min-h-[160px] md:min-h-[220px]">
+                  <div className="rounded-xl border border-primary/10 md:border-white/10 bg-[#f9fafb] md:bg-white/[0.04] p-4 sm:p-8 flex flex-col justify-center text-center relative overflow-hidden min-h-[160px] md:min-h-[220px]">
                     
                     {/* Subtle aesthetic corner marks */}
-                    <div className="absolute top-2 left-2 text-[10px] font-mono text-white/30">✦</div>
-                    <div className="absolute top-2 right-2 text-[10px] font-mono text-white/30">✦</div>
-                    <div className="absolute bottom-2 left-2 text-[10px] font-mono text-white/30">✦</div>
-                    <div className="absolute bottom-2 right-2 text-[10px] font-mono text-white/30">✦</div>
+                    <div className="absolute top-2 left-2 text-[10px] font-mono text-primary/20 md:text-white/30">✦</div>
+                    <div className="absolute top-2 right-2 text-[10px] font-mono text-primary/20 md:text-white/30">✦</div>
+                    <div className="absolute bottom-2 left-2 text-[10px] font-mono text-primary/20 md:text-white/30">✦</div>
+                    <div className="absolute bottom-2 right-2 text-[10px] font-mono text-primary/20 md:text-white/30">✦</div>
 
                     <h4 
                       className={`text-[16px] sm:text-[18px] md:text-[22px] font-heading mb-2 leading-snug ${
                         activeTab === 0 
-                          ? 'text-white/80 line-through opacity-70' 
-                          : 'text-[#f9fafb] font-normal italic'
+                          ? 'text-primary/50 line-through opacity-70 md:text-white/80' 
+                          : 'text-primary md:text-[#f9fafb] font-normal italic'
                       }`}
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : { fontFamily: "'Cormorant Garamond', serif" }}
                     >
@@ -377,14 +377,14 @@ export default function StickyStorytelling() {
                     </h4>
 
                     <p 
-                      className="text-xs sm:text-sm text-[#f9fafb]/80 font-light max-w-md mx-auto leading-relaxed"
+                      className="text-xs sm:text-sm text-primary/75 md:text-[#f9fafb]/80 font-light max-w-md mx-auto leading-relaxed"
                       style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}
                     >
                       {isBn ? current.showcase.sublineBn : current.showcase.sublineEn}
                     </p>
 
                     {activeTab === 1 && (
-                      <div className="mt-3 sm:mt-5 inline-flex items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-mono text-[#fb923c] border-t border-white/10 pt-2.5">
+                      <div className="mt-3 sm:mt-5 inline-flex items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-mono text-[#fb923c] border-t border-primary/10 md:border-white/10 pt-2.5">
                         <span>✦ Meta Safe</span>
                         <span>•</span>
                         <span>★ High AOV</span>
@@ -395,14 +395,14 @@ export default function StickyStorytelling() {
                   </div>
 
                   {/* Bottom Creative Spec Grid */}
-                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center bg-white/[0.04] rounded-xl p-2.5 sm:p-4 border border-white/10 mt-3 sm:mt-5">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center bg-[#f9fafb] md:bg-white/[0.04] rounded-xl p-2.5 sm:p-4 border border-primary/10 md:border-white/10 mt-3 sm:mt-5">
                     {current.showcase.metrics.map((m, mIdx) => (
                       <div key={mIdx} className="px-1">
-                        <span className="text-[9.5px] sm:text-[11px] text-[#f9fafb]/60 block font-light leading-tight">
+                        <span className="text-[9.5px] sm:text-[11px] text-primary/60 md:text-[#f9fafb]/60 block font-light leading-tight">
                           {m.label}
                         </span>
                         <span className={`text-[11px] sm:text-sm font-bold block font-mono mt-0.5 sm:mt-1 ${
-                          m.alert ? 'text-white/70' : 'text-[#fb923c]'
+                          m.alert ? 'text-primary/70 md:text-white/70' : 'text-[#fb923c]'
                         }`}>
                           {m.val}
                         </span>
@@ -411,7 +411,7 @@ export default function StickyStorytelling() {
                   </div>
 
                   {/* Editorial Footnote */}
-                  <p className="text-[10px] sm:text-[11px] text-[#f9fafb]/60 text-center font-light mt-3 sm:mt-4 italic">
+                  <p className="text-[10px] sm:text-[11px] text-primary/60 md:text-[#f9fafb]/60 text-center font-light mt-3 sm:mt-4 italic">
                     {isBn ? current.showcase.footerNoteBn : current.showcase.footerNoteEn}
                   </p>
 
