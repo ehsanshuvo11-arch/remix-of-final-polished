@@ -339,8 +339,8 @@ export default function StickyStorytelling() {
 
               </div>
 
-              {/* Right Column: High-End Quiet Luxury Editorial Showcase */}
-              <div className="lg:col-span-6">
+              {/* Right Column: High-End Quiet Luxury Editorial Showcase (Desktop Only - keeps mobile clean & breathable) */}
+              <div className="hidden lg:block lg:col-span-6">
                 <div className="rounded-2xl border border-primary/10 md:border-white/20 bg-white md:bg-gradient-to-b md:from-white/[0.08] md:to-white/[0.03] p-4 sm:p-8 shadow-xs md:shadow-xl relative overflow-hidden">
                   
                   {/* Card Header Bar */}

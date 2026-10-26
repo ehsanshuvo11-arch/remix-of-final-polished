@@ -174,9 +174,9 @@ export default function Portfolio({ projects, content, isLoading = false }: Port
         </div>
       </MotionReveal>
 
-      {/* ── Editorial Spec & Curation Strip (Replaces category pills row) ── */}
+      {/* ── Editorial Spec & Curation Strip (Desktop only - mobile goes straight to visual work) ── */}
       <MotionReveal delay={0.12}>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3 px-4 sm:px-5 mb-8 md:mb-12 rounded-xl sm:rounded-2xl bg-white border border-primary/10 shadow-[0_2px_14px_rgba(30,58,138,0.03)] text-[12px] sm:text-[12.5px]">
+        <div className="hidden md:flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3 px-4 sm:px-5 mb-8 md:mb-12 rounded-xl sm:rounded-2xl bg-white border border-primary/10 shadow-[0_2px_14px_rgba(30,58,138,0.03)] text-[12px] sm:text-[12.5px]">
           {/* Left: Curated Sprint Pillars */}
           <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-primary/75 font-medium">
             <span className="inline-flex items-center gap-1.5 text-accent font-semibold">

@@ -176,7 +176,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
 }
 
 export function shouldShowLoader() {
-  if (typeof window === 'undefined') return false;
-  if (!window.matchMedia('(max-width: 767px)').matches) return true;
-  return sessionStorage.getItem('polished_mobile_intro_seen') !== '1';
+  // Never block the user with an artificial loading curtain on landing.
+  // Instant FCP and immediate interactivity delivers a super-fast, lag-free feel.
+  return false;
 }

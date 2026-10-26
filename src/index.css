@@ -426,22 +426,15 @@
   from { background-position: 0 0; }
   to { background-position: 80px 80px; }
 }
-@keyframes heroGridDrift {
-  from { background-position: 0px 0px; }
-  to { background-position: 72px 72px; }
-}
-
-/* Subtle slow moving grid for Hero (Quiet Luxury depth across devices) */
+/* High-efficiency static architectural grid for Hero (Quiet Luxury depth with zero GPU repainting) */
 .hero-desktop-grid {
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
   background-size: 50px 50px;
-  animation: heroGridDrift 28s linear infinite;
   mask-image: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 85%);
   -webkit-mask-image: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.35) 55%, transparent 85%);
   transform: translateZ(0);
-  will-change: background-position;
 }
 @media (min-width: 768px) {
   .hero-desktop-grid {
@@ -534,99 +527,106 @@ html[data-lang="en"] .lang-bn { display: none !important; }
 html:not([data-lang="bn"]) .lang-bn { display: none !important; }
 
 /* ─────────────────────────────────────────────────────────────
-   Bengali (Bangla) Typography
-   ─────────────────────────────────────────────────────────────
-   In Bengali mode, ALL Bengali text renders in 'Noto Serif Bengali'.
-   Sizing, weights, line-heights, letter-spacing and layout are
-   inherited from the English Tailwind utilities — only font-family
-   is overridden so EN/BN layout parity is preserved.
-   English-tagged elements ([lang="en"]) and the brand wordmark are
-   carved out and remain in their original Latin serif/sans stack.
+   MASTER EDITORIAL TYPOGRAPHY SYSTEM
+   • English: Classic Serif (Cormorant Garamond, Georgia, serif) for heritage, quiet luxury, and trust.
+   • Bengali: Authentic Serif (Noto Serif Bengali, serif) for 100% of Bengali content across all cards, lists, and elements.
+   • UI Pairing: Clean DM Sans for functional tags, numbers, and Latin UI.
    ───────────────────────────────────────────────────────────── */
-html[data-lang="bn"] body,
-html[data-lang="bn"] h1,
-html[data-lang="bn"] h2,
-html[data-lang="bn"] h3,
-html[data-lang="bn"] h4,
-html[data-lang="bn"] h5,
-html[data-lang="bn"] h6,
-html[data-lang="bn"] p,
-html[data-lang="bn"] span,
-html[data-lang="bn"] a,
-html[data-lang="bn"] button,
-html[data-lang="bn"] li,
-html[data-lang="bn"] label,
-html[data-lang="bn"] input,
-html[data-lang="bn"] textarea,
-html[data-lang="bn"] blockquote,
-html[data-lang="bn"] em,
-html[data-lang="bn"] strong {
-  font-family: 'Noto Serif Bengali', serif !important;
+
+/* English Headings & Display Elements */
+h1, h2, h3, h4, h5, h6,
+.font-heading,
+.hero-display-h1,
+.hero-headline,
+.section-heading-h2,
+.section-headline,
+.card-title-h3,
+.card-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* English Italic Accents & Emotional Swashes */
+.font-heading em,
+.font-heading .italic,
+.hero-display-h1 em,
+.hero-display-h1 .italic,
+.section-heading-h2 em,
+.section-heading-h2 .italic,
+.card-title-h3 em,
+.card-title-h3 .italic,
+.hero-accent-line {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+}
+
+/* Brand Wordmark (POLISHED) — Always Classic English Serif */
+.brand-wordmark,
+.brand-wordmark *,
+html[data-lang="bn"] .brand-wordmark,
+html[data-lang="bn"] .brand-wordmark * {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  letter-spacing: 4px;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Bengali clipping fix
-   ─────────────────────────────────────────────────────────────
-   Bengali script uses tall above-baseline marks (reph, ref,
-   ikar, etc.) and below-baseline conjuncts that need extra
-   vertical room. English line-heights like `leading-tight`
-   (1.1-1.2) and lineHeight: 1.08 clip these marks, especially
-   when combined with `overflow: hidden` on reveal containers.
-   We enforce a minimum line-height for Bengali text and ensure
-   reveal/clip wrappers expose enough vertical breathing room.
+   UNIFIED BENGALI TYPOGRAPHY (Noto Serif Bengali for Heritage & Poetry)
    ───────────────────────────────────────────────────────────── */
-html[data-lang="bn"] h1:not([lang="en"]),
-html[data-lang="bn"] h2:not([lang="en"]),
-html[data-lang="bn"] h3:not([lang="en"]),
-html[data-lang="bn"] h4:not([lang="en"]),
-html[data-lang="bn"] h5:not([lang="en"]),
-html[data-lang="bn"] h6:not([lang="en"]) {
-  line-height: 1.45 !important;
-  padding-block: 0.08em;
+/* Document-level font inheritance */
+:lang(bn),
+[lang="bn"],
+html[data-lang="bn"],
+html[lang="bn"],
+html[data-lang="bn"] body,
+html[lang="bn"] body {
+  font-family: 'Noto Serif Bengali', serif !important;
 }
-html[data-lang="bn"] p:not([lang="en"]),
-html[data-lang="bn"] li:not([lang="en"]),
-html[data-lang="bn"] blockquote:not([lang="en"]) {
-  line-height: 1.7;
+
+/* Universal Bengali font cascade: applies to ALL text elements in Bengali mode */
+html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6, p, span, a, button, li, label, input, textarea, select, blockquote, em, strong, small, div):not([lang="en"]):not([lang="en"] *):not(.brand-wordmark):not(.brand-wordmark *):not(code):not(pre):not(svg):not(path):not(.lucide),
+html[lang="bn"] :is(h1, h2, h3, h4, h5, h6, p, span, a, button, li, label, input, textarea, select, blockquote, em, strong, small, div):not([lang="en"]):not([lang="en"] *):not(.brand-wordmark):not(.brand-wordmark *):not(code):not(pre):not(svg):not(path):not(.lucide),
+:lang(bn):not([lang="en"]):not(.brand-wordmark),
+[lang="bn"]:not([lang="en"]):not(.brand-wordmark),
+[lang="bn"] :is(h1, h2, h3, h4, h5, h6, p, span, a, button, li, label, input, textarea, select, blockquote, em, strong, small, div):not([lang="en"]):not([lang="en"] *):not(.brand-wordmark):not(.brand-wordmark *):not(code):not(pre):not(svg):not(path):not(.lucide) {
+  font-family: 'Noto Serif Bengali', serif !important;
 }
-/* Reveal/clip containers: preserve overflow clipping for clean slide-up masking
-   while providing vertical breathing room for Bengali ascenders and descenders. */
+
+/* Bengali Headings line-height & vertical breathing room */
+html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6):not([lang="en"]),
+html[lang="bn"] :is(h1, h2, h3, h4, h5, h6):not([lang="en"]),
+[lang="bn"] :is(h1, h2, h3, h4, h5, h6):not([lang="en"]) {
+  line-height: 1.35 !important;
+  padding-block: 0.05em;
+  letter-spacing: 0 !important;
+}
+
+/* Bengali Body & Paragraphs line-height */
+html[data-lang="bn"] :is(p, li, blockquote, dd, dt):not([lang="en"]),
+html[lang="bn"] :is(p, li, blockquote, dd, dt):not([lang="en"]),
+[lang="bn"] :is(p, li, blockquote, dd, dt):not([lang="en"]) {
+  line-height: 1.75;
+  letter-spacing: 0;
+}
+
+/* Reveal/clip containers breathing room */
 html[data-lang="bn"] :is(h1, h2, h3, h4, h5, h6, p) span.overflow-hidden,
 html[data-lang="bn"] span.overflow-hidden {
   padding-block: 0.12em;
   margin-block: -0.12em;
 }
-/* Italic accent lines (e.g. "Unmissable!") - Bengali italics not desired,
-   but if any italic Bengali appears, give it room */
-html[data-lang="bn"] em,
-html[data-lang="bn"] i {
-  font-style: normal !important;
+
+/* English carve-outs inside Bengali mode */
+html[data-lang="bn"] [lang="en"]:not(.font-sans-body):not(.font-sans-eyebrow),
+html[data-lang="bn"] [lang="en"] *:not(.font-sans-body):not(.font-sans-eyebrow),
+html[lang="bn"] [lang="en"]:not(.font-sans-body):not(.font-sans-eyebrow),
+html[lang="bn"] [lang="en"] *:not(.font-sans-body):not(.font-sans-eyebrow) {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
 }
 
-/* Carve-outs: keep English-tagged elements and the logo in Latin serif */
-html[data-lang="bn"] [lang="en"],
-html[data-lang="bn"] [lang="en"] * {
-  font-family: 'Cormorant Garamond', 'DM Sans', serif !important;
-}
-
-/* Eyebrow tagline + DM Sans body copy must stay in their declared sans-serif
-   font even in BN mode (the [lang="en"] carve-out above would otherwise force
-   them into Cormorant serif and break visual parity with EN mode). */
-html[data-lang="bn"] [lang="en"].font-sans-eyebrow,
-html[data-lang="bn"] [lang="en"].font-sans-eyebrow * {
-  font-family: 'Inter', sans-serif !important;
-}
 html[data-lang="bn"] [lang="en"].font-sans-body,
-html[data-lang="bn"] [lang="en"].font-sans-body * {
+html[data-lang="bn"] [lang="en"].font-sans-body *,
+html[lang="bn"] [lang="en"].font-sans-body,
+html[lang="bn"] [lang="en"].font-sans-body * {
   font-family: 'DM Sans', sans-serif !important;
-}
-
-/* Brand wordmark (logo) — always English serif, regardless of locale */
-.brand-wordmark,
-html[data-lang="bn"] .brand-wordmark {
-  font-family: 'Cormorant Garamond', serif !important;
-  letter-spacing: 4px;
-  font-style: normal;
 }
 
 /* Scroll reveal — pure compositor-accelerated (transform + opacity) */

@@ -37,7 +37,7 @@ const SectionFallback = ({ minHeight = '60vh' }: { minHeight?: string }) => (
 );
 
 export default function Index() {
-  const [heroReady, setHeroReady] = useState(() => !shouldShowLoader());
+  const [heroReady, setHeroReady] = useState(true);
 
   // Guarantee page loads at top without jump
   useEffect(() => {
@@ -77,16 +77,10 @@ export default function Index() {
         <Navbar content={navContent ?? null} />
 
         {/* 2. Bold Hero with Quiet Luxury Aesthetics */}
-        <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: heroReady ? 1 : 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <Hero
-            content={null}
-            logoUrl={logoData?.url ?? fallbackLogoUrl}
-          />
-        </m.div>
+        <Hero
+          content={null}
+          logoUrl={logoData?.url ?? fallbackLogoUrl}
+        />
 
         {/* 2.5 ACCESSIBLE LUXURY: Trust & Reassurance Bar for Bangladeshi Brands */}
         <AccessibleTrustBar />

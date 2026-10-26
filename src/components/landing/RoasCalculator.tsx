@@ -59,10 +59,10 @@ export default function RoasCalculator() {
   };
 
   const fontPrimary = isBn ? '"Noto Serif Bengali", serif' : '"Cormorant Garamond", serif';
-  const fontBody = isBn ? '"Noto Serif Bengali", sans-serif' : 'inherit';
+  const fontBody = isBn ? '"Noto Serif Bengali", serif' : 'inherit';
 
   return (
-    <section id="calculator" className="py-10 sm:py-14 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
+    <section id="calculator" className="pt-14 pb-10 sm:py-14 md:py-24 bg-[#f9fafb] border-t border-[#1e3a8a]/10 relative overflow-hidden scroll-mt-14">
       {/* Background Ambient Glows (Zero-cost radial gradients) */}
       <div 
         className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none" 
@@ -108,18 +108,6 @@ export default function RoasCalculator() {
           {/* LEFT: 4 CLEAN, BREATHABLE INPUT ROWS */}
           <div className="lg:col-span-7 bg-white rounded-2xl md:rounded-3xl border border-[#1e3a8a]/10 p-4 sm:p-7 md:p-8 shadow-sm flex flex-col justify-between">
             
-            {/* Mobile Live Diagnostic Quick Pill (Instant Feedback While Sliding) */}
-            <div className="block lg:hidden mb-3.5 p-2.5 sm:p-3 rounded-xl bg-[#fb923c]/10 border border-[#fb923c]/25 shadow-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-[10.5px] sm:text-[11px] font-semibold text-[#1e3a8a] flex items-center gap-1.5" style={{ fontFamily: fontBody }}>
-                  <Sparkles className="w-3.5 h-3.5 text-[#fb923c]" />
-                  <span>{isBn ? "দুর্বল ডিজাইনে সম্ভাব্য মাসিক লস:" : "Est. Monthly Sales Leak:"}</span>
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-[#fb923c] font-mono">
-                  -৳{formatCurrency(revenueLost)}
-                </span>
-              </div>
-            </div>
 
             <div className="space-y-3.5 sm:space-y-6">
               

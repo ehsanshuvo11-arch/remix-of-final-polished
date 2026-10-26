@@ -163,7 +163,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
             className="w-full min-h-[48px] h-12 md:h-[54px] px-6 text-[14px] tracking-[0.5px] uppercase flex justify-center items-center gap-2 bg-accent text-[#f9fafb] border border-accent/80 md:inline-flex md:w-auto md:px-10 md:min-w-[240px] font-bold rounded-xl relative overflow-hidden transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(251,146,60,0.5)] cursor-pointer btn-shimmer shadow-[0_6px_25px_rgba(251,146,60,0.4)]"
           >
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'Start ৳২,৫০০ Test Pack →' : 'Start ৳2,500 Test Pack →'}
+              {isBn ? '৳২,৫০০ টেস্ট প্যাক শুরু করুন →' : 'Start ৳2,500 Test Pack →'}
             </span>
           </m.button>
 
@@ -179,7 +179,7 @@ export default function Hero({ content, logoUrl }: HeroProps) {
           >
             <span>💬</span>
             <span lang={isBn ? 'bn' : 'en'} style={isBn ? { fontFamily: "'Noto Serif Bengali', serif" } : undefined}>
-              {isBn ? 'Free 5-Min Video Review' : 'Free 5-Min Video Review'}
+              {isBn ? 'ফ্রি ৫-মিনিট ভিডিও অডিট' : 'Free 5-Min Video Review'}
             </span>
           </m.a>
         </m.div>

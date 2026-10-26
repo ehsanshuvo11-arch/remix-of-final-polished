@@ -446,17 +446,6 @@ export default function Navbar({ content }: NavbarProps) {
               <span>{isBn ? 'EN' : 'বাংলা'}</span>
             </button>
 
-            <a
-              href="#services"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo('#services');
-              }}
-              className="inline-flex items-center gap-1 px-3 py-1.5 bg-accent hover:bg-accent/90 text-[#f9fafb] text-[12px] font-bold rounded-lg shadow-sm"
-            >
-              <span>{isBn ? '৳২,৫০০ প্যাক →' : '৳2,500 Pack →'}</span>
-            </a>
-
             {/* Mobile Hamburger / Close Button */}
             <button
               type="button"

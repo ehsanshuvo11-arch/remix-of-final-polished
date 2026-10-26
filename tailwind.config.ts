@@ -14,9 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['"Cormorant Garamond"', 'serif'],
+        heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         body: ['"DM Sans"', 'sans-serif'],
-        bangla: ['"Noto Serif Bengali"', 'sans-serif'],
+        bangla: ['"Noto Serif Bengali"', 'serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
